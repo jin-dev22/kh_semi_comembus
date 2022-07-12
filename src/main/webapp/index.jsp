@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+	<h1>COMEMBUS 출발~</h1>
 </body>
 </html>
