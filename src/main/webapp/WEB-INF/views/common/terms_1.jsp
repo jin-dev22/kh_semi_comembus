@@ -1,13 +1,15 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko">
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>이용약관</title>
+  <title>이용약관</title>
 </head>
 <body>
-  디지털콘텐츠 이용 표준약관
+ 디지털콘텐츠 이용 표준약관
 [시행 2008. 7. 30.] [문화체육관광부훈령 제2008-0호, 2008. 7. 30., 제정]
 과학기술정보통신부(디지털콘텐츠과), 044-202-6352
 
