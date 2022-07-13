@@ -17,7 +17,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css">
   <link rel="stylesheet" href="<%=request.getContextPath() %>/css/style.css">
-
+  
+  <link rel="icon" href="favicon.ico" />
   <title>CO;MEMBUS</title>
 </head>
 <body>
