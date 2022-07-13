@@ -71,6 +71,8 @@ COMMENT ON COLUMN notice.title IS '공지사항 제목';
 COMMENT ON COLUMN notice.content IS '공지사항 내용';
 COMMENT ON COLUMN notice.read_count IS '공지사항 조회수';
 COMMENT ON COLUMN notice.reg_date IS '공지사항 작성일';
+
+
 commit;
 --수진 코드 끝
 
