@@ -145,7 +145,8 @@ footer {
   padding: 15px 0;
   box-sizing: border-box;
   display: flex;
-  justify-content: space-between;
+  /* 220713(선) 간격수정 */
+  justify-content: space-around;
   align-items: center;
   font-family: var(--elice-font);
   font-weight: 400;
@@ -161,8 +162,7 @@ footer {
   height: 150px;
   display: flex;
   flex-direction: column;
-  /* 220713(선) 간격수정 */
-  justify-content: space-around;
+  justify-content: space-evenly;
 }
 footer .terms ul {
   display: flex;
