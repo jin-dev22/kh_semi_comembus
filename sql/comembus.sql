@@ -75,6 +75,67 @@ commit;
 --수진 코드 끝
 
 --선아님 코드 시작
+CREATE TABLE project_study (
+	ps_no number NOT NULL,
+	writer varchar2(12) NOT NULL,
+	board_type char(1) NOT NULL,
+	title varchar2(60) NOT NULL,
+	reg_date date DEFAULT sysdate NOT NULL,
+	content clob NOT NULL,
+	viewcount number DEFAULT 0 NULL,
+	bookmark number DEFAULT 0 NULL,
+	topic varchar2(30) NOT NULL,
+	local varchar2(10) NOT NULL,
+	people number DEFAULT 1 NOT NULL,
+	status char(1) DEFAULT 'N' NULL,
+        constraint pk_project_study_ps_no primary key(ps_no),
+        constraint fk_project_study_writer foreign key(writer) references member(member_id) on delete set null,
+        constraint ck_project_study_board_type check(board_type in ('P', 'S')),
+        constraint ck_project_study_status check(status in ('Y', 'N'))
+);
+
+create sequence seq_project_study_ps_no;
+
+comment on table project_study is '프로젝트/스터디 모임테이블';
+COMMENT ON COLUMN project_study.ps_no IS '프로젝트/스터디 게시글 번호';
+COMMENT ON COLUMN project_study.writer IS '프로젝트/스터디 작성자';
+COMMENT ON COLUMN project_study.board_type IS '프로젝트(p)와 스터디(s) 구분';
+COMMENT ON COLUMN project_study.title IS '게시글 제목';
+COMMENT ON COLUMN project_study.reg_date IS '프로젝트/스터디 게시글 작성일(모집시작일)';
+COMMENT ON COLUMN project_study.content IS '게시글 내용';
+COMMENT ON COLUMN project_study.viewcount IS '게시글 조회수';
+COMMENT ON COLUMN project_study.bookmark IS '게시글 찜 수';
+COMMENT ON COLUMN project_study.topic IS '프로젝트(소셜네트워크/게임/여행/금융/이커머스/기타), 스터디 모집 분야(기획/디자인/프론트/백엔드/면접/코딩테스트)';
+COMMENT ON COLUMN project_study.local IS '모집 지역(온라인/수도권/충청/강원/전라/경상/제주)';
+COMMENT ON COLUMN project_study.people IS '모집 인원(1~9)';
+COMMENT ON COLUMN project_study.status IS '모집 마감여부 Y/N';
+
+CREATE TABLE bookmarked_prj_std (
+	member_id varchar2(12) NOT NULL,
+	ps_no number NOT NULL,
+        constraint pk_bookmarked_prj_std_member_id_ps_no primary key(member_id, ps_no),
+        constraint fk_bookmarked_prj_std_member_id foreign key(member_id) references member(member_id) on delete cascade,
+        constraint fk_bookmarked_prj_std_ps_no foreign key(ps_no) references project_study(ps_no) on delete cascade
+);
+comment on table bookmarked_prj_std is '프로젝트/스터디 찜목록';
+COMMENT ON COLUMN bookmarked_prj_std.member_id IS '회원 아이디';
+COMMENT ON COLUMN bookmarked_prj_std.ps_no IS '프로젝트/스터디 게시글 번호';
+
+
+CREATE TABLE project_member_dept (
+	ps_no number NOT NULL,
+	job_code char(2) NULL,
+	capacity_number number NULL,
+	recruited_number number DEFAULT 0 NULL,
+        constraint pk_project_member_dept_ps_no_job_code primary key(ps_no, job_code),
+        constraint fk_project_member_dept_ps_no foreign key(ps_no) references project_study(ps_no) on delete cascade,
+        constraint fk_project_member_dept_job_code foreign key(job_code) references department(job_code) on delete cascade
+);
+comment on table project_member_dept is '모임 게시물별 모집인원현황';
+COMMENT ON COLUMN project_member_dept.ps_no IS '프로젝트/스터디 게시글 번호';
+COMMENT ON COLUMN project_member_dept.job_code IS '프로젝트게시물인 경우 직무분야 코드로 직무별 인원구분';
+COMMENT ON COLUMN project_member_dept.capacity_number IS '모집정원(프로젝트인 경우 직무분야별)';
+COMMENT ON COLUMN project_member_dept.recruited_number IS '모집된 인원';
 
 --선아님 코드 끝
 
