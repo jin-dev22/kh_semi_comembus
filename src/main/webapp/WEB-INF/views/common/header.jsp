@@ -52,7 +52,7 @@
       </ul>
   
       <ul class="h__loginSignup">
-        <li><a href="javascript:void(0)">회원가입/로그인</a></li>
+        <li><a href="<%= request.getContextPath() %>/member/login">회원가입/로그인</a></li>
       </ul>
     </div>
   </header>
