@@ -79,7 +79,51 @@ commit;
 --선아님 코드 끝
 
 --태연님 코드 시작
+CREATE TABLE community_board (
+	co_no number NOT NULL,
+	co_writer varchar2(12)	 NOT NULL,
+	co_title	varchar2(500)	NOT NULL,
+	co_content clob	NOT NULL,
+	co_read_count number DEFAULT 0	NULL,
+	co_reg_date date DEFAULT sysdate	NOT NULL,
+	co_like	number	DEFAULT 0 NULL,
+	co_type	char(1) NOT NULL,
+    constraint pk_community_board primary key(co_no),
+    constraint fk_community_writer foreign key(co_writer) references member(member_id) on delete set null
+);
+create sequence seq_co_no;
 
+COMMENT ON COLUMN community_board.co_no IS '커뮤니티게시판 글번호';
+COMMENT ON COLUMN community_board.co_writer IS '커뮤니티게시판 글 작성자';
+COMMENT ON COLUMN community_board.co_title IS '커뮤니티게시판 글 제목';
+COMMENT ON COLUMN community_board.co_content IS '커뮤니티게시판 글 내용';
+COMMENT ON COLUMN community_board.co_read_count IS '커뮤니티게시판 글 조회수';
+COMMENT ON COLUMN community_board.co_reg_date IS '커뮤니티게시판 글 작성일';
+COMMENT ON COLUMN community_board.co_like IS '커뮤니티게시판 글 좋아요 수';
+COMMENT ON COLUMN community_board.co_type IS '커뮤니티 게시판 종류구분컬럼';
+
+CREATE TABLE community_repl (
+	repl_no number NOT NULL,
+	repl_writer	varchar2(12) NOT NULL, -- 댓글작성자(멤버아이디)
+	co_no number NOT NULL, -- 게시글 넘버(모든 게시글은 특정 게시물에 소속됨)
+	reg_date Timestamp DEFAULT sysdate NOT NULL,
+	content	varchar2(2000) NULL,
+	repl_level number DEFAULT 1	NULL, -- 댓글 1, 대댓글 2
+	ref_repl_no number DEFAULT null NULL, --대댓글인 경우, 댓글참조. 댓글 null, 대댓글 - 댓글no(pk)
+    constraint pk_community_comment_repl_no primary key(repl_no),
+    constraint fk_community_comment_repl_writer foreign key(repl_writer) references member(member_id) on delete set null,
+    constraint fk_community_comment_co_no foreign key(co_no) references community_board(co_no) on delete cascade,
+    constraint fk_community_comment_ref_repl_no foreign key(ref_repl_no) references community_repl(repl_no) on delete cascade
+);
+create sequence seq_community_repl_no;
+
+COMMENT ON COLUMN community_repl.repl_no IS 'seq 자동생성';
+COMMENT ON COLUMN community_repl.repl_writer IS '커뮤니티게시판 댓글 작성자';
+COMMENT ON COLUMN community_repl.co_no IS '커뮤니티게시판 글 번호';
+COMMENT ON COLUMN community_repl.reg_date IS '커뮤니티게시판 작성일(시분까지 표시됨)';
+COMMENT ON COLUMN community_repl.content IS '커뮤니티게시판 댓글 내용';
+COMMENT ON COLUMN community_repl.repl_level IS '댓글레벨 2까지만';
+COMMENT ON COLUMN community_repl.ref_repl_no IS '대댓글인경우 원댓글번호값. 원댓글 on delete cascade';
 --태연님 코드 끝
 
 --미송님 코드 시작
