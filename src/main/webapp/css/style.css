@@ -1,5 +1,6 @@
 /* 공통 */
-@import url("https://font.elice.io/EliceDigitalCoding.css");
+/* 220713(선) 엘리스폰트 코딩용 -> 웹폰트로 수정 */
+@import url("https://font.elice.io/EliceDigitalBaeum.css");
 
 /*
   제목, 메뉴바, 짧은 길이에서만 엘리스체 사용
@@ -23,7 +24,8 @@
   --jjin-yellow-color: #FFD24C;
 
   /* 폰트 */
-  --elice-font: 'Elice Digital Coding', 'monospace';
+  /* 220713(선) 엘리스폰트 코딩용 -> 웹폰트로 수정 */
+  --elice-font: "Elice Digital Baeum", sans-serif;
 }
 html {
   width: 100%;
@@ -159,7 +161,8 @@ footer {
   height: 150px;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  /* 220713(선) 간격수정 */
+  justify-content: space-around;
 }
 footer .terms ul {
   display: flex;

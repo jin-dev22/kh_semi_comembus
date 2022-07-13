@@ -10,7 +10,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <!-- 폰트 -->
-  <link href="https://font.elice.io/EliceDigitalCoding.css" rel="stylesheet">
+  <!-- 220713(선) 엘리스폰트 코딩용 -> 웹폰트로 수정 -->
+  <link href="https://font.elice.io/EliceDigitalBaeum.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
