@@ -43,10 +43,6 @@ a {
   text-decoration: none;
   color: var(--text-color);
 }
-/*유경 추가*/
-a:hover {
-  text-decoration: none;
-}
 ul {
   padding: 0;
 }
@@ -60,8 +56,12 @@ img {
 /* header */
 header {
   min-width: 1100px;
+  height: 120px;
   background-color: #fff;
   padding: 10px 30px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 .menubar {
   width: 1100px;
@@ -92,6 +92,7 @@ header {
   line-height: 2;
   width: 120px;
   height: 36px;
+  text-decoration: none;
 }
 .h__menu__main > li > a::after {
   content: "";
@@ -107,6 +108,7 @@ header {
 }
 .h__menu__main > li:hover > a {
   color: var(--btn-color);
+  text-decoration: none;
 }
 .h__menu__sub {
   width: 100%;
@@ -124,7 +126,8 @@ header {
 .h__menu__sub a {
   display: block;
   width: 100%;
-  height: 20px;
+  /* height: 20px; */
+  text-decoration: none;
   padding: 8px 0;
 }
 .h__menu__main > li .h__menu__sub li a:hover {
@@ -133,6 +136,7 @@ header {
 }
 .h__loginSignup:hover a {
   color: var(--btn-color);
+  text-decoration: none;
 }
 
 /* footer */
@@ -154,7 +158,7 @@ footer {
   align-items: center;
   font-family: var(--elice-font);
   font-weight: 400;
-  font-size: .8rem;
+  font-size: 14px;
 }
 .footer > img {
   width: 150px;

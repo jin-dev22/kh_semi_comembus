@@ -5,21 +5,33 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <!-- 폰트 -->
-  <!-- 220713(선) 엘리스폰트 코딩용 -> 웹폰트로 수정 -->
-  <link href="https://font.elice.io/EliceDigitalBaeum.css" rel="stylesheet">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css">
-  <link rel="stylesheet" href="<%=request.getContextPath() %>/css/style.css">
-  
-  <link rel="icon" href="favicon.ico" />
-  <title>CO;MEMBUS</title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+	<!-- 폰트 -->
+	<link href="https://font.elice.io/EliceDigitalBaeum.css" rel="stylesheet">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css">
+	<!-- include libraries(jQuery, bootstrap) -->
+	<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script> 
+	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
+	<!-- summer note -->
+	<script src="<%=request.getContextPath() %>/js/summernote/summernote-lite.js"></script>
+	<script src="<%=request.getContextPath() %>/js/summernote/lang/summernote-ko-KR.js"></script>
+	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/summernote/summernote-lite.css">
+	
+	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/style.css">
+	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/gathering/Enroll.css">
+	
+	
+	<link rel="icon" href="favicon.ico" />
+	<title>CO;MEMBUS</title>
 </head>
 <body>
   <header>
