@@ -37,7 +37,7 @@
       </div>
   
       <ul class="h__menu__main">
-        <li><a href="javascript:void(0)">멤버스</a></li>
+        <li><a href="<%= request.getContextPath() %>/membus/list">멤버스</a></li>
         <li>
           <a href="javascript:void(0)">모임</a>
           <ul class="h__menu__sub">
@@ -48,7 +48,7 @@
         <li>
           <a href="javascript:void(0)">커뮤니티</a>
           <ul class="h__menu__sub">
-            <li><a href="javascript:void(0)">QnA</a></li>
+            <li><a href="<%= request.getContextPath() %>/community/communityList">QnA</a></li>
             <li><a href="javascript:void(0)">자유주제</a></li>
             <li><a href="javascript:void(0)">정보공유</a></li>
           </ul>

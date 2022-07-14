@@ -31,6 +31,7 @@ CREATE TABLE member (
 );
 --drop table member;
 select * from member;
+select * from ( select row_number () over (order by enroll_date desc) rnum, m.* from member m ) m where rnum between 1 and 16;
 insert into member values ('test', 'BE', 'tester', '홍길동','1234', '01012341234', '안녕하세요', default, default, null, default);
 commit;
 
@@ -50,7 +51,6 @@ CREATE TABLE department (
 	job_code	char(2)		NOT NULL,
 	job_name	varchar2(30)		NOT NULL,
     constraint pk_job_code primary key (job_code)
-    --constraint ck_job_code check(job_code in('PL', 'DG', 'BE', 'FE'))--강사님 확인 후 제약조건 추가하기
 );
 insert into department values('BE', '백엔드');
 insert into department values('FE', '프론트엔드');
