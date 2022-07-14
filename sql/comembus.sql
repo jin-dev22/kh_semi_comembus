@@ -82,32 +82,35 @@ COMMENT ON COLUMN notice.read_count IS '공지사항 조회수';
 COMMENT ON COLUMN notice.reg_date IS '공지사항 작성일';
 
 --모임지원현황, 
---CREATE TABLE member_application_status (--명령의 85 행에서 시작하는 중 오류 발생 ORA-00907: missing right parenthesis
+CREATE TABLE member_application_status (
 	member_id	varchar2(12)		NOT NULL,
 	ps_no	number		NOT NULL,
 	result	varchar2(10)	DEFAULT 'W'	NOT NULL,
     constraint pk_ps_no_member_id primary key(ps_no, member_id),
     constraint fk_member_id foreign key (member_id) references member(member_id) on delete cascade,
     constraint fk_ps_no foreign key(ps_no) references project_study(ps_no) on delete cascade,
-    constraint ck_result check(result in('W', 'O', 'X')
+    constraint ck_result check(result in('W', 'O', 'X'))
 );
 COMMENT ON COLUMN member_application_status.member_id IS '지원신청한 회원 아이디';
 COMMENT ON COLUMN member_application_status.ps_no IS '프로젝트/스터디 게시글 번호';
 COMMENT ON COLUMN member_application_status.result IS '지원결과(수락O,거절X, 대기중W)';
 
 --알림정보테이블 만들기
---CREATE TABLE member_notification (--모임 게시물별 모집인원 현황과 동일한 내용..강사님 답변 듣고 생성하기
+CREATE TABLE member_notification (
+    alert_no number not null,
 	member_id	varchar2(12)		NOT NULL,
 	ps_no	number		NULL,
 	repl_no	number		NULL,
 	notice_type	varchar2(20)		NOT NULL,
 	content	varchar2(30)		NOT NULL,
 	is_read	char(1)	DEFAULT 'N'	NOT NULL,
-    constraint fk_member_id foreign key (member_id) references member(member_id) on  delete cascade,
-    constraint fk_ps_no foreign key (ps_no) references project_study(ps_no) on delete cascade,
-    constraint fk_repl_no foreign key(repl_no) references community_repl(repl_no) on delete cascade
-    constraint ck_is_read check(is_read in('Y', 'N')
+    constraint pk_alert_no primary key(alert_no),
+    constraint fk_alert_member_id foreign key (member_id) references member(member_id) on  delete cascade,
+    constraint fk_alert_ps_no foreign key (ps_no) references project_study(ps_no) on delete cascade,
+    constraint fk_repl_no foreign key(repl_no) references community_repl(repl_no) on delete cascade,
+    constraint ck_is_read check(is_read in('Y', 'N'))
 );
+create sequence seq_alert_no;
 COMMENT ON COLUMN member_notification.member_id IS '알림을 받는 회원아이디';
 COMMENT ON COLUMN member_notification.ps_no IS '프로젝트/스터디 게시글 번호';
 COMMENT ON COLUMN member_notification.repl_no IS '댓글알림시 댓글번호 참조';
@@ -178,20 +181,23 @@ COMMENT ON COLUMN bookmarked_prj_std.member_id IS '회원 아이디';
 COMMENT ON COLUMN bookmarked_prj_std.ps_no IS '프로젝트/스터디 게시글 번호';
 
 
---CREATE TABLE project_member_dept (--강사님께 물어보고 생성하기(7/14일)
+CREATE TABLE project_member_dept (
+        p_m_dept_no number not null,
 	ps_no number NOT NULL,
 	job_code char(2) NULL,
 	capacity_number number NULL,
 	recruited_number number DEFAULT 0 NULL,
-        constraint pk_project_member_dept_ps_no_job_code primary key(ps_no, job_code),
+        constraint pk_project_member_dept_p_m_dept_no primary key(p_m_dept_no),
         constraint fk_project_member_dept_ps_no foreign key(ps_no) references project_study(ps_no) on delete cascade,
         constraint fk_project_member_dept_job_code foreign key(job_code) references department(job_code) on delete cascade
 );
 --drop table project_member_dept;
 select * from project_member_dept;
 
+create sequence seq_p_m_dept_no;
 
 comment on table project_member_dept is '모임 게시물별 모집인원현황';
+comment on column project_member_dept.p_m_dept_no is '모임게시물별 모집인원현황 테이블의 고유번호';
 COMMENT ON COLUMN project_member_dept.ps_no IS '프로젝트/스터디 게시글 번호';
 COMMENT ON COLUMN project_member_dept.job_code IS '프로젝트게시물인 경우 직무분야 코드로 직무별 인원구분';
 COMMENT ON COLUMN project_member_dept.capacity_number IS '모집정원(프로젝트인 경우 직무분야별)';
