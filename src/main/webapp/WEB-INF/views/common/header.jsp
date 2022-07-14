@@ -29,7 +29,7 @@
       </div>
   
       <ul class="h__menu__main">
-        <li><a href="javascript:void(0)">멤버스</a></li>
+        <li><a href="<%= request.getContextPath() %>/membus/list">멤버스</a></li>
         <li>
           <a href="javascript:void(0)">모임</a>
           <ul class="h__menu__sub">

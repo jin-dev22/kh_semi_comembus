@@ -9,11 +9,14 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
-
 
 import kh.semi.comembus.member.model.dto.JobCode;
 import kh.semi.comembus.member.model.dto.Member;
+import kh.semi.comembus.member.model.dto.MemberExt;
 import kh.semi.comembus.member.model.dto.MemberRole;
 import kh.semi.comembus.member.model.dto.QuitYN;
 import kh.semi.comembus.member.model.exception.MemberException;
@@ -59,7 +62,7 @@ public class MemberDao {
 		return member;
 	}
 	
-	private Member handleMemberResultSet(ResultSet rset) throws SQLException {
+	private MemberExt handleMemberResultSet(ResultSet rset) throws SQLException {
 		String memberId = rset.getString("member_id"); 
 		JobCode jobCode = JobCode.valueOf(rset.getString("job_code"));
 		String nickName = rset.getString("member_nickname"); 
@@ -71,14 +74,40 @@ public class MemberDao {
 		Date enrollDate = rset.getDate("enroll_date");
 		Date quitDate = rset.getDate("quit_date") != null ? rset.getDate("quit_date") : null;
 		QuitYN quitYN = QuitYN.valueOf(rset.getString("quit_yn"));
-		return new Member(memberId, jobCode, nickName, memberName, password, phone, introduction, memberRole, enrollDate, quitDate, quitYN);
+		return new MemberExt(memberId, jobCode, nickName, memberName, password, phone, introduction, memberRole, enrollDate, quitDate, quitYN);
 		
 	}
 	// 미송 코드 끝
 	
 	
 	
-	// 수진 코드 시작
+	// 수진 코드 시작	
+	public List<Member> findAll(Connection conn, Map<String, Object> param) {
+		List<Member> memberList = new ArrayList<>();
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("findAll");
+		
+		//select * from ( select row_number () over (order by enroll_date desc) rnum, m.* from member m ) m where rnum between ? and ?
+
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, (int) param.get("start"));
+			pstmt.setInt(2, (int) param.get("end"));
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				MemberExt member = handleMemberResultSet(rset);
+				
+				memberList.add(member);
+			}
+		} catch (SQLException e) {
+			throw new MemberException("멤버스 전체조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return memberList;
+	}
 	
 	// 수진 코드 끝
 
