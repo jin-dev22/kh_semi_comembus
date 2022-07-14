@@ -33,7 +33,7 @@
         <li>
           <a href="javascript:void(0)">모임</a>
           <ul class="h__menu__sub">
-            <li><a href="javascript:void(0)">프로젝트</a></li>
+            <li><a href="<%= request.getContextPath()%>/gathering/projectList">프로젝트</a></li>
             <li><a href="javascript:void(0)">스터디</a></li>
           </ul>
         </li>
