@@ -51,7 +51,6 @@ CREATE TABLE department (
 	job_code	char(2)		NOT NULL,
 	job_name	varchar2(30)		NOT NULL,
     constraint pk_job_code primary key (job_code)
-    --constraint ck_job_code check(job_code in('PL', 'DG', 'BE', 'FE'))--강사님 확인 후 제약조건 추가하기
 );
 insert into department values('BE', '백엔드');
 insert into department values('FE', '프론트엔드');
