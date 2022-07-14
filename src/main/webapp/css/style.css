@@ -43,6 +43,10 @@ a {
   text-decoration: none;
   color: var(--text-color);
 }
+/*유경 추가*/
+a:hover {
+  text-decoration: none;
+}
 ul {
   padding: 0;
 }
