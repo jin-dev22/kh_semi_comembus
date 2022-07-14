@@ -3,6 +3,8 @@ package kh.semi.comembus.member.model.service;
 import static kh.semi.comembus.common.JdbcTemplate.*;
 
 import java.sql.Connection;
+import java.util.List;
+import java.util.Map;
 
 import kh.semi.comembus.member.model.dao.MemberDao;
 import kh.semi.comembus.member.model.dto.Member;
@@ -21,12 +23,19 @@ public class MemberService {
 		
 		return member;
 	}
+
 	
 	// 미송 코드 끝
 	
 	
 	
 	// 수진 코드 시작
+	public List<Member> findAll(Map<String, Object> param) {
+		Connection conn = getConnection();
+		List<Member> memberList = memberDao.findAll(conn, param);
+		close(conn);
+		return memberList;
+	}
 	
 	// 수진 코드 끝
 
