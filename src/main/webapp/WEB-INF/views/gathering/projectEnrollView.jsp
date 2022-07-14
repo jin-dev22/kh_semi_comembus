@@ -61,7 +61,7 @@
 	                </div>
 	            </td>
 	            <td>
-	                <input type="button" id="delete" value="삭제"></input>
+	                <input type="button" id="delete" value="삭제" onclick="deleteRow()"></input>
 	                <input type="button" id="add" value="추가" onclick="addRow()"/>
 	            </td>
 	            <td id="plus"></td>
@@ -108,12 +108,17 @@
 
         newCell1.innerHTML='<td width="150px;"><select name="job_code" id="job_code"><option value="planning">기획</option><option value="design">디자인</option><option value="frontend">프론트엔드</option><option value="backend">백엔드</option></select></td>'
         newCell2.innerHTML='<div id="container"><button class="count" id="plus">+</button><span id="count">1</span><button class="count" id="minus">-</button></div>'
-        newCell3.innerHTML='<td><input type="button" id="delete" value="삭제"></input><input type="button" id="add" value="추가" onclick="addRow()"/></td>'
 
         addRowNum+=1;
         }
     }
-    
+    function deleteRow(){
+        var table=document.getElementById('tbl-project-enrollview');
+        if(addRowNum>1){
+        const delRow=table.deleteRow(table.rows.length-6);
+        addRowNum-=1;
+        }
+    }
 
     $(document).ready(function() {
     
