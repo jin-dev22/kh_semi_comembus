@@ -135,6 +135,41 @@ header {
   color: var(--btn-color);
 }
 
+/* 미송 코드 시작 */
+.h__member__menu{
+	display: flex;
+}
+
+.h__member__menu > li {
+    width: 60px;
+    height: 36px;
+    box-sizing: border-box;
+    text-align: center;
+    position: relative;
+}
+
+.h__member__menu > li > a {
+    display: block;
+    line-height: 2;
+    width: 60px;
+    height: 36px;
+}
+
+.h__loginMember{
+  	background-color: var(--btn-color);
+  	margin: 0 10px;
+  }
+  
+.h__loginMember a:hover {
+ 	color: #fff;
+}
+
+.h__memberLogout a:hover {
+    color: var(--btn-color);
+}
+/* 미송 코드 끝 */
+
+
 /* footer */
 footer {
   min-width: 1200px;
