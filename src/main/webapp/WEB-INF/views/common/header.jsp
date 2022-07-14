@@ -1,5 +1,13 @@
+<%@page import="kh.semi.comembus.member.model.dto.Member"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    
+<!-- 미송 코드 시작 -->
+<%
+	Member loginMember = (Member) session.getAttribute("loginMember");	
+
+%>
+<!-- 미송 코드 끝 -->
     
 
 <!DOCTYPE html>
@@ -51,9 +59,21 @@
         <li><a href="javascript:void(0)">통계관리</a></li>
       </ul>
   
+  <!-- 미송 코드 시작 -->
+  <% if(loginMember == null){ %>
       <ul class="h__loginSignup">
         <li><a href="<%= request.getContextPath() %>/member/login">회원가입/로그인</a></li>
       </ul>
+  <% } else {%>  
+	  <ul class="h__member__menu">
+	  <!-- 닉네임 클릭 시 마이페이지로 이동 -->
+	  	<li class="h__loginMember"><a href="javascript:void(0)"><%= loginMember.getNickName() %></a></li>
+	  	<li class="h__memberLogout"><a href="<%= request.getContextPath() %>/member/logout">로그아웃</a></li>
+	  </ul>
+  <% } %>   
+  
+  <!-- 미송 코드 끝 -->
+  
     </div>
   </header>
   <!-- 메인 시작 -->
