@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class ResetMemberPasswordServlet
  */
-@WebServlet("/member/resetMemberPassword")
+@WebServlet("/membus/resetMemberPassword")
 public class ResetMemberPasswordServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
