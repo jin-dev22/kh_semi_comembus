@@ -9,6 +9,9 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 
@@ -78,7 +81,32 @@ public class MemberDao {
 	
 	
 	
-	// 수진 코드 시작
+	// 수진 코드 시작	
+	public List<Member> findAll(Connection conn, Map<String, Object> param) {
+		List<Member> memberList = new ArrayList<>();
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("findAll");
+		
+		//select * from ( select row_number () over (order by enroll_date desc) rnum, m.* from member m ) m where rnum between ? and ?
+
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, (int) param.get("start"));
+			pstmt.setInt(2, (int) param.get("end"));
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				Member member = handleMemberResultSet(rset);
+				memberList.add(member);
+			}
+		} catch (SQLException e) {
+			throw new MemberException("멤버스 전체조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return memberList;
+	}
 	
 	// 수진 코드 끝
 

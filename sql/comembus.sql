@@ -31,6 +31,7 @@ CREATE TABLE member (
 );
 --drop table member;
 select * from member;
+select * from ( select row_number () over (order by enroll_date desc) rnum, m.* from member m ) m where rnum between 1 and 16;
 insert into member values ('test', 'BE', 'tester', '홍길동','1234', '01012341234', '안녕하세요', default, default, null, default);
 commit;
 
