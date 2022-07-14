@@ -9,8 +9,8 @@
     <div>
       <div class="terms">
         <ul>
-          <li><a href="<%= request.getContextPath() %>/terms_1">서비스 이용약관</a></li>
-          <li><a href="<%= request.getContextPath() %>/terms_2">개인정보 취급방침</a></li>
+          <li><a href="<%= request.getContextPath() %>/terms?no=1">서비스 이용약관</a></li>
+          <li><a href="<%= request.getContextPath() %>/terms?no=2">개인정보 취급방침</a></li>
           <li><a href="#">공지사항</a></li>
         </ul>
       </div>
