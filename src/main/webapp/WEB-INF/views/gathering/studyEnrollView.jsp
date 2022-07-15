@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>프로젝트 등록하기</title>
+<title>스터디 등록하기</title>
 
 <!-- include libraries(jQuery, bootstrap) -->
 <link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
@@ -107,23 +107,6 @@
         count = count - 1;
         number.textContent = count;}
     });
-    let addRowNum=1;
-    function addRow(){
-        if(addRowNum<=3){
-        //querySelectorAll은 껍데기를 한번 벗겨줘야함!
-        const table=document.getElementById('tbl-project-enrollview');
-        const newRow=table.insertRow(15);
-        const newCell1=newRow.insertCell(0);
-        const newCell2=newRow.insertCell(1);
-        const newCell3=newRow.insertCell(2);
-
-        newCell1.innerHTML='<td width="150px;"><select name="job_code" id="job_code"><option value="planning">기획</option><option value="design">디자인</option><option value="frontend">프론트엔드</option><option value="backend">백엔드</option></select></td>'
-        newCell2.innerHTML='<div id="container"><button class="count" id="plus">+</button><span id="count">1</span><button class="count" id="minus">-</button></div>'
-        newCell3.innerHTML='<td><input type="button" id="delete" value="삭제"></input><input type="button" id="add" value="추가" onclick="addRow()"/></td>'
-
-        addRowNum+=1;
-        }
-    }
     
 
     $(document).ready(function() {
