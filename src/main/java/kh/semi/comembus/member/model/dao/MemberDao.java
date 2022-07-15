@@ -82,13 +82,16 @@ public class MemberDao {
 	
 	
 	// 수진 코드 시작	
+	/**
+	 * 멤버스 메인페이지 : 전체회원 목록반환
+	 */
 	public List<Member> findAll(Connection conn, Map<String, Object> param) {
 		List<Member> memberList = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		String sql = prop.getProperty("findAll");
-		
-		//select * from ( select row_number () over (order by enroll_date desc) rnum, m.* from member m ) m where rnum between ? and ?
+
+		//목록 번호 시작, 끝 입력
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, (int) param.get("start"));
@@ -96,7 +99,8 @@ public class MemberDao {
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
 				MemberExt member = handleMemberResultSet(rset);
-				
+				member.setGetheringCnt(rset.getInt("gathering_cnt"));
+				System.out.println("@dao gatherCnt>> "+member.getNickName()+": "+ member.getGetheringCnt());
 				memberList.add(member);
 			}
 		} catch (SQLException e) {
@@ -108,6 +112,9 @@ public class MemberDao {
 		return memberList;
 	}
 	
+	/**
+	 * 멤버스 메인페이지 : 페이징 처리용 전체회원 수 반환
+	 */
 	public int getTotalMembus(Connection conn) {
 		int totalMembus = 0;
 		PreparedStatement pstmt = null;
@@ -127,6 +134,38 @@ public class MemberDao {
 		}
 		return totalMembus;
 	}
+
+	/**
+	 * 멤버스 메인페이지 : 멤버스 조건 검색시 회원목록 반환
+	 */
+	public List<Member> findMemberLike(Connection conn, Map<String, Object> param) {
+		List<Member> memberList = new ArrayList<>();
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("findAll");
+		
+		//쿼리 수정할것
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, (int) param.get("start"));
+			pstmt.setInt(2, (int) param.get("end"));
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				MemberExt member = handleMemberResultSet(rset);
+				
+				memberList.add(member);
+			}
+		} catch (SQLException e) {
+			throw new MemberException("멤버스 조건조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return memberList;
+	}
+	
+	
+	
 	// 수진 코드 끝
 
 }
