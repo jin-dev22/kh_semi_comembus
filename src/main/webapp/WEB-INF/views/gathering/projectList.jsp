@@ -6,23 +6,23 @@
 		<!-- 모임페이지 시작 -->
 		<!-- 상단 프로젝트/스터디 구분바 -->
 		<section class="gathering-bar">
-			<p><a href="#">프로젝트</a></p>
-			<p><a href="#">스터디</a></p>
+			<p><a href="<%= request.getContextPath()%>/gathering/projectList">프로젝트</a></p>
+			<p><a href="<%= request.getContextPath()%>/gathering/studyList">스터디</a></p>
 		</section>
-		<section class="pro__header">
-			<div class="pro__header__text">
+		<section class="ps__header">
+			<div class="ps__header__text">
 				<p>신규 프로젝트</p>
 				<i class="fa-solid fa-laptop-code"></i>
 			</div>
 			<hr>
-			<div class="pro__header__content swiper">
+			<div class="ps__header__content swiper">
 				<!-- swiper-slide 3개 생성 및 추후 진행 -->
 				<div class="swiper-slide">
-					<img src="/image/ecommerce.jpg" class="pro__header__content__img" alt="해당 프로젝트 주제 이미지">
-					<ul class="pro__header__content-info">
+					<img src="<%= request.getContextPath() %>/images/ecommerce.jpg" class="ps__header__content__img" alt="해당 프로젝트 주제 이미지">
+					<ul class="ps__header__content-info">
 						<li><p class="bold">프로젝트 분야</p></li>
 						<li><p class="bold">프로젝트명</p></li>
-						<li class="pro__header__content-content"><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis ipsam modi, magnam temporibus ut iure asperiores aliquid dolore maiores, corporis aut unde cumque eum molestias. Officia enim beatae magnam saepe.</p></li>
+						<li class="ps__header__content-content"><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis ipsam modi, magnam temporibus ut iure asperiores aliquid dolore maiores, corporis aut unde cumque eum molestias. Officia enim beatae magnam saepe.</p></li>
 						<li class="bold">
 							<span>찜수</span>
 							<span>view수</span>
@@ -36,10 +36,10 @@
 		<hr>
 		</section>
 		<!-- 프로젝트List -->
-		<section class="project-list-main">
+		<section class="ps-list-main">
 			<h1>전체 프로젝트</h1>
-			<div class="project-filter">
-				<select name="local" id="local">
+			<div class="ps-filter">
+				<select name="local" id="p__local">
 					<option value="none">지역 미지정</option>
 					<option value="Online">온라인</option>
 					<option value="Capital">수도권</option>
@@ -49,23 +49,23 @@
 					<option value="Gyeongsang">경상도</option>
 					<option value="Jeju">제주</option>
 				</select>
-				<select name="job_code" id="job_code">
+				<select name="job_code" id="p__job_code">
 					<option value="none">직무 미지정</option>
 					<option value="PL">기획</option>
 					<option value="DG">디자인</option>
 					<option value="FE">프론트</option>
 					<option value="BE">백엔드</option>
 				</select>
-				<input type="checkbox" id="project-status" name="project-status">
-				<label for="status project-status">모집중</label>
-				<input type="checkbox" id="project-bookmark" name="project-bookmark">
-				<label for="bookmark project-bookmark">찜한 프로젝트</label>
+				<input type="checkbox" id="p__status" name="project-status">
+				<label for="p__status">모집중</label>
+				<input type="checkbox" id="p__bookmark" name="project-bookmark">
+				<label for="p__bookmark">찜한 프로젝트</label>
 				
-				<input type="button" class="project-enroll btn" onclick="location.href='<%= request.getContextPath()%>/gathering/projectEnrollView;'" value="프로젝트 생성">
+				<input type="button" class="p__enroll btn" onclick="location.href='<%= request.getContextPath()%>/gathering/projectEnrollView;'" value="프로젝트 생성">
 			</div>
-			<div class="project-lists">
+			<div class="ps-lists">
 				<!-- 전체 1200px -->
-				<div class="project-pre">
+				<div class="ps-pre">
 					<!-- div 하나 당 250px -->
 					<img src="" alt="해당 프로젝트 주제 이미지">
 					<p>프로젝트 주제</p>
