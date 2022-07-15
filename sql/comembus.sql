@@ -177,6 +177,10 @@ alter table project_study rename constraint ck_project_study_board_type to ck_pr
 --모임 시작, 종료일 컬럼 추가(220715)
 alter table project_study add start_date date not null;
 alter table project_study add end_date date not null;
+-- local 길이 수정(220715)
+alter table project_study modify (local varchar2(12));
+
+select * from project_study;
 --drop table project_study;
 create sequence seq_project_study_ps_no;
 
