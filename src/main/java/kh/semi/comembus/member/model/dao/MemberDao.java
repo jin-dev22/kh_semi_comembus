@@ -89,7 +89,6 @@ public class MemberDao {
 		String sql = prop.getProperty("findAll");
 		
 		//select * from ( select row_number () over (order by enroll_date desc) rnum, m.* from member m ) m where rnum between ? and ?
-
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, (int) param.get("start"));
@@ -109,6 +108,25 @@ public class MemberDao {
 		return memberList;
 	}
 	
+	public int getTotalMembus(Connection conn) {
+		int totalMembus = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("getTotalMembus");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				totalMembus = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			throw new MemberException("총 회원수 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return totalMembus;
+	}
 	// 수진 코드 끝
 
 }
