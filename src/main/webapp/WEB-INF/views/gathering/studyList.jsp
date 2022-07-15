@@ -7,6 +7,6 @@
 <title>StudyList</title>
 </head>
 <body>
-
+	<a href="<%= request.getContextPath()%>/gathering/studyEnrollView"></a>
 </body>
 </html>

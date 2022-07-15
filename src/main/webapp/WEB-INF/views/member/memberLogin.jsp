@@ -39,7 +39,7 @@
         </tbody>
      </table>
      </form>
-    <div>
+    <div> 
 	    <input type="button" value="아이디 찾기"
 			onclick="location.href='<%= request.getContextPath() %>/member/findMemberId';">
 		<input type="button" value="비밀번호 찾기"
@@ -48,8 +48,15 @@
    	<div>
      	<span>아직 회원이 아니신가요?</span>
      	<input type="button" value="회원가입하기"
-			onclick="location.href='<%= request.getContextPath() %>/member/memberEnroll';">
+			onclick="location.href='<%= request.getContextPath() %>/member/enroll';">
    	</div>
    	
+<style>
+button, input[type=button]{
+	border: none;
+	background-color: #fff;
+}
+</style>
+
 </section>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
