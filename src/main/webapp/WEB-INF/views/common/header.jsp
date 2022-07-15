@@ -36,6 +36,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/style.css">
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/gathering/Enroll.css">
+	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/gathering/gatheringList.css">
 	
 	
 	<link rel="icon" href="favicon.ico" />
@@ -51,7 +52,7 @@
       <ul class="h__menu__main">
         <li><a href="<%= request.getContextPath() %>/membus/list">멤버스</a></li>
         <li>
-          <a href="javascript:void(0)">모임</a>
+          <a href="<%= request.getContextPath()%>/gathering/projectList">모임</a>
           <ul class="h__menu__sub">
             <li><a href="<%= request.getContextPath()%>/gathering/projectList">프로젝트</a></li>
             <li><a href="javascript:void(0)">스터디</a></li>
