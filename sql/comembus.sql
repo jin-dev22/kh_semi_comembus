@@ -34,7 +34,6 @@ select * from member;
 select * from ( select row_number () over (order by enroll_date desc) rnum, m.* from member m ) m where rnum between 1 and 16;
 insert into member values ('test', 'BE', 'tester', '홍길동','1234', '01012341234', '안녕하세요', default, default, null, default);
 commit;
-
 COMMENT ON COLUMN member.member_id IS '회원 아이디';
 COMMENT ON COLUMN member.job_code IS '회원 직무분야 코드';
 COMMENT ON COLUMN member.member_nickname IS '회원 닉네임';
@@ -46,7 +45,26 @@ COMMENT ON COLUMN member.member_role IS '회원 권한 M/A';
 COMMENT ON COLUMN member.enroll_date IS '회원 가입일시';
 COMMENT ON COLUMN member.quit_date IS '회원 탈퇴일시';
 COMMENT ON COLUMN member.quit_yn IS '회원 탈퇴여부';
+--회원 전체목록 조회 쿼리
+select * 
+from 
+    ( select 
+        row_number() over(order by enroll_date desc) rnum, 
+        m.*, 
+        (select count(*) from MEMBER_APPLICATION_STATUS where member_id = m.member_id) gathering_cnt
+    from member m
+    where quit_yn = 'N') m 
+where rnum between 1 and 5;
+--select * from (select row_number() over(order by enroll_date desc) rnum, m.*, (select count(*) from MEMBER_APPLICATION_STATUS where member_id = m.member_id) gathering_cnt from member m  where quit_yn = 'N') m where rnum between ? and ?
 
+--회원목록 필터링 조회 쿼리
+select * 
+from (
+    select row_number () over (order by enroll_date desc) rnum, m.* 
+    from member m 
+    where  job_code = 'BE' and 
+    ) m 
+where rnum between 1 and 5
 CREATE TABLE department (
 	job_code	char(2)		NOT NULL,
 	job_name	varchar2(30)		NOT NULL,
@@ -91,6 +109,7 @@ CREATE TABLE member_application_status (
     constraint fk_ps_no foreign key(ps_no) references project_study(ps_no) on delete cascade,
     constraint ck_result check(result in('W', 'O', 'X'))
 );
+select * from MEMBER_APPLICATION_STATUS;
 COMMENT ON COLUMN member_application_status.member_id IS '지원신청한 회원 아이디';
 COMMENT ON COLUMN member_application_status.ps_no IS '프로젝트/스터디 게시글 번호';
 COMMENT ON COLUMN member_application_status.result IS '지원결과(수락O,거절X, 대기중W)';
@@ -155,6 +174,9 @@ CREATE TABLE project_study (
 alter table project_study rename column board_type to gathering_type;
 alter table project_study rename constraint ck_project_study_board_type to ck_project_study_gathering_type;
 
+--모임 시작, 종료일 컬럼 추가(220715)
+alter table project_study add start_date date not null;
+alter table project_study add end_date date not null;
 --drop table project_study;
 create sequence seq_project_study_ps_no;
 
