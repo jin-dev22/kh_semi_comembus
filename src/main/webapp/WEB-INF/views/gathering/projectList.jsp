@@ -19,6 +19,8 @@
 				<!-- swiper-slide 3개 생성 및 추후 진행 -->
 				<div class="swiper-slide">
 					<img src="<%= request.getContextPath() %>/images/ecommerce.jpg" class="ps__header__content__img" alt="해당 프로젝트 주제 이미지">
+					<!-- 연결 후 아래코드로 진행 -->
+					<%-- <img src="<%= request.getContextPath() %>/images/\${topic}" class="ps__header__content__img" alt="해당 프로젝트 주제 이미지"> --%>
 					<ul class="ps__header__content-info">
 						<li><p class="bold">프로젝트 분야</p></li>
 						<li><p class="bold">프로젝트명</p></li>
