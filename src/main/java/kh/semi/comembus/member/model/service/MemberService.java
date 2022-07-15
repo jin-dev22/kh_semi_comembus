@@ -37,6 +37,13 @@ public class MemberService {
 		return memberList;
 	}
 	
+	public int getTotalMembus() {
+		Connection conn = getConnection();
+		int totalMembus = memberDao.getTotalMembus(conn);
+		close(conn);
+		return totalMembus;
+	}
+	
 	// 수진 코드 끝
 
 }
