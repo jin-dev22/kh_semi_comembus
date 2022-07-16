@@ -42,6 +42,7 @@ public class MemberSearchServlet extends HttpServlet {
 			String searchJobCode = request.getParameter("searchJobcode");
 			String searchGatheringYN = request.getParameter("searchGatheringYN");
 			String searchKeyword = request.getParameter("searchKeyword");
+			System.out.println("@srchSrv>>"+searchJobCode+", "+searchGatheringYN+", " +searchKeyword);
 			
 			//입력정보 HashMap으로 관리
 			Map<String, Object> param = new HashMap<>();
@@ -49,12 +50,12 @@ public class MemberSearchServlet extends HttpServlet {
 			param.put("end", end);
 			param.put("searchJobCode", searchJobCode);
 			param.put("searchGatheringYN", searchGatheringYN);
-			param.put("searchKeyword", searchGatheringYN);
-			
+			param.put("searchKeyword", searchKeyword);
+		
 			//2.업무로직
 			//회원검색결과목록
 			List<Member> memberList = memberService.findMemberLike(param);
-			System.out.println("@servlet>> "+memberList);
+			//System.out.println("@Srchservlet>> "+memberList);
 			
 			//페이지바 영역
 			int totalMembusNumlike = memberService.getTotalMembusNumLike(param);

@@ -156,13 +156,13 @@ public class MemberDao {
 		if(!"ALL".equals(jobCode)) {
 			sql = sql.replace("[str1]", "and job_code = '" + jobCode +"'");
 		}else {
-			sql = sql.replace("[str1]", "");
+			sql = sql.replace("[str1]", " ");
 		}
 		
-		if(keyword.isEmpty()) {
-			sql = sql.replace("[str2]", "and upper(member_nickname) like upper('%"+keyword+"%')");
+		if(!keyword.isEmpty()) {
+			sql = sql.replace("[str2]", "and upper(member_nickname) like upper('%"+keyword+"%')");			
 		}else {
-			sql = sql.replace("[str2]", "");
+			sql = sql.replace("[str2]", " ");
 		}
 		
 		if("Y".equals(gatheringYN)) {
@@ -170,9 +170,10 @@ public class MemberDao {
 		}else if("N".equals(gatheringYN)) {
 			sql = sql.replace("[str3]", "gathering_cnt = 0 and");
 		}else {
-			sql = sql.replace("[str3]", "");
+			sql = sql.replace("[str3]", " ");
 		}
 		
+		System.out.println("@Dao:Sql>>"+sql);
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, (int) param.get("start"));
@@ -206,22 +207,23 @@ public class MemberDao {
 		if(!"ALL".equals(jobCode)) {
 			sql = sql.replace("[str1]", "and job_code = '" + jobCode +"'");
 		}else {
-			sql = sql.replace("[str1]", "");
+			sql = sql.replace("[str1]", " ");
 		}
 		
-		if(keyword.isEmpty()) {
+		if(!keyword.isEmpty()) {
 			sql = sql.replace("[str2]", "and upper(member_nickname) like upper('%"+keyword+"%')");
 		}else {
-			sql = sql.replace("[str2]", "");
+			sql = sql.replace("[str2]", " ");
 		}
 		 
 		if("Y".equals(gatheringYN)) {
-			sql = sql.replace("[str3]", "gathering_cnt > 0");
+			sql = sql.replace("[str3]", "where gathering_cnt > 0");
 		}else if("N".equals(gatheringYN)) {
-			sql = sql.replace("[str3]", "gathering_cnt = 0");
+			sql = sql.replace("[str3]", "where gathering_cnt = 0");
 		}else {
-			sql = sql.replace("[str3]", "");
+			sql = sql.replace("[str3]", " ");
 		}
+		//System.out.println("@dao:memNumSql>>"+sql);
 		try {
 			pstmt = conn.prepareStatement(sql);
 			rset = pstmt.executeQuery();
