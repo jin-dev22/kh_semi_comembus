@@ -1,3 +1,4 @@
+<%@page import="kh.semi.comembus.member.model.dto.MemberExt"%>
 <%@page import="kh.semi.comembus.member.model.dto.JobCode"%>
 <%@page import="kh.semi.comembus.member.model.dto.Member"%>
 <%@page import="java.util.List"%>
@@ -19,32 +20,34 @@
             border-radius: 50%;
         }
     </style>
+     
     <%
     	List<Member> memberList = (List<Member>)request.getAttribute("memberList");
-    	
+    	String jobCode = request.getParameter("searchJobCode");
+    	String gatheringYN = request.getParameter("searchGatheringYN");
+    	String keyword = request.getParameter("searchKeyword");
     %>
     <!-- 멤버스 검색 폼 시작 -->
     <!-- <section id="membusList-container"> -->
         <h2>멤버스 찾기</h2>
         <div id="search-container">
             <!-- <label for="searchType">직무분야</label>  -->
-            <form action="<%=request.getContextPath()%>/서블릿url매핑주소">
-                <select id="search-jobCode">
-                    <option value="ALL" selected>직무분야</option>
-                    <option value="PL">기획</option>
-                    <option value="DG">디자인</option>
-                    <option value="FE">프론트엔드</option>
-                    <option value="BE" >백엔드</option>		
+            <form action="<%=request.getContextPath()%>/membus/search" method="get">
+                <select id="search-jobCode" onchange="changeSelected('searchJobcode', this.value)">
+                    <option value="ALL" <%= "ALL".equals(jobCode)? "selected" : "" %>>직무분야</option>
+                    <option value="PL" <%= "PL".equals(jobCode)? "selected" : "" %>>기획</option>
+                    <option value="DG" <%= "DG".equals(jobCode)? "selected" : "" %>>디자인</option>
+                    <option value="FE" <%= "FE".equals(jobCode)? "selected" : "" %>>프론트엔드</option>
+                    <option value="BE"  <%= "BE".equals(jobCode)? "selected" : "" %>>백엔드</option>		
                 </select>
-                <select id="search-getheringYN">
-                    <option value="ALL" selected>모임</option>
-                    <option value="Y">진행중</option>
-                    <option value="N">없음</option>
+                <input type="hidden" name="searchJobcode" value="ALL"/>
+                <select id="search-getheringYN" onchange="changeSelected('searchGatheringYN', this.value)">
+                    <option value="ALL" <%= "ALL".equals(gatheringYN)? "selected" : "" %>>모임</option>
+                    <option value="Y" <%= "Y".equals(gatheringYN)? "selected" : "" %>>진행중</option>
+                    <option value="N" <%= "N".equals(gatheringYN)? "selected" : "" %>>없음</option>
                 </select>
-                <div id="search-nickName" class="search-type">
-                    <input type="hidden" name="searchType" value="member_name"/>
-                    <input type="text" name="searchKeyword" size="25" placeholder="닉네임"/>
-                </div>
+                <input type="hidden" name="searchGatheringYN" value="ALL"/>               
+                <input type="text" name="searchKeyword" size="25" placeholder="닉네임"/>             
                 <button type="submit">검색</button>			
             </form>	
         </div>
@@ -56,9 +59,10 @@
     	<div>검색 결과가 없습니다.</div>
     <%} else {
     	for(Member m : memberList){
-    		String nickName = m.getNickName();
-    		JobCode jobcode = m.getJobCode();
-    		
+    		MemberExt mem = (MemberExt) m;
+    		String nickName = mem.getNickName();
+    		JobCode jobcode = mem.getJobCode();
+    		int gatheringCnt = mem.getGetheringCnt();
     %>
         <div id="membusProfile-container">
             <div class="profile-box">
@@ -67,8 +71,8 @@
                     <span class="profile-nickName"><%=nickName %></span>
                 </div>
                 <span class="profile-jobName"></span>
-                <p class="gethringYN">진행중인 모임이 <%=1 %>개 있습니다.</p>
-                <button class="btn-showProfile" onclick="">더보기</button>
+                <p class="gathringYN">진행중인 모임이 <%= gatheringCnt > 0? gatheringCnt+"개 있습니다.": "없습니다."%></p>
+                <button class="btn-showProfile" onclick="viewMembusProfile('<%= mem.getMemberId()%>')">더보기</button>
             </div>
         </div>
      <%
@@ -76,4 +80,28 @@
      }
      %>
     <!-- 멤버스 리스트 끝 -->
+    <!-- 페이지바 시작 -->
+   	<div id="pagebar">
+   	 <%=request.getAttribute("pagebar") %>
+   	</div>
+    <!-- 페이지바 끝 -->
+    <script>
+     /**
+      * select에서onchange발생시 호출. 숨겨진 input에 사용자 입력값 전달
+      */
+    	function changeSelected(inputName, value){
+            // console.log(inputName, value);
+    		const hiddenInput = document.querySelector(`[name="\${inputName}"]`);
+    		//console.log(hiddenInput);
+    		hiddenInput.value = value;
+    		console.log("selected: ",hiddenInput.value);
+    	}
+     
+     /**
+     * 멤버 아이디값으로 get요청
+     */
+     	function viewMembusProfile(memberId){
+     		location.href = `<%= request.getContextPath()%>/membus/profile?memberId=\${memberId}`;
+     	}
+    </script>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>

@@ -41,13 +41,14 @@ public class MemberListServlet extends HttpServlet {
 			param.put("end", end);
 			
 			List<Member> memberList = memberService.findAll(param);
-			System.out.println("memberList="+memberList);
+//			System.out.println("memberList="+memberList);
 			
-			int totalMembus = memberService.getTotalMembus();
+			int totalMembusNum = memberService.getTotalMembusNum();
 			String url = request.getRequestURI();
-			String pagebar = ComembusUtils.getPagebar(cPage, numPerPage, totalMembus, url);
+			String pagebar = ComembusUtils.getPagebar(cPage, numPerPage, totalMembusNum, url);
 			
 			request.setAttribute("memberList", memberList);
+			request.setAttribute("pagebar", pagebar);
 			request.getRequestDispatcher("/WEB-INF/views/member/memberList.jsp").forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
