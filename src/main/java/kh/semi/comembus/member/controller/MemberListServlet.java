@@ -43,9 +43,9 @@ public class MemberListServlet extends HttpServlet {
 			List<Member> memberList = memberService.findAll(param);
 //			System.out.println("memberList="+memberList);
 			
-			int totalMembus = memberService.getTotalMembus();
+			int totalMembusNum = memberService.getTotalMembusNum();
 			String url = request.getRequestURI();
-			String pagebar = ComembusUtils.getPagebar(cPage, numPerPage, totalMembus, url);
+			String pagebar = ComembusUtils.getPagebar(cPage, numPerPage, totalMembusNum, url);
 			
 			request.setAttribute("memberList", memberList);
 			request.setAttribute("pagebar", pagebar);

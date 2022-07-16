@@ -100,7 +100,7 @@ public class MemberDao {
 			while(rset.next()) {
 				MemberExt member = handleMemberResultSet(rset);
 				member.setGetheringCnt(rset.getInt("gathering_cnt"));
-				System.out.println("@dao gatherCnt>> "+member.getNickName()+": "+ member.getGetheringCnt());
+				//System.out.println("@dao gatherCnt>> "+member.getNickName()+": "+ member.getGetheringCnt());
 				memberList.add(member);
 			}
 		} catch (SQLException e) {
@@ -115,16 +115,16 @@ public class MemberDao {
 	/**
 	 * 멤버스 메인페이지 : 페이징 처리용 전체회원 수 반환
 	 */
-	public int getTotalMembus(Connection conn) {
-		int totalMembus = 0;
+	public int getTotalMembusNum(Connection conn) {
+		int totalMembusNum = 0;
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		String sql = prop.getProperty("getTotalMembus");
+		String sql = prop.getProperty("getTotalMembusNum");
 		try {
 			pstmt = conn.prepareStatement(sql);
 			rset = pstmt.executeQuery();
 			if(rset.next()) {
-				totalMembus = rset.getInt(1);
+				totalMembusNum = rset.getInt(1);
 			}
 		} catch (SQLException e) {
 			throw new MemberException("총 회원수 조회 오류", e);
@@ -132,7 +132,7 @@ public class MemberDao {
 			close(rset);
 			close(pstmt);
 		}
-		return totalMembus;
+		return totalMembusNum;
 	}
 
 	/**
@@ -142,9 +142,37 @@ public class MemberDao {
 		List<Member> memberList = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		String sql = prop.getProperty("findAll");
+		String sql = prop.getProperty("findMemberLike");
 		
-		//쿼리 수정할것
+		String jobCode = (String) param.get("searchJobCode");
+		String keyword = (String) param.get("searchKeyword");
+		String gatheringYN = (String) param.get("searchGatheringYN");
+		/**
+		 * 	sql문 조건추가
+		 * 	[str1] = "and job_code = " + param.get("searchJobCode");
+		 *	[str2] = "and upper(member_nickname) like upper('%"+"param.get("searchKeyword")"+"%')";
+		 *	[str3] = "gathering_cnt >"+param.get("searchGatheringYN"); 
+		 */
+		if(!"ALL".equals(jobCode)) {
+			sql = sql.replace("[str1]", "and job_code = '" + jobCode +"'");
+		}else {
+			sql = sql.replace("[str1]", "");
+		}
+		
+		if(keyword.isEmpty()) {
+			sql = sql.replace("[str2]", "and upper(member_nickname) like upper('%"+keyword+"%')");
+		}else {
+			sql = sql.replace("[str2]", "");
+		}
+		
+		if("Y".equals(gatheringYN)) {
+			sql = sql.replace("[str3]", "gathering_cnt > 0 and");
+		}else if("N".equals(gatheringYN)) {
+			sql = sql.replace("[str3]", "gathering_cnt = 0 and");
+		}else {
+			sql = sql.replace("[str3]", "");
+		}
+		
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, (int) param.get("start"));
@@ -152,8 +180,9 @@ public class MemberDao {
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
 				MemberExt member = handleMemberResultSet(rset);
-				
+				member.setGetheringCnt(rset.getInt("gathering_cnt"));
 				memberList.add(member);
+				//System.out.println("@dao>> "+member);
 			}
 		} catch (SQLException e) {
 			throw new MemberException("멤버스 조건조회 오류", e);
@@ -163,7 +192,50 @@ public class MemberDao {
 		}
 		return memberList;
 	}
+
+	public int getTotalMembusNumLike(Connection conn, Map<String, Object> param) {
+		int totalMembusNumlike = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("getTotalMembusNumLike");
 	
+		String jobCode = (String) param.get("searchJobCode");
+		String keyword = (String) param.get("searchKeyword");
+		String gatheringYN = (String) param.get("searchGatheringYN");
+		//select count(*) from (select m.*, (select  count(*) from  project_study where ps_no in (select ps_no from member_application_status where member_id = m.member_id and result = 'O') and sysdate between start_date and end_date) gathering_cnt from member m  where quit_yn = 'N' [str1] [str2] ) m [str3]
+		if(!"ALL".equals(jobCode)) {
+			sql = sql.replace("[str1]", "and job_code = '" + jobCode +"'");
+		}else {
+			sql = sql.replace("[str1]", "");
+		}
+		
+		if(keyword.isEmpty()) {
+			sql = sql.replace("[str2]", "and upper(member_nickname) like upper('%"+keyword+"%')");
+		}else {
+			sql = sql.replace("[str2]", "");
+		}
+		 
+		if("Y".equals(gatheringYN)) {
+			sql = sql.replace("[str3]", "gathering_cnt > 0");
+		}else if("N".equals(gatheringYN)) {
+			sql = sql.replace("[str3]", "gathering_cnt = 0");
+		}else {
+			sql = sql.replace("[str3]", "");
+		}
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				totalMembusNumlike = rset.getInt(1);
+			}			
+		} catch (SQLException e) {
+			throw new MemberException("회원 조건 검색 결과 수 조회 오류", e);
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		return totalMembusNumlike;
+	}
 	
 	
 	// 수진 코드 끝

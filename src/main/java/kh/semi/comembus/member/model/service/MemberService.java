@@ -43,21 +43,31 @@ public class MemberService {
 	/**
 	 * 멤버스 메인페이지 : 페이징 처리용 전체회원 수 반환
 	 */
-	public int getTotalMembus() {
+	public int getTotalMembusNum() {
 		Connection conn = getConnection();
-		int totalMembus = memberDao.getTotalMembus(conn);
+		int totalMembusNum = memberDao.getTotalMembusNum(conn);
 		close(conn);
-		return totalMembus;
+		return totalMembusNum;
 	}
 
 	/**
-	 * 멤버스 메인페이지 : 멤버스 조건 검색시 회원목록 반환 
+	 * 멤버스 메인페이지 : 멤버스 조건 검색시 해당하는 회원목록 반환 
 	 */
-	public List<Member> findeMemberLike(Map<String, Object> param) {
+	public List<Member> findMemberLike(Map<String, Object> param) {
 		Connection conn = getConnection();
 		List<Member> memberList = memberDao.findMemberLike(conn, param);
 		close(conn);
 		return memberList;
+	}
+
+	/**
+	 * 멤버스 메인페이지 : 멤버스 조건 검색시 페이징 처리용 회원 목록 수 반환 
+	 */
+	public int getTotalMembusNumLike(Map<String, Object> param) {
+		Connection conn = getConnection();
+		int totalMembusNumlike = memberDao.getTotalMembusNumLike(conn, param);
+		close(conn);
+		return totalMembusNumlike;
 	}
 
 	
