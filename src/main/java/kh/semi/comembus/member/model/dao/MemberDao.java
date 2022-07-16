@@ -173,7 +173,7 @@ public class MemberDao {
 			sql = sql.replace("[str3]", " ");
 		}
 		
-		System.out.println("@Dao:Sql>>"+sql);
+		//System.out.println("@Dao:Sql>>"+sql);
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, (int) param.get("start"));

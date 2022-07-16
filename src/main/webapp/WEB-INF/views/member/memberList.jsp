@@ -23,9 +23,11 @@
      
     <%
     	List<Member> memberList = (List<Member>)request.getAttribute("memberList");
-    	String jobCode = request.getParameter("searchJobCode");
+    	String jobCode = request.getParameter("searchJobcode");
     	String gatheringYN = request.getParameter("searchGatheringYN");
     	String keyword = request.getParameter("searchKeyword");
+    	
+    	System.out.println("@listjsp>>"+jobCode +"/"+gatheringYN+"/"+keyword);
     %>
     <!-- 멤버스 검색 폼 시작 -->
     <!-- <section id="membusList-container"> -->
@@ -40,24 +42,21 @@
                     <option value="FE" <%= "FE".equals(jobCode)? "selected" : "" %>>프론트엔드</option>
                     <option value="BE"  <%= "BE".equals(jobCode)? "selected" : "" %>>백엔드</option>		
                 </select>
-                <input type="hidden" name="searchJobcode" value="ALL"/>
+                <input type="hidden" name="searchJobcode" value="<%= jobCode != null? jobCode : "ALL"%>"/>
                 <select id="search-getheringYN" onchange="changeSelected('searchGatheringYN', this.value)">
                     <option value="ALL" <%= "ALL".equals(gatheringYN)? "selected" : "" %>>모임</option>
                     <option value="Y" <%= "Y".equals(gatheringYN)? "selected" : "" %>>진행중</option>
                     <option value="N" <%= "N".equals(gatheringYN)? "selected" : "" %>>없음</option>
                 </select>
-                <input type="hidden" name="searchGatheringYN" value="ALL"/>               
-                <input type="text" name="searchKeyword" size="25" placeholder="닉네임"/>             
+                <input type="hidden" name="searchGatheringYN" value="<%= gatheringYN != null? gatheringYN : "ALL"%>"/>               
+                <input type="text" name="searchKeyword" size="25" placeholder="닉네임"  value="<%= keyword != null? keyword : ""%>"/>             
                 <button type="submit">검색</button>			
             </form>	
         </div>
     <!-- 멤버스 검색 폼 끝 -->
     <!-- 멤버스 리스트 시작 -->
     <%
-    	if(memberList == null && memberList.isEmpty()){
-    %>
-    	<div>검색 결과가 없습니다.</div>
-    <%} else {
+    	if(memberList != null && !memberList.isEmpty()){
     	for(Member m : memberList){
     		MemberExt mem = (MemberExt) m;
     		String nickName = mem.getNickName();
@@ -75,8 +74,12 @@
                 <button class="btn-showProfile" onclick="viewMembusProfile('<%= mem.getMemberId()%>')">더보기</button>
             </div>
         </div>
+  	<% } 
+    }else {
+    %>
+    	<div>검색 결과가 없습니다.</div>
      <%
-     	} 
+   
      }
      %>
     <!-- 멤버스 리스트 끝 -->
