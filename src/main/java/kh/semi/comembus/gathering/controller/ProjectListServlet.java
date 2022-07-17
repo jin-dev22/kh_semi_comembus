@@ -1,11 +1,19 @@
 package kh.semi.comembus.gathering.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import kh.semi.comembus.common.ComembusUtils;
+import kh.semi.comembus.gathering.model.dto.Gathering;
+import kh.semi.comembus.gathering.model.service.GatheringService;
 
 /**
  * Servlet implementation class ProjectListServlet
@@ -13,12 +21,45 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/gathering/projectList")
 public class ProjectListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	GatheringService gatheringService = new GatheringService();
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/views/gathering/projectList.jsp").forward(request, response);
+		try {
+			// 페이징 설정
+			int cPage = 1;
+			int numPerPage = 12;
+			try {
+				cPage = Integer.parseInt(request.getParameter("cPage"));
+			} catch(NumberFormatException e) {}
+			
+			int start = (cPage - 1) * numPerPage + 1;
+			int end = cPage * numPerPage;
+			Map<String, Object> param = new HashMap<>();
+			param.put("start", start);
+			param.put("end", end);
+			
+			// 2. 업무로직
+			// content 영역 
+			List<Gathering> projectList = gatheringService.findGatheringAll(param); 
+			//System.out.println("projectList: " + projectList); // 확인용
+			
+			// pagebar 영역
+			int totalContent = gatheringService.getTotalContent();
+			//System.out.println("totalContent = " + totalContent); // 확인용
+			String url = request.getRequestURI();
+			String pagebar = ComembusUtils.getPagebar(cPage, numPerPage, totalContent, url);
+			
+			// 3. view단처리
+			request.setAttribute("projectList", projectList);
+			request.setAttribute("pagebar", pagebar);
+			request.getRequestDispatcher("/WEB-INF/views/gathering/projectList.jsp").forward(request, response);
+		} catch(Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 	}
 
 }

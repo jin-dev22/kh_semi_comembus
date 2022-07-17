@@ -1,6 +1,12 @@
+<%@page import="kh.semi.comembus.gathering.model.dto.Gathering"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+<%
+	List<Gathering> projectList = (List<Gathering>) request.getAttribute("projectList");
+
+%>
 
 	<section class="gathering">
 		<!-- 모임페이지 시작 -->
@@ -40,8 +46,8 @@
 		<!-- 프로젝트List -->
 		<section class="ps-list-main">
 			<h1>전체 프로젝트</h1>
-			<div class="ps-filter">
-				<select name="local" id="p__local">
+			<div class="ps-filter-container">
+				<select name="local" id="p__local" class="ps-filter">
 					<option value="none">지역 미지정</option>
 					<option value="Online">온라인</option>
 					<option value="Capital">수도권</option>
@@ -51,44 +57,52 @@
 					<option value="Gyeongsang">경상도</option>
 					<option value="Jeju">제주</option>
 				</select>
-				<select name="job_code" id="p__job_code">
+				<select name="job_code" id="p__job_code" class="ps-filter">
 					<option value="none">직무 미지정</option>
 					<option value="PL">기획</option>
 					<option value="DG">디자인</option>
 					<option value="FE">프론트</option>
 					<option value="BE">백엔드</option>
 				</select>
-				<input type="checkbox" id="p__status" name="project-status">
-				<label for="p__status">모집중</label>
-				<input type="checkbox" id="p__bookmark" name="project-bookmark">
-				<label for="p__bookmark">찜한 프로젝트</label>
+				<div class="ps-filter">
+					<input type="checkbox" id="p__status" name="project-status">
+					<label for="p__status">모집중</label>
+				</div>
+				<div class="ps-filter">
+					<input type="checkbox" id="p__bookmark" name="project-bookmark">
+					<label for="p__bookmark">찜한 프로젝트</label>
+				</div>
 				
-				<input type="button" class="p__enroll btn" onclick="location.href='<%= request.getContextPath()%>/gathering/projectEnrollView;'" value="프로젝트 생성">
+				<input type="button" class="ps__enroll btn" onclick="location.href='<%= request.getContextPath()%>/gathering/projectEnrollView;'" value="프로젝트 생성">
 			</div>
 			<div class="ps-lists">
-				<!-- 전체 1200px -->
+			<%
+			if(projectList != null && !projectList.isEmpty()){
+				for(Gathering project : projectList){
+			%>
 				<div class="ps-pre">
-					<!-- div 하나 당 250px -->
-					<img src="" alt="해당 프로젝트 주제 이미지">
-					<p>프로젝트 주제</p>
-					<p>프로젝트명</p>
-					<ul>
-						<li>찜수</li>
-						<li>view수</li>
-						<li>모집인원</li>
+				<!-- 추후에 a태그로 링크걸어야함 -->
+					<img src="<%= request.getContextPath() %>/images/<%= project.getTopic() %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
+					<p class="bold"><%= "social".equals(project.getTopic()) ? "소셜네트워크" : ("game".equals(project.getTopic()) ? "게임" : ("travel".equals(project.getTopic()) ? "여행" : ("finance".equals(project.getTopic()) ? "금융" : "이커머스"))) %></p>
+					<p class="bold"><%= project.getTitle() %></p>
+					<ul class="ps-pre__etc">
+						<li> 
+							<span class="heart-emoji">&#9829;</span><%= project.getBookmark() %></li>
+						<li>
+							<span>&#128064;</span><%= project.getViewcount() %></li>
+						<!-- 나중에 모임 게시물별 모집인원현황 테이블과 연결 -->
+						<li>모집인원 0 / 10</li>
 					</ul>
-					<span>♡</span>
-					<span>♥</span>
+					<span class="bookmark bookmark-front">♡</span>
+					<span class="bookmark bookmark-back">♥</span>
 				</div>
+			<%
+				}
+			}
+			%>
 			</div>
 			<div id="pagebar">
-				<a href="#">이전</a>
-				<a href="">6</a>
-				<a href="">7</a>
-				<a href="">8</a>
-				<a href="">9</a>
-				<a href="">10</a>
-				<a href="#">다음</a>
+				<%= request.getAttribute("pagebar") %>
 			</div>
 		
 		</section>
