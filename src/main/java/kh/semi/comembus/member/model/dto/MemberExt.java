@@ -4,6 +4,7 @@ import java.sql.Date;
 
 public class MemberExt extends Member{
 	private int getheringCnt;
+	private String jobName;
 
 	public MemberExt() {
 		super();
@@ -23,10 +24,18 @@ public class MemberExt extends Member{
 	public void setGetheringCnt(int getheringCnt) {
 		this.getheringCnt = getheringCnt;
 	}
+	
+	public String getJobName() {
+		return jobName;
+	}
+
+	public void setJobName(String jobName) {
+		this.jobName = jobName;
+	}
 
 	@Override
 	public String toString() {
-		return "MemberExt [getheringCnt=" + getheringCnt + ", toString()=" + super.toString() + "]";
+		return "MemberExt [getheringCnt=" + getheringCnt + ", jobName=" + jobName + ", toString()=" + super.toString() + "]";
 	}
 	
 }

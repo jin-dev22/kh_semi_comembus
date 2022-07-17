@@ -1,0 +1,79 @@
+/* ----------멤버스 메인페이지---------- */
+h2{
+	margin-left: 10vw;
+}
+
+/* 필터링 폼 양옆 띄우기 */
+#search-container{
+	margin:0 5vw;
+}
+
+#membusProfile-container{
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	margin: 0 auto;
+	max-width: 80vw;
+	font-family: var(--elice-font);
+	color: var(--text-color);
+}
+
+.profile-box{
+	width: 230px;
+	height: 230px;
+	background-color: var(--yellow-color);
+	border-radius: 30px;
+	margin: 30px;
+	padding: 25px;
+	display: inline-block;
+}
+
+.profile-badge{
+	display: inline-block;
+	width: 70px;
+	height: 70px;
+	line-height: 70px;
+	background-color: #fff;
+	border-radius: 50%;
+	border: 1px solid black;
+	text-align: center;
+	margin-right: 10px;
+	margin-bottom: 15px;
+}
+
+/* 직무표기 위아래 간격주기 */
+.profile-jobName{
+	margin:15 0px;
+}
+
+.btn-showProfile{
+	width: 100px;
+	background-color: var(--btn-color);
+	position: relative;
+	left: 23%;
+	bottom: 5px;/*버튼 위치 고정시키는 법 찾기*/
+	border: none;
+	border-radius: 3px;
+	color: #fff;
+}
+
+/* ----------멤버스 프로필 상세페이지---------- */
+.nickname-badge{
+	background-color: #fff;
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	text-align: center;
+	line-height: 100px;
+}
+#tbl-membus-profileview th:first-of-type{
+	width: 150px;
+}
+#tbl-membus-profileview{
+	border-spacing: 0 30px;
+}
+
+#pagebar{
+	text-align: center;
+}
+
+/* ----------마이페이지---------- */
