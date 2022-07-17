@@ -5,22 +5,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
-    <style>
-        .profile-box{
-            width: 150px;
-            height: 150px;
-            background-color: #FFE69A;
-            border-radius: 5px;
-        }
-        .profile-badge{
-            display: inline-block;
-            width: 50px;
-            height: 50px;
-            background-color: fff;
-            border-radius: 50%;
-        }
-    </style>
-     
+<link rel="stylesheet" href="<%=request.getContextPath() %>/css/membusPage.css">
     <%
     	List<Member> memberList = (List<Member>)request.getAttribute("memberList");
     	String jobCode = request.getParameter("searchJobcode");
@@ -55,33 +40,32 @@
         </div>
     <!-- 멤버스 검색 폼 끝 -->
     <!-- 멤버스 리스트 시작 -->
+    <div id="membusProfile-container">
     <%
     	if(memberList != null && !memberList.isEmpty()){
     	for(Member m : memberList){
     		MemberExt mem = (MemberExt) m;
     		String nickName = mem.getNickName();
-    		JobCode jobcode = mem.getJobCode();
+    		String jobName = mem.getJobName();
     		int gatheringCnt = mem.getGetheringCnt();
     %>
-        <div id="membusProfile-container">
             <div class="profile-box">
                 <div class="profile-row">
-                    <span class="profile-badge"><%=nickName.charAt(0) %></span>
+                    <span class="profile-badge"><b><%=nickName.charAt(0) %></b></span>
                     <span class="profile-nickName"><%=nickName %></span>
                 </div>
-                <span class="profile-jobName"></span>
+                <div class="profile-jobName"><%= jobName %></div>
                 <p class="gathringYN">진행중인 모임이 <%= gatheringCnt > 0? gatheringCnt+"개 있습니다.": "없습니다."%></p>
                 <button class="btn-showProfile" onclick="viewMembusProfile('<%= mem.getMemberId()%>')">더보기</button>
             </div>
-        </div>
   	<% } 
     }else {
     %>
     	<div>검색 결과가 없습니다.</div>
-     <%
-   
+     <%   
      }
      %>
+    </div>
     <!-- 멤버스 리스트 끝 -->
     <!-- 페이지바 시작 -->
    	<div id="pagebar">
