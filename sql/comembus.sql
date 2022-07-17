@@ -45,26 +45,7 @@ COMMENT ON COLUMN member.member_role IS '회원 권한 M/A';
 COMMENT ON COLUMN member.enroll_date IS '회원 가입일시';
 COMMENT ON COLUMN member.quit_date IS '회원 탈퇴일시';
 COMMENT ON COLUMN member.quit_yn IS '회원 탈퇴여부';
---회원 전체목록 조회 쿼리
-select * 
-from 
-    ( select 
-        row_number() over(order by enroll_date desc) rnum, 
-        m.*, 
-        (select count(*) from MEMBER_APPLICATION_STATUS where member_id = m.member_id) gathering_cnt
-    from member m
-    where quit_yn = 'N') m 
-where rnum between 1 and 5;
---select * from (select row_number() over(order by enroll_date desc) rnum, m.*, (select count(*) from MEMBER_APPLICATION_STATUS where member_id = m.member_id) gathering_cnt from member m  where quit_yn = 'N') m where rnum between ? and ?
 
---회원목록 필터링 조회 쿼리
-select * 
-from (
-    select row_number () over (order by enroll_date desc) rnum, m.* 
-    from member m 
-    where  job_code = 'BE' and 
-    ) m 
-where rnum between 1 and 5
 CREATE TABLE department (
 	job_code	char(2)		NOT NULL,
 	job_name	varchar2(30)		NOT NULL,
@@ -177,6 +158,10 @@ alter table project_study rename constraint ck_project_study_board_type to ck_pr
 --모임 시작, 종료일 컬럼 추가(220715)
 alter table project_study add start_date date not null;
 alter table project_study add end_date date not null;
+-- local 길이 수정(220715)
+alter table project_study modify (local varchar2(12));
+
+select * from project_study;
 --drop table project_study;
 create sequence seq_project_study_ps_no;
 
@@ -245,6 +230,9 @@ CREATE TABLE community_board (
     constraint fk_community_writer foreign key(co_writer) references member(member_id) on delete set null,
     constraint ck_community_type check (co_type in('F', 'Q', 'S'))
 );
+
+
+
 --drop table community_board;
 create sequence seq_co_no;
 

@@ -23,6 +23,7 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css">
+	
 	<!-- include libraries(jQuery, bootstrap) -->
 	<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script> 
@@ -36,6 +37,8 @@
 	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/style.css">
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/gathering/Enroll.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/gathering/gatheringList.css">
 	
 	
 	<link rel="icon" href="favicon.ico" />
@@ -45,24 +48,24 @@
   <header>
     <div class="menubar">
       <div class="h__logo">
-        <a href="#"><img src="<%= request.getContextPath() %>/images/logo_w.png" alt="logo이미지"></a>
+        <a href="<%= request.getContextPath() %>"><img src="<%= request.getContextPath() %>/images/logo_w.png" alt="logo이미지"></a>
       </div>
   
       <ul class="h__menu__main">
         <li><a href="<%= request.getContextPath() %>/membus/list">멤버스</a></li>
         <li>
-          <a href="javascript:void(0)">모임</a>
+          <a href="<%= request.getContextPath()%>/gathering/projectList">모임</a>
           <ul class="h__menu__sub">
             <li><a href="<%= request.getContextPath()%>/gathering/projectList">프로젝트</a></li>
-            <li><a href="javascript:void(0)">스터디</a></li>
+            <li><a href="<%= request.getContextPath()%>/gathering/studyList">스터디</a></li>
           </ul>
         </li>
         <li>
           <a href="javascript:void(0)">커뮤니티</a>
           <ul class="h__menu__sub">
-            <li><a href="<%= request.getContextPath() %>/community/communityList">QnA</a></li>
-            <li><a href="javascript:void(0)">자유주제</a></li>
-            <li><a href="javascript:void(0)">정보공유</a></li>
+            <li><a href="<%= request.getContextPath() %>/community/communityList?co_type=Q">QnA</a></li>
+            <li><a href="<%= request.getContextPath() %>/community/communityList?co_type=F">자유주제</a></li>
+            <li><a href="<%= request.getContextPath() %>/community/communityList?co_type=S">정보공유</a></li>
           </ul>
         </li>
         <li><a href="javascript:void(0)">공지사항</a></li>
