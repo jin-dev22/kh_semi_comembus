@@ -60,9 +60,9 @@
         <li>
           <a href="javascript:void(0)">커뮤니티</a>
           <ul class="h__menu__sub">
-            <li><a href="<%= request.getContextPath() %>/community/communityList">QnA</a></li>
-            <li><a href="javascript:void(0)">자유주제</a></li>
-            <li><a href="javascript:void(0)">정보공유</a></li>
+            <li><a href="<%= request.getContextPath() %>/community/communityList?co_type=Q">QnA</a></li>
+            <li><a href="<%= request.getContextPath() %>/community/communityList?co_type=F">자유주제</a></li>
+            <li><a href="<%= request.getContextPath() %>/community/communityList?co_type=S">정보공유</a></li>
           </ul>
         </li>
         <li><a href="javascript:void(0)">공지사항</a></li>

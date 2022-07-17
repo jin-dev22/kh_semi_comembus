@@ -19,10 +19,12 @@
 
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/community.css" />
-
+<%
+	String type = request.getParameter("searchType");
+%>
 <section id="commu-container">
 <h2>질문 작성</h2>
-<form action="<%=request.getContextPath()%>/qna/qnaEnroll"
+<form action="<%=request.getContextPath()%>/community/communityEnroll"
 	method="post" id="communityEnrollFrm">
 
         <table id="tbl-board-view">
