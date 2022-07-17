@@ -60,10 +60,10 @@ public class ComembusUtils {
 	public static String getPagebar(int cPage, int numPerPage, int totalContent, String url) {
 		StringBuilder pagebar = new StringBuilder();
 		url += (url.indexOf("?") < 0) ? "?cPage=" : "&cPage=";
-		int totalPage = (int) Math.ceil((double) totalContent / numPerPage); // 12
+		int totalPage = (int) Math.ceil((double) totalContent / numPerPage);
 		int pagebarSize = 5;
-		int pagebarStart = ((cPage - 1) / pagebarSize * pagebarSize) + 1; // 11
-		int pagebarEnd = pagebarStart + pagebarSize - 1; // 15
+		int pagebarStart = ((cPage - 1) / pagebarSize * pagebarSize) + 1;
+		int pagebarEnd = pagebarStart + pagebarSize - 1;
 		int pageNo = pagebarStart;
 		
 		// 이전영역
