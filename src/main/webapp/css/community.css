@@ -1,1 +1,59 @@
 @import url("https://font.elice.io/EliceDigitalBaeum.css");
+
+#commuListWrapper {
+	width: 1200px;
+	margin: 0;
+}
+
+#titleText{
+	float: right;	
+}
+
+h2{
+	margin-top:70px;
+	margin-left:150px;
+	
+}
+#btn-add{
+	float: right;
+	text-align: center;
+	background-size: 20%;
+	position: relative;
+	width: 100px;
+    height: 40px;
+	font-weight: 900;
+    background-color: #92B4EC;
+    border:none;
+    color:white;
+}
+
+
+#btn{
+	border-radius: 10%;
+	background-color: #92B4EC;
+	border: none;
+	color:white;
+	width: 50px;
+	height: 27px;
+}
+
+
+#tbl-commu {
+    font-size: 12px;
+    border-collapse: collapse;
+    width: 980px;
+    margin-left: 270px;
+    font-weight: 600;
+}
+
+#tbl-commu th{
+    background-color: #FFE69A;
+    font-size: 16px;
+    padding: 20px 40px;
+  	text-align: center;
+}
+
+#tbl-commu td{
+	word-break:break-all;
+}
+
