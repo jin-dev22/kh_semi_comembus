@@ -47,18 +47,24 @@ public class CommunityEnrollServlet extends HttpServlet {
 			String writer = request.getParameter("coWriter");
 			String content = request.getParameter("coContent");
 			String type = request.getParameter("coType");
-		
-			
-			
-			//System.out.println("Community" + community);
-			
+			Community community = new Community(0, title, writer, content, 0, null, 0, type);
+					
 			// 2.업무로직
-			//int result = communityService.insertBoard(board);
-
+//			int result = communityService.insertCommunity(community);
+			
+			
 			// 3.redirect(오류나지 않는이상 무조건 성공)
 			//Session에 등록해야 리다이렉트 후에 내용이 나온다.
-			request.getSession().setAttribute("msg", "게시글 등록 성공");
-			response.sendRedirect(request.getContextPath() + "/community/qnaList");
+			if(type == "Q") {
+				request.getSession().setAttribute("msg", "QnA 등록 성공");
+				response.sendRedirect(request.getContextPath() + "/community/qnaList");
+			}else if(type == "F") {
+				request.getSession().setAttribute("msg", "자유 게시판 등록 성공");
+				response.sendRedirect(request.getContextPath() + "/community/freeList");
+			}else {
+				request.getSession().setAttribute("msg", "정보공유 게시판 등록 성공");
+				response.sendRedirect(request.getContextPath() + "/community/shareList");
+			}
 			
 		}catch(Exception e) {
 			e.printStackTrace();

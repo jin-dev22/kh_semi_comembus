@@ -230,6 +230,9 @@ CREATE TABLE community_board (
     constraint fk_community_writer foreign key(co_writer) references member(member_id) on delete set null,
     constraint ck_community_type check (co_type in('F', 'Q', 'S'))
 );
+
+
+
 --drop table community_board;
 create sequence seq_co_no;
 
