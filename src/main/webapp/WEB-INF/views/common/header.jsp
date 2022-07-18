@@ -37,9 +37,6 @@
 	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/style.css">
-	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/gathering/Enroll.css">
-	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/gathering/gatheringList.css">
-	
 	
 	<link rel="icon" href="favicon.ico" />
 	<title>CO;MEMBUS</title>

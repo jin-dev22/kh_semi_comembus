@@ -23,7 +23,6 @@ public class GatheringDao {
 	
 	public GatheringDao() {
 		String filename = GatheringDao.class.getResource("/sql/gathering/gathering-query.properties").getPath();
-		System.out.println("filename = " + filename); // 확인용
 		try {
 			prop.load(new FileReader(filename));
 		} catch (IOException e) {
@@ -90,6 +89,59 @@ public class GatheringDao {
 			close(rset);
 			close(pstmt);
 		}		
+		return totalContent;
+	}
+
+	public List<Gathering> findProjectLike(Connection conn, Map<String, Object> param) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<Gathering> list = new ArrayList<>();
+		String sql = prop.getProperty("findProjectLike");
+		String col = (String) param.get("searchType");
+		String val = (String) param.get("searchKeyword");
+		System.out.println("col" + col);
+		sql = sql.replace("#", col);
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, val);
+			pstmt.setInt(2, (int)param.get("start"));
+			pstmt.setInt(3, (int)param.get("end"));
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				Gathering gathering = handleGatheringResultSet(rset);
+				list.add(gathering);
+			}
+		} catch (SQLException e) {
+			throw new GatheringException("프로젝트 필터 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return list;
+	}
+
+	public int getProTotalContentLike(Connection conn, Map<String, Object> param) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int totalContent = 0;
+		String sql = prop.getProperty("getProTotalContentLike");
+		String col = (String) param.get("searchType");
+		String val = (String) param.get("searchKeyword");
+		sql = sql.replace("#", col);
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, val);
+			rset = pstmt.executeQuery();
+			if(rset.next())
+				totalContent = rset.getInt(1);
+		} catch (SQLException e) {
+			throw new GatheringException("프로젝트 필터 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
 		return totalContent;
 	}
 

@@ -47,15 +47,19 @@ hr {
 }
 .ps__header__content {
   width: 100%;
+  display: flex;
+  position: relative;
+  overflow: hidden;
   height: 350px;
   box-sizing: border-box;
   padding: 25px 60px;
   background-color: #FFE69A;
 }
 .ps__header__content .swiper-slide {
-  /* width: 100%;
-  height: 350px; */
+  width: 100%;
   display: flex;
+  position: absolute;
+  left: 50%;
   justify-content: space-around;
   align-items: center;
   box-sizing: border-box;
@@ -98,6 +102,17 @@ hr {
 .ps__header__content-info li:last-of-type span:nth-child(3) {
   right: 0;
 }
+.swiper-button-next,
+.swiper-button-prev {
+	position: absolute;
+	top: 50%
+}
+.swiper-button-next {
+	left: 30px;
+}
+.swiper-button-prev {
+	right: 30px;
+}
 
 
 /* list부분 */
@@ -111,10 +126,6 @@ hr {
 }
 .ps-filter-container select {
 	height: 30px;
-}
-.ps-filter-container select option:hover{
-	/* 적용안됨 구글링하기 */
-	background-color: var(--btn-color);
 }
 .ps-filter-container .ps-filter {
 	margin-right: 15px;

@@ -3,10 +3,56 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+<link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
+<link rel="stylesheet" href="<%=request.getContextPath() %>/css/gathering/gatheringList.css">
+<script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+<script src="<%=request.getContextPath() %>/js/gathering/gathering.js"></script>
+<script src="<%= request.getContextPath() %>/js/jquery-3.6.0.js"></script>
 <%
 	List<Gathering> projectList = (List<Gathering>) request.getAttribute("projectList");
-
+	String type = request.getParameter("searchType");
+	String keyword = request.getParameter("searchKeyword");
 %>
+<script>
+const onchangeLocal = () => {
+	const selectlocal = document.getElementById("p__local").options[document.getElementById("p__local").selectedIndex].value;
+	findLocal(selectlocal);
+};
+const findLocal = (selectlocal) => {
+	console.log("selectlocal = ", selectlocal);
+	$.ajax({
+		url: '<%= request.getContextPath() %>/gathering/searchLocal',
+		data: {searchType: 'local', searchKeyword: selectlocal},
+		success(projectSelectList){
+				document.querySelector(".ps-lists").innerHTML =
+					projectSelectList.reduce((html, selectList, index) => {
+					const {title, viewcount, bookmark, topic, people} = selectList;
+					console.log("확인용", title, viewcount, bookmark, topic, people);
+					return `\${html}
+					<div class="ps-pre">
+						<a href="">
+							<img src="<%= request.getContextPath() %>/images/\${topic}.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
+						</a>
+						<p class="bold">\${topic === 'social' ? '소셜네트워크' : (topic === 'game' ? '게임' : (topic === 'travel' ? '여행' : (topic === 'finance' ? '금융' : '이커머스')))}</p>
+						<p class="bold">\${title}</p>
+						<ul class="ps-pre__etc">
+							<li>
+								<span class="heart-emoji">&#9829;</span>\${bookmark}
+							</li>
+							<li>
+								<span>&#128064;</span>\${viewcount}
+							</li>
+							<li>모집인원 0 / \${people}</li>
+						</ul>
+					</div>
+					`;
+					}, '');
+		},
+		error: console.log
+	});
+};
+
+</script>
 
 	<section class="gathering">
 		<!-- 모임페이지 시작 -->
@@ -22,23 +68,32 @@
 			</div>
 			<hr>
 			<div class="ps__header__content swiper">
+				<%
+				if(projectList != null && !projectList.isEmpty()){
+					for(int i = 0; i < 3; i++){
+						String topic = projectList.get(i).getTopic();
+
+				%>
 				<!-- swiper-slide 3개 생성 및 추후 진행 -->
 				<div class="swiper-slide">
-					<img src="<%= request.getContextPath() %>/images/ecommerce.jpg" class="ps__header__content__img" alt="해당 프로젝트 주제 이미지">
-					<!-- 연결 후 아래코드로 진행 -->
-					<%-- <img src="<%= request.getContextPath() %>/images/\${topic}" class="ps__header__content__img" alt="해당 프로젝트 주제 이미지"> --%>
+					<img src="<%= request.getContextPath() %>/images/<%= topic %>.jpg" class="ps__header__content__img" alt="해당 프로젝트 주제 이미지">
 					<ul class="ps__header__content-info">
-						<li><p class="bold">프로젝트 분야</p></li>
-						<li><p class="bold">프로젝트명</p></li>
-						<li class="ps__header__content-content"><p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis ipsam modi, magnam temporibus ut iure asperiores aliquid dolore maiores, corporis aut unde cumque eum molestias. Officia enim beatae magnam saepe.</p></li>
+						<li><p class="bold"><%= projectList.get(i).getTopic() %></p></li>
+						<li><p class="bold"><%= projectList.get(i).getTitle() %></p></li>
+						<li class="ps__header__content-content"><p><%= projectList.get(i).getContent() %></p></li>
 						<li class="bold">
-							<span>찜수</span>
-							<span>view수</span>
-							<span>모집인원</span>
+							<span><%= projectList.get(i).getBookmark() %></span>
+							<span><%= projectList.get(i).getViewcount() %></span>
+							<span>모집인원 0 / 10</span>
 						</li>
 					</ul>
 				</div>
-		
+				<%
+					}
+				}
+				%>
+				<div class="swiper-button-next"></div>
+				<div class="swiper-button-prev"></div>
 				<div class="swiper-pagination"></div>
 			</div>
 		<hr>
@@ -47,29 +102,33 @@
 		<section class="ps-list-main">
 			<h1>전체 프로젝트</h1>
 			<div class="ps-filter-container">
-				<select name="local" id="p__local" class="ps-filter">
-					<option value="none">지역 미지정</option>
-					<option value="Online">온라인</option>
-					<option value="Capital">수도권</option>
-					<option value="Chungcheong">충청도</option>
-					<option value="Gangwon">강원도</option>
-					<option value="Jeolla">전라도</option>
-					<option value="Gyeongsang">경상도</option>
-					<option value="Jeju">제주</option>
-				</select>
-				<select name="job_code" id="p__job_code" class="ps-filter">
-					<option value="none">직무 미지정</option>
-					<option value="PL">기획</option>
-					<option value="DG">디자인</option>
-					<option value="FE">프론트</option>
-					<option value="BE">백엔드</option>
-				</select>
+				<form name="searchFrm">
+					<select name="searchType" value="local" id="p__local" class="ps-filter" onchange="onchangeLocal()">
+						<option value="none" name="searchKeyword" <%= "none".equals(keyword) ? "selected" : "" %>>지역 미지정</option>
+						<option value="Online" name="searchKeyword" <%= "Online".equals(keyword) ? "selected" : "" %>>온라인</option>
+						<option value="Capital" name="searchKeyword" <%= "Capital".equals(keyword) ? "selected" : "" %>>수도권</option>
+						<option value="Chungcheong" name="searchKeyword" <%= "Chungcheong".equals(keyword) ? "selected" : "" %>>충청도</option>
+						<option value="Gangwon" name="searchKeyword" <%= "Gangwon".equals(keyword) ? "selected" : "" %>>강원도</option>
+						<option value="Jeolla" name="searchKeyword" <%= "Jeolla".equals(keyword) ? "selected" : "" %>>전라도</option>
+						<option value="Gyeongsang" name="searchKeyword" <%= "Gyeongsang".equals(keyword) ? "selected" : "" %>>경상도</option>
+						<option value="Jeju" name="searchKeyword" <%= "Jeju".equals(keyword) ? "selected" : "" %>>제주</option>
+					</select>
+				</form>
+				<form action="<%= request.getContextPath() %>/gathering/search" method="post">
+					<select name="searchType" id="p__job_code" class="ps-filter">
+						<option value="none">직무 미지정</option>
+						<option value="PL">기획</option>
+						<option value="DG">디자인</option>
+						<option value="FE">프론트</option>
+						<option value="BE">백엔드</option>
+					</select>
+				</form>
 				<div class="ps-filter">
-					<input type="checkbox" id="p__status" name="project-status">
+					<input type="checkbox" id="p__status" name="searchType">
 					<label for="p__status">모집중</label>
 				</div>
 				<div class="ps-filter">
-					<input type="checkbox" id="p__bookmark" name="project-bookmark">
+					<input type="checkbox" id="p__bookmark" name="searchType">
 					<label for="p__bookmark">찜한 프로젝트</label>
 				</div>
 				

@@ -27,4 +27,18 @@ public class GatheringService {
 		return totalContent;
 	}
 
+	public List<Gathering> findProjectLike(Map<String, Object> param) {
+		Connection conn = getConnection();
+		List<Gathering> list = gatheringDao.findProjectLike(conn, param);
+		close(conn);
+		return list;
+	}
+
+	public int getProTotalContentLike(Map<String, Object> param) {
+		Connection conn = getConnection();
+		int totalContent = gatheringDao.getProTotalContentLike(conn, param);
+		close(conn);
+		return totalContent;
+	}
+
 }
