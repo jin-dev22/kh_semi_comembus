@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import kh.semi.comembus.member.model.dao.MemberDao;
+import kh.semi.comembus.member.model.dto.JobCode;
 import kh.semi.comembus.member.model.dto.Member;
 
 public class MemberService {
@@ -68,6 +69,13 @@ public class MemberService {
 		int totalMembusNumlike = memberDao.getTotalMembusNumLike(conn, param);
 		close(conn);
 		return totalMembusNumlike;
+	}
+
+
+	public String getJobName(JobCode jobCode) {
+		Connection conn = getConnection();
+		String jobName = memberDao.getJobName(conn, jobCode);
+		return jobName;
 	}
 
 	

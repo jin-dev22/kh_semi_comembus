@@ -184,7 +184,7 @@ public class MemberDao {
 				member.setGetheringCnt(rset.getInt("gathering_cnt"));
 				member.setJobName(getJobName(conn, member.getJobCode()));
 				memberList.add(member);
-				//System.out.println("@dao>> "+member);
+				System.out.println("@dao>> "+member.getJobCode());
 			}
 		} catch (SQLException e) {
 			throw new MemberException("멤버스 조건조회 오류", e);
