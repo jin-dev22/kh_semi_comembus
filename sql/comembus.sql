@@ -163,6 +163,32 @@ alter table project_study modify (local varchar2(12));
 
 select * from project_study;
 -- select * from (select row_number() over(order by reg_date desc) rnum, ps.* from project_study ps where gathering_type = '?') p where rnum between ? and ?
+-- select * from (select row_number() over(order by reg_date desc) rnum, ps.* from project_study ps where gathering_type = '?' and upper(#) like upper('%?%')) p where rnum between ? and ?
+-- select count(*) from project_study where gathering_type = '?' and upper(#) like upper('?')
+
+select
+        count(*)
+from 
+        project_study
+where
+        gathering_type = 'P' and
+        upper(local) like upper('capital');
+
+select
+        *
+from (
+        select
+                row_number() over(order by reg_date desc) rnum, 
+                ps.* 
+        from 
+                project_study ps 
+        where
+                gathering_type = 'P' and
+                upper(topic) like upper('%travel%')
+) p
+where 
+        rnum between 1 and 12;
+
 -- select count(*) from project_study where gathering_type = '?'
 --drop table project_study;
 create sequence seq_project_study_ps_no;
