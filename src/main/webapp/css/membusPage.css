@@ -60,7 +60,7 @@ h2{
 	color: #fff;
 }
 
-/* ----------멤버스 프로필 상세페이지---------- */
+/* ----------멤버스 프로필 상세,마이페이지공통---------- */
 .nickname-badge{
 	background-color: #fff;
 	width: 100px;
@@ -69,20 +69,20 @@ h2{
 	text-align: center;
 	line-height: 100px;
 }
-#tbl-membus-profileview th:first-of-type{
-	width: 150px;
+.subtitle{
+	font-weight: bold;
+	font-size: 20px;
 }
-#tbl-membus-profileview{
-	border-spacing: 0 30px;
+.profile-part-1{
+	display: flex;
+	align-items: center;
 }
 #pagebar{
 	text-align: center;
 }
-
 .coBoards td{
 	border: 1px solid #000;
 }
-
 .coTitle{
 	width: 300px;
 }
@@ -91,5 +91,14 @@ h2{
 }
 .coNums{
 	width: 15px;
+}
+#member-intoduction div{
+	height: 500px;
+	background-color: #fff;
+
+}
+#gathering-ing-list{
+	display: flex;
+	align-items: center;
 }
 /* ----------마이페이지---------- */
