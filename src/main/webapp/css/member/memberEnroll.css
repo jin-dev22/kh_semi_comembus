@@ -1,0 +1,91 @@
+.enroll-input-container{
+  height:90px;
+}
+
+.enroll-label{
+  width: 130px;
+  display: inline-flex;
+  font-weight: bold;
+}
+
+.enroll-label span{
+  color: red;
+}
+
+.enroll-input{
+  display: inline-flex;
+  flex-direction: column;
+  width: 340px;
+  padding: 10px; 
+}
+
+.enroll-input input{
+  border-radius: 3px;
+  border: 1px solid black;
+  padding: 10px;
+}
+
+.pwd-show-hide:hover{
+  cursor: pointer;
+}
+
+.select-options {
+  border-radius: 3px;
+  border: 1px solid black;
+  padding: 10px;
+}
+
+.select-options:hover{
+  cursor: pointer;
+}
+
+.enroll-agreement-container{
+  width: 380px;
+  margin: 20px 0;
+}
+
+.enroll-agreement-container .agree-sentence{
+  font-size: 14px;
+  text-align: end;
+}
+
+.enrollBtn {
+  margin: 70px 0;
+}
+
+.enrollBtn .enrollBtnClick {
+  background-color: #92B4EC;
+  border-color: #92B4EC;
+  border-style: none;
+  border-radius: 3px;
+  font-size: 20px;
+  width: 400px;
+  height: 50px;
+  color: white;
+  transition: all 0.3s ease-in-out;
+}
+
+.enrollBtn .enrollBtnClick:hover {
+  cursor: pointer;
+  background-color: #77a0e2;
+  color: black;
+}
+
+
+
+/* 유효성검사 결과 */
+.fail {
+  display: block;
+  color: red;
+  margin-top: 2px;
+}
+
+.success {
+  display: block;
+  color: green;
+  margin-top: 2px;
+}
+
+.hide {
+  display: none;
+}
