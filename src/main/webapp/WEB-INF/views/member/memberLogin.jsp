@@ -19,7 +19,7 @@
 
 <section id=login-container>
 	<h1>회원가입/로그인</h1>
-	<form id="loginFrm" name="loginFrm" action="<%= request.getContextPath() %>/member/login" method="POST">
+	<form id="loginFrm" name="loginFrm" action="<%= request.getContextPath() %>/membus/login" method="POST">
 	<input type="hidden" id="location" value="<%= location %>" name="location"/>
 	<table id="loginTable">
 		<tbody>
@@ -41,14 +41,14 @@
      </form>
     <div> 
 	    <input type="button" value="아이디 찾기"
-			onclick="location.href='<%= request.getContextPath() %>/member/findMemberId';">
+			onclick="location.href='<%= request.getContextPath() %>/membus/findMemberId';">
 		<input type="button" value="비밀번호 찾기"
-			onclick="location.href='<%= request.getContextPath() %>/member/resetMemberPassword';">
+			onclick="location.href='<%= request.getContextPath() %>/membus/resetMemberPassword';">
    	</div>
    	<div>
      	<span>아직 회원이 아니신가요?</span>
      	<input type="button" value="회원가입하기"
-			onclick="location.href='<%= request.getContextPath() %>/member/enroll';">
+			onclick="location.href='<%= request.getContextPath() %>/membus/enroll';">
    	</div>
    	
 <style>

@@ -145,4 +145,56 @@ public class GatheringDao {
 		return totalContent;
 	}
 
+	//수진코드 시작
+	/**
+	 * 멤버스 프로필,마이페이지: 회원 참가중인 모임 게시글 조회
+	 */
+	public List<Gathering> findAllByMemberId(Connection conn, String memberId) {
+		List<Gathering> gatheringIngList = new ArrayList<>();
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("findAllByMemberId");
+		//1:memberId
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, memberId);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				Gathering gather = handleGatheringResultSet(rset);
+				gatheringIngList.add(gather);
+			}
+		} catch (SQLException e) {
+			throw new GatheringException("참여중 모임 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}	
+		
+		return gatheringIngList;
+	}
+	
+	public List<Gathering> findAllBookmarked(Connection conn, String memberId) {
+		List<Gathering> gatheringBookmarkList = new ArrayList<>();
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("findAllBookmarked");
+		//1:memberId
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, memberId);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				Gathering gather = handleGatheringResultSet(rset);
+				gatheringBookmarkList.add(gather);
+			}
+		} catch (SQLException e) {
+			throw new GatheringException("찜하기 모임 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}	
+		return gatheringBookmarkList;
+	}
+	//수진코드 끝
+
 }

@@ -6,14 +6,14 @@
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/community.css" />
 <%
-	
-	List<Community> list = (List<Community>) request.getAttribute("list"); 
+	List<Community> slist = (List<Community>) request.getAttribute("slist"); 
 %>
-<h2>정보공유 게시판</h2>
-<div id="commuListWrapper">
-<div>
-<%--운영자선정 --%>
+<div id="commuHeader">
+	<p>정보공유 게시판<p>
 </div>
+
+<div id="commuListWrapper">
+
 	<table id="tbl-commu">
 		<tr>
 			<th>제목</th>
@@ -23,12 +23,12 @@
 			<th>조회수</th>
 		</tr>
 		
-		<%if(list == null || list.isEmpty()){%>
+		<%if(slist == null || slist.isEmpty()){%>
 		<tr>
 			<td colspan="6" style="text-align: center; height: 441px; font-size: 25px;">조회된 게시글이 없습니다.</td>
 		</tr>
 		<%}else{ 
-			for(Community c:list){
+			for(Community c:slist){
 			%>
 
 			<tr>
@@ -44,7 +44,6 @@
 			} 
 			
 		%>
-	
 </table>
 		<input type="button" value="글쓰기" id="btn-add"
 		onclick="location.href='<%= request.getContextPath() %>/community/communityEnroll';"/>

@@ -8,25 +8,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Servlet implementation class ResetMemberPasswordServlet
+ * Servlet implementation class MemberMypageServlet
  */
-@WebServlet("/membus/resetMemberPassword")
-public class ResetMemberPasswordServlet extends HttpServlet {
+@WebServlet("/member/mypage")
+public class MemberMypageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/WEB-INF/views/member/resetMemberPassword.jsp")
-		.forward(request, response);
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		request.getRequestDispatcher("/WEB-INF/views/member/memberMypage.jsp").forward(request, response);
 	}
 
 }

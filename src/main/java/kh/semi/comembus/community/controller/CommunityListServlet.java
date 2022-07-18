@@ -26,27 +26,35 @@ public class CommunityListServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			List<Community> qlist = communityService.findQna();
-//			List<Community> flist = communityService.findFree();
-//			List<Community> slist = communityService.findShare();
+			List<Community> qlist = null;
+			List<Community> flist = null;
+			List<Community> slist = null;
 			
-			String co_type = request.getParameter("co_type");
+			String co_type = (String) request.getParameter("co_type");
 			
 			if("Q".equals(co_type)) {
+				qlist = communityService.findQna();
+				System.out.println("qlist" + qlist);
 				request.setAttribute("qlist", qlist);
-				System.out.println("커뮤니티 게시판 출력");
 				request.getRequestDispatcher("/WEB-INF/views/community/qnaList.jsp")
 				.forward(request, response);
+				System.out.println("큐앤에이 게시판 출력");
+				
 			}else if("F".equals(co_type)) {
-//				request.setAttribute("flist", flist);
-				System.out.println("자유 게시판 출력");
+				flist = communityService.findFree();
+				System.out.println("flist" + flist);
+				request.setAttribute("flist", flist);
 				request.getRequestDispatcher("/WEB-INF/views/community/freeList.jsp")
 				.forward(request, response);
+				System.out.println("자유 게시판 출력");
+				
 			}else {
-//				request.setAttribute("flist", flist);
-				System.out.println("정보공유 게시판 출력");
+				slist = communityService.findShare();
+				System.out.println("slist" + slist);
+				request.setAttribute("slist", slist);
 				request.getRequestDispatcher("/WEB-INF/views/community/shareList.jsp")
 				.forward(request, response);
+				System.out.println("정보공유 게시판 출력");
 			}
 			
 		}catch(Exception e) {

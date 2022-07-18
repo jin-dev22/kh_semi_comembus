@@ -74,12 +74,12 @@
   <!-- 미송 코드 시작 -->
   <% if(loginMember == null){ %>
       <ul class="h__loginSignup">
-        <li><a href="<%= request.getContextPath() %>/member/login">회원가입/로그인</a></li>
+        <li><a href="<%= request.getContextPath() %>/membus/login">회원가입/로그인</a></li>
       </ul>
   <% } else {%>  
 	  <ul class="h__member__menu">
 	  <!-- 닉네임 클릭 시 마이페이지로 이동 -->
-	  	<li class="h__loginMember"><a href="javascript:void(0)"><%= loginMember.getNickName() %></a></li>
+	  	<li class="h__loginMember"><a href="<%= request.getContextPath()%>/member/mypage"><%= loginMember.getNickName() %></a></li>
 	  	<li class="h__memberLogout"><a href="<%= request.getContextPath() %>/member/logout">로그아웃</a></li>
 	  </ul>
   <% } %>   
