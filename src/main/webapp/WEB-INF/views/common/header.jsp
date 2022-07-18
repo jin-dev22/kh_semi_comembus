@@ -77,7 +77,7 @@
   <!-- 미송 코드 시작 -->
   <% if(loginMember == null){ %>
       <ul class="h__loginSignup">
-        <li><a href="<%= request.getContextPath() %>/member/login">회원가입/로그인</a></li>
+        <li><a href="<%= request.getContextPath() %>/membus/login">회원가입/로그인</a></li>
       </ul>
   <% } else {%>  
 	  <ul class="h__member__menu">
