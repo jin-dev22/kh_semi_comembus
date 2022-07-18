@@ -124,4 +124,8 @@ public class CommunityDao {
 		}
 		return slist;
 	}
+	
+	//수진코드 시작
+	
+	//수진코드 끝
 }

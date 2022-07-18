@@ -58,5 +58,7 @@ public class CommunityService {
 		return slist;
 	}
 	
-
+	//수진코드 시작
+	
+	//수진코드 끝
 }
