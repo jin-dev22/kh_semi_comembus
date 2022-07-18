@@ -80,7 +80,7 @@
 		</div>
 		<div class="profile-part-5">
 			<div class="subtitle">찜한 프로젝트</div>
-			<div>
+			<div class="gathering-align">
 				<%if(gatheringBookmarkList != null && !gatheringBookmarkList.isEmpty()){
 					for(Gathering gather : gatheringBookmarkList){	  
 						if(gather.getPsType() == GatheringType.P){
@@ -111,7 +111,7 @@
 		</div>
 		<div class="profile-part-6">
 			<div class="subtitle">찜한 스터디</div>
-				<div>
+				<div class="gathering-align">
 					<%if(gatheringBookmarkList != null && !gatheringBookmarkList.isEmpty()){
 						for(Gathering gather : gatheringBookmarkList){	  
 							if(gather.getPsType() == GatheringType.S){
