@@ -1,3 +1,6 @@
+<%@page import="java.text.SimpleDateFormat"%>
+<%@page import="kh.semi.comembus.community.model.dto.Community"%>
+<%@page import="java.util.List"%>
 <%@page import="kh.semi.comembus.member.model.dto.MemberExt"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -5,7 +8,10 @@
 <link rel="stylesheet" href="<%=request.getContextPath() %>/css/membusPage.css">
 <%
 	MemberExt member = (MemberExt) request.getAttribute("member");
-	String introduction = member.getIntroduction();
+	List<Community> communityList = (List<Community>) request.getAttribute("communityList");
+	
+String introduction = member.getIntroduction();
+	
 %>
 <form
 	name="profileFrm"
@@ -14,29 +20,52 @@
 		<tbody>
 			<tr>
 				<th><div class="nickname-badge">닉</div></th>
-				<td>
+				<td colspan="3">
 					<div>닉네임 : <%=member.getNickName() %></div>
 					<div>직무분야 : <%=member.getJobName() %></div>
 				</td>
 			</tr>
 			<tr><th>자기소개</th></tr>
-			<tr><td colspan="3" id="summernoteWidth"><div><textarea id="summernote" name="editordata"></textarea></div></td></tr>
-			<tr><th colspan="3">최근 작성한 게시물</th></tr>
-			<tr><td colspan="3">작성 게시물 가져오기</td></tr>
 			<tr>
-				<td>페이지바</td>
+				<td colspan="4" id="summernoteWidth">
+					<div>
+						<textarea id="summernote" name="editordata"></textarea>
+					</div>
+				</td>
 			</tr>
-	    	<tr><th colspan="3">모임 참여현황</th></tr>
+			<tr><th colspan="4">최근 작성한 게시물</th></tr>
+			<tr>
+			<%if(communityList != null && !communityList.isEmpty()){
+				for(Community co : communityList){
+			%>
+			<tr class="coBoards">
+				<td class="coTitle"><%= co.getCoTitle() %></td>
+				<td class="coRegDate"><%= new SimpleDateFormat("yyyy-MM-dd HH:mm").format(co.getCoRegdate()) %></td>
+				<td class="coNums coLike"><%= co.getCoLike() %></td>
+				<td class="coNums coReadCnt"><%= co.getCoReadcount() %></td>
+			</tr>
+			<%  }
+			}else{
+			%>
+			<tr>
+			<td colspan="4" style="text-align: center; height: 441px; font-size: 25px;">조회된 게시글이 없습니다.</td>
+			</tr>
+			<%} %>
+			</tr>
+			<tr>
+				<td><%= request.getAttribute("pagebar")%></td>
+			</tr>
+	    	<tr><th colspan="4">모임 참여현황</th></tr>
 	        <tr>
-				<td colspan="3">참여현황 가져오기(프로젝트/스터디 메인 미리보기형태 동일)</td>
+				<td colspan="4">참여현황 가져오기(프로젝트/스터디 메인 미리보기형태 동일)</td>
 			</tr>
-	    	<tr><th colspan="3">찜한 프로젝트</th></tr>
+	    	<tr><th colspan="4">찜한 프로젝트</th></tr>
 			<tr>
-	            <td colspan="3">찜한 프로젝트 가져오기(프로젝트 메인 미리보기형태 동일)</td>
+	            <td colspan="4">찜한 프로젝트 가져오기(프로젝트 메인 미리보기형태 동일)</td>
 	        </tr>
-			<tr><th colspan="3">찜한 스터디</th></tr>
+			<tr><th colspan="4">찜한 스터디</th></tr>
 		    <tr>
-				<td colspan="3">찜한 스터디 가져오기(스터디 메인 미리보기형태 동일)</td>
+				<td colspan="4">찜한 스터디 가져오기(스터디 메인 미리보기형태 동일)</td>
 			</tr>
 		</tbody>
 	</table>
@@ -50,12 +79,12 @@
 			lang : 'ko-KR',
 			toolbar : toolbar,
 			callbacks : { //여기 부분이 이미지를 첨부하는 부분
-			onImageUpload : function(files, editor,
+			/* onImageUpload : function(files, editor,
 				welEditable) {
 					for (var i = files.length - 1; i >= 0; i--) {
 						uploadSummernoteImageFile(files[i], this);
 					}
-				}
+				} */
 			}
 		};
 		$('#summernote').summernote(setting);

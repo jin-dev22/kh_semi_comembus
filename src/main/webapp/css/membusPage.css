@@ -12,7 +12,7 @@ h2{
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
 	margin: 0 auto;
-	max-width: 80vw;
+	max-width: 1200px;
 	font-family: var(--elice-font);
 	color: var(--text-color);
 }
@@ -45,6 +45,10 @@ h2{
 	margin:15 0px;
 }
 
+.gatheringYN{
+	height: 50px;
+}
+
 .btn-showProfile{
 	width: 100px;
 	background-color: var(--btn-color);
@@ -71,9 +75,21 @@ h2{
 #tbl-membus-profileview{
 	border-spacing: 0 30px;
 }
-
 #pagebar{
 	text-align: center;
 }
 
+.coBoards td{
+	border: 1px solid #000;
+}
+
+.coTitle{
+	width: 300px;
+}
+.coRegDate{
+	width: 100px;
+}
+.coNums{
+	width: 15px;
+}
 /* ----------마이페이지---------- */
