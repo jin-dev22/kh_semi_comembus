@@ -78,11 +78,14 @@ public class CommunityDao {
 			while(rset.next()) {
 				Community c = new Community();
 				
+				c.setCoNo(rset.getInt("co_no"));
 				c.setCoTitle(rset.getString("co_title"));
 				c.setCoWriter(rset.getString("co_writer"));
+//				c.setCoContent(rset.getString("co_content"));
 				c.setCoRegdate(rset.getTimestamp("co_reg_date"));
 				c.setCoLike(rset.getInt("co_like"));
 				c.setCoReadcount(rset.getInt("co_read_count"));
+				c.setCoType(rset.getString("co_type"));
 				flist.add(c);
 			}
 		} catch (SQLException e) {
@@ -109,11 +112,14 @@ public class CommunityDao {
 			while(rset.next()) {
 				Community c = new Community();
 				
+				c.setCoNo(rset.getInt("co_no"));
 				c.setCoTitle(rset.getString("co_title"));
 				c.setCoWriter(rset.getString("co_writer"));
+//				c.setCoContent(rset.getString("co_content"));
 				c.setCoRegdate(rset.getTimestamp("co_reg_date"));
 				c.setCoLike(rset.getInt("co_like"));
 				c.setCoReadcount(rset.getInt("co_read_count"));
+				c.setCoType(rset.getString("co_type"));
 				slist.add(c);
 			}
 		} catch (SQLException e) {
@@ -124,6 +130,28 @@ public class CommunityDao {
 			close(pstmt);
 		}
 		return slist;
+	}
+
+
+	public int enrollQna(Connection conn, Community commu) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("enrollQna"); //여기서 쓴 물음표들 dao에서 채워주는거임
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, commu.getCoTitle());
+			pstmt.setString(2, commu.getCoWriter());
+			pstmt.setString(3, commu.getCoContent());
+			result = pstmt.executeUpdate();
+			
+		}catch(SQLException e) {
+			throw new CommunityException("게시글 등록 오류!", e);
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
 	}
 	
 	//수진코드 시작

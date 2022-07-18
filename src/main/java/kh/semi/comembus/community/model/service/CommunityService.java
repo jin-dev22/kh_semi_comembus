@@ -56,6 +56,26 @@ public class CommunityService {
 		}
 		return slist;
 	}
+
+
+	public int enrollQna(Community commu) {
+		Connection conn = getConnection();
+		int result = 0;
+		
+		try {
+			//커뮤니티 테이블에 insert(한행)
+			result = communityDao.enrollQna(conn, commu);
+			
+		}catch(Exception e) {
+			rollback(conn);
+			throw e;
+		}finally {
+			close(conn);
+		}
+		return result;
+	}
+
+
 	
 	//수진코드 시작
 	/**
