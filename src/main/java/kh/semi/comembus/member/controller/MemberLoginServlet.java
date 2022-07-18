@@ -13,7 +13,7 @@ import javax.servlet.http.HttpSession;
 import kh.semi.comembus.member.model.dto.Member;
 import kh.semi.comembus.member.model.service.MemberService;
 
-@WebServlet("/member/login")
+@WebServlet("/membus/login")
 public class MemberLoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private MemberService memberService = new MemberService();
