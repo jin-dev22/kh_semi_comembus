@@ -162,6 +162,8 @@ alter table project_study add end_date date not null;
 alter table project_study modify (local varchar2(12));
 
 select * from project_study;
+-- select * from (select row_number() over(order by reg_date desc) rnum, ps.* from project_study ps where gathering_type = '?') p where rnum between ? and ?
+-- select count(*) from project_study where gathering_type = '?'
 --drop table project_study;
 create sequence seq_project_study_ps_no;
 

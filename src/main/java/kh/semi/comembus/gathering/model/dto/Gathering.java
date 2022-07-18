@@ -15,14 +15,17 @@ public class Gathering {
 	private String local;	
 	private int people;
 	private Status status;
+	private Date startDate;
+	private Date endDate;
 	
 	public Gathering() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Gathering(int psNo, String writer, GatheringType psType, String title, Date regDate, String content, int viewcount,
-			int bookmark, String topic, String local, int people, Status status) {
+	public Gathering(int psNo, String writer, GatheringType psType, String title, Date regDate, String content,
+			int viewcount, int bookmark, String topic, String local, int people, Status status, Date startDate,
+			Date endDate) {
 		super();
 		this.psNo = psNo;
 		this.writer = writer;
@@ -36,6 +39,8 @@ public class Gathering {
 		this.local = local;
 		this.people = people;
 		this.status = status;
+		this.startDate = startDate;
+		this.endDate = endDate;
 	}
 
 	public int getPsNo() {
@@ -134,12 +139,28 @@ public class Gathering {
 		this.status = status;
 	}
 
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getEndDate() {
+		return endDate;
+	}
+
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
+
 	@Override
 	public String toString() {
 		return "Gathering [psNo=" + psNo + ", writer=" + writer + ", psType=" + psType + ", title=" + title
 				+ ", regDate=" + regDate + ", content=" + content + ", viewcount=" + viewcount + ", bookmark="
 				+ bookmark + ", topic=" + topic + ", local=" + local + ", people=" + people + ", status=" + status
-				+ "]";
+				+ ", startDate=" + startDate + ", endDate=" + endDate + "]";
 	}
 	
 }

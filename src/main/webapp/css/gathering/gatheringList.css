@@ -100,7 +100,97 @@ hr {
 }
 
 
+/* list부분 */
+/* 필터부분 */
+.ps-filter-container {
+	position: relative;
+	display: flex;
+	align-items: center;
+	text-align: left;
+	margin: 30px;
+}
+.ps-filter-container select {
+	height: 30px;
+}
+.ps-filter-container select option:hover{
+	/* 적용안됨 구글링하기 */
+	background-color: var(--btn-color);
+}
+.ps-filter-container .ps-filter {
+	margin-right: 15px;
+}
 
 
 
+.ps__enroll {
+	position: absolute;
+	right: 10px;
+	background-color: var(--btn-color);
+	color: var(--background-color);
+}
 
+
+/* 미리보기 부분 */
+.ps-lists {
+	display: flex;
+	flex-wrap: wrap;
+	margin: 30px;
+}
+
+.ps-pre {
+	position: relative;
+	width: 250px;
+	margin: 10px 0;
+}
+.ps-pre__img {
+	width: 250px;
+	border-radius: 10%;
+	margin-bottom: 10px;
+}
+.ps-pre > p {
+	text-align: left;
+}
+.ps-pre:nth-child(4n+1) {
+	margin-left: 10px;
+}
+.ps-pre:nth-child(4n) {
+	margin-right: 10px;
+}
+.ps-pre:not(:nth-child(4n)) {
+	margin-right: 40px;
+}
+.ps-pre__etc {
+	height: 45px;
+	float: left;
+}
+.ps-pre__etc li {
+	float: left;
+	margin-right: 20px;
+}
+.ps-pre__etc li:last-child {
+	clear: both;
+}
+.heart-emoji {
+	color: var(--accent-color);
+}
+.bookmark {
+	width: 50px;
+	height: 50px;
+	float: right;
+	text-align: center;
+}
+.bookmark-front,
+.bookmark-back {
+	position: absolute;
+	font-size: 50px;
+	bottom: 20px;
+	color: var(--accent-color);
+}
+.bookmark-back {
+	display: none;
+}
+
+
+#pagebar {
+	margin-top: 50px;
+}
