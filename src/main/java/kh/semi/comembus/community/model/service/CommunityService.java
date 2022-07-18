@@ -15,10 +15,47 @@ public class CommunityService {
 
 
 	public List<Community> findQna() {
+		List<Community> qlist = null;
 		Connection conn = getConnection();
-		List<Community> qlist = communityDao.findQna(conn);
-		close(conn);
+		
+		try {
+			qlist = communityDao.findQna(conn);
+		}catch(Exception e){
+			throw e;
+		}finally {
+			close(conn);
+		}
 		return qlist;
+	}
+
+
+	public List<Community> findFree() {
+		List<Community> flist = null;
+		Connection conn = getConnection();
+		
+		try {
+			flist = communityDao.findFree(conn);
+		}catch(Exception e){
+			throw e;
+		}finally {
+			close(conn);
+		}
+		return flist;
+	}
+
+
+	public List<Community> findShare() {
+		List<Community> slist = null;
+		Connection conn = getConnection();
+		
+		try {
+			slist = communityDao.findShare(conn);
+		}catch(Exception e){
+			throw e;
+		}finally {
+			close(conn);
+		}
+		return slist;
 	}
 	
 
