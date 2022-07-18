@@ -1,3 +1,5 @@
+<%@page import="kh.semi.comembus.gathering.model.dto.GatheringType"%>
+<%@page import="kh.semi.comembus.gathering.model.dto.Gathering"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="kh.semi.comembus.community.model.dto.Community"%>
 <%@page import="java.util.List"%>
@@ -9,9 +11,9 @@
 <%
 	MemberExt member = (MemberExt) request.getAttribute("member");
 	List<Community> communityList = (List<Community>) request.getAttribute("communityList");
-	
-String introduction = member.getIntroduction();
-	
+	List<Gathering> gatheringIngList = (List<Gathering>) request.getAttribute("gatheringIngList");
+	List<Gathering> gatheringBookmarkList = (List<Gathering>) request.getAttribute("gatheringBookmarkList");
+	String introduction = member.getIntroduction();
 %>
 <form
 	name="profileFrm"
@@ -29,7 +31,7 @@ String introduction = member.getIntroduction();
 			<tr>
 				<td colspan="4" id="summernoteWidth">
 					<div>
-						<textarea id="summernote" name="editordata"></textarea>
+						<textarea id="summernote" name="editordata" readonly></textarea>
 					</div>
 				</td>
 			</tr>
@@ -57,15 +59,91 @@ String introduction = member.getIntroduction();
 			</tr>
 	    	<tr><th colspan="4">모임 참여현황</th></tr>
 	        <tr>
-				<td colspan="4">참여현황 가져오기(프로젝트/스터디 메인 미리보기형태 동일)</td>
+				<td colspan="4">
+	    	<%if(gatheringIngList != null && !gatheringIngList.isEmpty()){
+	    		for(Gathering gather : gatheringIngList){	  
+    		%>	    	
+				<div class="ps-pre">
+				<!-- 추후에 a태그로 링크걸어야함 -->
+					<img src="<%= request.getContextPath() %>/images/<%= gather.getTopic() %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
+					<p class="bold"><%= "social".equals(gather.getTopic()) ? "소셜네트워크" : ("game".equals(gather.getTopic()) ? "게임" : ("travel".equals(gather.getTopic()) ? "여행" : ("finance".equals(gather.getTopic()) ? "금융" : "이커머스"))) %></p>
+					<p class="bold"><%= gather.getTitle() %></p>
+					<ul class="ps-pre__etc">
+						<li> 
+							<span class="heart-emoji">&#9829;</span><%= gather.getBookmark() %></li>
+						<li>
+							<span>&#128064;</span><%= gather.getViewcount() %></li>
+						<!-- 나중에 모임 게시물별 모집인원현황 테이블과 연결 -->
+						<li>모집인원 0 / 10</li>
+					</ul>
+					<span class="bookmark bookmark-front">♡</span>
+					<span class="bookmark bookmark-back">♥</span>
+				</div>				
+			<% 
+	    		}
+	    	}
+	    	%>
+				</td>
 			</tr>
 	    	<tr><th colspan="4">찜한 프로젝트</th></tr>
 			<tr>
-	            <td colspan="4">찜한 프로젝트 가져오기(프로젝트 메인 미리보기형태 동일)</td>
+	            <td colspan="4">
+            <%if(gatheringBookmarkList != null && !gatheringBookmarkList.isEmpty()){
+	    		for(Gathering gather : gatheringBookmarkList){	  
+	    			if(gather.getPsType() == GatheringType.P){
+    			%>	    	
+						<div class="ps-pre">
+						<!-- 추후에 a태그로 링크걸어야함 -->
+							<img src="<%= request.getContextPath() %>/images/<%= gather.getTopic() %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
+							<p class="bold"><%= "social".equals(gather.getTopic()) ? "소셜네트워크" : ("game".equals(gather.getTopic()) ? "게임" : ("travel".equals(gather.getTopic()) ? "여행" : ("finance".equals(gather.getTopic()) ? "금융" : "이커머스"))) %></p>
+							<p class="bold"><%= gather.getTitle() %></p>
+							<ul class="ps-pre__etc">
+								<li> 
+									<span class="heart-emoji">&#9829;</span><%= gather.getBookmark() %></li>
+								<li>
+									<span>&#128064;</span><%= gather.getViewcount() %></li>
+								<!-- 나중에 모임 게시물별 모집인원현황 테이블과 연결 -->
+								<li>모집인원 0 / 10</li>
+							</ul>
+							<span class="bookmark bookmark-front">♡</span>
+							<span class="bookmark bookmark-back">♥</span>
+						</div>				
+			<% 
+	    			}
+	    		}
+	    	}
+	    	%>
+				</td>
 	        </tr>
 			<tr><th colspan="4">찜한 스터디</th></tr>
 		    <tr>
-				<td colspan="4">찜한 스터디 가져오기(스터디 메인 미리보기형태 동일)</td>
+				<td colspan="4">
+			<%if(gatheringBookmarkList != null && !gatheringBookmarkList.isEmpty()){
+	    		for(Gathering gather : gatheringBookmarkList){	  
+	    			if(gather.getPsType() == GatheringType.S){
+    			%>	    	
+						<div class="ps-pre">
+						<!-- 추후에 a태그로 링크걸어야함 -->
+							<img src="<%= request.getContextPath() %>/images/<%= gather.getTopic() %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
+							<p class="bold"><%= "social".equals(gather.getTopic()) ? "소셜네트워크" : ("game".equals(gather.getTopic()) ? "게임" : ("travel".equals(gather.getTopic()) ? "여행" : ("finance".equals(gather.getTopic()) ? "금융" : "이커머스"))) %></p>
+							<p class="bold"><%= gather.getTitle() %></p>
+							<ul class="ps-pre__etc">
+								<li> 
+									<span class="heart-emoji">&#9829;</span><%= gather.getBookmark() %></li>
+								<li>
+									<span>&#128064;</span><%= gather.getViewcount() %></li>
+								<!-- 나중에 모임 게시물별 모집인원현황 테이블과 연결 -->
+								<li>모집인원 0 / 10</li>
+							</ul>
+							<span class="bookmark bookmark-front">♡</span>
+							<span class="bookmark bookmark-back">♥</span>
+						</div>				
+			<% 
+	    			}
+	    		}
+	    	}
+	    	%>
+				</td>
 			</tr>
 		</tbody>
 	</table>
@@ -88,7 +166,8 @@ String introduction = member.getIntroduction();
 			}
 		};
 		$('#summernote').summernote(setting);
-		$('#summernote').summernote('insertText', <%= introduction%>);
+		$('#summernote').summernote('insertText', '<%= introduction%>');
+		$('#summernote').summernote('disable');
 	});
 </script>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
