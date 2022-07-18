@@ -42,7 +42,7 @@ public class MemberSearchServlet extends HttpServlet {
 			String searchJobCode = request.getParameter("searchJobcode");
 			String searchGatheringYN = request.getParameter("searchGatheringYN");
 			String searchKeyword = request.getParameter("searchKeyword");
-			System.out.println("@srchSrv>>"+searchJobCode+", "+searchGatheringYN+", " +searchKeyword);
+			System.out.println("@srchSrv:params>>"+searchJobCode+", "+searchGatheringYN+", " +searchKeyword);
 			
 			//입력정보 HashMap으로 관리
 			Map<String, Object> param = new HashMap<>();
@@ -61,11 +61,12 @@ public class MemberSearchServlet extends HttpServlet {
 			int totalMembusNumlike = memberService.getTotalMembusNumLike(param);
 			//?searchJobcode=BE&searchGatheringYN=N&searchKeyword=t
 			String url = request.getRequestURI() 
-							+ "?searchJobcode="+ searchJobCode 
+							+ "?searchJobCode="+ searchJobCode 
 							+ "&searchGatheringYN=" + searchGatheringYN
 							+ "&searchKeyword=" + searchKeyword;
+			System.out.println("@srchSrv: getUrl>>"+url);
 			String pagebar = ComembusUtils.getPagebar(cPage, numPerPage, totalMembusNumlike, url);
-			System.out.println("@MemSrch-Pagebar>> "+pagebar);
+			//System.out.println("@MemSrch-Pagebar>> "+pagebar);
 			
 			//3.view단 처리
 			request.setAttribute("memberList",memberList);

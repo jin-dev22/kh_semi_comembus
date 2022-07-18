@@ -35,9 +35,9 @@
 	
 	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
 	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/style.css">
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/gathering/Enroll.css">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/gathering/gatheringList.css">
 	
 	
@@ -54,7 +54,7 @@
       <ul class="h__menu__main">
         <li><a href="<%= request.getContextPath() %>/membus/list">멤버스</a></li>
         <li>
-          <a href="<%= request.getContextPath()%>/gathering/projectList">모임</a>
+          <a href="javascript:void(0)">모임</a>
           <ul class="h__menu__sub">
             <li><a href="<%= request.getContextPath()%>/gathering/projectList">프로젝트</a></li>
             <li><a href="<%= request.getContextPath()%>/gathering/studyList">스터디</a></li>
