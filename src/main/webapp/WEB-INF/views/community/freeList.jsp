@@ -52,6 +52,6 @@
 	
 </table>
 		<input type="button" value="글쓰기" id="btn-add"
-		onclick="location.href='<%= request.getContextPath() %>/community/communityList';"/>
+		onclick="location.href='<%= request.getContextPath() %>/community/communityEnroll?co_type=F';"/>
 		
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>

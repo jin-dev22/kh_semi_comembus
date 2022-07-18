@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="<%=request.getContextPath() %>/css/membusPage.css">
 <%
 	Member member = (Member) request.getAttribute("member");
-	String introduction = member.getIntroduction();
+	//String introduction = member.getIntroduction();
 %>
 <form
 	name="profileFrm"
@@ -65,7 +65,7 @@
 			}
 		};
 		$('#summernote').summernote(setting);
-		$('#summernote').summernote('insertText', <%= introduction%>);
+		<%-- $('#summernote').summernote('insertText', <%= introduction%>); --%>
 	});
 </script>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
