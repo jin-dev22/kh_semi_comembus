@@ -27,6 +27,20 @@ public class GatheringService {
 		return totalContent;
 	}
 
+	public List<Gathering> findProjectLike(Map<String, Object> param) {
+		Connection conn = getConnection();
+		List<Gathering> list = gatheringDao.findProjectLike(conn, param);
+		close(conn);
+		return list;
+	}
+
+	public int getProTotalContentLike(Map<String, Object> param) {
+		Connection conn = getConnection();
+		int totalContent = gatheringDao.getProTotalContentLike(conn, param);
+		close(conn);
+		return totalContent;
+	}
+
 	//수진코드 시작
 	/**
 	 * 멤버스 프로필, 마이페이지: 회원 참가중인 모임 게시글 조회

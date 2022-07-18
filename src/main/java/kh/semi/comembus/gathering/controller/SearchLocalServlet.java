@@ -11,17 +11,19 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+
 import kh.semi.comembus.common.ComembusUtils;
 import kh.semi.comembus.gathering.model.dto.Gathering;
 import kh.semi.comembus.gathering.model.service.GatheringService;
 
 /**
- * Servlet implementation class ProjectListServlet
+ * Servlet implementation class SearchLocalServlet
  */
-@WebServlet("/gathering/projectList")
-public class ProjectListServlet extends HttpServlet {
+@WebServlet("/gathering/searchLocal")
+public class SearchLocalServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	GatheringService gatheringService = new GatheringService();
+	private GatheringService gatheringService = new GatheringService();
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -35,27 +37,37 @@ public class ProjectListServlet extends HttpServlet {
 				cPage = Integer.parseInt(request.getParameter("cPage"));
 			} catch(NumberFormatException e) {}
 			
+			String searchType = request.getParameter("searchType");
+			String searchKeyword = request.getParameter("searchKeyword");
+			
 			int start = (cPage - 1) * numPerPage + 1;
 			int end = cPage * numPerPage;
 			Map<String, Object> param = new HashMap<>();
+			param.put("searchType", searchType);
+			param.put("searchKeyword", searchKeyword);
 			param.put("start", start);
 			param.put("end", end);
+			System.out.println(param);
 			
 			// 2. 업무로직
-			// content 영역 
-			List<Gathering> projectList = gatheringService.findGatheringAll(param); 
-			// System.out.println("projectList: " + projectList); // 확인용
+			// content 영역
+			List<Gathering> projectList = gatheringService.findProjectLike(param); 
+			System.out.println("필터링 projectList: " + projectList); // 확인용
 			
 			// pagebar 영역
-			int totalContent = gatheringService.getTotalContent();
-			//System.out.println("totalContent = " + totalContent); // 확인용
-			String url = request.getRequestURI();
+			int totalContent = gatheringService.getProTotalContentLike(param);
+			System.out.println("필터링 totalContent = " + totalContent); // 확인용
+			String url = request.getRequestURI() + "?searchType=" + searchType + "&searchKeyword=" + searchKeyword;
+			System.out.println("url = " + url);
 			String pagebar = ComembusUtils.getPagebar(cPage, numPerPage, totalContent, url);
 			
-			// 3. view단처리
-			request.setAttribute("projectList", projectList);
+			response.setContentType("application/json; charset=utf-8");
+			String jsonStr = new Gson().toJson(projectList);
+			System.out.println("jsonStr = " + jsonStr);
+			response.getWriter().print(jsonStr);
+			
 			request.setAttribute("pagebar", pagebar);
-			request.getRequestDispatcher("/WEB-INF/views/gathering/projectList.jsp").forward(request, response);
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 			throw e;
