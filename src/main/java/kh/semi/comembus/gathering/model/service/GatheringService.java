@@ -27,4 +27,7 @@ public class GatheringService {
 		return totalContent;
 	}
 
+	//수진코드 시작
+	
+	//수진코드 끝
 }

@@ -93,4 +93,7 @@ public class GatheringDao {
 		return totalContent;
 	}
 
+	//수진코드 시작
+	
+	//수진코드 끝
 }
