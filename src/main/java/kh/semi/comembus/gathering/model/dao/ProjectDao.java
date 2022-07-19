@@ -62,11 +62,6 @@ public class ProjectDao {
 		return 0;
 	}
 
-	public int insertAttachment(Connection conn, Attachment attach) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	public int updateReadCount(Connection conn, int psNo) {
 		// TODO Auto-generated method stub
 		return 0;
@@ -77,8 +72,4 @@ public class ProjectDao {
 		return null;
 	}
 
-	public List<Attachment> findAttachmentByGatheringNo(Connection conn, int psNo) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

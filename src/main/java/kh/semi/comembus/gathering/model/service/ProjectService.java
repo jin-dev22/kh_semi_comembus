@@ -9,9 +9,7 @@ import static kh.semi.comembus.common.JdbcTemplate.getConnection;
 import static kh.semi.comembus.common.JdbcTemplate.rollback;
 
 import kh.semi.comembus.gathering.model.dao.ProjectDao;
-import kh.semi.comembus.gathering.model.dto.Attachment;
 import kh.semi.comembus.gathering.model.dto.Gathering;
-import kh.semi.comembus.gathering.model.dto.GatheringExt;
 
 public class ProjectService {
 	private ProjectDao ProjectDao=new ProjectDao();
@@ -26,14 +24,6 @@ public class ProjectService {
 			int psNo = ProjectDao.getLastBoardNo(conn);
 			System.out.println("projectNo = "+psNo);
 			
-			//attachment테이블 insert
-			List<Attachment> attachments = ((GatheringExt) project).getAttachments();
-			if(attachments != null && !attachments.isEmpty()) {
-				for(Attachment attach : attachments) {
-					attach.setpsNo(psNo);
-					result = ProjectDao.insertAttachment(conn,attach);
-				}
-			}
 			commit(conn);
 		}catch(Exception e) {
 			rollback(conn);
@@ -54,10 +44,7 @@ public class ProjectService {
 			if(!hasRead) {
 				int result=ProjectDao.updateReadCount(conn,psNo);
 			}
-			project = ProjectDao.findByNo(conn,psNo);
-			List<Attachment> attachments = ProjectDao.findAttachmentByGatheringNo(conn,psNo);
-			((GatheringExt)project).setAttachments(attachments);
-			
+			project = ProjectDao.findByNo(conn,psNo);			
 			commit(conn);
 		}
 		catch(Exception e) {
