@@ -99,7 +99,6 @@ public class GatheringDao {
 		String sql = prop.getProperty("findProjectLike");
 		String col = (String) param.get("searchType");
 		String val = (String) param.get("searchKeyword");
-		System.out.println("col" + col);
 		sql = sql.replace("#", col);
 		
 		try {
