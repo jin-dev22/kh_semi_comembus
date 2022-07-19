@@ -4,8 +4,9 @@
     
 <!-- 미송 코드 시작 -->
 <%
-	Member loginMember = (Member) session.getAttribute("loginMember");	
-
+	String msg = (String) session.getAttribute("msg");
+	if(msg != null) session.removeAttribute("msg");
+	Member loginMember = (Member) session.getAttribute("loginMember");
 %>
 <!-- 미송 코드 끝 -->
     
@@ -40,6 +41,16 @@
 	
 	<link rel="icon" href="favicon.ico" />
 	<title>CO;MEMBUS</title>
+	
+	<script>
+	<!-- 미송 코드 시작 -->
+	window.onload = () => {
+	<% if(msg != null){ %>
+		alert("<%= msg %>");
+	<% } %>
+	};
+	<!-- 미송 코드 끝 -->
+	</script>
 </head>
 <body>
   <header>
@@ -80,7 +91,7 @@
 	  <ul class="h__member__menu">
 	  <!-- 닉네임 클릭 시 마이페이지로 이동 -->
 	  	<li class="h__loginMember"><a href="<%= request.getContextPath()%>/member/mypage"><%= loginMember.getNickName() %></a></li>
-	  	<li class="h__memberLogout"><a href="<%= request.getContextPath() %>/member/logout">로그아웃</a></li>
+	  	<li class="h__memberLogout"><a href="<%= request.getContextPath() %>/membus/logout">로그아웃</a></li>
 	  </ul>
   <% } %>   
   

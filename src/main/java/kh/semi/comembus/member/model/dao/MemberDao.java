@@ -78,6 +78,34 @@ public class MemberDao {
 		return new MemberExt(memberId, jobCode, nickName, memberName, password, phone, introduction, memberRole, enrollDate, quitDate, quitYN);
 		
 	}
+	
+	public int insertMember(Connection conn, Member member) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("insertMember");
+		// insert into member values (?, ?, ?, ?, ?, ?, null, default, default, null, default)
+		
+		try {
+			// 1
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, member.getMemberId());
+			pstmt.setString(2, member.getJobCode().name());
+			pstmt.setString(3, member.getNickName());
+			pstmt.setString(4, member.getMemberName());
+			pstmt.setString(5, member.getPassword());
+			pstmt.setString(6, member.getPhone());
+			
+			// 2
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			throw new MemberException("회원가입 오류", e); // 커스텀예외 만들기
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
 	// 미송 코드 끝
 	
 	
@@ -264,5 +292,7 @@ public class MemberDao {
 		
 	}
 	// 수진 코드 끝
+
+	
 
 }
