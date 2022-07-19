@@ -133,10 +133,10 @@ public class CommunityDao {
 	}
 
 
-	public int enrollQna(Connection conn, Community commu) {
+	public int insertQna(Connection conn, Community commu) {
 		PreparedStatement pstmt = null;
 		int result = 0;
-		String sql = prop.getProperty("enrollQna"); //여기서 쓴 물음표들 dao에서 채워주는거임
+		String sql = prop.getProperty("insertQna"); //여기서 쓴 물음표들 dao에서 채워주는거임
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -146,7 +146,7 @@ public class CommunityDao {
 			result = pstmt.executeUpdate();
 			
 		}catch(SQLException e) {
-			throw new CommunityException("게시글 등록 오류!", e);
+			throw new CommunityException("큐앤에이 게시글 등록 오류", e);
 		}finally {
 			close(pstmt);
 		}

@@ -12,6 +12,7 @@
 	<p>Q&A 게시판<p>
 </div>
 
+
 <div id="commuListWrapper">
 <div>
 		<form id="titleText">
@@ -19,6 +20,7 @@
 		</form>
 		
 </div>
+
 	<table id="tbl-commu">
 		<tr>
 			<th>제목</th>
@@ -50,7 +52,8 @@
 			
 		%>
 </table>
+<% if(loginMember != null) { %>
 		<input type="button" value="글쓰기" id="btn-add"
 		onclick="location.href='<%= request.getContextPath() %>/community/communityEnroll?co_type=Q';"/>
-		
+		<% } %>
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>
