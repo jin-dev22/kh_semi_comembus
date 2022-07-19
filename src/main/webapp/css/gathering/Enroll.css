@@ -23,3 +23,6 @@ button.count{
 #summernoteWidth{
     width: 950px;
 }
+input#name{
+    width:500px;
+}
