@@ -19,13 +19,17 @@ const onchangeLocal = () => {
 	findLocal(selectlocal);
 };
 const findLocal = (selectlocal) => {
-	console.log("selectlocal = ", selectlocal);
+	console.log("selectlocal = ", selectlocal); // 확인용
 	$.ajax({
 		url: '<%= request.getContextPath() %>/gathering/searchLocal',
 		data: {searchType: 'local', searchKeyword: selectlocal},
 		success(projectSelectList){
-				document.querySelector(".ps-lists").innerHTML =
-					projectSelectList.reduce((html, selectList, index) => {
+			console.log(projectSelectList); // 확인용
+			const {projectList, searchPagebar} = projectSelectList;
+			console.log("projectList = ", projectList); // 확인용
+			console.log("searchPagebar = ", searchPagebar); // 확인용
+			document.querySelector(".ps-lists").innerHTML =
+				projectList.reduce((html, selectList, index) => {
 					const {title, viewcount, bookmark, topic, people} = selectList;
 					console.log("확인용", title, viewcount, bookmark, topic, people);
 					return `\${html}
@@ -46,7 +50,8 @@ const findLocal = (selectlocal) => {
 						</ul>
 					</div>
 					`;
-					}, '');
+				}, '');
+			document.querySelector("#pagebar").innerHTML = `\${searchPagebar}`;
 		},
 		error: console.log
 	});
@@ -132,7 +137,7 @@ const findLocal = (selectlocal) => {
 					<label for="p__bookmark">찜한 프로젝트</label>
 				</div>
 				
-				<input type="button" class="ps__enroll btn" onclick="location.href='<%= request.getContextPath()%>/gathering/projectEnrollView;'" value="프로젝트 생성">
+				<input type="button" class="ps__enroll btn" onclick="location.href='<%= request.getContextPath()%>/gathering/projectEnroll;'" value="프로젝트 생성">
 			</div>
 			<div class="ps-lists">
 			<%
@@ -140,10 +145,14 @@ const findLocal = (selectlocal) => {
 				for(Gathering project : projectList){
 			%>
 				<div class="ps-pre">
-				<!-- 추후에 a태그로 링크걸어야함 -->
-					<img src="<%= request.getContextPath() %>/images/<%= project.getTopic() %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
+					<!-- a태그로 링크 주소 연결해야함 -->
+					<a href="">
+						<img src="<%= request.getContextPath() %>/images/<%= project.getTopic() %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
+					</a>
 					<p class="bold"><%= "social".equals(project.getTopic()) ? "소셜네트워크" : ("game".equals(project.getTopic()) ? "게임" : ("travel".equals(project.getTopic()) ? "여행" : ("finance".equals(project.getTopic()) ? "금융" : "이커머스"))) %></p>
-					<p class="bold"><%= project.getTitle() %></p>
+					<a href="">
+						<p class="bold"><%= project.getTitle() %></p>
+					</a>
 					<ul class="ps-pre__etc">
 						<li> 
 							<span class="heart-emoji">&#9829;</span><%= project.getBookmark() %></li>

@@ -40,13 +40,11 @@ public class SearchLocalServlet extends HttpServlet {
 			String searchType = request.getParameter("searchType");
 			String searchKeyword = request.getParameter("searchKeyword");
 			
-			int start = (cPage - 1) * numPerPage + 1;
-			int end = cPage * numPerPage;
 			Map<String, Object> param = new HashMap<>();
 			param.put("searchType", searchType);
 			param.put("searchKeyword", searchKeyword);
-			param.put("start", start);
-			param.put("end", end);
+			param.put("start", (cPage - 1) * numPerPage + 1);
+			param.put("end", cPage * numPerPage);
 			System.out.println(param);
 			
 			// 2. 업무로직
@@ -57,16 +55,19 @@ public class SearchLocalServlet extends HttpServlet {
 			// pagebar 영역
 			int totalContent = gatheringService.getProTotalContentLike(param);
 			System.out.println("필터링 totalContent = " + totalContent); // 확인용
+			// /comembus/gathering/searchLocal?searchType=local&searchKeyword=Capital
 			String url = request.getRequestURI() + "?searchType=" + searchType + "&searchKeyword=" + searchKeyword;
 			System.out.println("url = " + url);
-			String pagebar = ComembusUtils.getPagebar(cPage, numPerPage, totalContent, url);
+			String searchPagebar = ComembusUtils.getPagebar(cPage, numPerPage, totalContent, url);
+			System.out.println("searchPagebar = " + searchPagebar);
 			
 			response.setContentType("application/json; charset=utf-8");
-			String jsonStr = new Gson().toJson(projectList);
-			System.out.println("jsonStr = " + jsonStr);
+			Map<String, Object> searchList = new HashMap<>();
+			searchList.put("projectList", projectList);
+			searchList.put("searchPagebar", searchPagebar);
+			String jsonStr = new Gson().toJson(searchList);
 			response.getWriter().print(jsonStr);
 			
-			request.setAttribute("pagebar", pagebar);
 			
 		} catch(Exception e) {
 			e.printStackTrace();
