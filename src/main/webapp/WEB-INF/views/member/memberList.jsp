@@ -68,7 +68,7 @@
     </div>
     <!-- 멤버스 리스트 끝 -->
     <!-- 페이지바 시작 -->
-   	<div id="pagebar">
+   	<div class="pagebar">
    	 <%=request.getAttribute("pagebar") %>
    	</div>
     <!-- 페이지바 끝 -->

@@ -26,7 +26,7 @@
 		</div>
 		<div class="profile-row part-2">
 			<div class="subtitle">자기소개</div>
-			<p class="member-introduction"><%=member.getIntroduction() %></div>
+			<p class="member-introduction"><%=introduction != null? introduction : "작성한 자기소개가 없습니다." %></div>
 		</div>
 		<div class="profile-row part-3">
 			<div class="subtitle">최근 작성한 게시물</div>
@@ -44,7 +44,7 @@
 				<div class="pagebar"><%= request.getAttribute("pagebar")%></div>
 				<%}else{
 				%>
-				<div>조회된 게시글이 없습니다.</div>
+				<div class="empty-content">조회된 게시글이 없습니다.</div>
 				<%} %>
 			</div>
 		</div>
