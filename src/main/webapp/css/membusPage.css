@@ -60,7 +60,16 @@ h2{
 	color: #fff;
 }
 
-/* ----------멤버스 프로필 상세페이지---------- */
+/* ----------멤버스 프로필 상세,마이페이지공통---------- */
+section#membus-profile{
+	width: 1000px;
+	background-color:  rgb(241,241,241);
+	padding: 30px 100px;
+	margin: 0 auto;
+}
+.profile-row{
+	padding: 10px;
+}
 .nickname-badge{
 	background-color: #fff;
 	width: 100px;
@@ -68,28 +77,94 @@ h2{
 	border-radius: 50%;
 	text-align: center;
 	line-height: 100px;
+	font-size: 30px;
+	font-weight: bold;
+	margin-right: 15px;
 }
-#tbl-membus-profileview th:first-of-type{
-	width: 150px;
+.subtitle{
+	font-weight: bold;
+	font-size: 20px;
+	margin-bottom: 10px;
 }
-#tbl-membus-profileview{
-	border-spacing: 0 30px;
+.gathering-align{
+	display: flex;
+	align-items: top;
+	overflow-x: scroll hidden;
+	height: 350px;
+	width: 800px
 }
-#pagebar{
+.ps-pre{
+	width: 250px;
+	height: 300px;
+	margin: 0 20px;
+}
+.ps-pre img{
+	width: 250px;
+	border-radius: 10%;
+	margin-bottom: 10px;
+}
+.ps-pre__etc {
+	height: 45px;
+	float: left;
+}
+.ps-pre__etc li {
+	float: left;
+	margin-right: 20px;
+}
+.ps-pre__etc li:last-child {
+	clear: both;
+}
+.heart-emoji {
+	color: var(--accent-color);
+}
+.bookmark {
+	width: 50px;
+	height: 50px;
+	float: right;
 	text-align: center;
 }
-
-.coBoards td{
-	border: 1px solid #000;
+.bookmark-front,
+.bookmark-back {
+	/* position: absolute; */
+	font-size: 50px;
+	/* bottom: 20px; */
+	color: var(--accent-color);
 }
-
+.bookmark-back {
+	display: none;
+}
+.part-1{
+	display: flex;
+	align-items: center;
+}
+.pagebar{
+	text-align: center;
+}
+.coBoard:nth-child(2n-1){
+	background-color: var(--yellow-color);
+}
+.coBoard:nth-child(2n){
+	background-color: var(--jjin-yellow-color);
+}
+.coBoard span{
+	display: inline-block;
+}
 .coTitle{
-	width: 300px;
+	width: 600px;
 }
 .coRegDate{
 	width: 100px;
 }
 .coNums{
-	width: 15px;
+	width: 20px;
+}
+#member-intoduction div{
+	height: 500px;
+	background-color: #fff;
+
+}
+#gathering-ing-list{
+	display: flex;
+	align-items: center;
 }
 /* ----------마이페이지---------- */

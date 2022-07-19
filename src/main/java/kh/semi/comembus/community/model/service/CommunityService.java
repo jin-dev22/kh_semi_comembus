@@ -58,13 +58,13 @@ public class CommunityService {
 	}
 
 
-	public int enrollQna(Community commu) {
+	public int insertQna(Community commu) {
 		Connection conn = getConnection();
 		int result = 0;
 		
 		try {
 			//커뮤니티 테이블에 insert(한행)
-			result = communityDao.enrollQna(conn, commu);
+			result = communityDao.insertQna(conn, commu);
 			
 		}catch(Exception e) {
 			rollback(conn);
