@@ -17,38 +17,38 @@
 %>
 <form name="profileFrm">
 	<section id="membus-profile">
-		<div class="profile-part-1 ">
+		<div class="profile-row part-1 ">
 			<div class="nickname-badge"><%= member.getNickName().charAt(0)%></div>
 			<div>
 				<div>닉네임 : <%=member.getNickName() %></div>
 				<div>직무분야 : <%=member.getJobName() %></div>
 			</div>
 		</div>
-		<div class="profile-part-2">
+		<div class="profile-row part-2">
 			<div class="subtitle">자기소개</div>
-			<div class="member-introduction"><%=member.getIntroduction() %></div>
+			<p class="member-introduction"><%=member.getIntroduction() %></div>
 		</div>
-		<div class="profile-part-3">
+		<div class="profile-row part-3">
 			<div class="subtitle">최근 작성한 게시물</div>
-			<div>
+			<div class="coBoard-list">
 				<%if(communityList != null && !communityList.isEmpty()){
 					for(Community co : communityList){
 				%>
-				<div class="coBoards">
-					<span class="cotitle"><%= co.getCoTitle() %></span>
-					<span class="coRegDate"><%= new SimpleDateFormat("yyyy-MM-dd HH:mm").format(co.getCoRegdate()) %></span>
+				<div class="coBoard">
+					<span class="coTitle"><%= co.getCoTitle() %></span>
+					<span class="coRegDate"><%= new SimpleDateFormat("yyyy-MM-dd").format(co.getCoRegdate()) %></span>
 					<span class="coNums coLike"><%= co.getCoLike() %></span>
 					<span class="coNums coReadCnt"><%= co.getCoReadcount() %></span>
 				</div>
 				<%  }%>
 				<div class="pagebar"><%= request.getAttribute("pagebar")%></div>
-				<%}else{
+<%-- 				<%}else{ --%>
 				%>
 				<div>조회된 게시글이 없습니다.</div>
 				<%} %>
 			</div>
 		</div>
-		<div class="profile-part-4">
+		<div class="profile-row part-4">
 			<div class="subtitle">모임 참여현황</div>
 			<div class="gathering-align">
 				<%if(gatheringIngList != null && !gatheringIngList.isEmpty()){
@@ -78,7 +78,7 @@
 				<%}%>
 			</div>
 		</div>
-		<div class="profile-part-5">
+		<div class="profile-row part-5">
 			<div class="subtitle">찜한 프로젝트</div>
 			<div class="gathering-align">
 				<%if(gatheringBookmarkList != null && !gatheringBookmarkList.isEmpty()){
@@ -109,7 +109,7 @@
 				<%}%>
 			</div>
 		</div>
-		<div class="profile-part-6">
+		<div class="profile-row part-6">
 			<div class="subtitle">찜한 스터디</div>
 				<div class="gathering-align">
 					<%if(gatheringBookmarkList != null && !gatheringBookmarkList.isEmpty()){
