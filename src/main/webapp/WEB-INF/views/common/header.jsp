@@ -35,11 +35,8 @@
 	
 	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css" rel="stylesheet">
 	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
-	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/style.css">
-	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/gathering/Enroll.css">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/gathering/gatheringList.css">
-	
+	<link rel="stylesheet" href="<%=request.getContextPath() %>/css/style.css">
 	
 	<link rel="icon" href="favicon.ico" />
 	<title>CO;MEMBUS</title>
@@ -54,7 +51,7 @@
       <ul class="h__menu__main">
         <li><a href="<%= request.getContextPath() %>/membus/list">멤버스</a></li>
         <li>
-          <a href="<%= request.getContextPath()%>/gathering/projectList">모임</a>
+          <a href="javascript:void(0)">모임</a>
           <ul class="h__menu__sub">
             <li><a href="<%= request.getContextPath()%>/gathering/projectList">프로젝트</a></li>
             <li><a href="<%= request.getContextPath()%>/gathering/studyList">스터디</a></li>
@@ -63,9 +60,9 @@
         <li>
           <a href="javascript:void(0)">커뮤니티</a>
           <ul class="h__menu__sub">
-            <li><a href="<%= request.getContextPath() %>/community/communityList">QnA</a></li>
-            <li><a href="javascript:void(0)">자유주제</a></li>
-            <li><a href="javascript:void(0)">정보공유</a></li>
+            <li><a href="<%= request.getContextPath() %>/community/communityList?co_type=Q">QnA</a></li>
+            <li><a href="<%= request.getContextPath() %>/community/communityList?co_type=F">자유주제</a></li>
+            <li><a href="<%= request.getContextPath() %>/community/communityList?co_type=S">정보공유</a></li>
           </ul>
         </li>
         <li><a href="javascript:void(0)">공지사항</a></li>
@@ -77,12 +74,12 @@
   <!-- 미송 코드 시작 -->
   <% if(loginMember == null){ %>
       <ul class="h__loginSignup">
-        <li><a href="<%= request.getContextPath() %>/member/login">회원가입/로그인</a></li>
+        <li><a href="<%= request.getContextPath() %>/membus/login">회원가입/로그인</a></li>
       </ul>
   <% } else {%>  
 	  <ul class="h__member__menu">
 	  <!-- 닉네임 클릭 시 마이페이지로 이동 -->
-	  	<li class="h__loginMember"><a href="javascript:void(0)"><%= loginMember.getNickName() %></a></li>
+	  	<li class="h__loginMember"><a href="<%= request.getContextPath()%>/member/mypage"><%= loginMember.getNickName() %></a></li>
 	  	<li class="h__memberLogout"><a href="<%= request.getContextPath() %>/member/logout">로그아웃</a></li>
 	  </ul>
   <% } %>   

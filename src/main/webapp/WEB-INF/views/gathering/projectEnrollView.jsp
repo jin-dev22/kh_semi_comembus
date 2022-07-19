@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ include file="/WEB-INF/views/common/header.jsp"%>
+    pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
+<link rel="stylesheet" href="<%=request.getContextPath() %>/css/gathering/Enroll.css">
+>>>>>>> branch 'master' of https://github.com/jin-dev22/kh_semi_comembus.git
 
 <form name="projectEnrollFrm"
 	action="<%=request.getContextPath()%>/gathering/projectEnrollView"

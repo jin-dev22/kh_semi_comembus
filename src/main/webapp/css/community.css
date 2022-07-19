@@ -1,1 +1,104 @@
 @import url("https://font.elice.io/EliceDigitalBaeum.css");
+
+#commuListWrapper {
+	font-family: var(--elice-font);
+	width: 1200px;
+	margin: 0;
+}
+
+#titleText{
+	text-align:right;
+
+}
+
+#commuHeader p{
+	font-family: var(--elice-font);
+	margin-top:70px;
+	margin-left:150px;
+	font-size: 25px;
+	font-weight: 600;
+
+}
+#btn-add{
+	float: right;
+	width: 100px;
+    height: 40px;
+	font-weight: 600;
+    background-color: #92B4EC;
+    border:none;
+    color:white;
+    margin-top:20px;
+}
+
+
+#btn{
+	border-radius: 10%;
+	background-color: #92B4EC;
+	border: none;
+	color:white;
+	width: 50px;
+	height: 27px;
+}
+
+
+#tbl-commu {
+    font-size: 12px;
+    width: 980px;
+    margin-left: 265px;
+  
+}
+
+
+#tbl-commu th{
+    background-color: #FFE69A;
+    font-size: 16px;
+    padding: 20px 40px;
+  	text-align: center;
+  	font-weight: 700;
+  	
+}
+
+#tbl-commu td{
+	padding: 10px;
+}
+
+#tbl-commu td:nth-of-type(1) {
+	width: 300px;
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    border-right: 1px solid lightgray;
+    font-size: 14px;
+}
+
+#tbl-commu td:nth-of-type(2) {
+	width: 10px;
+	text-align:center;
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    font-size: 14px;
+	padding: 10px 9px;
+}/*수정*/
+
+#tbl-commu td:nth-of-type(3) {
+	width: 100px;
+	text-align:center;
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    font-size: 14px;
+}
+
+#tbl-commu td:nth-of-type(4) {
+	width: 10px;
+	text-align:center;
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    font-size: 14px;
+}
+
+#tbl-commu td:nth-of-type(5) {
+	width: 10px;
+	text-align:center;
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    font-size: 14px;
+}

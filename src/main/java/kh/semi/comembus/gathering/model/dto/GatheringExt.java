@@ -14,8 +14,8 @@ public class GatheringExt extends Gathering{
 	}
 
 	public GatheringExt(int psNo, String writer, GatheringType psType, String title, Date regDate, String content,
-			int viewcount, int bookmark, String topic, String local, int people, Status status) {
-		super(psNo, writer, psType, title, regDate, content, viewcount, bookmark, topic, local, people, status);
+			int viewcount, int bookmark, String topic, String local, int people, Status status, Date startDate, Date endDate) {
+		super(psNo, writer, psType, title, regDate, content, viewcount, bookmark, topic, local, people, status,startDate,endDate);
 		// TODO Auto-generated constructor stub
 	}
 

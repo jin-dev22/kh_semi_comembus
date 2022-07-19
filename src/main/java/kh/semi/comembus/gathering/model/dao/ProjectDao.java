@@ -44,6 +44,8 @@ public class ProjectDao {
 			pstmt.setString(9, project.getLocal());
 			pstmt.setInt(10, project.getPeople());
 			pstmt.setObject(11, "N",Types.OTHER);
+			pstmt.setDate(12, project.getStartDate());
+			pstmt.setDate(13, project.getEndDate());
 			
 			result = pstmt.executeUpdate();
 			

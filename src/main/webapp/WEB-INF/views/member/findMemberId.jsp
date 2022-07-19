@@ -17,7 +17,7 @@
 
 <section id=login-container>
 	<h1>회원가입/로그인</h1>
-	<form id="loginFrm" name="loginFrm" action="<%= request.getContextPath() %>/member/login" method="POST">
+	<form id="loginFrm" name="loginFrm" action="<%= request.getContextPath() %>/membus/login" method="POST">
 	<table id="loginTable">
 		<tbody>
 			<tr>

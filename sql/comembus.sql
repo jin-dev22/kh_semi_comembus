@@ -162,6 +162,34 @@ alter table project_study add end_date date not null;
 alter table project_study modify (local varchar2(12));
 
 select * from project_study;
+-- select * from (select row_number() over(order by reg_date desc) rnum, ps.* from project_study ps where gathering_type = '?') p where rnum between ? and ?
+-- select * from (select row_number() over(order by reg_date desc) rnum, ps.* from project_study ps where gathering_type = '?' and upper(#) like upper('%?%')) p where rnum between ? and ?
+-- select count(*) from project_study where gathering_type = '?' and upper(#) like upper('?')
+
+select
+        count(*)
+from 
+        project_study
+where
+        gathering_type = 'P' and
+        upper(local) like upper('capital');
+
+select
+        *
+from (
+        select
+                row_number() over(order by reg_date desc) rnum, 
+                ps.* 
+        from 
+                project_study ps 
+        where
+                gathering_type = 'P' and
+                upper(topic) like upper('%travel%')
+) p
+where 
+        rnum between 1 and 12;
+
+-- select count(*) from project_study where gathering_type = '?'
 --drop table project_study;
 create sequence seq_project_study_ps_no;
 
@@ -230,6 +258,49 @@ CREATE TABLE community_board (
     constraint fk_community_writer foreign key(co_writer) references member(member_id) on delete set null,
     constraint ck_community_type check (co_type in('F', 'Q', 'S'))
 );
+
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'sinsa', '제목', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'Q');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'maxston0', '제목', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'Q');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'ejahnke1', '제목', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'Q');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'epogg2', '제목', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'Q');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'dingram3', '제목', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'Q');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'hbuesnel4', '제목', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'Q');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'smangon5', '제목', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'Q');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'gbanyard6', '제목', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'Q');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'bedgson7', '제목', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'Q');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'hstendell8', '제목', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'Q');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'ffarloe9', '제목', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'Q');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'test', '제목', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'Q');
+
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'sinsa', '자유', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'F');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'maxston0', '자유', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'F');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'ejahnke1', '자유', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'F');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'epogg2', '자유', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'F');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'dingram3', '자유', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'F');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'hbuesnel4', '자유', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'F');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'smangon5', '자유', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'F');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'gbanyard6', '자유', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'F');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'bedgson7', '자유', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'F');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'hstendell8', '자유', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'F');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'ffarloe9', '자유', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'F');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'test', '자유', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'F');
+
+
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'sinsa', '정보공유입니다', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'S');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'maxston0', '정보공유입니다', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'S');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'ejahnke1', '정보공유입니다', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'S');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'epogg2', '정보공유입니다', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'S');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'dingram3', '정보공유입니다', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'S');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'hbuesnel4', '정보공유입니다', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'S');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'smangon5', '정보공유입니다', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'S');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'gbanyard6', '정보공유입니다', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'S');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'bedgson7', '정보공유입니다', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'S');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'hstendell8', '정보공유입니다', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'S');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'ffarloe9', '정보공유입니다', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'S');
+insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'test', '정보공유입니다', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'S');
+
+commit;
+
 --drop table community_board;
 create sequence seq_co_no;
 

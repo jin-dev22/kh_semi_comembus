@@ -100,7 +100,7 @@ public class MemberDao {
 			while(rset.next()) {
 				MemberExt member = handleMemberResultSet(rset);
 				member.setGetheringCnt(rset.getInt("gathering_cnt"));
-				//System.out.println("@dao gatherCnt>> "+member.getNickName()+": "+ member.getGetheringCnt());
+				member.setJobName(getJobName(conn, member.getJobCode()));
 				memberList.add(member);
 			}
 		} catch (SQLException e) {
@@ -173,7 +173,7 @@ public class MemberDao {
 			sql = sql.replace("[str3]", " ");
 		}
 		
-		System.out.println("@Dao:Sql>>"+sql);
+		//System.out.println("@Dao:Sql>>"+sql);
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, (int) param.get("start"));
@@ -182,8 +182,9 @@ public class MemberDao {
 			while(rset.next()) {
 				MemberExt member = handleMemberResultSet(rset);
 				member.setGetheringCnt(rset.getInt("gathering_cnt"));
+				member.setJobName(getJobName(conn, member.getJobCode()));
 				memberList.add(member);
-				//System.out.println("@dao>> "+member);
+				System.out.println("@dao>> "+member.getJobCode());
 			}
 		} catch (SQLException e) {
 			throw new MemberException("멤버스 조건조회 오류", e);
@@ -239,7 +240,27 @@ public class MemberDao {
 		return totalMembusNumlike;
 	}
 	
-	
+	public String getJobName(Connection conn, JobCode jobCode) {
+		String jobName = "";
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("getJobName");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, jobCode.name()); 
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				jobName = rset.getString(1);
+			}
+		} catch (SQLException e) {
+			throw new MemberException("직무명 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return jobName;
+		
+	}
 	// 수진 코드 끝
 
 }

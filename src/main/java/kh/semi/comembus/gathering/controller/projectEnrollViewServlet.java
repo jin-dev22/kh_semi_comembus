@@ -81,12 +81,16 @@ public class projectEnrollViewServlet extends HttpServlet {
 			String local = multiReq.getParameter("local");
 			int people = Integer.parseInt(multiReq.getParameter("people"));
 			String _status = multiReq.getParameter("status");
+			String _startDate = multiReq.getParameter("startDate");
+			String _endDate = multiReq.getParameter("endDate");
 			
 			GatheringType psType = _psType != null ? GatheringType.valueOf(_psType) : null;
 			Date regDate = (_regDate != null && !"".equals(_regDate))?Date.valueOf(_regDate):null;
 			Status status = _status != null ? Status.valueOf(_status):null;
+			Date startDate = (_startDate != null && !"".equals(_startDate))?Date.valueOf(_startDate):null;
+			Date endDate = (_endDate != null && !"".equals(_endDate))?Date.valueOf(_endDate):null;
 			
-			GatheringExt project = new GatheringExt(psNo,writer,psType,title,null,content,0,bookmark,topic,local,people,status);
+			GatheringExt project = new GatheringExt(psNo,writer,psType,title,null,content,0,bookmark,topic,local,people,status,startDate,endDate);
 			
 			Enumeration<String> filenames = multiReq.getFileNames();
 			while(filenames.hasMoreElements()) {
