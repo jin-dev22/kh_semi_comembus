@@ -43,8 +43,7 @@
 					<td colspan="3">❗ 스터디 제목을 적어주세요</td>
 				</tr>
 				<tr>
-					<td><input type="text" name="title" id="projectName"
-						placeholder="3~20자로 적어주세요" required></td>
+					<td colspan="3" id="name"><input type="text" name="title" placeholder="3~20자로 적어주세요" style="width:900px;" required></td>
 				</tr>
 				<tr></tr>
 				<tr>
