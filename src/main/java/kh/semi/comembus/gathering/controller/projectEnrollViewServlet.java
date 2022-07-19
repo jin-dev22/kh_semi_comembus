@@ -1,6 +1,5 @@
 package kh.semi.comembus.gathering.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.Enumeration;
@@ -12,12 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.oreilly.servlet.MultipartRequest;
-import com.oreilly.servlet.multipart.FileRenamePolicy;
-
-import kh.semi.comembus.common.ComembusFileRenamePolicy;
-import kh.semi.comembus.gathering.model.dto.Attachment;
-import kh.semi.comembus.gathering.model.dto.GatheringExt;
+import kh.semi.comembus.gathering.model.dto.Gathering;
 import kh.semi.comembus.gathering.model.dto.GatheringType;
 import kh.semi.comembus.gathering.model.dto.Status;
 import kh.semi.comembus.gathering.model.service.ProjectService;
@@ -25,7 +19,7 @@ import kh.semi.comembus.gathering.model.service.ProjectService;
 /**
  * Servlet implementation class projectEnrollViewServlet
  */
-@WebServlet("/gathering/projectEnroll")
+@WebServlet("/gathering/projectEnrollView")
 public class projectEnrollViewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ProjectService projectService = new ProjectService();
@@ -57,32 +51,24 @@ public class projectEnrollViewServlet extends HttpServlet {
 	 * - 2. 저장된 파일정보 attachment 레코드로 등록
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
 		try {
-			//0. 첨부파일처리
-			ServletContext application = getServletContext();
-			String saveDirectory = application.getRealPath("/gathering/projectEnroll");
-			System.out.println("saveDirectory = "+saveDirectory);
-			int maxPostSize = 1024*1024*20;//20MB
-			String encoding = "utf-8";
-			FileRenamePolicy policy = new ComembusFileRenamePolicy();
-			
-			MultipartRequest multiReq = new MultipartRequest(request, saveDirectory, maxPostSize, encoding, policy);
 			
 			//1. 사용자 입력값 처리
-			int psNo= Integer.parseInt(multiReq.getParameter("psNo"));
-			String writer = multiReq.getParameter("writer");
-			String _psType=multiReq.getParameter("psType");
-			String title = multiReq.getParameter("title");
-			String _regDate = multiReq.getParameter("regDate");
-			String content = multiReq.getParameter("content");
-			int viewcount = Integer.parseInt(multiReq.getParameter("viewcount"));
-			int bookmark=Integer.parseInt(multiReq.getParameter("bookmark"));
-			String topic = multiReq.getParameter("topic");
-			String local = multiReq.getParameter("local");
-			int people = Integer.parseInt(multiReq.getParameter("people"));
-			String _status = multiReq.getParameter("status");
-			String _startDate = multiReq.getParameter("startDate");
-			String _endDate = multiReq.getParameter("endDate");
+			int psNo= Integer.parseInt(request.getParameter("psNo"));
+			String writer = request.getParameter("writer");
+			String _psType=request.getParameter("psType");
+			String title = request.getParameter("title");
+			String _regDate = request.getParameter("regDate");
+			String content = request.getParameter("content");
+			int viewcount = Integer.parseInt(request.getParameter("viewcount"));
+			int bookmark=Integer.parseInt(request.getParameter("bookmark"));
+			String topic = request.getParameter("topic");
+			String local = request.getParameter("local");
+			int people = Integer.parseInt(request.getParameter("people"));
+			String _status = request.getParameter("status");
+			String _startDate = request.getParameter("startDate");
+			String _endDate = request.getParameter("endDate");
 			
 			GatheringType psType = _psType != null ? GatheringType.valueOf(_psType) : null;
 			Date regDate = (_regDate != null && !"".equals(_regDate))?Date.valueOf(_regDate):null;
@@ -90,19 +76,8 @@ public class projectEnrollViewServlet extends HttpServlet {
 			Date startDate = (_startDate != null && !"".equals(_startDate))?Date.valueOf(_startDate):null;
 			Date endDate = (_endDate != null && !"".equals(_endDate))?Date.valueOf(_endDate):null;
 			
-			GatheringExt project = new GatheringExt(psNo,writer,psType,title,null,content,0,bookmark,topic,local,people,status,startDate,endDate);
+			Gathering project = new Gathering(psNo,writer,psType,title,regDate,content,0,0,topic,local,1,status,startDate,endDate);
 			
-			Enumeration<String> filenames = multiReq.getFileNames();
-			while(filenames.hasMoreElements()) {
-				String filename = filenames.nextElement();
-				File upFile = multiReq.getFile(filename);
-				if(upFile!=null) {
-					Attachment attach = new Attachment();
-					attach.setOriginalFilename(multiReq.getOriginalFileName(filename));
-					attach.setRenamedFilename(multiReq.getFilesystemName(filename));
-					project.addAttachment(attach);
-				}
-			}
 			System.out.println("project = "+project);
 			
 			//2. 업무로직
