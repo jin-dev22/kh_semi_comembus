@@ -12,7 +12,7 @@ import kh.semi.comembus.gathering.model.dao.ProjectDao;
 import kh.semi.comembus.gathering.model.dto.Gathering;
 
 public class ProjectService {
-	private ProjectDao ProjectDao=new ProjectDao();
+	private static ProjectDao ProjectDao=new ProjectDao();
 
 	public int enrollProject(Gathering project) {
 		Connection conn= getConnection();
@@ -32,11 +32,11 @@ public class ProjectService {
 			close(conn);
 		}return result;
 	}
-	public Gathering findByNo(int psNo) {
+	public static Gathering findByNo(int psNo) {
 		return findByNo(psNo, true);
 	}
 	
-	public Gathering findByNo(int psNo, boolean hasRead) {
+	public static Gathering findByNo(int psNo, boolean hasRead) {
 		Connection conn = getConnection();
 		Gathering project = null;
 		
