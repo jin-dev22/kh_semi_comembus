@@ -17,7 +17,7 @@
 	</tr>
 	
  	<tr>
-		<td><input type="text" name="co_title" id="enroll_title" placeholder="제목을 작성해주세요" /></td>
+		<td><input type="text" name="co_title" id="enroll_title" placeholder="제목을 작성해주세요"  /></td>
 	</tr>
 
 	<tr>

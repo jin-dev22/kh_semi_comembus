@@ -273,7 +273,8 @@ CREATE TABLE community_board (
     constraint fk_community_writer foreign key(co_writer) references member(member_id) on delete set null,
     constraint ck_community_type check (co_type in('F', 'Q', 'S'))
 );
-
+update community_board set co_title='tttt', co_content='다시' where co_no = 141;
+commit;
 insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'sinsa', '제목', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'Q');
 insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'maxston0', '제목', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'Q');
 insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'ejahnke1', '제목', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'Q');

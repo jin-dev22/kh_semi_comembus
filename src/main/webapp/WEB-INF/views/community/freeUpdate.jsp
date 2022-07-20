@@ -1,23 +1,26 @@
+<%@page import="kh.semi.comembus.community.model.dto.Community"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
-
+<% 
+	Community fview = (Community) request.getAttribute("fview");
+%>
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/community.css" />
 
 <div id="commuHeader">
 	<p>글작성<p>
 </div>
-<form action="<%=request.getContextPath()%>/community/communityEnroll?co_type=S"
+<form action="<%=request.getContextPath()%>/community/communityUpdate?co_type=F"
 	method="post" id="communityEnrollFrm">
-	
+<input type="hidden" name="no" value="<%= fview.getCoNo()%>" />
 <table id="tbl-board-view">
 	<tr>
 		<th>제목</th>
 	</tr>
 	
  	<tr>
-		<td><input type="text" name="co_title" id="enroll_title" placeholder="제목을 작성해주세요" /></td>
+		<td><input type="text" name="co_title" id="enroll_title" placeholder="제목을 작성해주세요" value="<%= fview.getCoTitle().replace("\"","&quot;") %>" /></td>
 	</tr>
 
 	<tr>
@@ -25,21 +28,27 @@
 	</tr>
 	
  	<tr>
-		<td><input type="text" name="co_writer" value="<%= loginMember.getMemberId() %>" readonly/></td>
+		<td><input type="text" name="co_writer" value="<%= fview.getCoWriter() %>" readonly/></td>
 	</tr>
 
 	<tr>
 		<th>내용</th>
 	</tr>
-	
+
 	<tr>
 		<td><input type="hidden" name="co_content" id="enroll_summernote"/></td>
 	</tr>
-	
+
+	<%--
 	<tr>
-		<td>
-			<input type="submit" value="등록" /> 
-		</td>
+		<td><input type="hidden" name="co_content" id="update_summernote"/><%= qview.getCoContent() %></td>
+	</tr>
+	 --%>
+	<tr>
+		<th colspan="2">
+			<input type="submit" value="수정하기"/>
+			<input type="button" value="취소" onclick="history.go(-1);"/>
+		</th>
 	</tr>
 	
 </table>
@@ -51,7 +60,7 @@
         height: 500,
 	    focus: true,
 	    disableResizeEditor: true,
-	   });
+	   }).summernote('code','<%=fview.getCoContent()%>');
    
 	//submit 처리
       $("#communityEnrollFrm").submit(function(){
