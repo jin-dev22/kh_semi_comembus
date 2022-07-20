@@ -3,26 +3,43 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+<link rel="stylesheet" href="<%=request.getContextPath() %>/css/gathering/gatheringList.css">  
 <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css"/>
-<link rel="stylesheet" href="<%=request.getContextPath() %>/css/gathering/gatheringList.css">
 <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
-<script src="<%=request.getContextPath() %>/js/gathering/gathering.js"></script>
+<script defer src="<%=request.getContextPath() %>/js/gathering/gathering.js"></script>
 <script src="<%= request.getContextPath() %>/js/jquery-3.6.0.js"></script>
 <%
 	List<Gathering> projectList = (List<Gathering>) request.getAttribute("projectList");
 	String type = request.getParameter("searchType");
 	String keyword = request.getParameter("searchKeyword");
+	System.out.println("type = " + type);
+	System.out.println("keyword = " + keyword);
 %>
 <script>
-const onchangeLocal = () => {
-	const selectlocal = document.getElementById("p__local").options[document.getElementById("p__local").selectedIndex].value;
-	findLocal(selectlocal);
-};
-const findLocal = (selectlocal) => {
-	console.log("selectlocal = ", selectlocal); // 확인용
+const gatheringFilter = () => {
+	const localAll = $("#p__local").val();
+	const jobAll = $("#p__job_code").val();
+	
+	let searchLocal = 'local';
+	let searchJobcode = 'jobcode';
+	let selectLocalKeyword = localAll;
+	let selectJobKeyword = jobAll;
+	
+	console.log("searchLocal = ", searchLocal); // 확인용
+	console.log("searchJobcode = ", searchJobcode); // 확인용
+	console.log("selectLocalKeyword = ", selectLocalKeyword); // 확인용
+	console.log("selectJobKeyword = ", selectJobKeyword); // 확인용
 	$.ajax({
+		// url 서블릿주소 변경하기 나중에
 		url: '<%= request.getContextPath() %>/gathering/searchLocal',
-		data: {searchType: 'local', searchKeyword: selectlocal},
+		data: {
+			searchLocal: searchLocal,
+			searchJobcode: searchJobcode,
+			selectLocalKeyword: selectLocalKeyword,
+			selectJobKeyword: selectJobKeyword
+			// , ing: ing // 추후 모집중인 필터 진행 시
+//			searchType: selectType, searchKeyword: selectKeyword
+			},
 		success(projectSelectList){
 			console.log(projectSelectList); // 확인용
 			const {projectList, searchPagebar} = projectSelectList;
@@ -73,23 +90,23 @@ const findLocal = (selectlocal) => {
 			</div>
 			<hr>
 			<div class="ps__header__content swiper">
+				<div class="swiper-wrapper">
 				<%
 				if(projectList != null && !projectList.isEmpty()){
 					for(int i = 0; i < 3; i++){
 						String topic = projectList.get(i).getTopic();
-
 				%>
 				<!-- swiper-slide 3개 생성 및 추후 진행 -->
 				<div class="swiper-slide">
 					<img src="<%= request.getContextPath() %>/images/<%= topic %>.jpg" class="ps__header__content__img" alt="해당 프로젝트 주제 이미지">
 					<ul class="ps__header__content-info">
-						<li><p class="bold"><%= projectList.get(i).getTopic() %></p></li>
+						<li><p class="bold"><%= "social".equals(topic) ? "소셜네트워크" : ("game".equals(topic) ? "게임" : ("travel".equals(topic) ? "여행" : ("finance".equals(topic) ? "금융" : "이커머스"))) %></p></li>
 						<li><p class="bold"><%= projectList.get(i).getTitle() %></p></li>
 						<li class="ps__header__content-content"><p><%= projectList.get(i).getContent() %></p></li>
 						<li class="bold">
-							<span><%= projectList.get(i).getBookmark() %></span>
-							<span><%= projectList.get(i).getViewcount() %></span>
-							<span>모집인원 0 / 10</span>
+							<span class="heart-emoji">&#9829; <%= projectList.get(i).getBookmark() %></span>
+							<span>&#128064; <%= projectList.get(i).getViewcount() %></span>
+							<span>모집인원 0 / <%= projectList.get(i).getPeople() %></span>
 						</li>
 					</ul>
 				</div>
@@ -97,6 +114,8 @@ const findLocal = (selectlocal) => {
 					}
 				}
 				%>
+				</div>
+
 				<div class="swiper-button-next"></div>
 				<div class="swiper-button-prev"></div>
 				<div class="swiper-pagination"></div>
@@ -108,24 +127,24 @@ const findLocal = (selectlocal) => {
 			<h1>전체 프로젝트</h1>
 			<div class="ps-filter-container">
 				<form name="searchFrm">
-					<select name="searchType" value="local" id="p__local" class="ps-filter" onchange="onchangeLocal()">
-						<option value="none" name="searchKeyword" <%= "none".equals(keyword) ? "selected" : "" %>>지역 미지정</option>
-						<option value="Online" name="searchKeyword" <%= "Online".equals(keyword) ? "selected" : "" %>>온라인</option>
-						<option value="Capital" name="searchKeyword" <%= "Capital".equals(keyword) ? "selected" : "" %>>수도권</option>
-						<option value="Chungcheong" name="searchKeyword" <%= "Chungcheong".equals(keyword) ? "selected" : "" %>>충청도</option>
-						<option value="Gangwon" name="searchKeyword" <%= "Gangwon".equals(keyword) ? "selected" : "" %>>강원도</option>
-						<option value="Jeolla" name="searchKeyword" <%= "Jeolla".equals(keyword) ? "selected" : "" %>>전라도</option>
-						<option value="Gyeongsang" name="searchKeyword" <%= "Gyeongsang".equals(keyword) ? "selected" : "" %>>경상도</option>
-						<option value="Jeju" name="searchKeyword" <%= "Jeju".equals(keyword) ? "selected" : "" %>>제주</option>
+					<select name="searchType" value="local" id="p__local" class="ps-filter" onchange="gatheringFilter()">
+						<option value="All" <%= "All".equals(keyword) ? "selected" : "" %>>지역 미지정</option>
+						<option value="Online" <%= "Online".equals(keyword) ? "selected" : "" %>>온라인</option>
+						<option value="Capital" <%= "Capital".equals(keyword) ? "selected" : "" %>>수도권</option>
+						<option value="Chungcheong" <%= "Chungcheong".equals(keyword) ? "selected" : "" %>>충청도</option>
+						<option value="Gangwon" <%= "Gangwon".equals(keyword) ? "selected" : "" %>>강원도</option>
+						<option value="Jeolla" <%= "Jeolla".equals(keyword) ? "selected" : "" %>>전라도</option>
+						<option value="Gyeongsang" <%= "Gyeongsang".equals(keyword) ? "selected" : "" %>>경상도</option>
+						<option value="Jeju" <%= "Jeju".equals(keyword) ? "selected" : "" %>>제주</option>
 					</select>
 				</form>
-				<form action="<%= request.getContextPath() %>/gathering/search" method="post">
-					<select name="searchType" id="p__job_code" class="ps-filter">
-						<option value="none">직무 미지정</option>
-						<option value="PL">기획</option>
-						<option value="DG">디자인</option>
-						<option value="FE">프론트</option>
-						<option value="BE">백엔드</option>
+				<form name="searchFrm">
+					<select name="searchType" value="jobcode" id="p__job_code" class="ps-filter" onchange="gatheringFilter()">
+						<option value="All" <%= "All".equals(keyword) ? "selected" : "" %>>직무 미지정</option>
+						<option value="PL" <%= "PL".equals(keyword) ? "selected" : "" %>>기획</option>
+						<option value="DG" <%= "DG".equals(keyword) ? "selected" : "" %>>디자인</option>
+						<option value="FE" <%= "FE".equals(keyword) ? "selected" : "" %>>프론트</option>
+						<option value="BE" <%= "BE".equals(keyword) ? "selected" : "" %>>백엔드</option>
 					</select>
 				</form>
 				<div class="ps-filter">
@@ -137,7 +156,7 @@ const findLocal = (selectlocal) => {
 					<label for="p__bookmark">찜한 프로젝트</label>
 				</div>
 				
-				<input type="button" class="ps__enroll btn" onclick="location.href='<%= request.getContextPath()%>/gathering/projectEnroll;'" value="프로젝트 생성">
+				<input type="button" class="ps__enroll btn" onclick="location.href='<%= request.getContextPath()%>/gathering/projectEnrollView'" value="프로젝트 생성">
 			</div>
 			<div class="ps-lists">
 			<%

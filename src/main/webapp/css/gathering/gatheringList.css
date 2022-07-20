@@ -47,19 +47,16 @@ hr {
 }
 .ps__header__content {
   width: 100%;
-  display: flex;
-  position: relative;
-  overflow: hidden;
   height: 350px;
   box-sizing: border-box;
   padding: 25px 60px;
   background-color: #FFE69A;
 }
-.ps__header__content .swiper-slide {
-  width: 100%;
+.swiper-wrapper {
   display: flex;
-  position: absolute;
-  left: 50%;
+}
+.ps__header__content .swiper-slide {
+  display: flex;
   justify-content: space-around;
   align-items: center;
   box-sizing: border-box;

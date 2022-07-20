@@ -2,9 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <link rel="stylesheet" href="<%=request.getContextPath() %>/css/gathering/Enroll.css">
-
 <form name="projectEnrollFrm"
-	action="<%=request.getContextPath()%>/gathering/projectEnrollView"
+	action="<%=request.getContextPath()%>/gathering/projectView"
 	method="post" enctype="multipart/form-data">
 	<table id="tbl-project-enrollview">
 		<tbody>
