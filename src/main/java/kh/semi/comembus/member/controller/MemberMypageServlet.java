@@ -24,7 +24,7 @@ import kh.semi.comembus.member.model.service.MemberService;
 /**
  * Servlet implementation class MemberMypageServlet
  */
-@WebServlet("/member/mypage")
+@WebServlet("/membus/mypage")
 public class MemberMypageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private MemberService memberService = new MemberService();

@@ -11,6 +11,7 @@ ws.addEventListener('message', (e) => {
 		case 'NEW_COMMENT' :
 		case 'NEW_APPLICANT' :
 		case 'APPLY_RESULT' :
+		case 'APPLY_CANCELED':
 			const wrapper = document.querySelector("#notification");
 			const i = document.createElement('i');
 			i.classList.add('fa-solid', 'fa-bell', 'bell');

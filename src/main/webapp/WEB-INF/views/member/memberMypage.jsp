@@ -20,14 +20,14 @@
 %>
 
 <section id="membus-profile">
-	<form name="profileFrm" enctype="multipart/form-data">
+	<form name="profileFrm" enctype="multipart/form-data" action="<%=request.getContextPath()%>/membus/mypage/update" method="POST">
 		<div class="profile-row part-1 ">
 			<div class="nickname-badge"><%= member.getNickName().charAt(0)%></div>
 			<div>
 				<div><label for="nickName">닉네임 :</label> &nbsp;&nbsp;&nbsp;<input type="text" name="nickName" value="<%=member.getNickName() %>" readonly/> <input type="button" value="중복검사" onclick="checkNickNameDuplicate();"/> </div>
-				<div><label for="search-jobCode">직무분야 : </label> 
+				<div><label for="jobCode">직무분야 : </label> 
 					<!-- <select id="search-jobCode" onchange="changeSelected('searchJobcode', this.value)"> -->
-					<select id="search-jobCode">
+					<select id="jobCode">
                     <option value="PL" <%= "PL".equals(jobCode)? "selected" : "" %>>기획</option>
                     <option value="DG" <%= "DG".equals(jobCode)? "selected" : "" %>>디자인</option>
                     <option value="FE" <%= "FE".equals(jobCode)? "selected" : "" %>>프론트엔드</option>
@@ -185,15 +185,25 @@
 		</div>
 	<input type="submit" value="업데이트" />
 	<input type="button" value="비밀번호 변경" onclick="updatePassword();"/>
+	<input type="button" onclick="deleteMember();" value="탈퇴"/>
 	</form>
 </section>
+<!-- 지원신청 취소 폼 -->
 <form name="apldCancelFrm" action="<%= request.getContextPath()%>/gathering/apply/cancel" method="POST">
 	<input type="hidden" name="psNo"/>
 	<input type="hidden" name="memberId" value="<%= loginMember.getMemberId()%>" />
-	
+	<input type="hidden" name="nickName" value="<%= loginMember.getNickName()%>"/>
 </form>
-<a href="">탈퇴하기</a>
+<form action="memberQuitFrm" action="<%= request.getContextPath()%>/membus/quit">
+	<input type="hidden" name="memberId" value="<%= loginMember.getMemberId()%>" />
+</form>
 <script>
+	function deleteMember(){
+		if(confirm("정말 탈퇴하시겠습니까?")){
+			document.memberQuitFrm.submit();
+		}	
+	}
+	
 	function cancelApld(psNo){
 		if(confirm("지원을 취소하시겠습니까?")){
 			const frm = document.apldCancelFrm

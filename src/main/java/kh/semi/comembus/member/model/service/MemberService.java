@@ -90,6 +90,21 @@ public class MemberService {
 		return jobName;
 	}
 
+	public int updateMember(Map<String, Object> param) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			result = memberDao.updateMember(conn, param);
+			commit(conn);
+		} catch (Exception e) {
+			rollback(conn);
+			throw e;
+		} finally {
+			close(conn);
+		}
+		return result;
+	}
+
 	
 	
 	// 수진 코드 끝

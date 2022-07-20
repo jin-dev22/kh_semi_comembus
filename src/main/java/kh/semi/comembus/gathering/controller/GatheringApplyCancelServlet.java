@@ -10,7 +10,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import kh.semi.comembus.alert.model.dto.Alert;
+import kh.semi.comembus.alert.model.dto.IsRead;
+import kh.semi.comembus.alert.model.service.AlertService;
+import kh.semi.comembus.gathering.model.dto.Gathering;
 import kh.semi.comembus.gathering.model.service.GatheringService;
+import kh.semi.comembus.ws.endpoint.MessageType;
 
 /**
  * 모임 지원 취소하기 
@@ -19,6 +24,7 @@ import kh.semi.comembus.gathering.model.service.GatheringService;
 public class GatheringApplyCancelServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private GatheringService gatheringService = new GatheringService(); 
+	private AlertService alertService = new AlertService();
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -36,9 +42,21 @@ public class GatheringApplyCancelServlet extends HttpServlet {
 			//지원현황 테이블에서 지원결과 'X'로 변경
 			int result = gatheringService.cancelApld(param);
 			System.out.println("@ApldCcServ: result>>"+result);
-			//변경결과적용되도록 다시 화면 로딩
-			String referer = request.getHeader("Referer");
-			response.sendRedirect(referer);
+			
+			//모임장에게 지원신청 취소 알림
+			String nickName = request.getParameter("nickName");
+			Gathering gather = gatheringService.findByNo(psNo);
+			//알림내용 글자 수 줄이기
+			String title = gather.getTitle();
+			String substrTitle = title.length() > 8? title.substring(0, 7)+"...": title;
+			String substrNick = nickName.length() > 5? nickName.substring(0, 4)+"..." : nickName;
+			String alertContent = "["+substrTitle +"] 지원자 ["+substrNick+"]님이 지원을 취소했습니다.";
+			//int alertNo, String receiverId, int psNo, int replNo, MessageType messageType, String content,IsRead isRead)
+			Alert alert = new Alert(0, gather.getWriter(), psNo, 0, MessageType.APPLY_CANCELED, alertContent, IsRead.N);
+			result = alertService.notifyCancelApld(alert);
+			
+			//마이페이지에서 지원취소내용이 적용되도록 다시 화면 로딩
+			response.sendRedirect(request.getContextPath() +"/membus/mypage");
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

@@ -291,6 +291,25 @@ public class MemberDao {
 		return jobName;
 		
 	}
+	
+	public int updateMember(Connection conn, Map<String, Object> param) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("updateMember");
+		//update member set member_nickname = ?, job_code = ?, introduction= ? where member_id = ?
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, (String) param.get("nickName"));
+			pstmt.setString(2, (String) param.get("jobCode"));
+			pstmt.setString(3, (String) param.get("introduction"));
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new MemberException("회원정보 수정 오류", e);
+		} finally {
+			close(pstmt);
+		}	
+		return result;
+	}
 	// 수진 코드 끝
 
 	

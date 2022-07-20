@@ -53,6 +53,7 @@
 	
 	</script>
 	<!-- 수진코드 시작 -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<% if(loginMember != null){%>
 	<script src="<%=request.getContextPath()%>/js/ws.js"></script>
 	<%}%>
@@ -96,7 +97,8 @@
   <% } else {%>  
 	  <ul class="h__member__menu">
 	  <!-- 닉네임 클릭 시 마이페이지로 이동 -->
-	  	<li class="h__loginMember"><a href="<%= request.getContextPath()%>/member/mypage"><%= loginMember.getNickName() %></a></li>
+	  	<li class="h__loginMember"><a href="<%= request.getContextPath()%>/membus/mypage"><%= loginMember.getNickName() %></a></li>
+	  	<span id="noification"></span>
 	  	<li class="h__memberLogout"><a href="<%= request.getContextPath() %>/membus/logout">로그아웃</a></li>
 	  </ul>
   <% } %>   
