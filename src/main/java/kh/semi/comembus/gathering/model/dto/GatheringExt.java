@@ -10,7 +10,7 @@ public class GatheringExt extends Gathering{
 	private String backend;
 	private int planning_cnt;
 	private int design_cnt;
-	private int frontend_count;
+	private int frontend_cnt;
 	private int backend_cnt;
 	
 	public GatheringExt() {
@@ -27,7 +27,7 @@ public class GatheringExt extends Gathering{
 		this.backend = backend;
 		this.planning_cnt = planning_cnt;
 		this.design_cnt = design_cnt;
-		this.frontend_count = frontend_count;
+		this.frontend_cnt = frontend_cnt;
 		this.backend_cnt = backend_cnt;
 	}
 
@@ -79,12 +79,12 @@ public class GatheringExt extends Gathering{
 		this.design_cnt = design_cnt;
 	}
 
-	public int getFrontend_count() {
-		return frontend_count;
+	public int getFrontend_cnt() {
+		return frontend_cnt;
 	}
 
-	public void setFrontend_count(int frontend_count) {
-		this.frontend_count = frontend_count;
+	public void setFrontend_cnt(int frontend_cnt) {
+		this.frontend_cnt = frontend_cnt;
 	}
 
 	public int getBackend_cnt() {
