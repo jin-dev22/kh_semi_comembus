@@ -1,3 +1,4 @@
+<%@page import="kh.semi.comembus.common.ComembusUtils"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="kh.semi.comembus.community.model.dto.Community"%>
 <%@page import="java.util.List"%>
@@ -12,6 +13,7 @@
 	<p>자유 게시판<p>
 </div>
 
+
 <div id="commuListWrapper">
 <div>
 		<form id="titleText">
@@ -19,6 +21,7 @@
 		</form>
 		
 </div>
+
 	<table id="tbl-commu">
 		<tr>
 			<th>제목</th>
@@ -37,7 +40,7 @@
 			%>
 
 			<tr>
-				<td><%= c.getCoTitle() %></td>
+				<td><a href="<%= request.getContextPath() %>/community/communityView?co_type=F&no=<%= c.getCoNo()%>"><%= ComembusUtils.escapeXml(c.getCoTitle()) %></a> </td>
 				<td><%= c.getCoWriter() %></td>
 				<td><%= new SimpleDateFormat("yyyy-MM-dd HH:mm").format(c.getCoRegdate()) %></td>
 				<td><%= c.getCoLike() %></td>
@@ -49,9 +52,13 @@
 			} 
 			
 		%>
-	
 </table>
+<% if(loginMember != null) { %>
 		<input type="button" value="글쓰기" id="btn-add"
 		onclick="location.href='<%= request.getContextPath() %>/community/communityEnroll?co_type=F';"/>
+		<% } %>
 		
+<div id='pagebar'>
+	<%= request.getAttribute("pagebar") %>
+</div>
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>

@@ -42,7 +42,7 @@ public class CommunityEnrollServlet extends HttpServlet {
 				request.getRequestDispatcher("/WEB-INF/views/community/freeEnroll.jsp")
 				.forward(request, response);
 				
-			}else {
+			}else if("S".equals(type)) {
 				request.getRequestDispatcher("/WEB-INF/views/community/shareEnroll.jsp")
 				.forward(request, response);
 			}
@@ -70,13 +70,11 @@ public class CommunityEnrollServlet extends HttpServlet {
 				response.sendRedirect(request.getContextPath() + "/community/communityList?co_type=Q");
 				
 			}else if("F".equals(type)) {
-//				Community fenroll = communityService.enrollFree(commu);
-				response.sendRedirect(request.getContextPath() + "/community/freeList");
-				
-			}else {
-//				Community senroll = communityService.enrollShare(commu);
-				request.getSession().setAttribute("msg", "게시글을 성공적으로 등록했습니다");
-				response.sendRedirect(request.getContextPath() + "/community/shareList");
+				int result = communityService.insertFree(commu);
+				response.sendRedirect(request.getContextPath() + "/community/communityList?co_type=F");
+			}else if("S".equals(type)) {
+				int result = communityService.insertShare(commu);
+				response.sendRedirect(request.getContextPath() + "/community/communityList?co_type=S");
 			}
 			
 		}catch(Exception e) {
