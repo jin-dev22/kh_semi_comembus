@@ -21,7 +21,7 @@ import kh.semi.comembus.gathering.model.service.GatheringService;
 @WebServlet("/gathering/projectList")
 public class ProjectListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	GatheringService gatheringService = new GatheringService();
+	private GatheringService gatheringService = new GatheringService();
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -41,10 +41,13 @@ public class ProjectListServlet extends HttpServlet {
 			param.put("start", start);
 			param.put("end", end);
 			
-			// 2. 업무로직
 			// content 영역 
 			List<Gathering> projectList = gatheringService.findGatheringAll(param); 
 			// System.out.println("projectList: " + projectList); // 확인용
+			
+			// 모집인원
+			// List<GatheringExt> capacityJobList = gatheringService.findCapacityAll(param);
+			
 			
 			// pagebar 영역
 			int totalContent = gatheringService.getTotalContent();
@@ -52,10 +55,11 @@ public class ProjectListServlet extends HttpServlet {
 			String url = request.getRequestURI();
 			String pagebar = ComembusUtils.getPagebar(cPage, numPerPage, totalContent, url);
 			
-			// 3. view단처리
+			// view단처리
 			request.setAttribute("projectList", projectList);
 			request.setAttribute("pagebar", pagebar);
 			request.getRequestDispatcher("/WEB-INF/views/gathering/projectList.jsp").forward(request, response);
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 			throw e;

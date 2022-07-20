@@ -93,5 +93,38 @@ public class MemberService {
 	
 	
 	// 수진 코드 끝
+	
+	// 선아 코드 시작
+	public int insertBookmark(Map<String, Object> param) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			result = memberDao.insertBookmark(conn, param);
+			commit(conn);
+		} catch (Exception e) {
+			rollback(conn);
+			throw e;
+		} finally {
+			close(conn);
+		}
+		return result;
 
+	}
+
+	public int deleteBookmark(Map<String, Object> param) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			result = memberDao.deleteBookmark(conn, param);
+			commit(conn);
+		} catch (Exception e) {
+			rollback(conn);
+			throw e;
+		} finally {
+			close(conn);
+		}
+		return result;
+	}
+	
+	// 선아 코드 끝
 }

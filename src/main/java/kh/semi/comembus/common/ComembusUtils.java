@@ -107,50 +107,5 @@ public class ComembusUtils {
 				  .replaceAll(">", "&gt;");
 	}
 	
-
-	// 선아 - 비동기 페이지바
-	// 아직 처리 안됨
-	public static String getAsyncPagebar(int cPage, int numPerPage, int totalContent, String url) {
-		StringBuilder pagebar = new StringBuilder();
-		url += (url.indexOf("?") < 0) ? "?cPage=" : "&cPage=";
-		int totalPage = (int) Math.ceil((double) totalContent / numPerPage);
-		int pagebarSize = 5;
-		int pagebarStart = ((cPage - 1) / pagebarSize * pagebarSize) + 1;
-		int pagebarEnd = pagebarStart + pagebarSize - 1;
-		int pageNo = pagebarStart;
-		
-		// 이전영역
-		if(pageNo == 1) {
-			
-		}
-		else {
-			pagebar.append("<a href='javascript:gatheringFilter(" + (pageNo - 1) + ")'>이전</a>\n");
-		}
-		
-		// pageNo영역
-		while(pageNo <= pagebarEnd && pageNo <= totalPage) {
-			// 현재페이지
-			if(pageNo == cPage) {
-				pagebar.append("<span class='cPage'>" + pageNo + "</span>\n");
-			}
-			// 현재페이지가 아닌 경우
-			else {
-				pagebar.append(
-						"<a href='javascript:gatheringFilter(" + pageNo + "); return false;'>" + pageNo + "</a>\n");
-			}
-			pageNo++;
-		}
-		
-		// 다음영역
-		if(pageNo > totalPage) {
-			
-		}
-		else {
-			pagebar.append(
-					"<a href='javascript:gatheringFilter(" + pageNo + "'>다음</a>\n");
-
-		}
-		return pagebar.toString();
-	}
 	
 }
