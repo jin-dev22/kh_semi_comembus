@@ -1,4 +1,4 @@
-console.log('아아아');
+console.log("js연결확인");
 const swiper = new Swiper('.swiper', {
 	slidesPerView: 1,
 	spaceBetween: 10,
