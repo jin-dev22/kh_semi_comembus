@@ -18,7 +18,7 @@
     <!-- <section id="membusList-container"> -->
         <h2>멤버스 찾기</h2>
         <div id="search-container">
-            <!-- <label for="searchType">직무분야</label>  -->
+            <!-- <label for="searchType">직무분야</label> select선택란에 바로 표시하기 위해 라벨 사용안함 -->
             <form action="<%=request.getContextPath()%>/membus/search" method="get">
                 <select id="search-jobCode" onchange="changeSelected('searchJobcode', this.value)">
                     <option value="ALL" <%= "ALL".equals(jobCode)? "selected" : "" %>>직무분야</option>
@@ -68,7 +68,7 @@
     </div>
     <!-- 멤버스 리스트 끝 -->
     <!-- 페이지바 시작 -->
-   	<div id="pagebar">
+   	<div class="pagebar">
    	 <%=request.getAttribute("pagebar") %>
    	</div>
     <!-- 페이지바 끝 -->

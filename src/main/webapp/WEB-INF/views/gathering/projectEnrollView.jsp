@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ include file="/WEB-INF/views/common/header.jsp" %>
-<link rel="stylesheet" href="<%=request.getContextPath() %>/css/gathering/Enroll.css">
+	pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/views/common/header.jsp"%>
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/css/gathering/Enroll.css">
 <form name="projectEnrollFrm"
 	action="<%=request.getContextPath()%>/gathering/projectView"
 	method="post" enctype="multipart/form-data">
@@ -25,10 +26,13 @@
 				<td colspan="3">❗ 프로젝트 제목을 적어주세요</td>
 			</tr>
 			<tr>
-				<td colspan="3"><input type="radio" name="social">소셜네트워크
-					<input type="radio" name="social">게임 <input type="radio"
-					name="social">여행 <input type="radio" name="social">금융
-					<input type="radio" name="social">이커머스</td>
+				<td colspan="3">
+					<input type="radio" name="topic" id="soscial">소셜네트워크
+					<input type="radio" name="topic" id="game">게임 
+					<input type="radio" name="topic" id="travel">여행 
+					<input type="radio" name="topic" id="finance">금융
+					<input type="radio" name="topic" id="ecommerce">이커머스
+				</td>
 			</tr>
 			<tr></tr>
 			<tr>
@@ -64,9 +68,8 @@
 						<option value="backend">백엔드</option>
 				</select></td>
 				<td>
-					<button class="count" id="plus1">+</button>
-					<span id="count1">1</span>
-				<button class="count" id="minus1">-</button>
+					<button class="count" id="plus1">+</button> <span id="count1">1</span>
+					<button class="count" id="minus1">-</button>
 				</td>
 				<td><input type="button" id="delete" value="삭제"
 					onclick="deleteRow()" /> <input type="button" id="add" value="추가"
@@ -78,7 +81,7 @@
 				<th>*기간 설정</th>
 			</tr>
 			<tr>
-				<td colspan="3">❗ 날짜는 시작일 전까지 수정이 가능합니다.</td>
+				<td colspan="3">❗ 날짜는 수정이 가능합니다.</td>
 			</tr>
 			<tr>
 				<td class="date">시작일</td>
@@ -103,20 +106,29 @@
 			<tr>
 				<td colspan="3" id="summernoteWidth">❗ 프로젝트에 대한 자세한 설명을 적어주세요.
 					자세할수록 지원률이 올라갑니다. <br>
-				<div>
+					<div>
 						<textarea id="summernote" name="editordata"></textarea>
 					</div>
 				</td>
 			</tr>
 			<tr></tr>
 			<tr>
-				<th colspan="2"><br>
-				<input type="submit" value="등록하기"></th>
+				<th colspan="2"><br> <input type="submit" value="등록하기"></th>
 			</tr>
 		</tbody>
 	</table>
 </form>
 <script>
+
+	var now_date = Date.now()
+	var timeoff=new Date().getTimezoneOffset()*60000;
+	var today=new Date(now_date-timeoff).toISOString().split("T")[0];
+	
+	document.getElementById("date_start").setAttribute("min",today);
+	document.getElementById("date_start").setAttribute("value",today);
+	document.getElementById("date_end").setAttribute("min",today);
+	document.getElementById("date_end").setAttribute("value",today);
+
     let container = document.querySelector('#memberAdd');
     const plusBtn = container.querySelector('#plus1');
     const minusBtn = container.querySelector('#minus1');
@@ -307,7 +319,20 @@
 		frm.editordata.focus();	
 		return false;
 	}
-
+	
+    //시작일이 종료일보다 늦은경우 폼제출할 수 없음.
+    const startDate = document.getElementById("date_start").value;
+    const endDate = document.getElementById("date_end").value;
+    if(startDate>=endDate){
+    	alert("시작일이 종료일보다 늦거나 같습니다.");
+    	return false;
+    }
+	
+    //주제 선택을 하지 않은 경우 폼제출할 수 없음.
+    if($('input[name=topic]:checked').length<=0){
+    	alert("주제를 선택해 주세요.");
+    	return false;
+    }
 	return true;
 }
 

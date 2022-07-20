@@ -219,13 +219,6 @@ select * from project_member_dept;
 -- select * from (select row_number() over(order by reg_date desc) rnum, ps.* from project_study ps where gathering_type = '?') p where rnum between ? and ?
 -- select * from (select row_number() over(order by reg_date desc) rnum, ps.* from project_study ps where gathering_type = '?' and upper(#) like upper('%?%')) p where rnum between ? and ?
 -- select count(*) from project_study where gathering_type = '?' and upper(#) like upper('?')
-select
-        *
-from
-        project_study ps join project_member_dept pmd on ps.ps_no = pmd.ps_no
-where
-        gathering_type = 'P';
--- select * from (select row_number() over(order by reg_date desc) rnum, ps.* from project_study ps join project_member_dept pmd on ps.ps_no = pmd.ps_no where gathering_type = 'P' and upper(#) like upper(?)) p where rnum between ? and ?
 
 select
         *
@@ -252,15 +245,16 @@ from (
         from 
                 project_study ps
         where 
-                gathering_type = '?' and
-                [str1]
-                -- exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('jeju'))
-                and
-                [str2]
-                -- exists (select 2 from project_member_dept where ps_no = ps.ps_no and  job_code = 'DG')
+                gathering_type = 'P' and
+                --[str1]
+                 -- exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('capital'))
+                -- and
+                --[str2]
+                 exists (select 2 from project_member_dept where ps_no = ps.ps_no and  job_code = 'FE')
+                 -- and end_date > sysdate -- 추후 모집중인 필터 진행 시 추가
         ) p
-where rnum between ? and ?
-
+where rnum between 1 and 12;
+-- select * from (select row_number() over(order by reg_date desc) rnum, ps.* from project_study ps where gathering_type = 'P' and exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('All')) and exists (select 2 from project_member_dept where ps_no = ps.ps_no and job_code = 'FE')) p where rnum between 1 and 12;
 
 
 --선아님 코드 끝
