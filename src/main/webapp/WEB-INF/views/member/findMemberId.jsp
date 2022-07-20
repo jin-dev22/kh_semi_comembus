@@ -1,41 +1,50 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
-<style>
-#login-container{
-	width: 400px;
-	text-align: center;
-	margin:100px auto;
-	border: 3px solid var(--btn-color);
-	padding: 50px 0;
-}
+<link rel="stylesheet" href="<%= request.getContextPath() %>/css/member/memberLogin.css" />
 
-#loginTable{
-	margin:0 auto;
-}
-</style>
-
-<section id=login-container>
-	<h1>회원가입/로그인</h1>
-	<form id="loginFrm" name="loginFrm" action="<%= request.getContextPath() %>/membus/login" method="POST">
-	<table id="loginTable">
+<section id=find-container>
+	<h2>아이디 찾기</h2>
+	<div class="find-content">
+		<p>회원가입 시 기입한 이름과 핸드폰 번호를 입력해주세요.</p>
+	</div>
+	
+	<form id="findIdFrm" name="findIdFrm" action="<%= request.getContextPath() %>/membus/showMemberId">
+	<table id="findIdTable" class="find-table">
 		<tbody>
-			<tr>
-				<th><label for="loginId" class="login-id-label">아이디</label></th>
-				<td><input type="text" id="loginId" name="loginId"/></td>
+			<tr>  
+				<th><label for="name" class="find-label">이름</label></th>
+				<td><input type="text" id="name" name="name" class="find-input"/></td>
 			</tr>
 			<tr>
-				<th><label for="loginPwd" class="login-pwd-label">비밀번호</label></th>
-           		<td><input type="password" id="loginPwd" name="loginPwd"/></td>
-			</tr>
-			<tr>	
-				<th colspan="2">
-	            	<button id="login">로그인</button>
-	         	</th>
-			</tr>
+				<th><label for="phone" class="find-label">핸드폰 번호</label></th>
+           		<td><input type="text" id="phone" name="phone" class="find-input"/></td>
+			</tr>	
         </tbody>
      </table>
+			<button type="button" id="findIdBtn" class="find-btn">아이디 찾기</button>
      </form>
+     
+     <script>
+     document.querySelector("#findIdBtn").addEventListener('click', (e) => {
+    	const nameVal = document.querySelector("#name").value;
+    	const phoneVal= document.querySelector("#phone").value;
+    	if(nameVal === "" || phoneVal === ""){
+    		alert("이름과 핸드폰 번호를 모두 입력하신 후 아이디 찾기가 가능합니다.");
+    		return;
+    	}
+    	
+   		// popup제어
+   		const title = "findIdPopup";
+   		const spec = "width=480px, height=300px";
+   		const popup = open("", title, spec);
+   		
+   		// form제어
+   		const frm = document.findIdFrm;
+   		frm.target = title;
+   		frm.submit();
+     })
+     </script>
 
 </section>
 
