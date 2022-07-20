@@ -16,39 +16,48 @@
 	System.out.println("keyword = " + keyword);
 %>
 <script>
-const gatheringFilter = () => {
+const gatheringFilter = (num) => {
 	const localAll = $("#p__local").val();
 	const jobAll = $("#p__job_code").val();
+	const statusYN = $("#p__status").is(':checked') ? "N" : "All";
+	
+	// let cPage = 1;
+	let cPage = num;
+	const numPerPage = 12;
+	let totalPages = 0;
 	
 	let searchLocal = 'local';
 	let searchJobcode = 'jobcode';
 	let selectLocalKeyword = localAll;
 	let selectJobKeyword = jobAll;
 	
-	console.log("searchLocal = ", searchLocal); // 확인용
+	/* console.log("searchLocal = ", searchLocal); // 확인용
 	console.log("searchJobcode = ", searchJobcode); // 확인용
 	console.log("selectLocalKeyword = ", selectLocalKeyword); // 확인용
-	console.log("selectJobKeyword = ", selectJobKeyword); // 확인용
+	console.log("selectJobKeyword = ", selectJobKeyword); // 확인용 */
+	console.log("statusYN = ", statusYN); // 확인용
 	$.ajax({
 		// url 서블릿주소 변경하기 나중에
 		url: '<%= request.getContextPath() %>/gathering/searchLocal',
 		data: {
+			cPage: cPage,
 			searchLocal: searchLocal,
 			searchJobcode: searchJobcode,
 			selectLocalKeyword: selectLocalKeyword,
-			selectJobKeyword: selectJobKeyword
-			// , ing: ing // 추후 모집중인 필터 진행 시
-//			searchType: selectType, searchKeyword: selectKeyword
+			selectJobKeyword: selectJobKeyword,
+			statusYN : statusYN
 			},
 		success(projectSelectList){
 			console.log(projectSelectList); // 확인용
-			const {projectList, searchPagebar} = projectSelectList;
-			console.log("projectList = ", projectList); // 확인용
-			console.log("searchPagebar = ", searchPagebar); // 확인용
+			// const {projectList, searchPagebar} = projectSelectList;
+			const {projectList, totalContent, cPage} = projectSelectList;
+//			console.log("projectList = ", projectList); // 확인용
+//			console.log("searchPagebar = ", searchPagebar); // 확인용
+//			console.log("totalContent = ", totalContent); // 확인용
 			document.querySelector(".ps-lists").innerHTML =
 				projectList.reduce((html, selectList, index) => {
 					const {title, viewcount, bookmark, topic, people} = selectList;
-					console.log("확인용", title, viewcount, bookmark, topic, people);
+//					console.log("확인용", title, viewcount, bookmark, topic, people); // 확인용
 					return `\${html}
 					<div class="ps-pre">
 						<a href="">
@@ -68,12 +77,58 @@ const gatheringFilter = () => {
 					</div>
 					`;
 				}, '');
-			document.querySelector("#pagebar").innerHTML = `\${searchPagebar}`;
+			// 위에서 totalContent가 넘어옴 
+			if(totalContent != 0){
+				totalPages = Math.ceil(totalContent / numPerPage);
+				// pageLink(현재페이지, 전체페이지, 호출할 함수 이름)
+				let htmlStr = pageLink(cPage, totalPages, "gatheringFilter");
+				$("#pagebar").html("");
+				$("#pagebar").html(htmlStr);
+			} else {
+				alert("해당 프로젝트가 존재하지 않습니다.");
+			}
 		},
 		error: console.log
 	});
 };
-
+function pageLink(cPage, totalPages, funName){
+	cPage = Number(cPage);
+	totalPages = Number(totalPages);
+	let pagebarTag = "";
+	const pagebarSize = 5;
+	let pagebarStart = (Math.floor((cPage - 1) / pagebarSize) * pagebarSize) + 1;
+	let pagebarEnd = pagebarStart + pagebarSize - 1;
+	let pageNo = pagebarStart;
+	console.log("cPage, totalPages, funName = ", cPage, totalPages, funName); // 확인용
+	console.log("pagebarStart, pagebarEnd, pageNo = ", pagebarStart, pagebarEnd, pageNo); // 확인용
+	
+	// 이전영역
+	if(pageNo == 1) {
+		
+	}
+	else {
+		pagebarTag += "<a href='javascript:" + funName + "(" + (pageNo - 1) + ");'>이전</a>\n";
+	}
+	// pageNo영역
+	while(pageNo <= pagebarEnd && pageNo <= totalPages) {
+		// 현재페이지
+		if(pageNo == cPage) {
+			pagebarTag += "<span class='cPage'>" + pageNo + "</span>\n";
+		}
+		// 현재페이지가 아닌 경우
+		else {
+			pagebarTag += "<a href='javascript:" + funName + "(" + pageNo + ");'>" + pageNo + "</a>\n";
+		}
+		pageNo++;
+	}
+	// 다음영역
+	if(pageNo > totalPages) {}
+	else {
+		pagebarTag += "<a href='javascript:" + funName + "(" + pageNo + ")'>다음</a>\n";
+	}
+	console.log(pagebarTag);
+	return pagebarTag;
+};
 </script>
 
 	<section class="gathering">
@@ -128,27 +183,27 @@ const gatheringFilter = () => {
 			<div class="ps-filter-container">
 				<form name="searchFrm">
 					<select name="searchType" value="local" id="p__local" class="ps-filter" onchange="gatheringFilter()">
-						<option value="All" <%= "All".equals(keyword) ? "selected" : "" %>>지역 미지정</option>
-						<option value="Online" <%= "Online".equals(keyword) ? "selected" : "" %>>온라인</option>
-						<option value="Capital" <%= "Capital".equals(keyword) ? "selected" : "" %>>수도권</option>
-						<option value="Chungcheong" <%= "Chungcheong".equals(keyword) ? "selected" : "" %>>충청도</option>
-						<option value="Gangwon" <%= "Gangwon".equals(keyword) ? "selected" : "" %>>강원도</option>
-						<option value="Jeolla" <%= "Jeolla".equals(keyword) ? "selected" : "" %>>전라도</option>
-						<option value="Gyeongsang" <%= "Gyeongsang".equals(keyword) ? "selected" : "" %>>경상도</option>
-						<option value="Jeju" <%= "Jeju".equals(keyword) ? "selected" : "" %>>제주</option>
+						<option value="All">지역 미지정</option>
+						<option value="Online">온라인</option>
+						<option value="Capital">수도권</option>
+						<option value="Chungcheong">충청도</option>
+						<option value="Gangwon">강원도</option>
+						<option value="Jeolla">전라도</option>
+						<option value="Gyeongsang">경상도</option>
+						<option value="Jeju">제주</option>
 					</select>
 				</form>
 				<form name="searchFrm">
 					<select name="searchType" value="jobcode" id="p__job_code" class="ps-filter" onchange="gatheringFilter()">
-						<option value="All" <%= "All".equals(keyword) ? "selected" : "" %>>직무 미지정</option>
-						<option value="PL" <%= "PL".equals(keyword) ? "selected" : "" %>>기획</option>
-						<option value="DG" <%= "DG".equals(keyword) ? "selected" : "" %>>디자인</option>
-						<option value="FE" <%= "FE".equals(keyword) ? "selected" : "" %>>프론트</option>
-						<option value="BE" <%= "BE".equals(keyword) ? "selected" : "" %>>백엔드</option>
+						<option value="All">직무 미지정</option>
+						<option value="PL">기획</option>
+						<option value="DG">디자인</option>
+						<option value="FE">프론트</option>
+						<option value="BE">백엔드</option>
 					</select>
 				</form>
 				<div class="ps-filter">
-					<input type="checkbox" id="p__status" name="searchType">
+					<input type="checkbox" id="p__status" name="searchType" onchange="gatheringFilter()">
 					<label for="p__status">모집중</label>
 				</div>
 				<div class="ps-filter">
@@ -162,6 +217,7 @@ const gatheringFilter = () => {
 			<%
 			if(projectList != null && !projectList.isEmpty()){
 				for(Gathering project : projectList){
+					int psNo = project.getPsNo();
 			%>
 				<div class="ps-pre">
 					<!-- a태그로 링크 주소 연결해야함 -->
@@ -178,10 +234,14 @@ const gatheringFilter = () => {
 						<li>
 							<span>&#128064;</span><%= project.getViewcount() %></li>
 						<!-- 나중에 모임 게시물별 모집인원현황 테이블과 연결 -->
-						<li>모집인원 0 / 10</li>
+						<li>모집인원 0 / <%= project.getPeople() %></li>
 					</ul>
-					<span class="bookmark bookmark-front">♡</span>
-					<span class="bookmark bookmark-back">♥</span>
+					<div class="ps__bookmark">
+						<button class="bookmark-front" value="<%= psNo %>">♡</button>
+						<!-- <input type="button" value="♡" class="bookmark-front"/> -->
+						<button class="bookmark-back" value="<%= psNo %>">♥</button>
+						<!-- <input type="button" value="♥" onClick="delBookmark()" class="bookmark-back"/> -->
+					</div>
 				</div>
 			<%
 				}
@@ -191,9 +251,52 @@ const gatheringFilter = () => {
 			<div id="pagebar">
 				<%= request.getAttribute("pagebar") %>
 			</div>
-		
+			<% if(loginMember != null){ %>
+			<form
+				action="<%= request.getContextPath() %>/membus/bookmarkAdd" method="POST" name="addBookmarkFrm">
+				<input type="hidden" name="ps_no"/>
+				<input type="hidden" name="member_id" value="<%= loginMember.getMemberId() %>" />
+			</form>
+			<form
+				action="<%= request.getContextPath() %>/membus/bookmarkDel" method="POST" name="delBookmarkFrm">
+				<input type="hidden" name="ps_no"/>
+				<input type="hidden" name="member_id" value="<%= loginMember.getMemberId() %>" />
+			</form>
+			
+			<%
+			}
+			%>	
 		</section>
 	</section>
-	
+<script>
+document.querySelectorAll(".bookmark-front").forEach((bookmark) => {
+	bookmark.addEventListener('click', (e) => {
+		let mark = e.target;
+		let frm = "";
+		if(mark.classList.contains("bookmark-front")){
+			mark.style.display = 'none';
+			mark.nextElementSibling.style.display = "block";
+			console.log(mark.nextElementSibling);
+			
+			let {value} = e.target;
+			frm = document.addBookmarkFrm;
+			frm.ps_no.value = value;
+			frm.submit();
+			
+		} else {
+			mark.style.display = 'none';
+			mark.previousElementSibling.style.display = "block";
+			console.log(mark.previousElementSibling);
+			
+			let {value} = e.target;
+			frm = document.delBookmarkFrm;
+			frm.ps_no.value = value;
+			frm.submit();
+		}
+		
+	})
+});
+
+</script>	
 	
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>

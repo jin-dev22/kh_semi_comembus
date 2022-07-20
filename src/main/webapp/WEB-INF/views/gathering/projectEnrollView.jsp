@@ -4,7 +4,7 @@
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/gathering/Enroll.css">
 <form name="projectEnrollFrm"
-	action="<%=request.getContextPath()%>/gathering/projectView"
+	action="<%=request.getContextPath()%>/gathering/projectEnrollView"
 	method="post" enctype="multipart/form-data">
 	<table id="tbl-project-enrollview">
 		<tbody>
