@@ -1,7 +1,6 @@
 package kh.semi.comembus.gathering.model.service;
 
-import static kh.semi.comembus.common.JdbcTemplate.close;
-import static kh.semi.comembus.common.JdbcTemplate.getConnection;
+import static kh.semi.comembus.common.JdbcTemplate.*;
 
 import java.sql.Connection;
 import java.util.List;
@@ -53,7 +52,7 @@ public class GatheringService {
 	}
 
 	/**
-	 * 
+	 * 회원 아이디로 찜하기한 모임 모두 조회
 	 */
 	public List<Gathering> findAllBookmarked(String memberId) {
 		Connection conn = getConnection();
@@ -62,11 +61,33 @@ public class GatheringService {
 		return gatheringBookmarkList;
 	}
 
+	/**
+	 * 회원 아이디로 지원한 모임 모두 조회
+	 */
 	public List<Gathering> findAllApldByMemberId(String memberId) {
 		Connection conn = getConnection();
 		List<Gathering> gatheringApldList = gatheringDao.findAllApldByMemberId(conn, memberId);
 		close(conn);
 		return gatheringApldList;
+	}
+
+	/**
+	 * 지원신청 취소하기
+	 */
+	public int cancelApld(Map<String, Object> param) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			result = gatheringDao.cancelApld(conn, param);
+			commit(conn);
+		} catch (Exception e) {
+			rollback(conn);
+			throw e;
+		}
+		finally {
+			close(conn);
+		}
+		return result;
 	}
 	
 	
