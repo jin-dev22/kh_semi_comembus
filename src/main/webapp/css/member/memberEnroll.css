@@ -1,5 +1,21 @@
+/* 회원가입 입력 항목 */
+#enroll-container{
+  width: fit-content;
+  margin: 60px auto 90px auto;
+}
+
+.enroll-title{
+  font-family: var(--elice-font);
+  font-weight: bold;
+}
+
 .enroll-input-container{
   height:90px;
+  font-family: var(--elice-font);
+}
+
+.enroll-input-container:first-child{
+  margin-top: 60px;
 }
 
 .enroll-label{
@@ -15,14 +31,20 @@
 .enroll-input{
   display: inline-flex;
   flex-direction: column;
-  width: 340px;
-  padding: 10px; 
+  width: 360px;
+  margin-right: 7px;
 }
 
 .enroll-input input{
   border-radius: 3px;
   border: 1px solid black;
-  padding: 10px;
+  padding: 7px;
+  transition: all 0.3s ease-in-out;
+}
+
+.enroll-input input:focus, .select-options:focus{
+  box-shadow: 2px 2px 5px 0px grey;
+  outline: none;
 }
 
 .pwd-show-hide:hover{
@@ -32,28 +54,46 @@
 .select-options {
   border-radius: 3px;
   border: 1px solid black;
-  padding: 10px;
+  padding: 7px;
 }
 
 .select-options:hover{
   cursor: pointer;
 }
 
+/* 약관 동의 */
 .enroll-agreement-container{
-  width: 380px;
   margin: 20px 0;
 }
 
-.enroll-agreement-container .agree-sentence{
+.enroll-agreement-content{
+  resize: none;
+  outline: none;
+  font-size: 14px;
+}
+
+.agree-sentence{
   font-size: 14px;
   text-align: end;
 }
 
+.agree-sentence .agree-check-box{
+  position: relative;
+  top: 3px;
+}
+
+.agree-sentence label{
+  font-weight: initial;
+}
+
+/* 가입 버튼 */
 .enrollBtn {
   margin: 70px 0;
+  text-align: center;
 }
 
 .enrollBtn .enrollBtnClick {
+  font-family: var(--elice-font);
   background-color: #92B4EC;
   border-color: #92B4EC;
   border-style: none;
@@ -70,7 +110,6 @@
   background-color: #77a0e2;
   color: black;
 }
-
 
 
 /* 유효성검사 결과 */
