@@ -90,13 +90,14 @@ section#membus-profile{
 	display: flex;
 	align-items: top;
 	overflow-x: scroll hidden;
-	height: 350px;
+	
 	width: 800px
 }
 .ps-pre{
 	width: 250px;
 	height: 300px;
 	margin: 0 20px;
+	margin-bottom: 30px;
 }
 .ps-pre img{
 	width: 250px;
@@ -168,3 +169,7 @@ section#membus-profile{
 	align-items: center;
 }
 /* ----------마이페이지---------- */
+.cancelApld{
+	margin-top: 25px;
+	
+}

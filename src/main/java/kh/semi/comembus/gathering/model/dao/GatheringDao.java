@@ -240,6 +240,49 @@ public class GatheringDao {
 		}	
 		return gatheringBookmarkList;
 	}
+	
+	public List<Gathering> findAllApldByMemberId(Connection conn, String memberId) {
+		List<Gathering> gatheringApldList = new ArrayList<>();
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("findAllApldByMemberId");
+		//1:memberId
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, memberId);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				Gathering gather = handleGatheringResultSet(rset);
+				gatheringApldList.add(gather);
+			}
+		} catch (SQLException e) {
+			throw new GatheringException("모임 지원현황 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}	
+		
+		return gatheringApldList;
+	}
+	
+	public int cancelApld(Connection conn, Map<String, Object> param) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("cancelApld");
+		//update member_application_status set result = 'X' where member_id = ? and ps_no = ? and result='W'
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, (String)param.get("memberId"));
+			pstmt.setInt(2, (int)param.get("psNo"));
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new GatheringException("모임 지원 취소 오류", e);
+		} finally {
+			close(pstmt);
+		}	
+		
+		return result;
+	}
 	//수진코드 끝
 
 }
