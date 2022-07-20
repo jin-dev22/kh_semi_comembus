@@ -43,7 +43,7 @@
 	    <input type="button" value="아이디 찾기"
 			onclick="location.href='<%= request.getContextPath() %>/membus/findMemberId';">
 		<input type="button" value="비밀번호 찾기"
-			onclick="location.href='<%= request.getContextPath() %>/membus/resetMemberPassword';">
+			onclick="location.href='<%= request.getContextPath() %>/membus/findMemberPassword';">
    	</div>
    	<div>
      	<span>아직 회원이 아니신가요?</span>
