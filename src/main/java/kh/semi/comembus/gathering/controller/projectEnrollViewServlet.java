@@ -55,7 +55,6 @@ public class projectEnrollViewServlet extends HttpServlet {
 		try {
 			
 			//1. 사용자 입력값 처리
-			int psNo= Integer.parseInt(request.getParameter("psNo"));
 			String writer = request.getParameter("writer");
 			String _psType=request.getParameter("psType");
 			String title = request.getParameter("title");
@@ -76,7 +75,7 @@ public class projectEnrollViewServlet extends HttpServlet {
 			Date startDate = (_startDate != null && !"".equals(_startDate))?Date.valueOf(_startDate):null;
 			Date endDate = (_endDate != null && !"".equals(_endDate))?Date.valueOf(_endDate):null;
 			
-			Gathering project = new Gathering(psNo,writer,psType,title,regDate,content,0,0,topic,local,1,status,startDate,endDate);
+			Gathering project = new Gathering(0,writer,psType,title,regDate,content,0,0,topic,local,1,status,startDate,endDate);
 			
 			System.out.println("project = "+project);
 			
