@@ -181,6 +181,33 @@ public class MemberDao {
 		return result;
 	}
 	
+	/**
+	 * 닉네임 중복 검사
+	 */
+	public int checkNickname(Connection conn, String nickName) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int checkNickname = 0;
+		String sql = prop.getProperty("checkNickname");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, nickName);
+			rset = pstmt.executeQuery();
+			if(rset.next())
+				checkNickname = rset.getInt(1);
+			
+		} catch (SQLException e) {
+			throw new MemberException("회원 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return checkNickname;
+	}
+
+	
 	// 미송 코드 끝
 	
 	
