@@ -1,0 +1,98 @@
+/* 아이디/비밀번호 찾기 - 본인확인 */
+#find-container{
+	width: 550px;
+	text-align: center;
+	margin: 130px auto 180px auto;
+	border: 3px solid var(--btn-color);
+	padding: 70px 0;
+}
+
+#find-container h2{
+	margin: 0;
+}
+
+#find-container .find-content{
+	margin: 20px 0 40px 0;
+}
+
+.find-table{
+	margin:30px auto;
+}
+
+.find-table .find-label{
+	margin: 10px 20px 10px 0;
+}
+
+.find-table .find-input{
+	padding: 5px;
+	margin: 5px 0;
+	width: 220px;
+}
+
+.find-btn{
+  background-color: var(--btn-color);
+  border-color: var(--btn-color);
+  border-style: none;
+  border-radius: 3px;
+  font-size: 20px;
+  width: 325px;
+  height: 40px;
+  color: white;
+}
+
+.find-btn:hover{
+  cursor: pointer;
+  background-color: #77a0e2;
+  color: black;
+}
+
+
+/* 비밀번호 재설정 */
+.reset-password-input-container{
+  height:90px;
+}
+
+.reset-password-label{
+  width: 100px;
+  display: inline-flex;
+  font-weight: bold;
+}
+
+.reset-password-input{
+  display: inline-flex;
+  flex-direction: column;
+  width: 310px;
+  padding: 10px; 
+}
+
+.reset-password-input input{
+  padding: 5px;
+}
+
+.pwd-show-hide:hover{
+  cursor: pointer;
+}
+
+#pwd1GuideLine1, #pwd1GuideLine2, #pwd2GuideLine{
+	text-align: initial;
+}
+
+#resetPasswordBtn{
+	width:380px;
+}
+
+.fail {
+  display: block;
+  color: red;
+  margin-top: 2px;
+}
+
+.success {
+  display: block;
+  color: green;
+  margin-top: 2px;
+}
+
+.hide {
+  display: none;
+}
