@@ -37,6 +37,7 @@ const gatheringFilter = () => {
 			searchJobcode: searchJobcode,
 			selectLocalKeyword: selectLocalKeyword,
 			selectJobKeyword: selectJobKeyword
+			// , ing: ing // 추후 모집중인 필터 진행 시
 //			searchType: selectType, searchKeyword: selectKeyword
 			},
 		success(projectSelectList){
