@@ -162,34 +162,6 @@ alter table project_study add end_date date not null;
 alter table project_study modify (local varchar2(12));
 
 select * from project_study;
--- select * from (select row_number() over(order by reg_date desc) rnum, ps.* from project_study ps where gathering_type = '?') p where rnum between ? and ?
--- select * from (select row_number() over(order by reg_date desc) rnum, ps.* from project_study ps where gathering_type = '?' and upper(#) like upper('%?%')) p where rnum between ? and ?
--- select count(*) from project_study where gathering_type = '?' and upper(#) like upper('?')
-
-select
-        count(*)
-from 
-        project_study
-where
-        gathering_type = 'P' and
-        upper(local) like upper('capital');
-
-select
-        *
-from (
-        select
-                row_number() over(order by reg_date desc) rnum, 
-                ps.* 
-        from 
-                project_study ps 
-        where
-                gathering_type = 'P' and
-                upper(topic) like upper('%travel%')
-) p
-where 
-        rnum between 1 and 12;
-
--- select count(*) from project_study where gathering_type = '?'
 --drop table project_study;
 create sequence seq_project_study_ps_no;
 
@@ -219,7 +191,6 @@ comment on table bookmarked_prj_std is '프로젝트/스터디 찜목록';
 COMMENT ON COLUMN bookmarked_prj_std.member_id IS '회원 아이디';
 COMMENT ON COLUMN bookmarked_prj_std.ps_no IS '프로젝트/스터디 게시글 번호';
 
-
 CREATE TABLE project_member_dept (
         p_m_dept_no number not null,
 	ps_no number NOT NULL,
@@ -231,16 +202,66 @@ CREATE TABLE project_member_dept (
         constraint fk_project_member_dept_job_code foreign key(job_code) references department(job_code) on delete cascade
 );
 --drop table project_member_dept;
-select * from project_member_dept;
-
 create sequence seq_p_m_dept_no;
-
 comment on table project_member_dept is '모임 게시물별 모집인원현황';
 comment on column project_member_dept.p_m_dept_no is '모임게시물별 모집인원현황 테이블의 고유번호';
 COMMENT ON COLUMN project_member_dept.ps_no IS '프로젝트/스터디 게시글 번호';
 COMMENT ON COLUMN project_member_dept.job_code IS '프로젝트게시물인 경우 직무분야 코드로 직무별 인원구분';
 COMMENT ON COLUMN project_member_dept.capacity_number IS '모집정원(프로젝트인 경우 직무분야별)';
 COMMENT ON COLUMN project_member_dept.recruited_number IS '모집된 인원';
+
+-- 선아 페이징 및 필터 쿼리문 작성부분
+select * from member;
+select *from project_study where gathering_type = 'P';
+select *from project_study;
+select * from member_application_status;
+select * from project_member_dept;
+-- select * from (select row_number() over(order by reg_date desc) rnum, ps.* from project_study ps where gathering_type = '?') p where rnum between ? and ?
+-- select * from (select row_number() over(order by reg_date desc) rnum, ps.* from project_study ps where gathering_type = '?' and upper(#) like upper('%?%')) p where rnum between ? and ?
+-- select count(*) from project_study where gathering_type = '?' and upper(#) like upper('?')
+select
+        *
+from
+        project_study ps join project_member_dept pmd on ps.ps_no = pmd.ps_no
+where
+        gathering_type = 'P';
+-- select * from (select row_number() over(order by reg_date desc) rnum, ps.* from project_study ps join project_member_dept pmd on ps.ps_no = pmd.ps_no where gathering_type = 'P' and upper(#) like upper(?)) p where rnum between ? and ?
+
+select
+        *
+from (
+        select
+                row_number() over(order by reg_date desc) rnum,
+                ps.*
+        from 
+                project_study ps
+        where 
+                gathering_type = 'P' and
+                exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('jeju'))
+                and
+                exists (select 2 from project_member_dept where ps_no = ps.ps_no and  job_code = 'DG')
+        ) p
+where rnum between 1 and 12;
+
+select
+        *
+from (
+        select
+                row_number() over(order by reg_date desc) rnum,
+                ps.*
+        from 
+                project_study ps
+        where 
+                gathering_type = '?' and
+                [str1]
+                -- exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('jeju'))
+                and
+                [str2]
+                -- exists (select 2 from project_member_dept where ps_no = ps.ps_no and  job_code = 'DG')
+        ) p
+where rnum between ? and ?
+
+
 
 --선아님 코드 끝
 

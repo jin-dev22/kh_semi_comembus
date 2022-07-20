@@ -37,29 +37,46 @@ public class SearchLocalServlet extends HttpServlet {
 				cPage = Integer.parseInt(request.getParameter("cPage"));
 			} catch(NumberFormatException e) {}
 			
-			String searchType = request.getParameter("searchType");
-			String searchKeyword = request.getParameter("searchKeyword");
+//			String searchType = request.getParameter("searchType");
+//			String searchKeyword = request.getParameter("searchKeyword");
+//			System.out.println("searchType = " + searchType);
+//			System.out.println("searchKeyword = " + searchKeyword);
+			String searchLocal = request.getParameter("searchLocal");
+			String searchJobcode = request.getParameter("searchJobcode");
+			String selectLocalKeyword = request.getParameter("selectLocalKeyword");
+			String selectJobKeyword = request.getParameter("selectJobKeyword");
+			System.out.println("확인용 searchLocal = " + searchLocal);
+			System.out.println("확인용 searchJobcode = " + searchJobcode);
+			System.out.println("확인용 selectLocalKeyword = " + selectLocalKeyword);
+			System.out.println("확인용 selectJobKeyword = " + selectJobKeyword);
 			
 			Map<String, Object> param = new HashMap<>();
-			param.put("searchType", searchType);
-			param.put("searchKeyword", searchKeyword);
+			param.put("searchLocal", searchLocal);
+			param.put("searchJobcode", searchJobcode);
+			param.put("selectLocalKeyword", selectLocalKeyword);
+			param.put("selectJobKeyword", selectJobKeyword);
+//			param.put("searchType", searchType);
+//			param.put("searchKeyword", searchKeyword);
 			param.put("start", (cPage - 1) * numPerPage + 1);
 			param.put("end", cPage * numPerPage);
-			System.out.println(param);
+			System.out.println("확인용 param = " + param);
 			
 			// 2. 업무로직
 			// content 영역
 			List<Gathering> projectList = gatheringService.findProjectLike(param); 
-			System.out.println("필터링 projectList: " + projectList); // 확인용
+			System.out.println("필터링확인용 projectList: " + projectList); // 확인용
 			
 			// pagebar 영역
 			int totalContent = gatheringService.getProTotalContentLike(param);
 			System.out.println("필터링 totalContent = " + totalContent); // 확인용
-			// /comembus/gathering/searchLocal?searchType=local&searchKeyword=Capital
-			String url = request.getRequestURI() + "?searchType=" + searchType + "&searchKeyword=" + searchKeyword;
-			System.out.println("url = " + url);
+			String url = request.getRequestURI()
+					+ "?searchLocal=" + searchLocal
+					+ "&selectLocalKeyword=" + selectLocalKeyword
+					+ "&searchJobcode=" + searchJobcode
+					+ "&selectJobKeyword=" + selectJobKeyword;
+			System.out.println("확인용 url = " + url);
 			String searchPagebar = ComembusUtils.getPagebar(cPage, numPerPage, totalContent, url);
-			System.out.println("searchPagebar = " + searchPagebar);
+			System.out.println("확인용 searchPagebar = " + searchPagebar);
 			
 			response.setContentType("application/json; charset=utf-8");
 			Map<String, Object> searchList = new HashMap<>();
