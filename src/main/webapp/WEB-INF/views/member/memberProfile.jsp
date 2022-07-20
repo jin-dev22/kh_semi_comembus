@@ -49,7 +49,7 @@
 			</div>
 		</div>
 		<div class="profile-row part-4">
-			<div class="subtitle">모임 참여현황</div>
+			<div class="subtitle">모임 참여이력</div>
 			<div class="gathering-align">
 				<%if(gatheringIngList != null && !gatheringIngList.isEmpty()){
 					for(Gathering gather : gatheringIngList){	  
@@ -74,7 +74,7 @@
 					}
 				}else{
 				%>
-					<div>참여중인 모임이 없습니다.</div>
+					<div>참여한 모임이 없습니다.</div>
 				<%}%>
 			</div>
 		</div>

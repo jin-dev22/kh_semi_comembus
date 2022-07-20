@@ -45,18 +45,28 @@ public class GatheringService {
 	/**
 	 * 멤버스 프로필, 마이페이지: 회원 참가중인 모임 게시글 조회
 	 */
-	public List<Gathering> findAllByMemberId(String memberId) {
+	public List<Gathering> findAllIngByMemberId(String memberId) {
 		Connection conn = getConnection();
 		List<Gathering> gatheringIngList = gatheringDao.findAllByMemberId(conn, memberId);
 		close(conn);
 		return gatheringIngList;
 	}
 
+	/**
+	 * 
+	 */
 	public List<Gathering> findAllBookmarked(String memberId) {
 		Connection conn = getConnection();
 		List<Gathering> gatheringBookmarkList = gatheringDao.findAllBookmarked(conn, memberId);
 		close(conn);
 		return gatheringBookmarkList;
+	}
+
+	public List<Gathering> findAllApldByMemberId(String memberId) {
+		Connection conn = getConnection();
+		List<Gathering> gatheringApldList = gatheringDao.findAllApldByMemberId(conn, memberId);
+		close(conn);
+		return gatheringApldList;
 	}
 	
 	

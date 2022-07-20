@@ -70,7 +70,10 @@ public class MemberMypageServlet extends HttpServlet {
 			String pagebar = ComembusUtils.getPagebar(cPage, numPerPage, end, url);
 			
 			//프로젝트/스터디 참여중인 게시글 목록
-			List<Gathering> gatheringIngList = gatheringService.findAllByMemberId(memberId);
+			List<Gathering> gatheringIngList = gatheringService.findAllIngByMemberId(memberId);
+			
+			//프로젝트/스터디 지원한 게시글 목록
+			List<Gathering> gatheringApldList = gatheringService.findAllApldByMemberId(memberId);
 			
 			//찜한 프로젝트 ,스터디 목록
 			List<Gathering> gatheringBookmarkList = gatheringService.findAllBookmarked(memberId);			
@@ -80,6 +83,7 @@ public class MemberMypageServlet extends HttpServlet {
 			request.setAttribute("communityList", communityList);
 			request.setAttribute("pagebar", pagebar);
 			request.setAttribute("gatheringIngList", gatheringIngList);
+			request.setAttribute("gatheringApldList", gatheringApldList);
 			request.setAttribute("gatheringBookmarkList",gatheringBookmarkList);
 			request.getRequestDispatcher("/WEB-INF/views/member/memberMypage.jsp").forward(request, response);
 			

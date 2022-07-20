@@ -194,6 +194,30 @@ public class GatheringDao {
 		}	
 		return gatheringBookmarkList;
 	}
+	
+	public List<Gathering> findAllApldByMemberId(Connection conn, String memberId) {
+		List<Gathering> gatheringApldList = new ArrayList<>();
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("findAllApldByMemberId");
+		//1:memberId
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, memberId);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				Gathering gather = handleGatheringResultSet(rset);
+				gatheringApldList.add(gather);
+			}
+		} catch (SQLException e) {
+			throw new GatheringException("모임 지원현황 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}	
+		
+		return gatheringApldList;
+	}
 	//수진코드 끝
 
 }

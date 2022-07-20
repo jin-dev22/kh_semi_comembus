@@ -64,7 +64,7 @@ public class MemberProfileViewServlet extends HttpServlet {
 			String pagebar = ComembusUtils.getPagebar(cPage, numPerPage, end, url);
 			
 			//프로젝트/스터디 참여중인 게시글 목록
-			List<Gathering> gatheringIngList = gatheringService.findAllByMemberId(memberId);
+			List<Gathering> gatheringIngList = gatheringService.findAllIngByMemberId(memberId);
 			
 			//찜한 프로젝트 ,스터디 목록
 			List<Gathering> gatheringBookmarkList = gatheringService.findAllBookmarked(memberId);			
