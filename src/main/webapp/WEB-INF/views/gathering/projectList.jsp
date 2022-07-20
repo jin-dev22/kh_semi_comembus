@@ -155,7 +155,7 @@ const gatheringFilter = () => {
 					<label for="p__bookmark">찜한 프로젝트</label>
 				</div>
 				
-				<input type="button" class="ps__enroll btn" onclick="location.href='<%= request.getContextPath()%>/gathering/projectEnroll;'" value="프로젝트 생성">
+				<input type="button" class="ps__enroll btn" onclick="location.href='<%= request.getContextPath()%>/gathering/projectEnrollView'" value="프로젝트 생성">
 			</div>
 			<div class="ps-lists">
 			<%
