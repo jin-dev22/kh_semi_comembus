@@ -20,6 +20,8 @@ const nameGuideLine = document.getElementById("nameGuideLine");
 
 const nicknameGuideLine = document.getElementById("nicknameGuideLine");
 
+const privacyAgree1Cbx = document.getElementById("privacyAgree1Cbx");
+const privacyAgree2Cbx = document.getElementById("privacyAgree2Cbx");
 const privacyAgree1 = document.getElementById("privacyAgree1");
 const privacyAgree2 = document.getElementById("privacyAgree2");
 
@@ -61,12 +63,11 @@ const showValidationResult = (input, result, msg) => {
  * 유효성 검사 통과 여부에 따라 input태그 색상 변경하는 함수
  */
 const inputStyle = (input, color) => {
-  input.style.borderBottom = `2px solid ${color}`;
+  input.style.borderBottom = `2px solid ${color}`;  
 };
 
 
 // ----------------------------- 아이디 ---------------------------------------
-
 /**
  * 비번에 아이디가 포함되어있는지 확인하는 함수
  */
@@ -84,6 +85,7 @@ const inputStyle = (input, color) => {
 // 키보드 입력없이 마우스로 복붙했을 경우에도 유효성 검사할 수 있도록 이벤트속성 'input' 사용
 enrollId.addEventListener("input", (e) => {
   idGuideArea.className = "";
+  idCheckArea.className = "hide";
 
   const val = e.target.value;
   const regExp1 = /^[a-z\d]{6,12}$/;
@@ -104,7 +106,6 @@ enrollId.addEventListener("input", (e) => {
 
 
 // ----------------------------- 비밀번호 ---------------------------------------
-
 /**
  * 비번 입력값 2개가 서로 일치하는지 확인하는 함수
  */
@@ -122,7 +123,7 @@ const isPwdEqual = () => {
   }
 };
 
-enrollPwd1.addEventListener("input", (e) => {
+enrollPwd1.addEventListener("input", (e) => {	
   // 비번 재입력 시, 앞서 유효성검사 통과해서 숨김처리 해놓은 가이드라인 다시 드러내기
   pwd1GuideArea.className = "";
 
@@ -190,13 +191,13 @@ pwdShowHide.forEach(function (btn) {
 
 
 // ----------------------------- 이름 ---------------------------------------
-
 enrollName.addEventListener("input", (e) => {
   // 재입력하게 되는 경우, 앞서 유효성검사 통과해서 숨김처리해놓은 가이드라인 다시 드러냄
   nameGuideArea.className = "";
 
   const val = e.target.value;
   const regExp = /^[가-힣]{2,}$/;
+
 
   if (!regExp.test(val)) {
     showValidationResult(nameGuideLine, "fail", "한글 2자 이상");
@@ -214,25 +215,27 @@ enrollName.addEventListener("blur", (e) => {
 
 
 // ----------------------------- 닉네임 ---------------------------------------
-
 enrollNickname.addEventListener("input", (e) => {
   nicknameGuideArea.className = "";
+  nicknameCheckArea.className = "hide";
 
   const val = e.target.value;
   const regExp1 = /^[가-힣\d]{3,10}$/;
+  const regExp2 = /[가-힣]+/;
+  const regExp3 = /[\d]*/;
 
-  if (!(regExp1.test(val))) {
+  if (!(regExp1.test(val) && regExp2.test(val) && regExp3.test(val))) {
     showValidationResult(
       nicknameGuideLine,
       "fail",
-      "한글, 숫자 조합 (3~10자). 특수문자 사용 불가"
+      "한글(필수), 숫자(선택) 조합 (3~10자). 특수문자 사용 불가"
     );
     inputStyle(enrollNickname, "red");
   } else {
     showValidationResult(
       nicknameGuideLine,
       "success",
-      "한글, 숫자 조합 (3~10자). 특수문자 사용 불가"
+      "한글(필수), 숫자(선택) 조합 (3~10자). 특수문자 사용 불가"
     );
     inputStyle(enrollNickname, "blue");
   }
@@ -244,7 +247,48 @@ enrollNickname.addEventListener("blur", (e) => {
     nicknameGuideArea.className = "hide";
 });
 
+// ----------------------------- 핸드폰 번호 ---------------------------------------
+enrollPhone.addEventListener("input", (e) => {
+  phoneGuideArea.className = "";
 
+  const val = e.target.value;
+  const regExp = /^(010){1}[0-9]{7,8}$/;
+
+  if (!(regExp.test(val))) {
+    showValidationResult(
+      phoneGuideLine,
+      "fail",
+      "올바른 핸드폰 번호 형식(- 제외)"
+    );
+    inputStyle(enrollPhone, "red");
+  } else {
+    showValidationResult(
+      phoneGuideLine,
+      "success",
+      "올바른 핸드폰 번호 형식(- 제외)"
+    );
+    inputStyle(enrollPhone, "blue");
+  }
+
+});
+
+enrollPhone.addEventListener("blur", (e) => {
+  if (phoneGuideLine.className === "success") 
+    phoneGuideArea.className = "hide";
+});
+
+
+// ----------------------------- 약관 동의 ---------------------------------------
+privacyAgree1.addEventListener("click", (e) => {
+	privacyAgree1Cbx.checked = privacyAgree1Cbx.checked === true ? false : true;
+});
+
+privacyAgree2.addEventListener("click", (e) => {
+	privacyAgree2Cbx.checked = privacyAgree2Cbx.checked === true ? false : true;
+});
+
+
+// ----------------------------- 폼 제출 전 확인 ---------------------------------------
 document.enrollFrm.onsubmit = (e) => {
   // input태그 입력 안 되어 있으면 스타일 적용
   inputArr.forEach(function (el) {
@@ -266,7 +310,7 @@ document.enrollFrm.onsubmit = (e) => {
   if (jobName.value === "")
     e.preventDefault();
 
-  if (privacyAgree1.checked !== true || privacyAgree2.checked !== true) {
+  if (privacyAgree1Cbx.checked !== true || privacyAgree2Cbx.checked !== true) {
     e.preventDefault();
     alert("필수 약관에 모두 동의하셔야 회원가입이 가능합니다.");
   }

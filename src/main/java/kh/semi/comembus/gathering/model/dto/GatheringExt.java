@@ -83,7 +83,7 @@ public class GatheringExt extends Gathering{
 		return frontend_cnt;
 	}
 
-	public void setFrontend_count(int frontend_cnt) {
+	public void setFrontend_cnt(int frontend_cnt) {
 		this.frontend_cnt = frontend_cnt;
 	}
 

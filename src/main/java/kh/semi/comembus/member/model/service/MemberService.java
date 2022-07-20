@@ -37,6 +37,50 @@ public class MemberService {
 		return result;
 	}
 
+	/**
+	 * 아이디 찾기 : 입력값에 해당하는 아이디 반환
+	 */
+	public String getMemberId(Map<String, Object> param) {
+		Connection conn = getConnection();
+		String memberId = memberDao.getMemberId(conn, param);
+		close(conn);
+		return memberId;
+	}
+	
+	/**
+	 * 비밀번호 찾기를 위한 본인 확인 : 입력값에 해당하는 회원 존재 여부 반환
+	 */
+	public int checkMember(Map<String, Object> param) {
+		Connection conn = getConnection();
+		int checkMember = memberDao.checkMember(conn, param);
+		close(conn);
+		return checkMember;
+	}
+	
+	public int updatePassword(Map<String, Object> param) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			result = memberDao.updatePassword(conn, param);
+			commit(conn);
+		} catch (Exception e) {
+			rollback(conn);
+			throw e;
+		} finally {
+			close(conn);
+		}
+		return result;
+	}
+	
+	/**
+	 * 닉네임 중복 검사
+	 */
+	public int checkNickname(String nickName) {
+		Connection conn = getConnection();
+		int checkNickname = memberDao.checkNickname(conn, nickName);
+		close(conn);
+		return checkNickname;
+	}
 	
 	// 미송 코드 끝
 	

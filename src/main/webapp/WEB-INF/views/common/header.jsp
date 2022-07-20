@@ -50,7 +50,13 @@
 	<% } %>
 	};
 	<!-- 미송 코드 끝 -->
+	
 	</script>
+	<!-- 수진코드 시작 -->
+	<% if(loginMember != null){%>
+	<script src="<%=request.getContextPath()%>/js/ws.js"></script>
+	<%}%>
+	<!-- 수진코드 끝 -->
 </head>
 <body>
   <header>
