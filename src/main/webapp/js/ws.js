@@ -1,5 +1,5 @@
 
-const ws = new WebSocket(`ws://${location.host}/mvc/helloWebSocket`); 
+const ws = new WebSocket(`ws://${location.host}/comembus/ComembusWebSocket`); 
 
 ws.addEventListener('open', (e) => console.log('open : ', e));
 ws.addEventListener('error', (e) => console.log('error : ', e));

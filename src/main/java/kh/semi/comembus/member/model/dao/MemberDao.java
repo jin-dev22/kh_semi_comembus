@@ -412,8 +412,68 @@ public class MemberDao {
 		}	
 		return result;
 	}
-	// 수진 코드 끝
-
 	
+	public int memberQuit(Connection conn, String memberId) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("memberQuit");
+		//update member set member_quit = 'Y', quit_date = sysdate where member_id = ?
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, memberId);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new MemberException("회원탈퇴 오류", e);
+		} finally {
+			close(pstmt);
+		}			
+		return result;
+	}
+	// 수진 코드 끝
+	
+	// 선아 코드 시작
+	public int insertBookmark(Connection conn, Map<String, Object> param) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("insertBookmark");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, (String) param.get("memberId"));
+			pstmt.setInt(2, (int) param.get("psNo"));
+			
+			result = pstmt.executeUpdate();
+			System.out.println("@북마크 추가 result = " + result);
+			
+		} catch (SQLException e) {
+			throw new MemberException("찜 추가 오류", e);
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	public int deleteBookmark(Connection conn, Map<String, Object> param) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("deleteBookmark");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, (String) param.get("memberId"));
+			pstmt.setInt(2, (int) param.get("psNo"));
+			
+			result = pstmt.executeUpdate();
+			System.out.println("@북마크 삭제 result = " + result);
+			
+		} catch (SQLException e) {
+			throw new MemberException("찜 삭제 오류", e);
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	// 선아 코드 끝
 
 }

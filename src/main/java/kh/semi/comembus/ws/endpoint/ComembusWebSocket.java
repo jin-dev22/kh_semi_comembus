@@ -16,7 +16,7 @@ import com.google.gson.Gson;
 
 import kh.semi.comembus.ws.config.ComembusWebSocketConfigurator;
 
-@ServerEndpoint(value = "/comembus", configurator = ComembusWebSocketConfigurator.class)
+@ServerEndpoint(value = "/ComembusWebSocket", configurator = ComembusWebSocketConfigurator.class)
 public class ComembusWebSocket {
 	private static Map<String, Session> clientMap = Collections.synchronizedMap(new HashMap<>());
 

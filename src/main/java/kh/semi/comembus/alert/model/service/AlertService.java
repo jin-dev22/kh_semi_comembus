@@ -37,8 +37,6 @@ public class AlertService {
 	
 	public int notifyCancelApld(Alert alert) {
 		Connection conn = getConnection();
-		//Gathering gather = (Gathering) alert.get("gather");
-		//String canceldMembNickName = (String) alert.get("nickName");
 		System.out.println("@알림서비스:지원취소");
 		int result = 0;
 		try {

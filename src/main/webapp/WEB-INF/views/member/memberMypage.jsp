@@ -9,6 +9,7 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <link rel="stylesheet" href="<%=request.getContextPath() %>/css/membusPage.css">
+<link rel="stylesheet" href="<%= request.getContextPath() %>/css/member/memberEnroll.css" />
 <%
 	MemberExt member = (MemberExt) request.getAttribute("member");
 	List<Community> communityList = (List<Community>) request.getAttribute("communityList");
@@ -24,7 +25,27 @@
 		<div class="profile-row part-1 ">
 			<div class="nickname-badge"><%= member.getNickName().charAt(0)%></div>
 			<div>
-				<div><label for="nickName">닉네임 :</label> &nbsp;&nbsp;&nbsp;<input type="text" name="nickName" value="<%=member.getNickName() %>" readonly/> <input type="button" value="중복검사" onclick="checkNickNameDuplicate();"/> </div>
+				<div>
+					<label for="memberName">이름 : </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<span name="memberName"><%=member.getMemberName() %></span>
+				</div>
+				<div>
+					<label for="nickName">닉네임 :</label> &nbsp;&nbsp;
+					<input type="text" name="nickName" value="<%=member.getNickName() %>" maxlength="15" required/>
+					<!-- <input type="button" value="중복검사" id="nickDupl-chk"/> -->
+				</div>
+		        <div id="nicknameGuideArea">
+         			<div id="nicknameGuideLine">
+			            <span></span>
+			            <span></span>
+	          		</div>
+		        </div>
+			        <div id="nicknameCheckArea">
+			          <div id="nicknameCheck">
+			            <span></span>
+			            <span></span>
+		          	</div>
+		        </div>
 				<div><label for="jobCode">직무분야 : </label> 
 					<!-- <select id="search-jobCode" onchange="changeSelected('searchJobcode', this.value)"> -->
 					<select id="jobCode">
@@ -39,7 +60,7 @@
 		</div>
 		<div class="profile-row part-2">
 			<div class="subtitle">자기소개</div>
-			<textarea id="summernote" name="Contents" class="member-introduction"><%=introduction != null? introduction : "작성하신 내용이 없습니다. 자기소개를 작성해주세요!"%></textarea>
+			<textarea class="member-introduction"><%=introduction != null? introduction : "작성하신 내용이 없습니다. 자기소개를 작성해주세요!"%></textarea>
 		</div>
 		<div class="profile-row part-3">
 			<div class="subtitle">최근 작성한 게시물</div>
@@ -205,7 +226,7 @@
 	}
 	
 	function cancelApld(psNo){
-		if(confirm("지원을 취소하시겠습니까?")){
+		if(confirm("지원취소된 모임은 다시 지원하실 수 없습니다. 지원을 취소하시겠습니까?")){
 			const frm = document.apldCancelFrm
 			frm.psNo.value = psNo;
 			frm.submit();
@@ -236,5 +257,84 @@
 	    }
 		
 	}); --%>
+	
+	//닉네임 유효성 검사
+	document.profileFrm.nickName.addEventListener("input", (e) => {
+		  nicknameGuideArea.className = "";
+		  nicknameCheckArea.className = "hide";
+
+		  const val = e.target.value;
+		  const regExp1 = /^[가-힣\d]{3,10}$/;
+		  const regExp2 = /[가-힣]+/;
+		  const regExp3 = /[\d]*/;
+
+		  if (!(regExp1.test(val) && regExp2.test(val) && regExp3.test(val))) {
+		    showValidationResult(
+		      nicknameGuideLine,
+		      "fail",
+		      "한글(필수), 숫자(선택) 조합 (3~10자). 특수문자 사용 불가"
+		    );
+		    inputStyle(e.target, "red");
+		  } else {
+		    showValidationResult(
+		      nicknameGuideLine,
+		      "success",
+		      "한글(필수), 숫자(선택) 조합 (3~10자). 특수문자 사용 불가"
+		    );
+		    inputStyle(e.target, "blue");
+		  }
+
+		});
+	// 닉네임 중복검사
+	document.profileFrm.nickName.addEventListener('blur', (e) => {
+		// 닉네임 유효성검사가 완료된 후, 닉네임 중복 여부 확인
+		const nicknameGuideLine = document.getElementById("nicknameGuideLine");
+		
+		if (nicknameGuideLine.className === "success") {
+			nicknameGuideArea.className = "hide"; // 유효성검사 가이드 숨기기
+			const nickname = e.target.value;
+
+			$.ajax({
+				url: '<%= request.getContextPath() %>/membus/checkNicknameDuplicate',
+				data: {nickname},
+				success(available){
+					if(available){
+						// console.log("not중복닉네임");
+						nicknameCheckArea.className = "";
+						showValidationResult(nicknameCheck, "success", "사용 가능한 닉네임입니다.");
+						inputStyle(e.target, "blue");
+					}
+					else{
+						// console.log("중복닉네임");
+						nicknameCheckArea.className = "";
+						showValidationResult(nicknameCheck, "fail", "이미 존재하는 닉네임입니다.");
+						inputStyle(e.target, "red");
+					}
+				},
+				error: console.log
+			});
+		}	
+	});
+	
+	/**
+	 * 유효성 검사 결과 출력하는 함수
+	 */
+	const showValidationResult = (input, result, msg) => {
+	  if (result === "fail") {
+	    input.firstElementChild.innerHTML = "&#10060";
+	  } else {
+	    input.firstElementChild.innerHTML = "&#9989";
+	  }
+	  input.className = result;
+	  input.lastElementChild.innerHTML = msg;
+	  input.style.fontSize="13px";
+	};
+	
+	/**
+	 * 유효성 검사 통과 여부에 따라 input태그 색상 변경하는 함수
+	 */
+	const inputStyle = (input, color) => {
+	  input.style.borderBottom = `2px solid ${color}`;  
+	};
 </script>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
