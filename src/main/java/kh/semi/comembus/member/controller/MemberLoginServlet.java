@@ -42,7 +42,7 @@ public class MemberLoginServlet extends HttpServlet {
 			System.out.println("password = " + password);
 			System.out.println("location = " + location);
 			
-			String[] specialLocation = {"/membus/showMemberId", "/membus/enroll", "/membus/login", "membus/resetMemberPassword"};
+			String[] specialLocation = {"/membus/showMemberId", "/membus/enroll", "/membus/login", "/membus/findMemberId", "/membus/findMemberPassword", "membus/resetMemberPassword"};
 			boolean contain = false;
 			for(int i = 0; i < specialLocation.length; i++) {
 				if(location.contains(specialLocation[i])) {

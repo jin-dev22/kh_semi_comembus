@@ -66,6 +66,8 @@ section#membus-profile{
 	background-color:  rgb(241,241,241);
 	padding: 30px 100px;
 	margin: 0 auto;
+	display: flex;
+	justify-content: center;
 }
 .profile-row{
 	padding: 10px;
@@ -172,4 +174,8 @@ section#membus-profile{
 .cancelApld{
 	margin-top: 25px;
 	
+}
+.member-introduction{
+	width: 800px;
+	min-height: 100px;
 }

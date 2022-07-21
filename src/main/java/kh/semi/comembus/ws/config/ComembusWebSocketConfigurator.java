@@ -10,7 +10,7 @@ import javax.websocket.server.ServerEndpointConfig.Configurator;
 
 import kh.semi.comembus.member.model.dto.Member;
 
-public class WebSocketConfigurator extends Configurator{
+public class ComembusWebSocketConfigurator extends Configurator{
 	@Override
 	public void modifyHandshake(ServerEndpointConfig sec, HandshakeRequest request, HandshakeResponse response) {
 		HttpSession httpSession = (HttpSession) request.getHttpSession();

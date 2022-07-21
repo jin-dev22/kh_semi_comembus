@@ -147,7 +147,7 @@ header {
 }
 
 .h__member__menu > li {
-    width: 60px;
+    width: fit-content;
     height: 36px;
     box-sizing: border-box;
     text-align: center;
@@ -157,21 +157,39 @@ header {
 .h__member__menu > li > a {
     display: block;
     line-height: 2;
-    width: 60px;
     height: 36px;
+}
+
+.h__profile-badge {
+    display: inline-block;
+    position: absolute;
+	width: 36px;
+    height: 36px;
+    line-height: 32px;
+    background-color: #fff;
+    border-radius: 50%;
+    border: 1px solid black;
+    text-align: center;
+    z-index:999;
 }
 
 .h__loginMember{
   	background-color: var(--btn-color);
-  	margin: 0 10px;
-  }
+  	margin-right: 10px;
+  	padding: 0 10px 0 30px;
+    border-top-left-radius: 10%;
+    border-bottom-left-radius: 10%;
+    margin-left: 10px;
+}
   
 .h__loginMember a:hover {
  	color: #fff;
+ 	text-decoration: none;
 }
 
 .h__memberLogout a:hover {
     color: var(--btn-color);
+    text-decoration: none;
 }
 /* 미송 코드 끝 */
 

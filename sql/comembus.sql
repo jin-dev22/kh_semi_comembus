@@ -102,7 +102,7 @@ CREATE TABLE member_notification (
 	ps_no	number		NULL,
 	repl_no	number		NULL,
 	notice_type	varchar2(20)		NOT NULL,
-	content	varchar2(30)		NOT NULL,
+	content varchar2(30)		NOT NULL,
 	is_read	char(1)	DEFAULT 'N'	NOT NULL,
     constraint pk_alert_no primary key(alert_no),
     constraint fk_alert_member_id foreign key (member_id) references member(member_id) on  delete cascade,
@@ -117,7 +117,7 @@ COMMENT ON COLUMN member_notification.repl_no IS '댓글알림시 댓글번호 �
 COMMENT ON COLUMN member_notification.notice_type IS '알림종류(지원자있음, 지원결과, 댓글작성알림)';
 COMMENT ON COLUMN member_notification.content IS '알림내용';
 COMMENT ON COLUMN member_notification.is_read IS '알림확인여부 Y/N';
-
+alter table member_notification modify content varchar2(100);
 
 --관리자 통계테이블 만들기
 CREATE TABLE admin_statistics (
@@ -161,7 +161,6 @@ alter table project_study add end_date date not null;
 -- local 길이 수정(220715)
 alter table project_study modify (local varchar2(12));
 
-select * from project_study;
 --drop table project_study;
 create sequence seq_project_study_ps_no;
 
@@ -216,9 +215,28 @@ select *from project_study where gathering_type = 'P';
 select *from project_study;
 select * from member_application_status;
 select * from project_member_dept;
+select * from bookmarked_prj_std;
+select *from project_study where gathering_type = 'P' and status = 'N' and end_date > sysdate; -- 모집중인 프로젝트
+select *from project_study where gathering_type = 'P' and status = 'N' and local = 'Online' and end_date > sysdate;
 -- select * from (select row_number() over(order by reg_date desc) rnum, ps.* from project_study ps where gathering_type = '?') p where rnum between ? and ?
 -- select * from (select row_number() over(order by reg_date desc) rnum, ps.* from project_study ps where gathering_type = '?' and upper(#) like upper('%?%')) p where rnum between ? and ?
 -- select count(*) from project_study where gathering_type = '?' and upper(#) like upper('?')
+-- delete from bookmarked_prj_std where member_id = '?' and ps_no = ?
+-- 모집인원 추가
+insert into project_member_dept values(seq_p_m_dept_no.nextval, 2, 'PL', 1, 1);
+insert into project_member_dept values(seq_p_m_dept_no.nextval, 2, 'DG', 2, 0);
+insert into project_member_dept values(seq_p_m_dept_no.nextval, 2, 'FE', 2, 1);
+insert into project_member_dept values(seq_p_m_dept_no.nextval, 7, 'FE', 2, 1);
+insert into project_member_dept values(seq_p_m_dept_no.nextval, 9, 'PL', 1, 1);
+insert into project_member_dept values(seq_p_m_dept_no.nextval, 9, 'BE', 2, 0);
+select *from project_study where gathering_type = 'P' and ps_no in (2, 7, 9);
+-- 마우스 hover 시
+select
+        ps.ps_no 게시물번호
+        , pmd.job_code 직무
+        , pmd.capacity_number 모집정원
+        , pmd.recruited_number 모집인원
+from project_study ps join project_member_dept pmd on ps.ps_no = pmd.ps_no where gathering_type = 'P';
 
 select
         *
@@ -232,7 +250,11 @@ from (
                 gathering_type = 'P' and
                 exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('jeju'))
                 and
-                exists (select 2 from project_member_dept where ps_no = ps.ps_no and  job_code = 'DG')
+                exists (select 2 from project_member_dept where ps_no = ps.ps_no and  job_code = 'PL')
+                and
+                status = 'N'
+                and
+                end_date > sysdate
         ) p
 where rnum between 1 and 12;
 
@@ -250,7 +272,10 @@ from (
                  -- exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('capital'))
                 -- and
                 --[str2]
-                 exists (select 2 from project_member_dept where ps_no = ps.ps_no and  job_code = 'FE')
+                 -- exists (select 2 from project_member_dept where ps_no = ps.ps_no and  job_code = 'FE')
+                 -- and
+                 -- [str3]
+                -- status = 'N'
                  -- and end_date > sysdate -- 추후 모집중인 필터 진행 시 추가
         ) p
 where rnum between 1 and 12;

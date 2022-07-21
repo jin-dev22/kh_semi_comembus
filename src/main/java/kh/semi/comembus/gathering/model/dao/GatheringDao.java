@@ -102,30 +102,67 @@ public class GatheringDao {
 		String searchJobcode = (String) param.get("searchJobcode");
 		String selectLocalKeyword = (String) param.get("selectLocalKeyword");
 		String selectJobKeyword = (String) param.get("selectJobKeyword");
+		String statusYN = (String) param.get("statusYN");
 		System.out.println("DAO확인용 searchLocal = " + searchLocal);
 		System.out.println("DAO확인용 searchJobcode = " + searchJobcode);
 		System.out.println("DAO확인용 selectLocalKeyword = " + selectLocalKeyword);
 		System.out.println("DAO확인용 selectJobKeyword = " + selectJobKeyword);
+		System.out.println("DAO확인용 statusYN = " + statusYN);
 
+		// where gathering_type = 'P' [str1] [str2] [str3] and end_date > sysdate)
 		// [str1] = "and exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('" + searchLocal + "'))"
         // [str2] = "and exists (select 2 from project_member_dept where ps_no = ps.ps_no and job_code = '" + searchJobcode + "')"
+		// [str3] = "and status = '" + statusYN + "'"
+
 		// 랜딩페이지(필터 미지정시)
-		if("All".equals(selectLocalKeyword) && "All".equals(selectJobKeyword)) {
-			sql = sql.replace("[str1]", " ");
-			sql = sql.replace("[str2]", " ");
-		} else if(!"All".equals(selectLocalKeyword) && "All".equals(selectJobKeyword)) {
-			// 지역만 필터링
-			sql = sql.replace("[str1]", "and exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
-			sql = sql.replace("[str2]", " ");
-		} else if("All".equals(selectLocalKeyword) && !"All".equals(selectJobKeyword)) {
-			// 직무만 필터링
-			sql = sql.replace("[str1]", " ");
-			sql = sql.replace("[str2]", "and exists (select 2 from project_member_dept where ps_no = ps.ps_no and job_code = '" + selectJobKeyword + "')");
-		} else {
-			sql = sql.replace("[str1]", "and exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
-			sql = sql.replace("[str2]", "and exists (select 2 from project_member_dept where ps_no = ps.ps_no and job_code = '" + selectJobKeyword + "')");
+		if("All".equals(selectLocalKeyword)) {
+			if("All".equals(selectJobKeyword)) {
+				if("All".equals(statusYN)) {
+					sql = sql.replace("[str1]", " ");
+					sql = sql.replace("[str2]", " ");
+					sql = sql.replace("[str3]", " ");
+				} else {
+					sql = sql.replace("[str1]", " ");
+					sql = sql.replace("[str2]", " ");
+					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
+				}
+			} else {
+				if("All".equals(statusYN)) {
+					sql = sql.replace("[str1]", " ");
+					sql = sql.replace("[str2]", "and exists (select 2 from project_member_dept where ps_no = ps.ps_no and job_code = '" + selectJobKeyword + "')");
+					sql = sql.replace("[str3]", " ");
+				} else {
+					sql = sql.replace("[str1]", " ");
+					sql = sql.replace("[str2]", "and exists (select 2 from project_member_dept where ps_no = ps.ps_no and job_code = '" + selectJobKeyword + "')");
+					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
+				}
+			}
+		}
+		else {
+			if("All".equals(selectJobKeyword)) {
+				if("All".equals(statusYN)) {
+					sql = sql.replace("[str1]", "and exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
+					sql = sql.replace("[str2]", " ");
+					sql = sql.replace("[str3]", " ");
+				} else {
+					sql = sql.replace("[str1]", "and exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
+					sql = sql.replace("[str2]", " ");
+					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
+				}
+			} else {
+				if("All".equals(statusYN)) {
+					sql = sql.replace("[str1]", "and exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
+					sql = sql.replace("[str2]", "and exists (select 2 from project_member_dept where ps_no = ps.ps_no and job_code = '" + selectJobKeyword + "')");
+					sql = sql.replace("[str3]", " ");
+				} else {
+					sql = sql.replace("[str1]", "and exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
+					sql = sql.replace("[str2]", "and exists (select 2 from project_member_dept where ps_no = ps.ps_no and job_code = '" + selectJobKeyword + "')");
+					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
+				}
+			}
 		}
 		System.out.println(sql);
+		
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, (int)param.get("start"));
@@ -154,26 +191,59 @@ public class GatheringDao {
 		String searchJobcode = (String) param.get("searchJobcode");
 		String selectLocalKeyword = (String) param.get("selectLocalKeyword");
 		String selectJobKeyword = (String) param.get("selectJobKeyword");
+		String statusYN = (String) param.get("statusYN");
 		System.out.println("DAO확인용 토탈 searchLocal = " + searchLocal);
 		System.out.println("DAO확인용 토탈 searchJobcode = " + searchJobcode);
 		System.out.println("DAO확인용 토탈 selectLocalKeyword = " + selectLocalKeyword);
 		System.out.println("DAO확인용 토탈 selectJobKeyword = " + selectJobKeyword);
+		System.out.println("DAO확인용 토탈 statusYN = " + statusYN);
 		
 		// 랜딩페이지(필터 미지정시)
-		if("All".equals(selectLocalKeyword) && "All".equals(selectJobKeyword)) {
-			sql = sql.replace("[str1]", " ");
-			sql = sql.replace("[str2]", " ");
-		} else if(!"All".equals(selectLocalKeyword) && "All".equals(selectJobKeyword)) {
-			// 지역만 필터링
-			sql = sql.replace("[str1]", "and exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
-			sql = sql.replace("[str2]", " ");
-		} else if("All".equals(selectLocalKeyword) && !"All".equals(selectJobKeyword)) {
-			// 직무만 필터링
-			sql = sql.replace("[str1]", " ");
-			sql = sql.replace("[str2]", "and exists (select 2 from project_member_dept where ps_no = ps.ps_no and job_code = '" + selectJobKeyword + "')");
-		} else {
-			sql = sql.replace("[str1]", "and exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
-			sql = sql.replace("[str2]", "and exists (select 2 from project_member_dept where ps_no = ps.ps_no and job_code = '" + selectJobKeyword + "')");
+		if("All".equals(selectLocalKeyword)) {
+			if("All".equals(selectJobKeyword)) {
+				if("All".equals(statusYN)) {
+					sql = sql.replace("[str1]", " ");
+					sql = sql.replace("[str2]", " ");
+					sql = sql.replace("[str3]", " ");
+				} else {
+					sql = sql.replace("[str1]", " ");
+					sql = sql.replace("[str2]", " ");
+					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
+				}
+			} else {
+				if("All".equals(statusYN)) {
+					sql = sql.replace("[str1]", " ");
+					sql = sql.replace("[str2]", "and exists (select 2 from project_member_dept where ps_no = ps.ps_no and job_code = '" + selectJobKeyword + "')");
+					sql = sql.replace("[str3]", " ");
+				} else {
+					sql = sql.replace("[str1]", " ");
+					sql = sql.replace("[str2]", "and exists (select 2 from project_member_dept where ps_no = ps.ps_no and job_code = '" + selectJobKeyword + "')");
+					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
+				}
+			}
+		}
+		else {
+			if("All".equals(selectJobKeyword)) {
+				if("All".equals(statusYN)) {
+					sql = sql.replace("[str1]", "and exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
+					sql = sql.replace("[str2]", " ");
+					sql = sql.replace("[str3]", " ");
+				} else {
+					sql = sql.replace("[str1]", "and exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
+					sql = sql.replace("[str2]", " ");
+					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
+				}
+			} else {
+				if("All".equals(statusYN)) {
+					sql = sql.replace("[str1]", "and exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
+					sql = sql.replace("[str2]", "and exists (select 2 from project_member_dept where ps_no = ps.ps_no and job_code = '" + selectJobKeyword + "')");
+					sql = sql.replace("[str3]", " ");
+				} else {
+					sql = sql.replace("[str1]", "and exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
+					sql = sql.replace("[str2]", "and exists (select 2 from project_member_dept where ps_no = ps.ps_no and job_code = '" + selectJobKeyword + "')");
+					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
+				}
+			}
 		}
 		
 		try {
@@ -283,6 +353,34 @@ public class GatheringDao {
 		
 		return result;
 	}
+	
+	/**
+	 * 모임 게시글 번호로 조회하기
+	 * - 지원신청 취소시 해당 게시글 정보 확인을 위해 작성했습니다. 
+	 */
+	public Gathering findByNo(Connection conn, int psNo) {
+		Gathering gather = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("findByNo");
+		//1: psNo
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, psNo);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				gather = handleGatheringResultSet(rset);
+			}
+		} catch (SQLException e) {
+			throw new GatheringException("모임 게시글번호 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}	
+		
+		return gather;
+	}
+	
 	//수진코드 끝
 
 }

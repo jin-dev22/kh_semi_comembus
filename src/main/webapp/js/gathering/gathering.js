@@ -17,3 +17,21 @@ const swiper = new Swiper('.swiper', {
 		prevEl: '.swiper-button-prev'
 	}
 });
+
+/*const bookmarks = document.querySelectorAll(".ps__bookmark");
+[...bookmarks].forEach((bookmark) => {
+	bookmark.addEventListener('click', (e) => {
+		let mark = e.target;
+		if(mark.classList.contains("bookmark-front")){
+			mark.style.display = 'none';
+			mark.nextElementSibling.style.display = "block";
+			// console.log(mark.nextElementSibling);
+		} else {
+			mark.style.display = 'none';
+			mark.previousElementSibling.style.display = "block";
+			// console.log(mark.previousElementSibling);
+		}
+		
+	});
+	
+});*/
