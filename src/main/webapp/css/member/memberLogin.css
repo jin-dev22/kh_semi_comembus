@@ -1,14 +1,32 @@
-/* 아이디/비밀번호 찾기 - 본인확인 */
-#find-container{
+/* 로그인 */
+.login-table{
+	margin:40px auto 20px auto;
+}
+
+#loginBtn{
+	width: 300px;
+}
+
+.login-sub:nth-of-type(1){
+	margin-top: 20px;
+}
+
+.login-sub:nth-of-type(2){
+	margin-top: 10px;
+}
+
+.login-sub-btn:hover{
+	color: var(--btn-color);
+}
+
+/* 로그인, 아이디/비밀번호 찾기 - 본인확인 */
+#login-container, #find-container{
 	width: 550px;
 	text-align: center;
 	margin: 130px auto 180px auto;
 	border: 3px solid var(--btn-color);
-	padding: 70px 0;
-}
-
-#find-container h2{
-	margin: 0;
+	padding: 50px 0 70px 0;
+	font-family: var(--elice-font);
 }
 
 #find-container .find-content{
@@ -19,17 +37,18 @@
 	margin:30px auto;
 }
 
-.find-table .find-label{
+.login-label, .find-label{
 	margin: 10px 20px 10px 0;
 }
 
-.find-table .find-input{
+.login-input, .find-input{
 	padding: 5px;
 	margin: 5px 0;
 	width: 220px;
+	font-family: auto;
 }
 
-.find-btn{
+.login-btn, .find-btn{
   background-color: var(--btn-color);
   border-color: var(--btn-color);
   border-style: none;
@@ -63,6 +82,7 @@
   flex-direction: column;
   width: 310px;
   padding: 10px; 
+  font-family: auto;
 }
 
 .reset-password-input input{
@@ -78,7 +98,7 @@
 }
 
 #resetPasswordBtn{
-	width:380px;
+	width:320px;
 }
 
 .fail {
