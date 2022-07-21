@@ -404,6 +404,7 @@ public class MemberDao {
 			pstmt.setString(1, (String) param.get("nickName"));
 			pstmt.setString(2, (String) param.get("jobCode"));
 			pstmt.setString(3, (String) param.get("introduction"));
+			pstmt.setString(4, (String) param.get("memberId"));
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new MemberException("회원정보 수정 오류", e);

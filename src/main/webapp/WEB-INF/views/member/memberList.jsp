@@ -50,7 +50,7 @@
     		int gatheringCnt = mem.getGetheringCnt();
     %>
             <div class="profile-box">
-                <div class="profile-row">
+                <div class="profile-nickNames">
                     <span class="profile-badge"><b><%=nickName.charAt(0) %></b></span>
                     <span class="profile-nickName"><%=nickName %></span>
                 </div>

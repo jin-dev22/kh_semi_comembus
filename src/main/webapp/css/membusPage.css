@@ -26,7 +26,10 @@ h2{
 	padding: 25px;
 	display: inline-block;
 }
-
+.profile-nickNames{
+	display: flex;
+	align-items: center;
+}
 .profile-badge{
 	display: inline-block;
 	width: 70px;
@@ -38,6 +41,13 @@ h2{
 	text-align: center;
 	margin-right: 10px;
 	margin-bottom: 15px;
+}
+
+.profile-nickName{
+	display: inline-block;
+	width: 100px;
+	height: fit-content;
+	word-wrap: wrap;
 }
 
 /* 직무표기 위아래 간격주기 */
@@ -68,6 +78,7 @@ section#membus-profile{
 	margin: 0 auto;
 	display: flex;
 	justify-content: center;
+	flex-direction: column;
 }
 .profile-row{
 	padding: 10px;
@@ -178,4 +189,10 @@ section#membus-profile{
 .member-introduction{
 	width: 800px;
 	min-height: 100px;
+	resize: none;
+}
+.memberName{
+	display: inline-block;
+	max-width: 100%;
+	font-weight: bold;
 }
