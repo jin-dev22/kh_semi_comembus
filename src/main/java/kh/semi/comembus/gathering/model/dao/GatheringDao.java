@@ -8,12 +8,14 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
 import kh.semi.comembus.gathering.model.dto.Gathering;
+import kh.semi.comembus.gathering.model.dto.GatheringExt;
 import kh.semi.comembus.gathering.model.dto.GatheringType;
 import kh.semi.comembus.gathering.model.dto.Status;
 import kh.semi.comembus.gathering.model.exception.GatheringException;
@@ -354,5 +356,76 @@ public class GatheringDao {
 		return result;
 	}
 	//수진코드 끝
+
+	public int enrollProject(Connection conn, Gathering project) {
+		PreparedStatement pstmt=null;
+		int result = 0;
+		String sql=prop.getProperty("insertProject");
+		try {
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, project.getWriter());
+			pstmt.setObject(2, "P");
+			pstmt.setString(3, project.getTitle());
+			pstmt.setDate(4, project.getRegDate());
+			pstmt.setString(5, project.getContent());
+//			pstmt.setInt(6, project.getViewcount());
+//			pstmt.setInt(7, project.getBookmark());
+			pstmt.setString(8, project.getTopic());
+			pstmt.setString(9, project.getLocal());
+			pstmt.setInt(10, project.getPeople());
+			pstmt.setObject(11, "N");
+			pstmt.setDate(12, project.getStartDate());
+			pstmt.setDate(13, project.getEndDate());
+			
+			result=pstmt.executeUpdate();
+		}catch(SQLException e) {
+			throw new GatheringException("프로젝트 등록 오류",e);
+		}finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	public int getLastProjectNo(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int projectNo=0;
+		//sql설정
+		String sql = prop.getProperty("getLastProjectNo");
+		try {
+			pstmt=conn.prepareStatement(sql);
+			rset=pstmt.executeQuery();
+			if(rset.next()) {
+				projectNo=rset.getInt(1);
+			}
+		}catch(SQLException e) {
+			throw new GatheringException("생성된 프로젝트번호 조회 오류",e);
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		return projectNo;
+	}
+	
+	private GatheringExt handleProjectResultSet(ResultSet rset) throws SQLException{
+		int psNo=rset.getInt("psNo");
+		String writer = rset.getString("writer");
+		GatheringType psType = GatheringType.valueOf(rset.getString("psType"));
+		String title = rset.getString("title");
+		Date regDate = rset.getDate("reg_date");
+		String content = rset.getString("content");
+		int viewcount = rset.getInt("viewcount");
+		int bookmark = rset.getInt("bookmark");
+		String topic = rset.getString("topic");
+		String local = rset.getString("local");
+		int people = rset.getInt("people");
+		Status status = Status.valueOf(rset.getString("status"));
+		Date start_date = rset.getDate("start_date");
+		Date end_date = rset.getDate("end_date");
+//		String planning = rset.getString(")
+		
+		
+		return new GatheringExt(psNo,writer,psType,title,regDate,content,viewcount,bookmark,topic,local,people,status,start_date,end_date);
+	}
 
 }

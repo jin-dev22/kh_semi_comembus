@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import kh.semi.comembus.gathering.model.dto.Gathering;
 import kh.semi.comembus.gathering.model.dto.GatheringType;
 import kh.semi.comembus.gathering.model.dto.Status;
-import kh.semi.comembus.gathering.model.service.ProjectService;
+import kh.semi.comembus.gathering.model.service.GatheringService;
 
 /**
  * Servlet implementation class projectEnrollViewServlet
@@ -22,7 +22,7 @@ import kh.semi.comembus.gathering.model.service.ProjectService;
 @WebServlet("/gathering/projectEnrollView")
 public class projectEnrollViewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private ProjectService projectService = new ProjectService();
+	private GatheringService GatheringService = new GatheringService();
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -60,8 +60,8 @@ public class projectEnrollViewServlet extends HttpServlet {
 			String title = request.getParameter("title");
 			String _regDate = request.getParameter("regDate");
 			String content = request.getParameter("content");
-			int viewcount = Integer.parseInt(request.getParameter("viewcount"));
-			int bookmark=Integer.parseInt(request.getParameter("bookmark"));
+//			int viewcount = Integer.parseInt(request.getParameter("viewcount"));
+//			int bookmark=Integer.parseInt(request.getParameter("bookmark"));
 			String topic = request.getParameter("topic");
 			String local = request.getParameter("local");
 			int people = Integer.parseInt(request.getParameter("people"));
@@ -75,12 +75,12 @@ public class projectEnrollViewServlet extends HttpServlet {
 			Date startDate = (_startDate != null && !"".equals(_startDate))?Date.valueOf(_startDate):null;
 			Date endDate = (_endDate != null && !"".equals(_endDate))?Date.valueOf(_endDate):null;
 			
-			Gathering project = new Gathering(0,writer,psType,title,regDate,content,0,0,topic,local,1,status,startDate,endDate);
+			Gathering project = new Gathering(0,writer,psType,title,regDate,content,0,0,topic,local,people,status,startDate,endDate);
 			
 			System.out.println("project = "+project);
 			
 			//2. 업무로직
-			int result = projectService.enrollProject(project);
+			int result = GatheringService.enrollGathering(project);
 			
 			//3. redirect
 			request.getSession().setAttribute("msg", "프로젝트를 성공적으로 등록했습니다.");

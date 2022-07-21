@@ -89,7 +89,38 @@ public class GatheringService {
 		}
 		return result;
 	}
-	
-	
+
+	//유경 추가
+	public int enrollGathering(Gathering project) {
+		Connection conn=getConnection();
+		int result = 0;
+		try {
+			//gathering table에 insert
+			result = gatheringDao.enrollProject(conn,project);
+			//방금 등록된 Gathering.no조회
+			int psNo = gatheringDao.getLastProjectNo(conn);
+			System.out.println("projectNo = "+psNo);
+			
+			commit(conn);
+		}catch(Exception e) {
+			rollback(conn);
+			throw e;
+		}finally {
+			close(conn);
+		}
+		return result;
+	}
+
+	public static Gathering findByNo(int psNo) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static Gathering findByNo(int psNo, boolean hasRead) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	//유경 끝
+
 	//수진코드 끝
 }
