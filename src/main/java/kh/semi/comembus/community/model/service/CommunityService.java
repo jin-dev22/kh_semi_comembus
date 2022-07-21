@@ -9,6 +9,7 @@ import java.util.Map;
 
 import kh.semi.comembus.community.model.dao.CommunityDao;
 import kh.semi.comembus.community.model.dto.Community;
+import kh.semi.comembus.community.model.dto.CommunityRepl;
 
 //태연코드 시작
 public class CommunityService {
@@ -262,6 +263,31 @@ public class CommunityService {
 		}
 		return result;
 	}
+	
+	public int insertQnaComment(CommunityRepl commuRepl) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			result = communityDao.insertQnaComment(conn, commuRepl);
+			commit(conn);
+			
+		}catch(Exception e) {
+			rollback(conn);
+			throw e;
+			
+		}finally {
+			close(conn);
+		}
+		return result;
+	}
+	
+	public List<CommunityRepl> findQnaCommentcoNo(int coNo) {
+		Connection conn = getConnection();
+		List<CommunityRepl> commuRepl = communityDao.findQnaCommentcoNo(conn, coNo);
+		close(conn);
+		return commuRepl;
+	}
+
 	//태연코드 끝
 	
 	//수진코드 시작
@@ -284,14 +310,6 @@ public class CommunityService {
 		return totalCommunityNum;
 	}
 
-
-	
-
-
-	
-
-
-	
 
 	//수진코드 끝
 }

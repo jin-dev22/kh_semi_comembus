@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import kh.semi.comembus.common.ComembusUtils;
 import kh.semi.comembus.community.model.dto.Community;
+import kh.semi.comembus.community.model.dto.CommunityRepl;
 import kh.semi.comembus.community.model.service.CommunityService;
 
 /**
@@ -33,9 +34,12 @@ public class CommunityViewServlet extends HttpServlet {
 		
 			if("Q".equals(type)) {
 				Community qview = communityService.findByQnaNo(no);
+				List<CommunityRepl> commuRepl = communityService.findQnaCommentcoNo(no);
 				request.setAttribute("qview", qview);
+				request.setAttribute("commuRepl", commuRepl);
 				request.getRequestDispatcher("/WEB-INF/views/community/qnaView.jsp")
 				.forward(request, response);
+			
 			}else if("F".equals(type)) {
 				Community fview = communityService.findByFreeNo(no);
 				request.setAttribute("fview", fview);

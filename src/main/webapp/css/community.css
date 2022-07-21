@@ -102,3 +102,54 @@
     border-bottom: 1px solid lightgray;
     font-size: 14px;
 }
+
+section#board-container{
+	font-family: var(--elice-font);
+	width:600px; 
+	margin-top:70px;
+	margin-left:450px;
+	text-align:center;
+	}
+#viewHeader p{
+	margin:10px 0;
+	font-weight:700;
+	font-size: 25px;
+	}
+
+table#tbl-board-view {
+	width:600px; 
+	margin:0 auto; 
+	border:1px solid lightgray; 
+	border-collapse:collapse;  
+}
+table#tbl-board-view th {
+	width: 150px; 
+	border:1px solid; 
+	padding: 10px 0; 
+	text-align:center; 
+} 
+table#tbl-board-view td {
+	border:1px solid; 
+	padding: 5px 0 5px 15px; 
+	text-align:left;
+}
+
+/*댓글테이블*/
+table#tbl-comment{width:580px; margin:0 auto; border-collapse:collapse;} 
+table#tbl-comment tr td{border-bottom:1px solid; border-top:1px solid; padding:5px; text-align:left; line-height:120%;}
+table#tbl-comment tr td:first-of-type{padding: 5px 5px 5px 50px;}
+table#tbl-comment tr td:last-of-type {text-align:right; width: 100px;}
+table#tbl-comment button.btn-reply{display:none;}
+table#tbl-comment tr:hover {background:lightgray;}
+table#tbl-comment tr:hover button.btn-reply{display:inline;}
+table#tbl-comment sub.comment-writer {color:navy; font-size:14px}
+table#tbl-comment sub.comment-date {color:tomato; font-size:10px}
+
+table#tbl-comment tr.level2 {color:gray; font-size: 14px;}
+table#tbl-comment tr.level2 td:first-of-type{padding-left:100px;}
+table#tbl-comment tr.level2 sub.comment-writer {color:#8e8eff; font-size:14px}
+table#tbl-comment tr.level2 sub.comment-date {color:#ff9c8a; font-size:10px}
+
+/*답글관련*/
+table#tbl-comment textarea{margin: 4px 0 0 0;}
+table#tbl-comment button.btn-comment-enroll2{width:60px; height:23px; color:white; background:#3300ff; position:relative; top:-5px; left:10px;}

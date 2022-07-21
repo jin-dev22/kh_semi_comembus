@@ -13,7 +13,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import kh.semi.comembus.community.model.dto.CommentLevel;
 import kh.semi.comembus.community.model.dto.Community;
+import kh.semi.comembus.community.model.dto.CommunityRepl;
 import kh.semi.comembus.community.model.exception.CommunityException;
 
 public class CommunityDao {
@@ -422,6 +424,71 @@ public class CommunityDao {
 		}
 		return result;
 	}
+	
+	public int insertQnaComment(Connection conn, CommunityRepl commuRepl) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("insertQnaComment");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, commuRepl.getReplWriter());
+			pstmt.setInt(2, commuRepl.getCoNo());
+			pstmt.setString(3, commuRepl.getContent());
+			pstmt.setInt(4,commuRepl.getReplLevel().getValue());
+			pstmt.setObject(5, commuRepl.getRefReplNo() == 0 ? 
+									null : 
+										commuRepl.getRefReplNo());
+			result = pstmt.executeUpdate();
+		} 
+		
+		catch (SQLException e) {
+			throw new CommunityException("댓글/답글 등록 오류!", e);
+		}
+		finally {
+			close(pstmt);
+		}
+		return result;
+		}
+	
+	public List<CommunityRepl> findQnaCommentcoNo(Connection conn, int coNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<CommunityRepl> commuRepl = new ArrayList<>();
+		String sql = prop.getProperty("findQnaCommentcoNo");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, coNo);
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				commuRepl.add(handleCommuReplResultSet(rset));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new CommunityException("게시글별 댓글 조회를 실패했습니다.",e);
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		return commuRepl;
+		
+	}
+
+
+	private CommunityRepl handleCommuReplResultSet(ResultSet rset) throws SQLException {
+		int replNo = rset.getInt("repl_no");
+		String replWriter = rset.getString("repl_writer");
+		int coNo = rset.getInt("co_no");
+		Timestamp regDate = rset.getTimestamp("reg_date");
+		String content = rset.getString("content");
+		CommentLevel replLevel = CommentLevel.valueOf(rset.getInt("repl_level"));
+		int refReplNo = rset.getInt("ref_repl_no");
+		return new CommunityRepl(replNo, replWriter, coNo, regDate, content, replLevel, refReplNo);
+	}
+
+
 	//태연코드 끝
 	
 	//수진코드 시작
@@ -488,15 +555,6 @@ public class CommunityDao {
 		String coType = rset.getString("co_type");
 		return new Community(coNo, coTitle, coWriter, coContent, coReadCount, coRegDate, coLike, coType);
 	}
-
-
-	
-
-
-
-
-
-	
 
 
 
