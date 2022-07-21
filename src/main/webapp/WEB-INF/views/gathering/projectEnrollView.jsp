@@ -113,7 +113,7 @@
 			</tr>
 			<tr></tr>
 			<tr>
-				<th colspan="2"><br> <input type="submit" value="등록하기"></th>
+				<th colspan="2"><br> <input type="submit" value="등록하기" onclick="";></th>
 			</tr>
 		</tbody>
 	</table>
@@ -333,6 +333,9 @@
     	alert("주제를 선택해 주세요.");
     	return false;
     }
+    
+    //인원수를 분야별로 전송 or 
+    
 	return true;
 }
 
