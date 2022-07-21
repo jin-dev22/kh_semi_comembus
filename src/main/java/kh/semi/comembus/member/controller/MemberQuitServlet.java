@@ -29,11 +29,15 @@ public class MemberQuitServlet extends HttpServlet {
 			int result = memberService.memberQuit(quitMemberId);
 			
 			HttpSession session = request.getSession();
-			String msg = "";
+			
 			if(result > 0) {
-				msg = "회원탈퇴처리가 완료되었습니다.";
-				session.setAttribute("msg", msg);
+				session.setAttribute("msg", "회원탈퇴처리가 완료되었습니다.");
+				session.setAttribute("loginMember", null);
 			}
+			else {
+				session.setAttribute("msg", "회원탈퇴처리 오류. 메인화면으로 돌아갑니다.");
+			}
+			request.getRequestDispatcher("/index.jsp").forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

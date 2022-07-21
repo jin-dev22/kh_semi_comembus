@@ -205,7 +205,7 @@
 		</div>
 	<input type="submit" value="업데이트"/>
 	<input type="button" value="비밀번호 변경" onclick="updatePassword();"/>
-	<input type="button" onclick="deleteMember();" value="탈퇴"/>
+	<input type="button" onclick="deleteMember()" value="탈퇴"/>
 </form>
 </section>
 <!-- 지원신청 취소 폼 -->
@@ -216,7 +216,7 @@
 </form>
 
 <!-- 탈퇴 폼 -->
-<form action="memberQuitFrm" action="<%= request.getContextPath()%>/membus/quit">
+<form name="memberQuitFrm" action="<%= request.getContextPath()%>/membus/quit" method="POST">
 	<input type="hidden" name="memberId" value="<%= loginMember.getMemberId()%>" />
 </form>
 <script>
@@ -237,13 +237,13 @@
 		if(confirm("정말 탈퇴하시겠습니까?")){
 			const frm = document.memberQuitFrm;
 			console.log(frm);
-			frm.submit();
+			frm.submit();//Uncaught TypeError: Cannot read properties of undefined (reading 'submit')
 		}	
 	}
 	
 	function cancelApld(psNo){
 		if(confirm("지원취소된 모임은 다시 지원하실 수 없습니다. 지원을 취소하시겠습니까?")){
-			const frm = document.apldCancelFrm
+			const frm = document.apldCancelFrm;
 			frm.psNo.value = psNo;
 			frm.submit();
 		}
