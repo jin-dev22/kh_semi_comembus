@@ -96,10 +96,13 @@
   <% } else {%>  
 	  <ul class="h__member__menu">
 	  <!-- 닉네임 클릭 시 마이페이지로 이동 -->
-	  	<span class="h__profile-badge">
+		<span class="h__profile-badge">
 	  		<b><%= loginMember.getNickName().charAt(0) %></b>
 	  	</span>
-	  	<li class="h__loginMember"><a href="<%= request.getContextPath()%>/member/mypage"><%= loginMember.getNickName() %></a></li>
+	  	<li class="h__loginMember">
+	  		<a href="<%= request.getContextPath()%>/membus/mypage"><%= loginMember.getNickName() %></a>
+	  		<span id="noification"></span>
+  		</li>	  	
 	  	<li class="h__memberLogout"><a href="<%= request.getContextPath() %>/membus/logout">로그아웃</a></li>
 	  </ul>
   <% } %>   

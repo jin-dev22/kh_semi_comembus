@@ -14,10 +14,10 @@ import javax.websocket.server.ServerEndpoint;
 
 import com.google.gson.Gson;
 
-import kh.semi.comembus.ws.config.WebSocketConfigurator;
+import kh.semi.comembus.ws.config.ComembusWebSocketConfigurator;
 
-@ServerEndpoint(value = "/comembus", configurator = WebSocketConfigurator.class)
-public class WebSocket {
+@ServerEndpoint(value = "/ComembusWebSocket", configurator = ComembusWebSocketConfigurator.class)
+public class ComembusWebSocket {
 	private static Map<String, Session> clientMap = Collections.synchronizedMap(new HashMap<>());
 
 	@OnOpen
@@ -42,6 +42,7 @@ public class WebSocket {
 		case NEW_COMMENT:
 		case NEW_APPLICANT:
 		case APPLY_RESULT:
+		case APPLY_CANCELED:
 			Map<String, Object> data = (Map<String, Object>) msgMap.get("data");
 			
 		}
