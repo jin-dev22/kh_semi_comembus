@@ -355,6 +355,34 @@ public class GatheringDao {
 		
 		return result;
 	}
+	
+	/**
+	 * 모임 게시글 번호로 조회하기
+	 * - 지원신청 취소시 해당 게시글 정보 확인을 위해 작성했습니다. 
+	 */
+	public Gathering findByNo(Connection conn, int psNo) {
+		Gathering gather = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("findByNo");
+		//1: psNo
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, psNo);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				gather = handleGatheringResultSet(rset);
+			}
+		} catch (SQLException e) {
+			throw new GatheringException("모임 게시글번호 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}	
+		
+		return gather;
+	}
+	
 	//수진코드 끝
 
 	public int enrollProject(Connection conn, Gathering project) {

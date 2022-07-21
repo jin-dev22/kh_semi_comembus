@@ -117,7 +117,7 @@ COMMENT ON COLUMN member_notification.repl_no IS '댓글알림시 댓글번호 �
 COMMENT ON COLUMN member_notification.notice_type IS '알림종류(지원자있음, 지원결과, 댓글작성알림)';
 COMMENT ON COLUMN member_notification.content IS '알림내용';
 COMMENT ON COLUMN member_notification.is_read IS '알림확인여부 Y/N';
-
+alter table member_notification modify content varchar2(100);
 
 --관리자 통계테이블 만들기
 CREATE TABLE admin_statistics (

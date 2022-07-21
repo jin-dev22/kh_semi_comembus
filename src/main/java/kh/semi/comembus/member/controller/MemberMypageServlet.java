@@ -24,7 +24,7 @@ import kh.semi.comembus.member.model.service.MemberService;
 /**
  * Servlet implementation class MemberMypageServlet
  */
-@WebServlet("/member/mypage")
+@WebServlet("/membus/mypage")
 public class MemberMypageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private MemberService memberService = new MemberService();
@@ -38,13 +38,9 @@ public class MemberMypageServlet extends HttpServlet {
 		try {
 			//로그인멤버 아이디로 조회
 			HttpSession session = request.getSession();
-		//	String memberId = ((Member) session.getAttribute("loginMember")).getMemberId();
 			MemberExt loginMember = (MemberExt) session.getAttribute("loginMember");
-			System.out.println("@myPageSrv: loginMember>>"+loginMember);
 			String memberId = loginMember.getMemberId();
-			System.out.println("@myPageSrv: loginMemberId, jobCode>>"+memberId+", "+loginMember.getJobCode());
 			String jobName = memberService.getJobName(loginMember.getJobCode());
-			System.out.println("@myPageSrv: logMem jobName");
 			loginMember.setJobName(jobName);
 			
 			//커뮤니티 게시글 페이지바 설정및 입력값 map담기
@@ -79,7 +75,7 @@ public class MemberMypageServlet extends HttpServlet {
 			List<Gathering> gatheringBookmarkList = gatheringService.findAllBookmarked(memberId);			
 			
 			//view단 처리
-			request.setAttribute("member", loginMember);
+			session.setAttribute("loginMember", loginMember);
 			request.setAttribute("communityList", communityList);
 			request.setAttribute("pagebar", pagebar);
 			request.setAttribute("gatheringIngList", gatheringIngList);
