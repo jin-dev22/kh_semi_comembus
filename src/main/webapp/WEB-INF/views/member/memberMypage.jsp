@@ -214,11 +214,16 @@
 	<input type="hidden" name="memberId" value="<%= loginMember.getMemberId()%>" />
 	<input type="hidden" name="nickName" value="<%= loginMember.getNickName()%>"/>
 </form>
+
 <!-- 탈퇴 폼 -->
 <form action="memberQuitFrm" action="<%= request.getContextPath()%>/membus/quit">
 	<input type="hidden" name="memberId" value="<%= loginMember.getMemberId()%>" />
 </form>
 <script>
+	function updatePassword(){
+		location.href= "<%= request.getContextPath() %>/membus/updateMemberPassword";
+	}
+
 	/**
 	* 엔터키 폼 제출방지하기
 	*/
@@ -230,7 +235,9 @@
 	
 	function deleteMember(){
 		if(confirm("정말 탈퇴하시겠습니까?")){
-			document.memberQuitFrm.submit();
+			const frm = document.memberQuitFrm;
+			console.log(frm);
+			frm.submit();
 		}	
 	}
 	
