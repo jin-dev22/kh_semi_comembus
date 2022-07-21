@@ -26,7 +26,7 @@
 		</div>
 		<div class="profile-row part-2">
 			<div class="subtitle">자기소개</div>
-			<p class="member-introduction"><%=introduction != null? introduction : "작성한 자기소개가 없습니다." %></div>
+			<p class="member-introduction"><%=introduction != null? introduction : "작성한 자기소개가 없습니다." %></p>
 		</div>
 		<div class="profile-row part-3">
 			<div class="subtitle">최근 작성한 게시물</div>
@@ -69,7 +69,7 @@
 						</ul>
 						<span class="bookmark bookmark-front">♡</span>
 						<span class="bookmark bookmark-back">♥</span>
-					</div>				
+				</div>				
 				<% 
 					}
 				}else{
