@@ -85,13 +85,13 @@
 					<th>*모집인원</th>
 				</tr>
 				<tr>
-					<td colspan="3">❗ 3~4명을 추천합니다. (최대 9명까지 가능)</td>
+					<td colspan="3" >❗ 3~4명을 추천합니다. (최대 9명까지 가능)</td>
 				</tr>
 				<tr>
 					<td width="200px" colspan="3">
 						<div id="container">
 							<input type="button" class="count" id="plus" value="+">
-							<span id="count">1</span>
+							<span id="count" name="people">1</span>
 							<input type="button" id="minus" value="-">
 
 						</div>
