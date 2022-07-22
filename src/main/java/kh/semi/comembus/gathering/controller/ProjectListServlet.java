@@ -45,21 +45,27 @@ public class ProjectListServlet extends HttpServlet {
 			param.put("start", start);
 			param.put("end", end);
 			
-			// content 영역 
-			List<Gathering> projectList = gatheringService.findGatheringAll(param);
-			
-			// 북마크
 			HttpSession session = request.getSession();
 			MemberExt loginMember = (MemberExt) session.getAttribute("loginMember");
-			String loginMemberId ="";
-			List<Gathering> bookmarkList = new ArrayList<>();
+			String loginMemberId = null;
+			
+			// content 영역 
+			List<Gathering> projectList = gatheringService.findGatheringAll(param);
+			System.out.println(">>> param = " + param);
+			System.out.println(">>> projectList = " + projectList);
+			
+			// 북마크
+			Map<String, Object> bmParam = new HashMap<>();
 			if(loginMember != null) {
 				loginMemberId = loginMember.getMemberId();
-				param.put("bookmarkYN", "Y");
-				param.put("loginMemberId", loginMemberId);
-				bookmarkList = gatheringService.findAllProBookmarked(param);
+				bmParam.put("loginMemberId", loginMemberId);
+				System.out.println(">>> loginMemberId " + loginMemberId);
+				System.out.println(">>> bmParam = " + bmParam);
 			}
-			System.out.println(">>loginMember" + loginMember);
+			List<Gathering> bookmarkList = gatheringService.findAllProBookmarked(bmParam);
+			
+			System.out.println(">>> 2loginMemberId " + loginMemberId);
+			System.out.println(">>> bookmarkList " + bookmarkList);
 						
 			// pagebar 영역
 			int totalContent = gatheringService.getTotalContent();
