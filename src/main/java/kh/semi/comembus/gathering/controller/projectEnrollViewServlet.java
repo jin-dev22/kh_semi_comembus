@@ -80,7 +80,7 @@ public class projectEnrollViewServlet extends HttpServlet {
 			System.out.println("project = "+project);
 			
 			//2. 업무로직
-			int result = GatheringService.enrollGathering(project);
+			int result = GatheringService.enrollProject(project);
 			
 			//3. redirect
 			request.getSession().setAttribute("msg", "프로젝트를 성공적으로 등록했습니다.");
