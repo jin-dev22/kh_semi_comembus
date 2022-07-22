@@ -18,11 +18,11 @@
 		<tr><td colspan="3">❗ 프로젝트 주제를 골라주세요</td></tr>
 		<tr>
             <td colspan="3">
-                <input type="radio" name="topic" id="social">소셜네트워크
-                <input type="radio" name="topic" id="game">게임
-                <input type="radio" name="topic" id="travel">여행
-                <input type="radio" name="topic" id="finance">금융
-                <input type="radio" name="topic" id="ecommerce">이커머스
+                <input type="radio" name="topic" id="social" value="social">소셜네트워크
+                <input type="radio" name="topic" id="game" value="game">게임
+                <input type="radio" name="topic" id="travel" value="travel">여행
+                <input type="radio" name="topic" id="finance" value="finance">금융
+                <input type="radio" name="topic" id="ecommerce" value="ecommerce">이커머스
             </td>
         </tr>
         <tr></tr>
@@ -31,13 +31,13 @@
 		<tr>
             <td>			
                 <select name="local" id="local">
-                    <option value="online">온라인</option>
-                    <option value="sudo">수도권</option>
-                    <option value="kangwon">강원도</option>
-                    <option value="chungcheong">충청도</option>
-                    <option value="junla">전라도</option>
-                    <option value="kyungsang">경상도</option>
-                    <option value="jeju">제주도</option>
+                    <option value="Online">온라인</option>
+                    <option value="Capital">수도권</option>
+                    <option value="Gangwon">강원도</option>
+                    <option value="Chungcheong">충청도</option>
+                    <option value="Jeolla">전라도</option>
+                    <option value="Gyeongsang">경상도</option>
+                    <option value="Jeju">제주도</option>
                 </select>
             </td>
         </tr>

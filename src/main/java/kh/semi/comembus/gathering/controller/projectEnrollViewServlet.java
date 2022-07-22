@@ -90,11 +90,11 @@ public class projectEnrollViewServlet extends HttpServlet {
 			
 			//1. 사용자 입력값 처리
 			String writer = request.getParameter("writer");
-			String _psType=request.getParameter("psType");
+//			String _psType=request.getParameter("psType");
 			String title = request.getParameter("title");
 			System.out.println(title);
 			String _regDate = request.getParameter("reg_date");
-			System.out.println(_regDate);
+//			System.out.println(_regDate);
 			String content = request.getParameter("editordata");
 			System.out.println(content);
 //			int viewcount = Integer.parseInt(request.getParameter("viewcount"));
@@ -102,19 +102,19 @@ public class projectEnrollViewServlet extends HttpServlet {
 			String topic = request.getParameter("topic");
 			String local = request.getParameter("local");
 //			int people = Integer.parseInt(request.getParameter("people"));
-			String _status = request.getParameter("status");
+//			String _status = request.getParameter("status");
 			String _startDate = request.getParameter("date_start");
 			String _endDate = request.getParameter("date_end");
 			
-			GatheringType psType = _psType != null ? GatheringType.valueOf(_psType) : null;
-			Date regDate = (_regDate != null && !"".equals(_regDate))?Date.valueOf(_regDate):null;
-			Status status = _status != null ? Status.valueOf(_status):null;
+//			GatheringType psType = _psType != null ? GatheringType.valueOf(_psType) : null;
+//			Date regDate = (_regDate != null && !"".equals(_regDate))?Date.valueOf(_regDate):null;
+//			Status status = _status != null ? Status.valueOf(_status):null;
 			Date startDate = (_startDate != null && !"".equals(_startDate))?Date.valueOf(_startDate):null;
 			Date endDate = (_endDate != null && !"".equals(_endDate))?Date.valueOf(_endDate):null;
 			
-			Gathering project = new Gathering(0,writer,psType,title,regDate,content,0,0,topic,local,people,status,startDate,endDate);
-			System.out.println(_psType);
-			System.out.println(psType);
+			Gathering project = new Gathering(0,writer,null,title,null,content,0,0,topic,local,people,null,startDate,endDate);
+//			System.out.println(_psType);
+//			System.out.println(psType);
 			System.out.println("project = "+project);
 
 			
@@ -123,7 +123,7 @@ public class projectEnrollViewServlet extends HttpServlet {
 			
 			//3. redirect
 			request.getSession().setAttribute("msg", "프로젝트를 성공적으로 등록했습니다.");
-			response.sendRedirect(request.getContentLength()+"/gathering/projectList");
+			response.sendRedirect(request.getContextPath()+"/gathering/projectList");
 		}catch(Exception e) {
 			e.printStackTrace();
 			throw e;
