@@ -1,0 +1,255 @@
+.slide{
+	width: 1200px;
+	left: 0;
+	right: 0;
+	margin: auto;
+}
+
+.preview{
+	width:1100px;	
+	left: 0;
+	right: 0;
+	margin: auto;
+}
+
+.container-title{
+	font-weight: bold;
+	margin-bottom: 20px;
+}
+.container-title-co{
+	font-size: 20px;	
+	font-weight: bold;
+}
+.preview-container{
+	margin: 70px 0;	
+}
+
+.preview-container a:hover{
+	color: black;
+}
+.move-page{
+	text-align: end;	
+}
+
+
+/* ----------- 상단 슬라이드 ------------ */
+.main__header__content {
+  width: 100%;
+  height: 350px;
+  box-sizing: border-box;
+  padding: 25px 60px;
+  background-color: #FFE69A;
+}
+.swiper-wrapper {
+  display: flex;
+}
+.main__header__content .swiper-slide {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  box-sizing: border-box;
+}
+.main__header__content__img {
+  height: 350px;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+	position: absolute;
+	top: 50%
+}
+.swiper-button-next {
+	left: 30px;
+}
+.swiper-button-prev {
+	right: 30px;
+}
+
+
+/* ----------- 프로젝트 미리보기 ------------ */
+.ps-lists {
+	display: flex;
+	flex-wrap: wrap;
+
+	justify-content: space-between;
+}
+
+.ps-pre {
+	position: relative;
+	width: 250px;
+}
+.ps-pre__img {
+	width: 250px;
+	border-radius: 10%;
+	margin-bottom: 10px;
+}
+
+.ps-pre > p {
+	text-align: left;
+}
+
+.ps-pre__etc {
+	height: 45px;
+	float: left;
+}
+.ps-pre__etc li {
+	float: left;
+	margin-right: 20px;
+}
+.ps-pre__etc li:last-child {
+	clear: both;
+}
+.heart-emoji {
+	color: var(--accent-color);
+}
+.ps-pre .ps__bookmark {
+	width: 50px;
+	height: 50px;
+	float: right;
+	text-align: center;
+	position: relative;
+}
+.bookmark-front,
+.bookmark-back {
+	font-size: 40px;
+	color: var(--accent-color);
+	background: none;
+	border: none;
+}
+.bookmark-back {
+	display: none;
+}
+
+
+/* ----------- 멤버스 미리보기 ------------ */
+#membusProfile-container{
+	display: flex;
+	margin: 0 auto;
+	font-family: var(--elice-font);
+	color: var(--text-color);
+	justify-content: space-between;
+}
+
+.profile-box{
+	width: 230px;
+	height: 230px;
+	background-color: var(--yellow-color);
+	border-radius: 30px;
+	padding: 25px;
+	display: inline-block;
+}
+
+.profile-badge{
+	display: inline-block;
+	width: 70px;
+	height: 70px;
+	line-height: 70px;
+	background-color: #fff;
+	border-radius: 50%;
+	border: 1px solid black;
+	text-align: center;
+	margin-right: 10px;
+	margin-bottom: 15px;
+}
+
+/* 직무표기 위아래 간격주기 */
+.profile-jobName{
+	margin:15 0px;
+}
+
+.gatheringYN{
+	height: 50px;
+}
+
+.btn-showProfile{
+	width: 100px;
+	background-color: var(--btn-color);
+	position: relative;
+	left: 23%;
+	bottom: 5px;/*버튼 위치 고정시키는 법 찾기*/
+	border: none;
+	border-radius: 3px;
+	color: #fff;
+}
+
+
+/* ----------- 커뮤니티 미리보기 ------------ */
+.community-s-container{
+	margin-bottom: 20px;	
+}
+.community-qf-wrapper{
+	display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 40px;
+}
+.community-qf-container{
+	width: 520px;
+    display: inline-block;
+}
+
+.co-share-lists{
+	display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.co-share{
+    width: 250px;
+    margin: 0;
+}
+
+.co-share-title{
+    height: 150px;
+    border: 1px solid black;
+    padding: 10px;
+    text-align: center;
+    font-size: 20px;
+}
+
+.co-share-title a{
+    display: flex;
+    height: 130px;
+    text-decoration: none;
+}
+
+/*
+.admin-choice{
+    width: 90px;
+    background-color: #FF6962;
+    border-radius: 30px;
+    padding: 2px;
+    font-size: 14px;
+    color: white;
+    text-align: center;
+    margin-top: 7px;
+}
+*/
+
+.co-share-info{
+	margin-top: 5px;
+	text-align: end;
+}
+
+.co-share-writer{
+    display: block;
+}
+
+.co-share-info span{
+    margin: 0 0 5px 20px;
+}
+
+.co-qf-title{
+	padding: 5px 8px;	
+	height: 32px;
+	overflow: hidden;
+}
+
+.co-qf-title:nth-child(2n-1){
+	background-color: var(--yellow-color);
+}
+
+.co-qf-title:nth-child(2n){
+	background-color: var(--jjin-yellow-color);
+}
