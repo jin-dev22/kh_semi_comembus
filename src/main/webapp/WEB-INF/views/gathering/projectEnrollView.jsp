@@ -299,6 +299,8 @@
                 console.log('backend & backendCnt 값 저장');
             }
         }
+        console.log(setPlanningCnt);
+        
         
 
     }

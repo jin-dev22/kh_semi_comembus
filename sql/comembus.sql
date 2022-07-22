@@ -229,8 +229,47 @@ select * from (select row_number() over(order by reg_date desc) rnum, ps.*, (sel
 -- select ps.*, (select nvl(sum(recruited_number), 0)from project_member_dept where ps_no = ps.ps_no) 모집인원 from project_study ps where gathering_type ='P';
 -- select ps.*, (select nvl(sum(recruited_number), 0)from project_member_dept where ps_no = ps.ps_no) 모집인원 from project_study ps where gathering_type ='P'
 --select ps_no, sum(recruited_number) from project_member_dept group by ps_no;
-
 -- select * from(select row_number() over(order by reg_date desc) rnum, ps.*, (select nvl(sum(recruited_number), 0) from project_member_dept where ps_no = ps.ps_no) recruited_cnt from project_study ps where end_date > sysdate and ps_no in(select ps_no from BOOKMARKED_PRJ_STD where gathering_type = 'P' and member_id = '?'))p where rnum between ? and ?
+
+-- 확인용 프로젝트 리스트
+select
+        *
+from 
+        (select row_number() over(order by reg_date desc) rnum, 
+        ps.*, 
+        (select nvl(sum(recruited_number), 0) from project_member_dept where ps_no = ps.ps_no) recruited_cnt from project_study ps where gathering_type ='P' and end_date > sysdate)
+p 
+where rnum between 1 and 12;
+-- 확인용 >> 회원 찜목록리스트
+select
+        * 
+from
+        (select row_number() over(order by reg_date desc) rnum, 
+        ps.*, 
+        (select nvl(sum(recruited_number), 0) from project_member_dept where ps_no = ps.ps_no) recruited_cnt from project_study ps where end_date > sysdate and ps_no in(select ps_no from BOOKMARKED_PRJ_STD where gathering_type = 'P' and member_id = 'test')
+        )p 
+where rnum between 1 and 12;
+-- 확인용 >> 필터
+select
+        *
+from (
+        select row_number() over(order by reg_date desc) rnum, 
+        ps.*,
+        (select nvl(sum(recruited_number), 0) from project_member_dept where ps_no = ps.ps_no) recruited_cnt 
+        from project_study ps where gathering_type = 'P' 
+        -- and
+        -- [str1]
+        and exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('jeju'))
+        and exists (select 2 from project_member_dept where ps_no = ps.ps_no and job_code = 'PL')
+	and status = 'N'
+        -- [str2]
+        -- [str3]
+        and end_date > sysdate)
+p where rnum between 1 and 12;
+
+select * from (select row_number() over(order by reg_date desc) rnum, ps.*, 
+(select nvl(sum(recruited_number), 0) from project_member_dept where ps_no = ps.ps_no) recruited_cnt 
+from project_study ps where gathering_type ='P' and end_date > sysdate)p where rnum between ? and ?
 
 select
         * 

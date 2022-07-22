@@ -18,6 +18,10 @@
 <script>
 
 const bookmarkFilter = (num) => {
+	$("#p__local").prop('checked', false);
+	$("#p__job_code").prop('checked', false);
+	$("#p__status").prop('checked', false);
+	
 	const bookmarkYN = $("#p__bookmark").is(':checked') ? "Y" : "All";
 	let memberId = "";
 	<% if(loginMember == null){ %>
@@ -114,7 +118,6 @@ const bookmarkFilter = (num) => {
 }; 
 
 const gatheringFilter = (num) => {
-	
 	const localAll = $("#p__local").val();
 	const jobAll = $("#p__job_code").val();
 	const statusYN = $("#p__status").is(':checked') ? "N" : "All";
@@ -132,15 +135,10 @@ const gatheringFilter = (num) => {
 	let searchJobcode = 'jobcode';
 	let selectLocalKeyword = localAll;
 	let selectJobKeyword = jobAll;
-	
-	/* console.log("searchLocal = ", searchLocal); // 확인용
-	console.log("searchJobcode = ", searchJobcode); // 확인용
-	console.log("selectLocalKeyword = ", selectLocalKeyword); // 확인용
-	console.log("selectJobKeyword = ", selectJobKeyword); // 확인용 */
+
 	console.log("statusYN = ", statusYN); // 확인용
 	console.log("memberId = ", memberId) // 확인용
 	$.ajax({
-		// url 서블릿주소 변경하기 나중에
 		url: '<%= request.getContextPath() %>/gathering/searchFilter',
 		data: {
 			cPage: cPage,
@@ -151,30 +149,31 @@ const gatheringFilter = (num) => {
 			statusYN : statusYN,
 			memberId: memberId
 			},
-		success(projectSelectList){
-			console.log(projectSelectList); // 확인용
-			const {projectList, totalContent, cPage, memberBookmarkList} = projectSelectList;
+		success(projectSelectLists){
+			console.log(">>> projectSelectLists", projectSelectLists); // 확인용
+			const {projectList, totalContent, cPage, bookmarkList} = projectSelectLists;
+			
 			document.querySelector(".ps-lists").innerHTML =
 				// 프로젝트 필터링
 				projectList.reduce((html, selectList, index) => {
-					const {psNo, title, viewcount, bookmark, topic, people} = selectList;
+					const {psNo, title, viewcount, bookmark, topic, recruited_cnt, people} = selectList;
 					// bookmark 개수 쿼리문 다시 작성해야함
-					console.log("확인용", psNo, title, viewcount, bookmark, topic, people); // 확인용
-					// 북마크
-					console.log("#memberBookmarkList", memberBookmarkList);
-					let bookmarkButton = "";
-					let bookmarkShape = "";
+					console.log(">>> 확인용 ", psNo, title, viewcount, bookmark, topic, recruited_cnt, people); // 확인용
+					console.log(">>> #bookmarkList", bookmarkList);
+					let tagFront = "";
+					let tagBack = "";
+					
 					outer:
-	 				for(let i = 0; i < memberBookmarkList.length; i++){
-	 					console.log(memberBookmarkList[i].psNo);
+	 				for(let i = 0; i < bookmarkList.length; i++){
+	 					console.log(bookmarkList[i].psNo);
 	 					console.log(psNo);
-	 					if(psNo == memberBookmarkList[i].psNo){
-	 						bookmarkButton = "bookmark-back";
-	 						bookmarkShape = "♥";
+	 					if(psNo == bookmarkList[i].psNo){
+	 						tagBack = "<button class='bookmark-back' value='\${psNo}'>♥</button>";
+	 						tagFront = "<button style='display:none' class='bookmark-front' value='\${psNo}'>♡</button>";
 	 						break outer;
 	 					} else {
-	 						bookmarkButton = "bookmark-front";
-	 						bookmarkShape = "♡";
+	 						tagBack = "<button style='display:none' class='bookmark-back' value='\${psNo}'>♥</button>";
+	 						tagFront = "<button class='bookmark-front' value='\${psNo}'>♡</button>";
 	 					}
 					};
 					return `\${html}
@@ -191,14 +190,15 @@ const gatheringFilter = (num) => {
 							<li>
 								<span>&#128064;</span>\${viewcount}
 							</li>
-							<li>모집인원 0 / \${people}</li>
+							<li>모집인원 \${recruited_cnt} / \${people}</li>
 						</ul>
 						<div class="ps__bookmark">
 						<% if(loginMember == null){ %>
 							<button class="bookmark-front" value="\${psNo}">♡</button>
 						<% } %>
 						<% if(loginMember != null){ %>
-							<button class='\${bookmarkButton}' value='\${psNo}'>\${bookmarkShape}</button>
+							\${tagBack}
+							\${tagFront}
 						<%
 						}
 						%>
@@ -207,7 +207,6 @@ const gatheringFilter = (num) => {
 					`;
 				}, '');
 
-			// 위에서 totalContent가 넘어옴 
 			if(totalContent != 0){
 				totalPages = Math.ceil(totalContent / numPerPage);
 				// pageLink(현재페이지, 전체페이지, 호출할 함수 이름)
@@ -221,6 +220,7 @@ const gatheringFilter = (num) => {
 		error: console.log
 	});
 };
+
 function pageLink(cPage, totalPages, funName){
 	cPage = Number(cPage);
 	totalPages = Number(totalPages);
@@ -278,10 +278,10 @@ function pageLink(cPage, totalPages, funName){
 				<div class="swiper-wrapper">
 				<%
 				if(projectList != null && !projectList.isEmpty()){
-					for(Gathering _project : projectList){
+					for(int i = 0; i < 3; i++){
+						Gathering _project = projectList.get(i);
 						GatheringExt project = (GatheringExt) _project;
-						for(int i = 0; i < 3; i++){
-							String topic = project.getTopic();
+						String topic = project.getTopic();
 				%>
 				<div class="swiper-slide">
 				<a href="<%= request.getContextPath()%>/gathering/projectView?psNo=<%= project.getPsNo()%>">
@@ -299,7 +299,6 @@ function pageLink(cPage, totalPages, funName){
 					</ul>
 				</div>
 				<%
-						}
 					}
 				}
 				%>
@@ -446,6 +445,8 @@ document.querySelectorAll(".ps__bookmark").forEach((bookmark) => {
 		}
 	})
 });
+
+
 </script>	
 	
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
