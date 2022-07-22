@@ -44,7 +44,8 @@ public class GatheringDao {
 			pstmt.setInt(2, (int)param.get("end"));
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
-				Gathering gathering = handleGatheringResultSet(rset);
+				GatheringExt gathering = handleGatheringResultSet(rset);
+				gathering.setRecruited_cnt(rset.getInt("recruited_cnt"));
 				projectList.add(gathering);
 			}
 		} catch (SQLException e) {
@@ -55,8 +56,9 @@ public class GatheringDao {
 		}
 		return projectList;
 	}
-
-	private Gathering handleGatheringResultSet(ResultSet rset) throws SQLException {
+	
+	// Gathering에서 GatheringExt로 수정
+	private GatheringExt handleGatheringResultSet(ResultSet rset) throws SQLException {
 		int psNo = rset.getInt("ps_no");
 		String writer = rset.getString("writer");
 		GatheringType psType = GatheringType.valueOf(rset.getString("gathering_type"));
@@ -71,7 +73,7 @@ public class GatheringDao {
 		Status status = Status.valueOf(rset.getString("status"));
 		Date startDate = rset.getDate("start_date");
 		Date endDate = rset.getDate("end_date");
-		return new Gathering(psNo, writer, psType, title, regDate, content, viewcount, bookmark, topic, local, people, status, startDate, endDate);
+		return new GatheringExt(psNo, writer, psType, title, regDate, content, viewcount, bookmark, topic, local, people, status, startDate, endDate);
 	}
 
 	public int getTotalContent(Connection conn) {
