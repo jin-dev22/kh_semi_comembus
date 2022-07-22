@@ -114,7 +114,6 @@ public class GatheringDao {
 		System.out.println("DAO확인용 selectJobKeyword = " + selectJobKeyword);
 		System.out.println("DAO확인용 statusYN = " + statusYN);
 
-		// where gathering_type = 'P' [str1] [str2] [str3] and end_date > sysdate)
 		// [str1] = "and exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('" + searchLocal + "'))"
         // [str2] = "and exists (select 2 from project_member_dept where ps_no = ps.ps_no and job_code = '" + searchJobcode + "')"
 		// [str3] = "and status = '" + statusYN + "'"
@@ -174,7 +173,8 @@ public class GatheringDao {
 			pstmt.setInt(2, (int)param.get("end"));
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
-				Gathering gathering = handleGatheringResultSet(rset);
+				GatheringExt gathering = handleGatheringResultSet(rset);
+				gathering.setRecruited_cnt(rset.getInt("recruited_cnt"));
 				list.add(gathering);
 			}
 		} catch (SQLException e) {
@@ -265,30 +265,30 @@ public class GatheringDao {
 		return totalContent;
 	}
 	
-	public List<Gathering> findMemberBookmarkList(Connection conn, String memberId) {
-		PreparedStatement pstmt = null;
-		ResultSet rset = null;
-		List<Gathering> bookmarkList = new ArrayList<>();
-		String sql = prop.getProperty("findMemberBookmarkList");
-		
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, memberId);
-			rset = pstmt.executeQuery();
-			while(rset.next()) {
-				Gathering gathering = handleGatheringResultSet(rset);
-				bookmarkList.add(gathering);
-			}
-		} catch (SQLException e) {
-			throw new GatheringException("멤버 찜 조회 오류", e);
-		} finally {
-			close(rset);
-			close(pstmt);
-		}
-		return bookmarkList;
-	}
+//	public List<Gathering> findMemberBookmarkList(Connection conn, String memberId) {
+//		PreparedStatement pstmt = null;
+//		ResultSet rset = null;
+//		List<Gathering> bookmarkList = new ArrayList<>();
+//		String sql = prop.getProperty("findMemberBookmarkList");
+//		
+//		try {
+//			pstmt = conn.prepareStatement(sql);
+//			pstmt.setString(1, memberId);
+//			rset = pstmt.executeQuery();
+//			while(rset.next()) {
+//				Gathering gathering = handleGatheringResultSet(rset);
+//				bookmarkList.add(gathering);
+//			}
+//		} catch (SQLException e) {
+//			throw new GatheringException("멤버 찜 조회 오류", e);
+//		} finally {
+//			close(rset);
+//			close(pstmt);
+//		}
+//		return bookmarkList;
+//	}
 
-	public List<Gathering> findMemberBookmarkFilterList(Connection conn, Map<String, Object> param) {
+	public List<Gathering> findProBookmarkFilter(Connection conn, Map<String, Object> param) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		List<Gathering> bookmarkFilterlist = new ArrayList<>();
@@ -352,15 +352,17 @@ public class GatheringDao {
 		return totalbookmarkFilterContent;
 	}
 	
-	public List<Gathering> findAllProBookmarked(Connection conn, Map<String, Object> param) {
-		List<Gathering> gatheringBookmarkList = new ArrayList<>();
+	public List<Gathering> findAllProBookmarked(Connection conn, Map<String, Object> bmParam) {
 		PreparedStatement pstmt = null;
+		List<Gathering> gatheringBookmarkList = new ArrayList<>();
 		ResultSet rset = null;
 		String sql = prop.getProperty("findAllProBookmarked");
+		String loginMemberId = (String) bmParam.get("loginMemberId");
 		try {
 			pstmt = conn.prepareStatement(sql);
-			// pstmt.setString(1, param); 겟 파라미터로 수정
+			pstmt.setString(1, loginMemberId);
 			rset = pstmt.executeQuery();
+			
 			while(rset.next()) {
 				GatheringExt gathering = handleGatheringResultSet(rset);
 				gathering.setRecruited_cnt(rset.getInt("recruited_cnt"));

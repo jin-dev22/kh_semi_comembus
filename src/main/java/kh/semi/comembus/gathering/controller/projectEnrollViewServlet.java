@@ -3,6 +3,8 @@ package kh.semi.comembus.gathering.controller;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -53,6 +55,36 @@ public class projectEnrollViewServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		try {
+			int planning_cnt=0;
+			int design_cnt=0;
+			int frontend_cnt=0;
+			int backend_cnt=0;
+			//0. people값 처리
+			String planning = request.getParameter("planning");
+			if(request.getParameter("planning_cnt")!=null) {
+				planning_cnt = Integer.parseInt(request.getParameter("planning_cnt"));}
+			String design = request.getParameter("design");
+			if(request.getParameter("design_cnt")!=null) {
+				design_cnt = Integer.parseInt(request.getParameter("design_cnt"));}
+			String frontend = request.getParameter("frontend");
+			if(request.getParameter("frontend_cnt")!=null) {
+				frontend_cnt = Integer.parseInt(request.getParameter("frontend_cnt"));}
+			String backend = request.getParameter("backend");
+			if(request.getParameter("backend_cnt")!=null) {
+			backend_cnt = Integer.parseInt(request.getParameter("backend_cnt"));}
+			
+			Map<String,Object> parameter = new HashMap<>();
+			parameter.put("planning",planning);
+			parameter.put("planning_cnt", planning_cnt);
+			parameter.put("design", design);
+			parameter.put("design_cnt", design_cnt);
+			parameter.put("frontend", frontend);
+			parameter.put("frontend_cnt", frontend_cnt);
+			parameter.put("backend", backend);
+			parameter.put("backend_cnt", backend_cnt);
+			System.out.println("확인용 parameter = " + parameter);
+			
+			int people = planning_cnt+design_cnt+frontend_cnt+backend_cnt;
 			
 			//1. 사용자 입력값 처리
 			String writer = request.getParameter("writer");
@@ -64,7 +96,7 @@ public class projectEnrollViewServlet extends HttpServlet {
 //			int bookmark=Integer.parseInt(request.getParameter("bookmark"));
 			String topic = request.getParameter("topic");
 			String local = request.getParameter("local");
-			int people = Integer.parseInt(request.getParameter("people"));
+//			int people = Integer.parseInt(request.getParameter("people"));
 			String _status = request.getParameter("status");
 			String _startDate = request.getParameter("startDate");
 			String _endDate = request.getParameter("endDate");
@@ -76,8 +108,10 @@ public class projectEnrollViewServlet extends HttpServlet {
 			Date endDate = (_endDate != null && !"".equals(_endDate))?Date.valueOf(_endDate):null;
 			
 			Gathering project = new Gathering(0,writer,psType,title,regDate,content,0,0,topic,local,people,status,startDate,endDate);
-			
+			System.out.println(_psType);
+			System.out.println(psType);
 			System.out.println("project = "+project);
+
 			
 			//2. 업무로직
 			int result = GatheringService.enrollProject(project);
