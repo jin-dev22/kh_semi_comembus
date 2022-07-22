@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,7 +32,8 @@ public class CommunityViewServlet extends HttpServlet {
 		try {
 			int no = Integer.parseInt(request.getParameter("no"));
 			String type = (String) request.getParameter("co_type");
-		
+			
+			
 			if("Q".equals(type)) {
 				Community qview = communityService.findByCommuNo(no);
 				List<CommunityRepl> replList = communityService.findCommuCommentcoNo(no);

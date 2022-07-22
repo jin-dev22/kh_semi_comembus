@@ -18,6 +18,9 @@ import kh.semi.comembus.community.model.dto.CommentLevel;
 import kh.semi.comembus.community.model.dto.Community;
 import kh.semi.comembus.community.model.dto.CommunityRepl;
 import kh.semi.comembus.community.model.exception.CommunityException;
+import kh.semi.comembus.member.model.dto.Member;
+import kh.semi.comembus.member.model.dto.MemberExt;
+import kh.semi.comembus.member.model.exception.MemberException;
 
 public class CommunityDao {
 	private Properties prop = new Properties();
@@ -386,7 +389,110 @@ public class CommunityDao {
 		return result;
 		}
 	
-	
+		public int updateReadCount(Connection conn, int no) {
+			PreparedStatement pstmt = null;
+			int result = 0;
+			String sql = prop.getProperty("updateReadCount");
+			
+			try {
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setInt(1, no);
+				result = pstmt.executeUpdate();
+				
+			} catch (SQLException e) {
+				throw new CommunityException("조회수 증가 오류");
+			}finally {
+				close(pstmt);
+			}
+			return result;
+		}
+
+		public List<Community> QnaTitleLike(Connection conn, Map<String, Object> param) {
+			PreparedStatement pstmt = null;
+			ResultSet rset = null;
+			List<Community> qlist = new ArrayList<>();
+			String sql = prop.getProperty("QnaTitleLike");
+			
+			// select * from member where #(member_id, gender..) like ?
+			int start = (int)param.get("start");
+			int end = (int)param.get("end");
+			String col = (String)param.get("searchType");
+			String val = (String)param.get("searchKeyword");
+			sql = sql.replace("#", col);
+			
+			try {
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, "%" + val + "%");
+				pstmt.setInt(2, start);
+				pstmt.setInt(3, end);
+				rset = pstmt.executeQuery();
+				while(rset.next())
+					qlist.add(handleCommunityResultSet(rset));
+			
+			} catch (SQLException e) {
+				throw new MemberException("검색 오류",e);
+			}finally {
+				close(rset);
+				close(pstmt);
+			}
+			return qlist;
+		}
+		public int qnaTotalContentLike(Connection conn, Map<String, Object> param) {
+			PreparedStatement pstmt = null;
+			ResultSet rset = null;
+			int totalContent = 0;
+			String sql = prop.getProperty("qnaTotalContentLike");
+			String col = (String) param.get("searchType");	
+			String val = (String) param.get("searchKeyword");	
+			
+			sql = sql.replace("#", col);
+			
+			try {
+				pstmt = conn.prepareStatement(sql);
+				pstmt.setString(1, "%" + val + "%");
+				rset = pstmt.executeQuery();
+				if(rset.next()) {
+					totalContent = rset.getInt(1);
+				}
+			} catch (SQLException e) {
+				throw new MemberException("검색된 회원수 조회 오류!");
+			}finally {
+				close(rset);
+				close(pstmt);
+			}
+			return totalContent;
+		}
+		
+		public List<Community> findShareBest(Connection conn) {
+			List<Community> best = new ArrayList<>();
+			PreparedStatement pstmt = null;
+			ResultSet rset = null;
+			String sql = prop.getProperty("findShareBest");
+			
+			try {
+				pstmt = conn.prepareStatement(sql);
+				rset = pstmt.executeQuery();
+				
+				while(rset.next()) {
+					Community c = new Community();
+					c.setCoTitle(rset.getString("co_title"));
+					c.setCoWriter(rset.getString("co_writer"));
+					c.setCoLike(rset.getInt("co_like"));
+					c.setCoReadcount(rset.getInt("co_read_count"));
+				
+					best.add(c);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+				throw new CommunityException("베스트 글 조회를 실패했습니다.",e);
+			}finally {
+				close(rset);
+				close(pstmt);
+			}
+			return best;
+		}
+
+		
 	//태연코드 끝
 	
 	//수진코드 시작

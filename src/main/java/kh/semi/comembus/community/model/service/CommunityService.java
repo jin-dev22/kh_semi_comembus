@@ -1,4 +1,5 @@
 package kh.semi.comembus.community.model.service;
+
 import static kh.semi.comembus.common.JdbcTemplate.*;
 
 import java.sql.Connection;
@@ -9,6 +10,7 @@ import java.util.Map;
 import kh.semi.comembus.community.model.dao.CommunityDao;
 import kh.semi.comembus.community.model.dto.Community;
 import kh.semi.comembus.community.model.dto.CommunityRepl;
+import kh.semi.comembus.member.model.dto.Member;
 
 //태연코드 시작
 public class CommunityService {
@@ -133,12 +135,18 @@ public class CommunityService {
 	}
 	
 	public Community findByCommuNo(int no) {
-		Community qview = null;
 		Connection conn = getConnection();
+		Community qview = null;
 		try {
+			//조회증가처리
+			
+			int result = communityDao.updateReadCount(conn, no);
+			
 			qview = communityDao.findByCommuNo(conn, no);
+			commit(conn);
+			
 		} catch (Exception e) {
-			throw e;
+			rollback(conn);
 		} finally {
 			close(conn);
 		}
@@ -220,7 +228,34 @@ public class CommunityService {
 		return result;
 	}
 
+	public List<Community> QnaTitleLike(Map<String, Object> param) {
+		Connection conn = getConnection();
+		List<Community> qlist = communityDao.QnaTitleLike(conn, param);
+		close(conn);
+		return qlist;
+	}
+
+	public int qnaTotalContentLike(Map<String, Object> param) {
+		Connection conn = getConnection();
+		int totalContent = communityDao.qnaTotalContentLike(conn, param);
+		close(conn);
+		return totalContent;
+	}
 	
+	public List<Community> findShareBest() {
+		List<Community> best = null;
+		Connection conn = getConnection();
+		
+		try {
+			best = communityDao.findShareBest(conn);
+		}catch(Exception e){
+			throw e;
+		}finally {
+			close(conn);
+		}
+		return best;
+	}
+
 	//태연코드 끝
 	
 	//수진코드 시작
@@ -245,9 +280,6 @@ public class CommunityService {
 
 
 	
-
-	
-
 
 	//수진코드 끝
 }
