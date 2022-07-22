@@ -10,7 +10,7 @@ import kh.semi.comembus.gathering.model.dao.GatheringDao;
 import kh.semi.comembus.gathering.model.dto.Gathering;
 
 public class GatheringService {
-	GatheringDao gatheringDao = new GatheringDao();
+	static GatheringDao gatheringDao = new GatheringDao();
 
 	public List<Gathering> findGatheringAll(Map<String, Object> param) {
 		Connection conn = getConnection();
@@ -89,20 +89,45 @@ public class GatheringService {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * 모임 게시글 번호로 조회하기
 	 * - 지원신청 취소시 해당 게시글 정보 확인을 위해 작성했습니다. 
 	 */
-	public Gathering findByNo(int psNo) {
+	public static Gathering findByNo(int psNo) {
 		Connection conn = getConnection();
 		Gathering gather = gatheringDao.findByNo(conn, psNo);
 		close(conn);
 		return gather;
 	}
 
-	
-	
-	
+	//유경 추가
+	public int enrollGathering(Gathering project) {
+		Connection conn=getConnection();
+		int result = 0;
+		try {
+			//gathering table에 insert
+			result = gatheringDao.enrollProject(conn,project);
+			//방금 등록된 Gathering.no조회
+			int psNo = gatheringDao.getLastProjectNo(conn);
+			System.out.println("projectNo = "+psNo);
+			
+			commit(conn);
+		}catch(Exception e) {
+			rollback(conn);
+			throw e;
+		}finally {
+			close(conn);
+		}
+		return result;
+	}
+
+
+	public static Gathering findByNo(int psNo, boolean hasRead) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	//유경 끝
+
 	//수진코드 끝
 }
