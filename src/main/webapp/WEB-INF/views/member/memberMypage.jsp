@@ -11,28 +11,27 @@
 <link rel="stylesheet" href="<%=request.getContextPath() %>/css/membusPage.css">
 <link rel="stylesheet" href="<%= request.getContextPath() %>/css/member/memberEnroll.css" />
 <%
-	MemberExt member = (MemberExt) request.getAttribute("member");
+	MemberExt member = (MemberExt) loginMember;
+	String introduction = member.getIntroduction();
+	String jobCode = member.getJobCode().name();
 	List<Community> communityList = (List<Community>) request.getAttribute("communityList");
 	List<Gathering> gatheringIngList = (List<Gathering>) request.getAttribute("gatheringIngList");
 	List<Gathering> gatheringBookmarkList = (List<Gathering>) request.getAttribute("gatheringBookmarkList");
 	List<Gathering> gatheringApldList = (List<Gathering>) request.getAttribute("gatheringApldList");
-	String introduction = member.getIntroduction();
-	String jobCode = member.getJobCode().name();
 %>
 
 <section id="membus-profile">
-	<form name="profileFrm" enctype="multipart/form-data" action="<%=request.getContextPath()%>/membus/mypage/update" method="POST">
+	<form name="profileFrm" action="<%=request.getContextPath()%>/membus/mypage/update" method="POST">
 		<div class="profile-row part-1 ">
 			<div class="nickname-badge"><%= member.getNickName().charAt(0)%></div>
 			<div>
 				<div>
-					<label for="memberName">이름 : </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<span name="memberName"><%=member.getMemberName() %></span>
+				 <span class="mypage-span-like-label">이름 : </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=member.getMemberName() %>
 				</div>
 				<div>
 					<label for="nickName">닉네임 :</label> &nbsp;&nbsp;
 					<input type="text" name="nickName" value="<%=member.getNickName() %>" maxlength="15" required/>
-					<!-- <input type="button" value="중복검사" id="nickDupl-chk"/> -->
+					<input type="hidden" name="nickNameVal" />
 				</div>
 		        <div id="nicknameGuideArea">
          			<div id="nicknameGuideLine">
@@ -46,21 +45,14 @@
 			            <span></span>
 		          	</div>
 		        </div>
-				<div><label for="jobCode">직무분야 : </label> 
-					<!-- <select id="search-jobCode" onchange="changeSelected('searchJobcode', this.value)"> -->
-					<select id="jobCode">
-                    <option value="PL" <%= "PL".equals(jobCode)? "selected" : "" %>>기획</option>
-                    <option value="DG" <%= "DG".equals(jobCode)? "selected" : "" %>>디자인</option>
-                    <option value="FE" <%= "FE".equals(jobCode)? "selected" : "" %>>프론트엔드</option>
-                    <option value="BE"  <%= "BE".equals(jobCode)? "selected" : "" %>>백엔드</option>		
-                </select>
-                <%-- <input type="hidden" name="searchJobcode" value="<%= jobCode != null? jobCode : "ALL"%>"/>	 --%>			
+				<div>
+					<span class="mypage-span-like-label">직무 : </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=member.getJobName() %>
 				</div>
 			</div>
 		</div>
 		<div class="profile-row part-2">
 			<div class="subtitle">자기소개</div>
-			<textarea class="member-introduction"><%=introduction != null? introduction : "작성하신 내용이 없습니다. 자기소개를 작성해주세요!"%></textarea>
+			<textarea name="introduction" class="member-introduction"><%=introduction != null? introduction : "작성하신 내용이 없습니다. 자기소개를 작성해주세요!"%></textarea>
 		</div>
 		<div class="profile-row part-3">
 			<div class="subtitle">최근 작성한 게시물</div>
@@ -204,10 +196,10 @@
 				<%}%>   	
 			</div>
 		</div>
-	<input type="submit" value="업데이트" />
+	<input type="submit" value="업데이트"/>
 	<input type="button" value="비밀번호 변경" onclick="updatePassword();"/>
-	<input type="button" onclick="deleteMember();" value="탈퇴"/>
-	</form>
+	<input type="button" onclick="deleteMember()" value="탈퇴"/>
+</form>
 </section>
 <!-- 지원신청 취소 폼 -->
 <form name="apldCancelFrm" action="<%= request.getContextPath()%>/gathering/apply/cancel" method="POST">
@@ -215,48 +207,40 @@
 	<input type="hidden" name="memberId" value="<%= loginMember.getMemberId()%>" />
 	<input type="hidden" name="nickName" value="<%= loginMember.getNickName()%>"/>
 </form>
-<form action="memberQuitFrm" action="<%= request.getContextPath()%>/membus/quit">
+
+<!-- 탈퇴 폼 -->
+<form name="memberQuitFrm" action="<%= request.getContextPath()%>/membus/quit" method="POST">
 	<input type="hidden" name="memberId" value="<%= loginMember.getMemberId()%>" />
 </form>
 <script>
+	function updatePassword(){
+		location.href= "<%= request.getContextPath() %>/membus/updateMemberPassword";
+	}
+
+	/**
+	* 엔터키 폼 제출방지하기
+	*/
+	document.addEventListener('keydown', function(event) {
+	  if (event.keyCode === 13) {
+	    event.preventDefault();
+	  };
+	}, true);
+	
 	function deleteMember(){
 		if(confirm("정말 탈퇴하시겠습니까?")){
-			document.memberQuitFrm.submit();
+			const frm = document.memberQuitFrm;
+			console.log(frm);
+			frm.submit();//Uncaught TypeError: Cannot read properties of undefined (reading 'submit')
 		}	
 	}
 	
 	function cancelApld(psNo){
 		if(confirm("지원취소된 모임은 다시 지원하실 수 없습니다. 지원을 취소하시겠습니까?")){
-			const frm = document.apldCancelFrm
+			const frm = document.apldCancelFrm;
 			frm.psNo.value = psNo;
 			frm.submit();
 		}
 	}
-
-    <%-- $(document).ready(function() {
-        var setting = {
-			placeholder: '관심분야: <br>사용가능한 기술/언어: <br>자세한 소개: <br>',
-			height : 300,
-			width : 600,
-			lang : 'ko-KR',
-			toolbar : toolbar,//지우면 툴바가 화면에 표시됨. 그대로 둘 것
-			callbacks : { //여기 부분이 이미지를 첨부하는 부분
-			onImageUpload : function(files, editor,
-				welEditable) {
-					for (var i = files.length - 1; i >= 0; i--) {
-						uploadSummernoteImageFile(files[i], this);
-					}
-				}
-			}
-		};
-		$('#summernote').summernote(setting);
-		$('#summernote').summernote('insertText', '<%=introduction %>'); 
-		 function saveContent(){
-	        var summernoteContent = $('#summernote').summernote('code');        //썸머노트(설명)
-	        console.log("summernoteContent : "+summernoteContent);
-	    }
-		
-	}); --%>
 	
 	//닉네임 유효성 검사
 	document.profileFrm.nickName.addEventListener("input", (e) => {

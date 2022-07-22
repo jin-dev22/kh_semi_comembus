@@ -7,16 +7,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import kh.semi.comembus.gathering.model.service.ProjectService;
-import kh.semi.comembus.gathering.model.service.StudyService;
+import kh.semi.comembus.gathering.model.service.GatheringService;
 
 /**
  * Servlet implementation class studyEnrollViewServlet
  */
-@WebServlet("/gathering/studyEnroll")
+@WebServlet("/gathering/studyEnrollView")
 public class studyEnrollViewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private StudyService projectService = new StudyService();
+	private GatheringService projectService = new GatheringService();
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {

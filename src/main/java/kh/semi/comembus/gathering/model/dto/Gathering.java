@@ -1,6 +1,7 @@
 package kh.semi.comembus.gathering.model.dto;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class Gathering {
 	private int psNo;
@@ -18,10 +19,6 @@ public class Gathering {
 	private Date startDate;
 	private Date endDate;
 	
-	public Gathering() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
 
 	public Gathering(int psNo, String writer, GatheringType psType, String title, Date regDate, String content,
 			int viewcount, int bookmark, String topic, String local, int people, Status status, Date startDate,

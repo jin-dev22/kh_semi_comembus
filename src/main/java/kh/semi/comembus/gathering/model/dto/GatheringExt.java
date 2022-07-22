@@ -15,8 +15,10 @@ public class GatheringExt extends Gathering{
 
 	public GatheringExt(int psNo, String writer, GatheringType psType, String title, Date regDate, String content,
 			int viewcount, int bookmark, String topic, String local, int people, Status status, Date startDate,
-			Date endDate) {
-		super(psNo,writer,psType,title,regDate,content,viewcount,bookmark,topic,local,people,status,startDate,endDate);
+			Date endDate, String planning, String design, String frontend, String backend, int planning_cnt,
+			int design_cnt, int frontend_cnt, int backend_cnt) {
+		super(psNo, writer, psType, title, regDate, content, viewcount, bookmark, topic, local, people, status,
+				startDate, endDate);
 		this.planning = planning;
 		this.design = design;
 		this.frontend = frontend;
@@ -25,6 +27,12 @@ public class GatheringExt extends Gathering{
 		this.design_cnt = design_cnt;
 		this.frontend_cnt = frontend_cnt;
 		this.backend_cnt = backend_cnt;
+	}
+
+	public GatheringExt(int psNo, String writer, GatheringType psType, String title, Date regDate, String content,
+			int viewcount, int bookmark, String topic, String local, int people, Status status, Date startDate,
+			Date endDate) {
+		super(psNo,writer,psType,title,regDate,content,viewcount,bookmark,topic,local,people,status,startDate,endDate);
 	}
 
 	public String getPlanning() {
@@ -102,13 +110,11 @@ public class GatheringExt extends Gathering{
 		this.recrutied_cnt = recrutied_cnt;
 	}
 
-	public GatheringExt() {
-		super();
-	}
-	
-	public GatheringExt(String planning, String design, String frontend, String backend, int planning_cnt,
+	public GatheringExt(int psNo, String writer, GatheringType psType, String title, Date regDate, String content,
+			int viewcount, int bookmark, String topic, String local, int people, Status status, Date startDate,
+			Date endDate, String planning, String design, String frontend, String backend, int planning_cnt,
 			int design_cnt, int frontend_cnt, int backend_cnt, int recrutied_cnt) {
-		super();
+		super(psNo,writer,psType,title,regDate,content,viewcount,bookmark,topic,local,people,status,startDate,endDate);
 		this.planning = planning;
 		this.design = design;
 		this.frontend = frontend;

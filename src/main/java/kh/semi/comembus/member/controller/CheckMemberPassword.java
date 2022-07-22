@@ -9,35 +9,37 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
+
+import kh.semi.comembus.common.ComembusUtils;
+import kh.semi.comembus.member.model.dto.Member;
 import kh.semi.comembus.member.model.service.MemberService;
 
 /**
- * Servlet implementation class MemberQuitServlet
+ * Servlet implementation class CheckMemberPassword
  */
-@WebServlet("/membus/quit")
-public class MemberQuitServlet extends HttpServlet {
+@WebServlet("/membus/checkMemberPassword")
+public class CheckMemberPassword extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private MemberService memberService = new MemberService();
-	
+
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String quitMemberId = request.getParameter("memberId");
-		
 		try {
-			int result = memberService.memberQuit(quitMemberId);
-			
 			HttpSession session = request.getSession();
+			Member member = (Member) session.getAttribute("loginMember");  
+			String memberId = member.getMemberId();
+			String oldPassword = ComembusUtils.getEncryptedPassword(request.getParameter("oldPw"), memberId);
 			
-			if(result > 0) {
-				session.setAttribute("msg", "회원탈퇴처리가 완료되었습니다.");
-				session.setAttribute("loginMember", null);
-			}
-			else {
-				session.setAttribute("msg", "회원탈퇴처리 오류. 메인화면으로 돌아갑니다.");
-			}
-			request.getRequestDispatcher("/index.jsp").forward(request, response);
+			boolean result = member.getPassword().equals(oldPassword);
+			System.out.println("[@PwChkServ]: params>>"+memberId+", "+oldPassword);
+			System.out.println("[@PwChkServ]: result>>"+result);
+			
+			response.setContentType("application/json; charset=utf-8");
+			new Gson().toJson(result, response.getWriter());
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

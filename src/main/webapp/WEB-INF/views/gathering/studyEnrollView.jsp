@@ -31,10 +31,10 @@
 	href="<%=request.getContextPath()%>/css/gathering/Enroll.css">
 </head>
 <body>
-	<form name="projectEnrollFrm"
+	<form name="studyEnrollFrm"
 		action="<%=request.getContextPath()%>/gathering/studyEnrollView"
 		method="post" enctype="multipart/form-data">
-		<table id="tbl-project-enrollview">
+		<table id="tbl-study-enrollview">
 			<tbody>
 				<tr>
 					<th>*스터디명</th>
@@ -53,11 +53,14 @@
 					<td colspan="3">❗ 분야를 한가지만 선택해주세요. 추후 변경 불가능</td>
 				</tr>
 				<tr>
-					<td colspan="3" id="topic"><input type="radio" name="Planning">기획
-						<input type="radio" name="Design">디자인 <input type="radio"
-						name="Frontend">프론트엔드 <input type="radio" name="Backend">백엔드
-						<input type="radio" name="Interview">면접 <input
-						type="radio" name="Codingtest">코딩테스트</td>
+					<td colspan="3" id="topic">
+						<input type="radio" name="Planning">기획
+						<input type="radio" name="Design">디자인 
+						<input type="radio" name="Frontend">프론트엔드 
+						<input type="radio" name="Backend">백엔드
+						<input type="radio" name="Interview">면접 
+						<input type="radio" name="Codingtest">코딩테스트
+					</td>
 				</tr>
 				<tr></tr>
 				<tr>
@@ -87,9 +90,9 @@
 				<tr>
 					<td width="200px" colspan="3">
 						<div id="container">
-							<button class="count" id="plus">+</button>
+							<input type="button" class="count" id="plus" value="+">
 							<span id="count">1</span>
-							<button class="count" id="minus">-</button>
+							<input type="button" id="minus" value="-">
 
 						</div>
 					</td>
@@ -102,22 +105,22 @@
 				<tr>
 					<td colspan="3">❗ 날짜는 시작일 전까지 수정이 가능합니다.</td>
 				</tr>
-				<tr>
-					<td class="date">시작일</td>
-					<td colspan="2">
-						<p>
-							<input type="date" id="date_start">
-						</p>
-					</td>
-				</tr>
-				<tr>
-					<td class="date">종료일</td>
-					<td colspan="2">
-						<p>
-							<input type="date" id="date_end">
-						</p>
-					</td>
-				</tr>
+		        <tr>
+		            <td class="date">
+		               시작일 
+		            </td>
+		            <td colspan="2">
+		                <p><input type="date" name="date_start" id="date_start"></p>
+		            </td>
+		        </tr>
+		        <tr>
+		            <td class="date">
+		                종료일
+		            </td>
+		            <td colspan="2">
+		                <p><input type="date" name="date_end" id="date_end"></p>
+		            </td>
+		        </tr>
 				<tr></tr>
 				<tr>
 					<th>*프로젝트 설명</th>
@@ -131,15 +134,26 @@
 					</td>
 				</tr>
 				<tr></tr>
-				<tr>
-					<th colspan="2"><br> <input type="submit" value="등록하기"></th>
-				</tr>
+                <tr>
+                    <th colspan="2">
+                        <br><input type="submit" value="등록하기">
+                    </th>
+                </tr>
 			</tbody>
 		</table>
 	</form>
-	</section>
 </body>
 <script>
+
+	var now_date = Date.now()
+	var timeoff=new Date().getTimezoneOffset()*60000;
+	var today=new Date(now_date-timeoff).toISOString().split("T")[0];
+	
+	document.getElementById("date_start").setAttribute("min",today);
+	document.getElementById("date_start").setAttribute("value",today);
+	document.getElementById("date_end").setAttribute("min",today);
+	document.getElementById("date_end").setAttribute("value",today);
+		
 	let container = document.querySelector('#container');
 	const plusBtn = container.querySelector('#plus');
 	const minusBtn = container.querySelector('#minus');
@@ -163,7 +177,6 @@
 	$(document)
 			.ready(
 					function() {
-
 						var toolbar = [
 								// 글꼴 설정
 								[ 'fontname', [ 'fontname' ] ],
@@ -202,6 +215,32 @@
 
 						$('#summernote').summernote(setting);
 					});
+    document.studyEnrollFrm.onsubmit = (e) => {
+    	const frm = e.target;
+    	//제목을 작성하지 않은 경우 폼제출할 수 없음.
+    	if(!/^.+$/.test(frm.title.value)){
+    		alert("제목을 작성해주세요.");
+    		frm.title.focus();
+    		return false;
+    	}
+    	
+    	//내용을 작성하지 않은 경우 폼제출할 수 없음.
+    	if(!/^(.|\n)+$/.test(frm.editordata.value)){
+    		alert("내용을 작성해주세요.");
+    		frm.editordata.focus();	
+    		return false;
+    	}
+    	
+        //시작일이 종료일보다 늦은경우 폼제출할 수 없음.
+        const startDate = document.getElementById("date_start").value;
+        const endDate = document.getElementById("date_end").value;
+        if(startDate>=endDate){
+        	alert("시작일이 종료일보다 늦거나 같습니다.");
+        	return false;
+        }
+    	
+    	return true;
+    }
 </script>
 </html>
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>

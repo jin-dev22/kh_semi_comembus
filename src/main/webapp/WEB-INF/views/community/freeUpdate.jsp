@@ -39,11 +39,6 @@
 		<td><input type="hidden" name="co_content" id="enroll_summernote"/></td>
 	</tr>
 
-	<%--
-	<tr>
-		<td><input type="hidden" name="co_content" id="update_summernote"/><%= qview.getCoContent() %></td>
-	</tr>
-	 --%>
 	<tr>
 		<th colspan="2">
 			<input type="submit" value="수정하기"/>

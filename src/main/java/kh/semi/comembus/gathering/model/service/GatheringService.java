@@ -11,8 +11,10 @@ import kh.semi.comembus.gathering.model.dto.Gathering;
 import kh.semi.comembus.gathering.model.dto.GatheringExt;
 
 public class GatheringService {
-	GatheringDao gatheringDao = new GatheringDao();
-
+	static GatheringDao gatheringDao = new GatheringDao();
+	
+	// 선아 시작
+	
 	public List<Gathering> findGatheringAll(Map<String, Object> param) {
 		Connection conn = getConnection();
 		List<Gathering> projectList = gatheringDao.findGatheringAll(conn, param);
@@ -40,6 +42,36 @@ public class GatheringService {
 		close(conn);
 		return totalContent;
 	}
+	
+	public List<Gathering> findMemberBookmarkList(String memberId) {
+		Connection conn = getConnection();
+		List<Gathering> bookmarkList = gatheringDao.findMemberBookmarkList(conn, memberId);
+		close(conn);
+		return bookmarkList;
+	}
+
+	public List<Gathering> findMemberBookmarkFilterList(Map<String, Object> param) {
+		Connection conn = getConnection();
+		List<Gathering> bookmarkFilterlist = gatheringDao.findMemberBookmarkFilterList(conn, param);
+		close(conn);
+		return bookmarkFilterlist;
+	}
+
+	public int getTotalBookmarkFilter(Map<String, Object> param) {
+		Connection conn = getConnection();
+		int totalbookmarkFilterContent = gatheringDao.getTotalBookmarkFilter(conn, param);
+		close(conn);
+		return totalbookmarkFilterContent;
+	}
+
+	public List<GatheringExt> getCapacityAll(Map<String, Object> param) {
+		Connection conn = getConnection();
+		List<GatheringExt> getCapacityAll = gatheringDao.getCapacityAll(conn, param);
+		close(conn);
+		return getCapacityAll;
+	}
+	
+	// 선아 끝
 
 	//수진코드 시작
 	/**
@@ -90,46 +122,46 @@ public class GatheringService {
 		}
 		return result;
 	}
-
+	
 	/**
 	 * 모임 게시글 번호로 조회하기
 	 * - 지원신청 취소시 해당 게시글 정보 확인을 위해 작성했습니다. 
 	 */
-	public Gathering findByNo(int psNo) {
+	public static Gathering findByNo(int psNo) {
 		Connection conn = getConnection();
 		Gathering gather = gatheringDao.findByNo(conn, psNo);
 		close(conn);
 		return gather;
 	}
-	
+
 	//수진코드 끝
 	
-	public List<Gathering> findMemberBookmarkList(String memberId) {
-		Connection conn = getConnection();
-		List<Gathering> bookmarkList = gatheringDao.findMemberBookmarkList(conn, memberId);
-		close(conn);
-		return bookmarkList;
+	//유경 추가
+	public int enrollGathering(Gathering project) {
+		Connection conn=getConnection();
+		int result = 0;
+		try {
+			//gathering table에 insert
+			result = gatheringDao.enrollProject(conn,project);
+			//방금 등록된 Gathering.no조회
+			int psNo = gatheringDao.getLastProjectNo(conn);
+			System.out.println("projectNo = "+psNo);
+			
+			commit(conn);
+		}catch(Exception e) {
+			rollback(conn);
+			throw e;
+		}finally {
+			close(conn);
+		}
+		return result;
 	}
 
-	public List<Gathering> findMemberBookmarkFilterList(Map<String, Object> param) {
-		Connection conn = getConnection();
-		List<Gathering> bookmarkFilterlist = gatheringDao.findMemberBookmarkFilterList(conn, param);
-		close(conn);
-		return bookmarkFilterlist;
-	}
 
-	public int getTotalBookmarkFilter(Map<String, Object> param) {
-		Connection conn = getConnection();
-		int totalbookmarkFilterContent = gatheringDao.getTotalBookmarkFilter(conn, param);
-		close(conn);
-		return totalbookmarkFilterContent;
+	public static Gathering findByNo(int psNo, boolean hasRead) {
+		// TODO Auto-generated method stub
+		return null;
 	}
-
-	public List<GatheringExt> getCapacityAll(Map<String, Object> param) {
-		Connection conn = getConnection();
-		List<GatheringExt> getCapacityAll = gatheringDao.getCapacityAll(conn, param);
-		close(conn);
-		return getCapacityAll;
-	}
+	//유경 끝
 
 }
