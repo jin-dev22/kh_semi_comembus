@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import kh.semi.comembus.common.ComembusUtils;
 import kh.semi.comembus.gathering.model.dto.Gathering;
+import kh.semi.comembus.gathering.model.dto.GatheringExt;
 import kh.semi.comembus.gathering.model.service.GatheringService;
 
 /**
@@ -42,22 +43,28 @@ public class ProjectListServlet extends HttpServlet {
 			param.put("end", end);
 			
 			// content 영역 
-			List<Gathering> projectList = gatheringService.findGatheringAll(param); 
-			// System.out.println("projectList: " + projectList); // 확인용
-			
+			List<Gathering> projectList = gatheringService.findGatheringAll(param);
+			// System.out.println("projectList: " + projectList);
+
 			// 모집인원
-			// List<GatheringExt> capacityJobList = gatheringService.findCapacityAll(param);
+			// List<Gathering> projectList = gatheringService.findGatheringAll(param);
+			List<GatheringExt> capacityJobList = gatheringService.getCapacityAll(param);
 			
-			
+			// 북마크 (param에 넣어보기)
+			String loginMember = request.getParameter("loginMember");
+			List<Gathering> bookmarkList = gatheringService.findAllBookmarked(loginMember);
+
+						
 			// pagebar 영역
 			int totalContent = gatheringService.getTotalContent();
-			//System.out.println("totalContent = " + totalContent); // 확인용
 			String url = request.getRequestURI();
 			String pagebar = ComembusUtils.getPagebar(cPage, numPerPage, totalContent, url);
+
 			
 			// view단처리
 			request.setAttribute("projectList", projectList);
 			request.setAttribute("pagebar", pagebar);
+			request.setAttribute("bookmarkList", bookmarkList); // 처음 모임화면 들어갈 때 뿌려지게 해야하는데 안되고 있음
 			request.getRequestDispatcher("/WEB-INF/views/gathering/projectList.jsp").forward(request, response);
 			
 		} catch(Exception e) {

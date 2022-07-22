@@ -1,6 +1,7 @@
 package kh.semi.comembus.gathering.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +22,7 @@ import kh.semi.comembus.gathering.model.service.GatheringService;
 /**
  * Servlet implementation class SearchLocalServlet
  */
-@WebServlet("/gathering/searchLocal")
+@WebServlet("/gathering/searchFilter")
 public class SearchLocalServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private GatheringService gatheringService = new GatheringService();
@@ -44,12 +45,15 @@ public class SearchLocalServlet extends HttpServlet {
 			String selectJobKeyword = request.getParameter("selectJobKeyword");
 			String statusYN = request.getParameter("statusYN");
 			// 체크 시 N=모집중, 체크해제 시 All
+			String memberId = request.getParameter("memberId");
+			// 로그인을 했다면 memberId가, 안했다면 "" 공백문자가
 			
 			System.out.println("확인용 searchLocal = " + searchLocal);
 			System.out.println("확인용 searchJobcode = " + searchJobcode);
 			System.out.println("확인용 selectLocalKeyword = " + selectLocalKeyword);
 			System.out.println("확인용 selectJobKeyword = " + selectJobKeyword);
 			System.out.println("확인용 statusYN = " + statusYN);
+			System.out.println("확인용 memberId = " + memberId);
 			
 			Map<String, Object> param = new HashMap<>();
 			param.put("searchLocal", searchLocal);
@@ -63,8 +67,14 @@ public class SearchLocalServlet extends HttpServlet {
 			
 			// 2. 업무로직
 			// content 영역
-			List<Gathering> projectList = gatheringService.findProjectLike(param); 
+			List<Gathering> projectList = gatheringService.findProjectLike(param);
+			// bookmark 영역
+			List<Gathering> memberBookmarkList = new ArrayList<>();
+			if(memberId != null) {
+				memberBookmarkList = gatheringService.findMemberBookmarkList(memberId);
+			} 
 			System.out.println("필터링확인용 projectList: " + projectList); // 확인용
+			System.out.println("필터링확인용 memberBookmarkList: " + memberBookmarkList); // 확인용
 			
 			// pagebar 영역
 			int totalContent = gatheringService.getProTotalContentLike(param);
@@ -76,6 +86,7 @@ public class SearchLocalServlet extends HttpServlet {
 			searchList.put("projectList", projectList);
 			searchList.put("totalContent", totalContent);
 			searchList.put("cPage", cPage);
+			searchList.put("memberBookmarkList", memberBookmarkList);
 			String jsonStr = new Gson().toJson(searchList);
 			response.getWriter().print(jsonStr);
 			

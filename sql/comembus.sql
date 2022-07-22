@@ -221,6 +221,43 @@ select *from project_study where gathering_type = 'P' and status = 'N' and local
 -- select * from (select row_number() over(order by reg_date desc) rnum, ps.* from project_study ps where gathering_type = '?') p where rnum between ? and ?
 -- select * from (select row_number() over(order by reg_date desc) rnum, ps.* from project_study ps where gathering_type = '?' and upper(#) like upper('%?%')) p where rnum between ? and ?
 -- select count(*) from project_study where gathering_type = '?' and upper(#) like upper('?')
+-- select * from (select row_number() over(order by reg_date desc) rnum, ps.* from project_study ps where gathering_type = 'P' and exists (select 1 from bookmarked_prj_std where ps_no = ps.ps_no and member_id = ?)) p where rnum between ? and ?
+-- 아래걸로 하면 됨
+select ps_no, sum(recruited_number) from project_member_dept group by ps_no;
+select * from (select row_number() over(order by reg_date desc) rnum, ps.* from project_study ps where gathering_type = 'P' and end_date > sysdate) p where rnum between 1 and 12;
+select * from project_member_dept;
+select count(*) from project_member_dept group by ps_no;
+(select count(*) from project_study where ps_no in (select ps_no from member_application_status where member_id = m.member_id and result = 'O')
+
+select
+        pmd.*,
+        (select count(*) from project_member_dept )
+from
+        project_member_dept pmd
+where
+        exists (select 1 from project_study where gathering_type = 'P')
+        and
+        exists (select 2 from project_study where ps_no = pmd.ps_no);
+
+select *from project_study where gathering_type = 'P';
+select
+        *
+from (
+        select
+                row_number() over(order by reg_date desc) rnum,
+                
+                ps.*
+        from 
+                project_study ps
+        where 
+                gathering_type = 'P'
+                and
+                --[str1]
+                -- member_id = 'test'
+                 exists (select 1 from bookmarked_prj_std where ps_no = ps.ps_no and member_id = 'test')
+        ) p
+where rnum between 1 and 12;
+
 -- delete from bookmarked_prj_std where member_id = '?' and ps_no = ?
 -- 모집인원 추가
 insert into project_member_dept values(seq_p_m_dept_no.nextval, 2, 'PL', 1, 1);
@@ -230,6 +267,7 @@ insert into project_member_dept values(seq_p_m_dept_no.nextval, 7, 'FE', 2, 1);
 insert into project_member_dept values(seq_p_m_dept_no.nextval, 9, 'PL', 1, 1);
 insert into project_member_dept values(seq_p_m_dept_no.nextval, 9, 'BE', 2, 0);
 select *from project_study where gathering_type = 'P' and ps_no in (2, 7, 9);
+select * from project_member_dept;
 -- 마우스 hover 시
 select
         ps.ps_no 게시물번호
@@ -267,7 +305,8 @@ from (
         from 
                 project_study ps
         where 
-                gathering_type = 'P' and
+                gathering_type = 'P'
+                -- and
                 --[str1]
                  -- exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('capital'))
                 -- and
