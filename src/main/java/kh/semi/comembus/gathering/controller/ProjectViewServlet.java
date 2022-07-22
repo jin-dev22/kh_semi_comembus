@@ -21,6 +21,7 @@ import kh.semi.comembus.common.ComembusUtils;
 @WebServlet("/gathering/projectView")
 public class ProjectViewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private GatheringService gatheringService = new GatheringService();
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -62,7 +63,7 @@ public class ProjectViewServlet extends HttpServlet {
 			
 			// 2. 업무로직
 			// 게시글조회 및 조회수 증가처리
-			Gathering project = hasRead ? GatheringService.findByNo(psNo) : GatheringService.findByNo(psNo, hasRead);								
+			Gathering project = hasRead ? gatheringService.findByNo(psNo) : GatheringService.findByNo(psNo, hasRead);								
 			System.out.println("project = " + project);
 			
 			// XSS공격대비 (Cross-site Scripting)
