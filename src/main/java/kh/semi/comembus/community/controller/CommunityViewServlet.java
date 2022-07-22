@@ -33,21 +33,25 @@ public class CommunityViewServlet extends HttpServlet {
 			String type = (String) request.getParameter("co_type");
 		
 			if("Q".equals(type)) {
-				Community qview = communityService.findByQnaNo(no);
-				List<CommunityRepl> commuRepl = communityService.findQnaCommentcoNo(no);
+				Community qview = communityService.findByCommuNo(no);
+				List<CommunityRepl> replList = communityService.findCommuCommentcoNo(no);
 				request.setAttribute("qview", qview);
-				request.setAttribute("commuRepl", commuRepl);
+				request.setAttribute("replList", replList);
 				request.getRequestDispatcher("/WEB-INF/views/community/qnaView.jsp")
 				.forward(request, response);
 			
 			}else if("F".equals(type)) {
-				Community fview = communityService.findByFreeNo(no);
+				Community fview = communityService.findByCommuNo(no);
+				List<CommunityRepl> replList = communityService.findCommuCommentcoNo(no);
 				request.setAttribute("fview", fview);
+				request.setAttribute("replList", replList);
 				request.getRequestDispatcher("/WEB-INF/views/community/freeView.jsp")
 				.forward(request, response);
 			}else if("S".equals(type)) {
-				Community sview = communityService.findByShareNo(no);
+				Community sview = communityService.findByCommuNo(no);
+				List<CommunityRepl> replList = communityService.findCommuCommentcoNo(no);
 				request.setAttribute("sview", sview);
+				request.setAttribute("replList", replList);
 				request.getRequestDispatcher("/WEB-INF/views/community/shareView.jsp")
 				.forward(request, response);
 			}

@@ -1,5 +1,4 @@
 package kh.semi.comembus.community.model.service;
-
 import static kh.semi.comembus.common.JdbcTemplate.*;
 
 import java.sql.Connection;
@@ -133,11 +132,11 @@ public class CommunityService {
 		return totalContent;
 	}
 	
-	public Community findByQnaNo(int no) {
+	public Community findByCommuNo(int no) {
 		Community qview = null;
 		Connection conn = getConnection();
 		try {
-			qview = communityDao.findByQnaNo(conn, no);
+			qview = communityDao.findByCommuNo(conn, no);
 		} catch (Exception e) {
 			throw e;
 		} finally {
@@ -147,128 +146,44 @@ public class CommunityService {
 	
 		}
 
-	public Community findByFreeNo(int no) {
-		Community fview = null;
+	
+	public int updateCommu(Community commu) {
+		int result = 0;
 		Connection conn = getConnection();
 		try {
-			fview = communityDao.findByFreeNo(conn, no);
+			result = communityDao.updateCommu(conn,commu);
+			commit(conn);
 		} catch (Exception e) {
+			rollback(conn);
 			throw e;
-		} finally {
+		}finally {
 			close(conn);
 		}
-		return fview;
+		return result;
+	}
+	
+	
+	public int deleteCommu(int no) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			result = communityDao.deleteCommu(conn, no);
+			commit(conn);
+		}catch(Exception e) {
+			rollback(conn);
+			throw e;
+		}finally {
+			close(conn);
+		}
+		return result;
 	}
 
-	public Community findByShareNo(int no) {
-		Community sview = null;
-		Connection conn = getConnection();
-		try {
-			sview = communityDao.findByShareNo(conn, no);
-		} catch (Exception e) {
-			throw e;
-		} finally {
-			close(conn);
-		}
-		return sview;
-	}
 	
-	public int updateQna(Community commu) {
-		int result = 0;
-		Connection conn = getConnection();
-		try {
-			result = communityDao.updateQna(conn,commu);
-			commit(conn);
-		} catch (Exception e) {
-			rollback(conn);
-			throw e;
-		}finally {
-			close(conn);
-		}
-		return result;
-	}
-	
-	
-	public int deleteQna(int no) {
+	public int insertCommuComment(CommunityRepl commuRepl) {
 		Connection conn = getConnection();
 		int result = 0;
 		try {
-			result = communityDao.deleteQna(conn, no);
-			commit(conn);
-		}catch(Exception e) {
-			rollback(conn);
-			throw e;
-		}finally {
-			close(conn);
-		}
-		return result;
-	}
-	
-	public int updateFree(Community commu) {
-		int result = 0;
-		Connection conn = getConnection();
-		try {
-			result = communityDao.updateFree(conn,commu);
-			commit(conn);
-		} catch (Exception e) {
-			rollback(conn);
-			throw e;
-		}finally {
-			close(conn);
-		}
-		return result;
-	}
-	
-	public int updateShare(Community commu) {
-		int result = 0;
-		Connection conn = getConnection();
-		try {
-			result = communityDao.updateShare(conn,commu);
-			commit(conn);
-		} catch (Exception e) {
-			rollback(conn);
-			throw e;
-		}finally {
-			close(conn);
-		}
-		return result;
-	}
-	
-	public int deleteFree(int no) {
-		Connection conn = getConnection();
-		int result = 0;
-		try {
-			result = communityDao.deleteFree(conn, no);
-			commit(conn);
-		}catch(Exception e) {
-			rollback(conn);
-			throw e;
-		}finally {
-			close(conn);
-		}
-		return result;
-	}
-	
-	public int deleteShare(int no) {
-		Connection conn = getConnection();
-		int result = 0;
-		try {
-			result = communityDao.deleteShare(conn, no);
-			commit(conn);
-		}catch(Exception e) {
-			rollback(conn);
-			throw e;
-		}finally {
-			close(conn);
-		}
-		return result;
-	}
-	
-	public int insertQnaComment(CommunityRepl commuRepl) {
-		Connection conn = getConnection();
-		int result = 0;
-		try {
-			result = communityDao.insertQnaComment(conn, commuRepl);
+			result = communityDao.insertCommuComment(conn, commuRepl);
 			commit(conn);
 			
 		}catch(Exception e) {
@@ -281,13 +196,31 @@ public class CommunityService {
 		return result;
 	}
 	
-	public List<CommunityRepl> findQnaCommentcoNo(int coNo) {
+	public List<CommunityRepl> findCommuCommentcoNo(int coNo) {
 		Connection conn = getConnection();
-		List<CommunityRepl> commuRepl = communityDao.findQnaCommentcoNo(conn, coNo);
+		List<CommunityRepl> replList = communityDao.findCommuCommentcoNo(conn, coNo);
 		close(conn);
-		return commuRepl;
+		return replList;
 	}
 
+	public int deleteCommuComment(int no) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			result = communityDao.deleteCommuComment(conn, no);
+			commit(conn);
+			
+		}catch(Exception e) {
+			rollback(conn);
+			throw e;
+			
+		}finally {
+			close(conn);
+		}
+		return result;
+	}
+
+	
 	//태연코드 끝
 	
 	//수진코드 시작
@@ -309,6 +242,11 @@ public class CommunityService {
 		int totalCommunityNum = communityDao.getTotalMemberCommunityNum(conn, memberId);
 		return totalCommunityNum;
 	}
+
+
+	
+
+	
 
 
 	//수진코드 끝

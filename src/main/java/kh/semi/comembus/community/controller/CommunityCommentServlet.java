@@ -32,18 +32,16 @@ public class CommunityCommentServlet extends HttpServlet {
 			String content = request.getParameter("content");
 			CommunityRepl commuRepl = new CommunityRepl(0, writer, coNo, null, content, commentLevel, commentRef);
 			System.out.println("comment:" + commuRepl);
+
+			int result = communityService.insertCommuComment(commuRepl);
 			
 			if("Q".equals(type)) {
-				int result = communityService.insertQnaComment(commuRepl);
-//				HttpSession session = request.getSession();
 				response.sendRedirect(request.getContextPath()+ "/community/communityView?co_type=Q&no=" + coNo);
 				
 			}else if("F".equals(type)) {
-//				int result = communityService.insertFree(commu);
-				response.sendRedirect(request.getContextPath() + "/community/communityList?co_type=F");
+				response.sendRedirect(request.getContextPath() + "/community/communityView?co_type=F&no=" + coNo);
 			}else if("S".equals(type)) {
-//				int result = communityService.insertShare(commu);
-				response.sendRedirect(request.getContextPath() + "/community/communityList?co_type=S");
+				response.sendRedirect(request.getContextPath() + "/community/communityView?co_type=S&no=" + coNo);
 			}
 			
 		}catch(Exception e) {

@@ -25,19 +25,19 @@ public class CommunityUpdateServlet extends HttpServlet {
 			String type = (String) request.getParameter("co_type");
 			
 			if("Q".equals(type)) {
-				Community qview = communityService.findByQnaNo(no);
+				Community qview = communityService.findByCommuNo(no);
 				request.setAttribute("qview", qview);
 				request.getRequestDispatcher("/WEB-INF/views/community/qnaUpdate.jsp")
 				.forward(request, response);
 				
 			}else if("F".equals(type)) {
-				Community fview = communityService.findByFreeNo(no);
+				Community fview = communityService.findByCommuNo(no);
 				request.setAttribute("fview", fview);
 				request.getRequestDispatcher("/WEB-INF/views/community/freeUpdate.jsp")
 				.forward(request, response);
 				
 			}else if("S".equals(type)) {
-				Community sview = communityService.findByShareNo(no);
+				Community sview = communityService.findByCommuNo(no);
 				request.setAttribute("sview", sview);
 				request.getRequestDispatcher("/WEB-INF/views/community/shareUpdate.jsp")
 				.forward(request, response);
@@ -60,15 +60,14 @@ public class CommunityUpdateServlet extends HttpServlet {
 			String content = request.getParameter("co_content");
 			Community commu = new Community(no, title, writer, content, 0, null, 0, type);
 
+			int result = communityService.updateCommu(commu);
+			
 			if("Q".equals(type)) {
-				int result = communityService.updateQna(commu);
 				response.sendRedirect(request.getContextPath() + "/community/communityView?co_type=Q&no="+no);
 				
 			}else if("F".equals(type)) {
-				int result = communityService.updateFree(commu);
 				response.sendRedirect(request.getContextPath() + "/community/communityView?co_type=F&no="+no);
 			}else if("S".equals(type)) {
-				int result = communityService.updateShare(commu);
 				response.sendRedirect(request.getContextPath() + "/community/communityView?co_type=S&no="+no);
 			}
 			
