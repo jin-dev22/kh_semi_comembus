@@ -2,6 +2,7 @@ package kh.semi.comembus.member.controller;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -10,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import kh.semi.comembus.gathering.model.dto.Gathering;
+import kh.semi.comembus.gathering.model.service.GatheringService;
 import kh.semi.comembus.member.model.service.MemberService;
 
 /**
@@ -19,6 +22,7 @@ import kh.semi.comembus.member.model.service.MemberService;
 public class MemberBookmarkAddServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private MemberService memberService = new MemberService();
+	private GatheringService gatheringService = new GatheringService();
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -29,9 +33,11 @@ public class MemberBookmarkAddServlet extends HttpServlet {
 			// 로그인한 멤버 아이디, 좋아요 한 게시글 번호
 			String memberId = request.getParameter("member_id");
 			int psNo = 0;
-			try {
-				psNo = Integer.parseInt(request.getParameter("ps_no"));
-			} catch(NumberFormatException e) {}
+			psNo = Integer.parseInt(request.getParameter("psNo"));
+			/*
+			 * try { psNo = Integer.parseInt(request.getParameter("psNo")); }
+			 * catch(NumberFormatException e) {}
+			 */
 			System.out.println("memberId = " + memberId);
 			System.out.println("psNo = " + psNo);
 			
@@ -41,9 +47,13 @@ public class MemberBookmarkAddServlet extends HttpServlet {
 			
 			// 업무로직
 			int result = memberService.insertBookmark(param);
+			List<Gathering> bookmarkList = gatheringService.findAllBookmarked(memberId);
 			System.out.println("result = " + result);
 			
-			response.sendRedirect(request.getHeader("Referer"));
+			
+			// response.sendRedirect(request.getHeader("Referer"));
+			request.setAttribute("bookmarkList", bookmarkList);
+			request.getRequestDispatcher("/WEB-INF/views/gathering/projectList.jsp").forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

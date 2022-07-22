@@ -12,8 +12,7 @@ public class GatheringExt extends Gathering{
 	private int design_cnt;
 	private int frontend_cnt;
 	private int backend_cnt;
-	
-	
+
 	public GatheringExt(int psNo, String writer, GatheringType psType, String title, Date regDate, String content,
 			int viewcount, int bookmark, String topic, String local, int people, Status status, Date startDate,
 			Date endDate, String planning, String design, String frontend, String backend, int planning_cnt,
@@ -100,6 +99,32 @@ public class GatheringExt extends Gathering{
 		this.backend_cnt = backend_cnt;
 	}
 	
+	// 선아 현재 모집된 인원 추가 시작
+	private int recrutied_cnt;
 	
+	public int getRecrutied_cnt() {
+		return recrutied_cnt;
+	}
+
+	public void setRecrutied_cnt(int recrutied_cnt) {
+		this.recrutied_cnt = recrutied_cnt;
+	}
+
+	public GatheringExt(int psNo, String writer, GatheringType psType, String title, Date regDate, String content,
+			int viewcount, int bookmark, String topic, String local, int people, Status status, Date startDate,
+			Date endDate, String planning, String design, String frontend, String backend, int planning_cnt,
+			int design_cnt, int frontend_cnt, int backend_cnt, int recrutied_cnt) {
+		super(psNo,writer,psType,title,regDate,content,viewcount,bookmark,topic,local,people,status,startDate,endDate);
+		this.planning = planning;
+		this.design = design;
+		this.frontend = frontend;
+		this.backend = backend;
+		this.planning_cnt = planning_cnt;
+		this.design_cnt = design_cnt;
+		this.frontend_cnt = frontend_cnt;
+		this.backend_cnt = backend_cnt;
+		this.recrutied_cnt = recrutied_cnt;
+	}
+	// 선아 코드 끝
 
 }
