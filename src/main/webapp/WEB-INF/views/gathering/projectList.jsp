@@ -1,3 +1,4 @@
+<%@page import="kh.semi.comembus.gathering.model.dto.GatheringExt"%>
 <%@page import="kh.semi.comembus.gathering.model.dto.Gathering"%>
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -257,24 +258,27 @@ function pageLink(cPage, totalPages, funName){
 				<div class="swiper-wrapper">
 				<%
 				if(projectList != null && !projectList.isEmpty()){
-					for(int i = 0; i < 3; i++){
-						String topic = projectList.get(i).getTopic();
+					for(Gathering _project : projectList){
+						GatheringExt project = (GatheringExt) _project;
+						for(int i = 0; i < 3; i++){
+							String topic = project.getTopic();
 				%>
 				<!-- swiper-slide 3개 생성 및 추후 진행 -->
 				<div class="swiper-slide">
 					<img src="<%= request.getContextPath() %>/images/<%= topic %>.jpg" class="ps__header__content__img" alt="해당 프로젝트 주제 이미지">
 					<ul class="ps__header__content-info">
 						<li><p class="bold"><%= "social".equals(topic) ? "소셜네트워크" : ("game".equals(topic) ? "게임" : ("travel".equals(topic) ? "여행" : ("finance".equals(topic) ? "금융" : "이커머스"))) %></p></li>
-						<li><p class="bold"><%= projectList.get(i).getTitle() %></p></li>
-						<li class="ps__header__content-content"><p><%= projectList.get(i).getContent() %></p></li>
+						<li><p class="bold"><%= project.getTitle() %></p></li>
+						<li class="ps__header__content-content"><p><%= project.getContent() %></p></li>
 						<li class="bold">
-							<span class="heart-emoji">&#9829; <%= projectList.get(i).getBookmark() %></span>
-							<span>&#128064; <%= projectList.get(i).getViewcount() %></span>
-							<span>모집인원 0 / <%= projectList.get(i).getPeople() %></span>
+							<span class="heart-emoji">&#9829; <%= project.getBookmark() %></span>
+							<span>&#128064; <%= project.getViewcount() %></span>
+							<span>모집인원 <%= project.getRecruited_cnt() %> / <%= project.getPeople() %></span>
 						</li>
 					</ul>
 				</div>
 				<%
+						}
 					}
 				}
 				%>
@@ -324,7 +328,8 @@ function pageLink(cPage, totalPages, funName){
 			<div class="ps-lists">
 			<%
 			if(projectList != null && !projectList.isEmpty()){
-				for(Gathering project : projectList){
+				for(Gathering _project : projectList){
+					GatheringExt project = (GatheringExt) _project;
 					int projectNo = project.getPsNo();
 			%>
 				<div class="ps-pre">
@@ -342,7 +347,7 @@ function pageLink(cPage, totalPages, funName){
 						<li>
 							<span>&#128064;</span><%= project.getViewcount() %></li>
 						<!-- 나중에 모임 게시물별 모집인원현황 테이블과 연결 -->
-						<li>모집인원 0 / <%= project.getPeople() %></li>
+						<li>모집인원 <%= project.getRecruited_cnt() %> / <%= project.getPeople() %></li>
 					</ul>
 					<div class="ps__bookmark">
 						<% if(loginMember == null){ %>
@@ -397,7 +402,7 @@ function pageLink(cPage, totalPages, funName){
 			</form>
 			<%
 			}
-			%>	
+			%>
 		</section>
 	</section>
 <script>
