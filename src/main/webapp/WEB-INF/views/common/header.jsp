@@ -85,7 +85,7 @@
         </li>
         <!-- 관리자로그인시 노출 -->
         <% if(loginMember != null && loginMember.getMemberRole() == MemberRole.A){ %>
-        <li><a href="javascript:void(0)">회원관리</a></li>
+        <li><a href="<%= request.getContextPath() %>/admin/memberList">회원관리</a></li>
         <li><a href="javascript:void(0)">통계관리</a></li>
         <% } %>
       </ul>
