@@ -138,6 +138,55 @@ public class GatheringService {
 		return gather;
 	}
 	
+	/**
+	 * 모임게시글상세>지원자현황페이지: 직무별 모집정원 조회 
+	 */
+	public Map<String, Integer> getCapacitiesByDept(int psNo) {
+		Connection conn = getConnection();
+		Map<String, Integer> capacitiesByDept = gatheringDao.getCapacitiesByDept(conn, psNo);
+		close(conn);
+		return capacitiesByDept;
+	}
+	
+	/**
+	 * 모임게시글상세>지원자현황페이지: 직무별 모집인원 테이블 업데이트, ajax 처리를 위해 boolean값 반환
+	 */
+	public int addPSMemNumByDept(Map<String, Object> param) {
+		int result = 0;
+		Connection conn = getConnection();
+		try {
+			result = gatheringDao.addPSMemNumByDept(conn, param);
+			commit(conn);
+		} catch (Exception e) {
+			rollback(conn);
+			throw e;
+		}
+		finally {
+			close(conn);
+		}
+		return result;
+	}
+	
+	/**
+	 * 멤버별 모임지원현황 결과 컬럼 업데이트
+	 */
+	public int updateApldResult(Map<String, Object> param) {
+		int result = 0;
+		Connection conn = getConnection();
+		try {
+			result = gatheringDao.updateApldResult(conn, param);
+			commit(conn);
+		} catch (Exception e) {
+			rollback(conn);
+			throw e;
+		}
+		finally {
+			close(conn);
+		}
+		
+		return result;
+	}
+	
 	//수진코드 끝
 	
 	//유경 추가

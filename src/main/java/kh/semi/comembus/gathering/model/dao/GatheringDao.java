@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
@@ -19,7 +20,7 @@ import kh.semi.comembus.gathering.model.dto.GatheringExt;
 import kh.semi.comembus.gathering.model.dto.GatheringType;
 import kh.semi.comembus.gathering.model.dto.Status;
 import kh.semi.comembus.gathering.model.exception.GatheringException;
-import kh.semi.comembus.member.model.dto.MemberExt;
+import kh.semi.comembus.member.model.dto.JobCode;
 
 public class GatheringDao {
 	private Properties prop = new Properties();
@@ -506,6 +507,77 @@ public class GatheringDao {
 		return gather;
 	}
 	
+	/**
+	 * 모임게시글상세>지원자현황페이지(프로젝트): 직무별 모집정원 조회 
+	 */
+	public Map<String, Integer> getCapacitiesByDept(Connection conn, int psNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		Map<String, Integer> capacitiesByDept = new HashMap<>();
+		String sql = prop.getProperty("getCapacitiesByDept");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, psNo);
+			while(rset.next()) {
+				JobCode jobCode = JobCode.valueOf(rset.getString("job_code"));
+				int capa = rset.getInt("capacity_number");
+				switch(jobCode) {
+				case PL: capacitiesByDept.put("PL", capa); break;
+				case DG: capacitiesByDept.put("DG", capa); break;
+				case BE: capacitiesByDept.put("BE", capa); break;
+				case FE: capacitiesByDept.put("FE", capa); break;
+				}
+			}
+		} catch (SQLException e) {
+			throw new GatheringException("프로젝트 직무별 정원 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}	
+		
+		return capacitiesByDept;
+	}
+	
+	/**
+	 * 모임게시글상세>지원자현황페이지: 직무별 모집인원 테이블 업데이트, ajax 처리를 위해 boolean값 반환
+	 */
+	public int addPSMemNumByDept(Connection conn, Map<String, Object> param) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("updatePSMemNumByDept");
+		try {//1:psNo, 2: jobCode
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, (int)param.get("psNo"));
+			pstmt.setString(2, (String) param.get("jobCode"));
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new GatheringException("프로젝트 직무별 모집된 인원수 업데이트 오류", e);
+		} finally {
+			close(pstmt);
+		}	
+		return result;
+	}
+	
+	/**
+	 * 멤버별 모임지원현황 결과 컬럼 업데이트
+	 */
+	public int updateApldResult(Connection conn, Map<String, Object> param) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("updateApldResult");
+		try {//1:psNo, 2:
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, (String) param.get("apldResult"));
+			pstmt.setString(2, (String) param.get("apldMemberId"));
+			pstmt.setInt(3, (int)param.get("psNo"));
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new GatheringException("프로젝트 직무별 모집된 인원수 업데이트 오류", e);
+		} finally {
+			close(pstmt);
+		}	
+		return result;
+	}
 	
 	//수진코드 끝
 	

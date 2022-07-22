@@ -220,11 +220,11 @@
 	/**
 	* 엔터키 폼 제출방지하기
 	*/
-	document.addEventListener('keydown', function(event) {
-	  if (event.keyCode === 13) {
-	    event.preventDefault();
-	  };
-	}, true);
+	\$('input[type="text"]').keydown(function() {
+		  if (event.keyCode === 13) {
+		    event.preventDefault();
+		  };
+		});
 	
 	function deleteMember(){
 		if(confirm("정말 탈퇴하시겠습니까?")){

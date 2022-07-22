@@ -1,3 +1,4 @@
+<%@page import="java.util.Map"%>
 <%@page import="kh.semi.comembus.member.model.dto.MemberExt"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.List"%>
@@ -10,7 +11,6 @@
 	/* Gathering gathering = (Gathering) request.getAttribute("project"); */
 	GatheringExt gathering = (GatheringExt) request.getAttribute("gathering");
 	List<MemberExt> apldMemberList = (List<MemberExt>) request.getAttribute("memberList");
-	
 	int psNo = gathering.getPsNo();
 	String psType = gathering.getPsType().name();
 %>
@@ -38,7 +38,8 @@
         	<form name="aplcntResultFrm<%=psNo %>" action="">
         		<input type="hidden" name="psNum" value="<%= psNo%>"/>
         		<input type="hidden" name="psType" value="<%= psType%>"/>
-        		<input type="hidden" name=apldMemberId value="<%= mem.getMemberId()%>" />
+        		<input type="hidden" name=apldMemberId value="<%= mem.getMemberId()%>"/>
+        		<input type="hidden" name="apldMemberJobCode" value="<%=mem.getJobCode() %>" />
         		<input class="applview-btn accept" type="button" value="수락" onclick="apldResult('O');"/>/
         		<input class="applview-btn reject" type="button" value="거절" onclick="apldResult('X');"/>
         	</form>
@@ -57,11 +58,14 @@ function apldResult(apldResult){
 	const psNo = frm.psNum.value;
 	const psType = frm.psType.value;
 	const apldMemberId = frm.apldMemberId.value;
+	const apldMemberJobCode = frm.apldMemberJobCode.value;
 	console.log(psNo);
+	if(psType == 'P')	
+	
 	$.ajax({
 		type : 'POST',
 		url : '<%= request.getContextPath()%>/gathering/showApplicants',
-		data : {'psNo' : psNo, 'apldMemberId' : apldMemberId, 'apldResult' : apldResult, 'psType' : psType},
+		data : {'psNo' : psNo, 'apldMemberId' : apldMemberId, 'jobCode': apldMemberJobCode,'apldResult' : apldResult, 'psType' : psType},
 		success(result){
 			if(result){
 				console.log("지원수락 완료");

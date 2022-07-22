@@ -47,4 +47,24 @@ public class AlertDao {
 		return result;
 	}
 
+	public int insertReplAlert(Connection conn, Alert alert) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("insertReplAlert");
+		//insert into member_notification values(seq_alert_no.nextval, ?,null, ?, ?, ?, default)
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, alert.getReceiverId());
+			pstmt.setInt(2, alert.getReplNo());
+			pstmt.setString(3, alert.getMessageType().name());
+			pstmt.setString(4, alert.getContent());
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new AlertException("알림정보 저장 오류", e);
+		} finally {
+			close(pstmt);
+		}	
+		return result;
+	}
 }

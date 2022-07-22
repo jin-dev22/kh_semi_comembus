@@ -18,23 +18,34 @@ public class AlertService {
 
 	AlertDao alertDao = new AlertDao();
 	
-	public int notifyNewComment(Community community) {
+	/**
+	 * 새댓글알림
+	 */
+	public int notifyNewComment(Alert alert) {
+		Connection conn = getConnection();
 		System.out.println("@알림서비스:새댓글");
 		int result = 0;
-		// db insert
-		
-		//user alert
-		if(ComembusWebSocket.isConnected(community.getCoWriter())) {
-			System.out.println(">새댓글 알림. 수신자 접속중..");
-			Map<String, Object> data = new HashMap<>();
-			data.put("receiver", community.getCoWriter());
-			data.put("msg", "["+community.getCoTitle()+"] 게시글에 새 댓글이 달렸습니다.");
-			
-			ComembusWebSocket.sendMessage(MessageType.NEW_COMMENT, data);
+		try {
+			// db insert
+			result = alertDao.insertCancelAlert(conn, alert);
+			//user alert
+			if(ComembusWebSocket.isConnected(alert.getReceiverId())) {
+				System.out.println(">새댓글 알림. 수신자 접속중..");
+				ComembusWebSocket.sendMessage(MessageType.NEW_COMMENT, handleAlertData(alert));
+			}
+			commit(conn);
+		} catch (Exception e) {
+			rollback(conn);
+			throw e;
+		} finally {
+			close(conn);
 		}
 		return result;
 	}
 	
+	/**
+	 * 모임지원취소 알림
+	 */
 	public int notifyCancelApld(Alert alert) {
 		Connection conn = getConnection();
 		System.out.println("@알림서비스:지원취소");
@@ -45,11 +56,7 @@ public class AlertService {
 			//user alert
 			if(ComembusWebSocket.isConnected(alert.getReceiverId()) && result == 1) {
 				System.out.println(">지원취소 알림. 수신자 접속중..");
-				Map<String, Object> data = new HashMap<>();
-				data.put("receiver", alert.getReceiverId());
-				data.put("msg", alert.getContent());
-				
-				ComembusWebSocket.sendMessage(MessageType.APPLY_CANCELED, data);
+				ComembusWebSocket.sendMessage(MessageType.APPLY_CANCELED, handleAlertData(alert));
 			}
 			commit(conn);
 		} catch (Exception e) {
@@ -59,5 +66,15 @@ public class AlertService {
 			close(conn);
 		}
 		return result;
+	}
+	
+	/**
+	 * 알림 객체를 받아서 웹소켓sendMessage에 전달할 data맵 반환
+	 */
+	public Map<String, Object> handleAlertData(Alert alert){
+		Map<String, Object> data = new HashMap<>();
+		data.put("receiver", alert.getReceiverId());
+		data.put("msg", alert.getContent());
+		return data;
 	}
 }

@@ -8,8 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-
+import kh.semi.comembus.alert.model.dto.Alert;
+import kh.semi.comembus.alert.model.dto.IsRead;
+import kh.semi.comembus.alert.model.dto.MessageType;
+import kh.semi.comembus.alert.model.service.AlertService;
 import kh.semi.comembus.community.model.dto.CommentLevel;
+import kh.semi.comembus.community.model.dto.Community;
 import kh.semi.comembus.community.model.dto.CommunityRepl;
 import kh.semi.comembus.community.model.service.CommunityService;
 
@@ -20,7 +24,8 @@ import kh.semi.comembus.community.model.service.CommunityService;
 public class CommunityCommentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private CommunityService communityService = new CommunityService();
-  
+	private AlertService alertService = new AlertService();
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String type = request.getParameter("co_type");
 		try {
@@ -34,6 +39,15 @@ public class CommunityCommentServlet extends HttpServlet {
 			System.out.println("comment:" + commuRepl);
 
 			int result = communityService.insertCommuComment(commuRepl);
+			
+			//게시글작성자에게 댓글알림
+			Community comm = communityService.findByCommuNo(coNo);
+			String title = comm.getCoTitle();
+			String substrTitle = title.length() > 8? title.substring(0, 7)+"...": title;
+			String alertContent = "["+substrTitle +"]에 새 댓글이 달렸습니다.";
+			
+			Alert alert = new Alert(0, writer, 0, coNo, MessageType.NEW_COMMENT, alertContent, IsRead.N);
+			result = alertService.notifyNewComment(alert);
 			
 			if("Q".equals(type)) {
 				response.sendRedirect(request.getContextPath()+ "/community/communityView?co_type=Q&no=" + coNo);
