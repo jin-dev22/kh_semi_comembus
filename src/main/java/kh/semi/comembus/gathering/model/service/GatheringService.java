@@ -1,6 +1,9 @@
 package kh.semi.comembus.gathering.model.service;
 
-import static kh.semi.comembus.common.JdbcTemplate.*;
+import static kh.semi.comembus.common.JdbcTemplate.close;
+import static kh.semi.comembus.common.JdbcTemplate.commit;
+import static kh.semi.comembus.common.JdbcTemplate.getConnection;
+import static kh.semi.comembus.common.JdbcTemplate.rollback;
 
 import java.sql.Connection;
 import java.util.List;
@@ -9,6 +12,7 @@ import java.util.Map;
 import kh.semi.comembus.gathering.model.dao.GatheringDao;
 import kh.semi.comembus.gathering.model.dto.Gathering;
 import kh.semi.comembus.gathering.model.dto.GatheringExt;
+import kh.semi.comembus.member.model.dto.MemberExt;
 
 public class GatheringService {
 	static GatheringDao gatheringDao = new GatheringDao();
@@ -127,17 +131,17 @@ public class GatheringService {
 	 * 모임 게시글 번호로 조회하기
 	 * - 지원신청 취소시 해당 게시글 정보 확인을 위해 작성했습니다. 
 	 */
-	public static Gathering findByNo(int psNo) {
+	public Gathering findByNo(int psNo) {
 		Connection conn = getConnection();
 		Gathering gather = gatheringDao.findByNo(conn, psNo);
 		close(conn);
 		return gather;
 	}
-
+	
 	//수진코드 끝
 	
 	//유경 추가
-	public int enrollGathering(Gathering project) {
+	public static int enrollProject(Gathering project) {
 		Connection conn=getConnection();
 		int result = 0;
 		try {
@@ -159,9 +163,47 @@ public class GatheringService {
 
 
 	public static Gathering findByNo(int psNo, boolean hasRead) {
-		// TODO Auto-generated method stub
-		return null;
+		Connection conn = getConnection();
+		Gathering project = null;
+		try {
+			if(!hasRead) {
+				int result = gatheringDao.updateReadCount(conn,psNo);
+				project=gatheringDao.findByNo(conn,psNo);
+				
+				commit(conn);
+			}
+		}catch(Exception e) {
+			rollback(conn);
+			throw e;
+		}finally {
+			close(conn);
+		}
+		return project;
 	}
+
+	public static int enrollGathering(Gathering study) {
+		Connection conn=getConnection();
+		int result = 0;
+		try {
+			//gathering table에 insert
+			result = gatheringDao.enrollStudy(conn,study);
+			//방금 등록된 Gathering.no조회
+			int psNo = gatheringDao.getLastStudyNo(conn);
+			System.out.println("projectNo = "+psNo);
+			
+			commit(conn);
+		}catch(Exception e) {
+			rollback(conn);
+			throw e;
+		}finally {
+			close(conn);
+		}
+		return result;
+	}
+	
+	
+	
+	
 	//유경 끝
 
 }

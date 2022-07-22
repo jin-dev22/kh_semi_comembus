@@ -14,6 +14,7 @@ import javax.websocket.server.ServerEndpoint;
 
 import com.google.gson.Gson;
 
+import kh.semi.comembus.alert.model.dto.MessageType;
 import kh.semi.comembus.ws.config.ComembusWebSocketConfigurator;
 
 @ServerEndpoint(value = "/ComembusWebSocket", configurator = ComembusWebSocketConfigurator.class)

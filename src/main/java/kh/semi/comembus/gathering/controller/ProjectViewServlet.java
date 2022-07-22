@@ -71,11 +71,11 @@ public class ProjectViewServlet extends HttpServlet {
 			
 			// 개행문자 변환처리
 			project.setContent(ComembusUtils.convertLineFeedToBr(project.getContent()));
-			
+//			
 			
 			// 3. view단 처리
 			request.setAttribute("project", project);
-			request.getRequestDispatcher("/WEB-INF/views/project/projectDetailView.jsp")
+			request.getRequestDispatcher("/WEB-INF/views/gathering/projectDetailView.jsp")
 				.forward(request, response);
 			
 		}catch(Exception e) {

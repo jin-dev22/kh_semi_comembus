@@ -429,6 +429,57 @@ public class MemberDao {
 		}			
 		return result;
 	}
+	
+	/**
+	 * 모임게시글 상세->지원자현황 페이지 : 지원현황테이블에서 지원자목록 조회 
+	 */
+	public List<MemberExt> getApldMemberList(Connection conn, Map<String, Object> param) {
+		List<MemberExt> apldMemberList = new ArrayList<MemberExt>();
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("getApldMemberList");
+		//1: ps_nO, 2: start, 3: end
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, (int)param.get("psNo"));
+			pstmt.setInt(2, (int)param.get("start"));
+			pstmt.setInt(3, (int)param.get("end"));
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				MemberExt member = handleMemberResultSet(rset);
+				member.setJobName(getJobName(conn, member.getJobCode()));
+				apldMemberList.add(member);
+			}
+		} catch (SQLException e) {
+			throw new MemberException("모임 지원자목록 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}	
+		return apldMemberList;
+	}
+	
+	public int getApldMemberNum(Connection conn, int psNo) {
+		int apldMemberNum = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("getApldMemberNum");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, psNo);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				apldMemberNum = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			throw new MemberException("모임게시물 지원자 수 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return apldMemberNum;
+	}
+	
 	// 수진 코드 끝
 	
 	// 선아 코드 시작

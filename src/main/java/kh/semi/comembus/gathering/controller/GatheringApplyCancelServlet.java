@@ -12,10 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import kh.semi.comembus.alert.model.dto.Alert;
 import kh.semi.comembus.alert.model.dto.IsRead;
+import kh.semi.comembus.alert.model.dto.MessageType;
 import kh.semi.comembus.alert.model.service.AlertService;
 import kh.semi.comembus.gathering.model.dto.Gathering;
 import kh.semi.comembus.gathering.model.service.GatheringService;
-import kh.semi.comembus.ws.endpoint.MessageType;
 
 /**
  * 모임 지원 취소하기 
