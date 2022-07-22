@@ -7,7 +7,7 @@
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <%
 /* Gathering gathering = (Gathering) request.getAttribute("project"); */
-   GatheringExt gathering = (GatheringExt) request.getAttribute("project");
+   GatheringExt gathering = (GatheringExt) request.getAttribute("gathering");
 
 %>
 <link rel="stylesheet" href="<%=request.getContextPath() %>/css/gathering/ProjectView.css" />

@@ -384,7 +384,7 @@ public class GatheringDao {
 	
 	//수진코드 시작
 	/**
-	 * 멤버스 프로필,마이페이지: 회원 참가중인 모임 게시글 조회
+	 * 멤버스 프로필,마이페이지: 회원이 참가한 모임 게시글 조회
 	 */
 	public List<Gathering> findAllByMemberId(Connection conn, String memberId) {
 		List<Gathering> gatheringIngList = new ArrayList<>();
@@ -410,6 +410,9 @@ public class GatheringDao {
 		return gatheringIngList;
 	}
 	
+	/**
+	 * 멤버스 프로필,마이페이지: 찜하기 한 모임게시글목록 조회
+	 */
 	public List<Gathering> findAllBookmarked(Connection conn, String memberId) {
 		List<Gathering> gatheringBookmarkList = new ArrayList<>();
 		PreparedStatement pstmt = null;
@@ -433,6 +436,9 @@ public class GatheringDao {
 		return gatheringBookmarkList;
 	}
 	
+	/**
+	 * 멤버스마이페이지: 회원별 지원한 모임게시글목록조회
+	 */
 	public List<Gathering> findAllApldByMemberId(Connection conn, String memberId) {
 		List<Gathering> gatheringApldList = new ArrayList<>();
 		PreparedStatement pstmt = null;
@@ -457,6 +463,9 @@ public class GatheringDao {
 		return gatheringApldList;
 	}
 	
+	/**
+	 * 멤버스마이페이지: 모임 지원 취소하기
+	 */
 	public int cancelApld(Connection conn, Map<String, Object> param) {
 		int result = 0;
 		PreparedStatement pstmt = null;
@@ -491,7 +500,7 @@ public class GatheringDao {
 			pstmt.setInt(1, psNo);
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
-//				gather = handleGatheringResultSet(rset);
+				gather = handleGatheringResultSet(rset);
 			}
 		} catch (SQLException e) {
 			throw new GatheringException("모임 게시글번호 조회 오류", e);

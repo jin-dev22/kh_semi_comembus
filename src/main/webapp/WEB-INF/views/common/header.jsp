@@ -103,7 +103,7 @@
 	  	</span>
 	  	<li class="h__loginMember">
 	  		<a href="<%= request.getContextPath()%>/membus/mypage"><%= loginMember.getNickName() %></a>
-	  		<span id="noification"></span>
+	  		<span id="notification"><a href="<%= request.getContextPath() %>/alertList"></a><i id="blackBell" class="fa-solid fa-bell bell"></i></span>
   		</li>	  	
 	  	<li class="h__memberLogout"><a href="<%= request.getContextPath() %>/membus/logout">로그아웃</a></li>
 	  </ul>

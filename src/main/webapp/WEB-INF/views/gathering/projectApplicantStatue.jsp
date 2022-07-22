@@ -8,17 +8,17 @@
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <%
 	/* Gathering gathering = (Gathering) request.getAttribute("project"); */
-	GatheringExt gathering = (GatheringExt) request.getAttribute("project");
+	GatheringExt gathering = (GatheringExt) request.getAttribute("gathering");
 	List<MemberExt> apldMemberList = (List<MemberExt>) request.getAttribute("memberList");
 	
 	int psNo = gathering.getPsNo();
-	
+	String psType = gathering.getPsType().name();
 %>
 <link rel="stylesheet" href="<%=request.getContextPath() %>/css/gathering/ProjectView.css" />
 <p class="pjname"><%= gathering.getTitle() %></p><!-- 프로젝트명 -->
 <p class="pjwriter"><img src="/멤버 이미지.png" alt="멤버아이디"><%= gathering.getWriter() %></p>
 <!--지원자 현황은 글쓴이=로그인한 사용자 일치할 때만 보이게 하기-->
-<button id="pjdetail"><a href="/projectDetailView.jsp">프로젝트 상세</a></button><button id="pjstatue"><a href="/gathering/showApplicants?psNo=<%= gathering.getPsNo()%>">지원자 현황</a></button>
+<button id="pjdetail"><a href="/projectDetailView.jsp">프로젝트 상세</a></button><button id="pjstatue"><a href="/gathering/showApplicants?psNo=<%= psNo%>">지원자 현황</a></button>
 <br>
 <hr>
 <h3>지원자 현황</h3>
@@ -34,18 +34,35 @@
     <tr>
         <td><%= mem.getNickName() %></td>
         <td><%= mem.getJobName() %></td>
-        <td><button class="applview-btn accept" onclick="accept('<%= mem.getMemberId()%>');">수락</button>/<button class="applview-btn reject" onclick="reject('<%= mem.getMemberId()%>');">거절</button></td>
+        <td>
+        	<form name="aplcntResultFrm<%=psNo %>" action="">
+        		<input type="hidden" name="psNum" value="<%= psNo%>"/>
+        		<input type="hidden" name="psType" value="<%= psType%>"/>
+        		<input class="applview-btn accept" type="button" value="수락" onclick="accept('<%= mem.getMemberId()%>');"/>/
+        		<input class="applview-btn reject" type="button" value="거절" onclick="reject('<%= mem.getMemberId()%>');"/>
+        	</form>
+       	</td>
     </tr>
   <%} %>
 </table>
 
+<div id='pagebar'>
+	<%= request.getAttribute("pagebar") %>
+</div>
+
 <script>
 function accept(apldMemberId){
+	const frm = document.querySelector('[name="aplcntResultFrm<%=psNo %>"]');
+	const psNo = frm.psNum.value;
+	const psType = frm.psType.value;
+	console.log(psNo);
 	$.ajax({
 		type : 'POST',
-		url : '<%= request.getContextPath()%>/gathering/apldResult',
-		data : {'psNo' : }
-		
+		url : '<%= request.getContextPath()%>/gathering/showApplicants',
+		data : {'psNo' : psNo, 'apldMemberId' : apldMemberId, 'result' : 'O', 'psType' : psType},
+		success(result){
+			
+		}
 	});
 };
 
