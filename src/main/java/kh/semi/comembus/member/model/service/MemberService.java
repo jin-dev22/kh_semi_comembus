@@ -9,6 +9,7 @@ import java.util.Map;
 import kh.semi.comembus.member.model.dao.MemberDao;
 import kh.semi.comembus.member.model.dto.JobCode;
 import kh.semi.comembus.member.model.dto.Member;
+import kh.semi.comembus.member.model.dto.MemberExt;
 
 public class MemberService {
 
@@ -162,6 +163,28 @@ public class MemberService {
 			close(conn);
 		}
 		return result;
+	}
+	
+
+	/**
+	 * 모임게시글 상세->지원자현황 페이지: 지원현황테이블에서 지원자목록 조회 
+	 */
+	public List<MemberExt> getApldMemberList(Map<String, Object> param) {
+		Connection conn = getConnection();
+		List<MemberExt> getApldMemberList = memberDao.getApldMemberList(conn, param);
+		close(conn);
+		return getApldMemberList;
+	}
+	
+	/**
+	 * 모임게시글 상세->지원자현황 페이지: 지원자 목록페이지바용 전체 수 
+	 * @param psNo 
+	 */
+	public int getApldMemberNum(int psNo) {
+		Connection conn = getConnection();
+		int apldMemberNum = memberDao.getApldMemberNum(conn, psNo);
+		close(conn);
+		return apldMemberNum;
 	}
 	
 	// 수진 코드 끝

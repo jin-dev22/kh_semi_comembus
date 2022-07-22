@@ -6,33 +6,27 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <%
-	Gathering gathering = (Gathering) request.getAttribute("project");
-	GatheringExt gatheringExt = (GatheringExt) request.getAttribute("project");
+/* Gathering gathering = (Gathering) request.getAttribute("project"); */
+   GatheringExt gathering = (GatheringExt) request.getAttribute("gathering");
+
 %>
 <link rel="stylesheet" href="<%=request.getContextPath() %>/css/gathering/ProjectView.css" />
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>프로젝트 상세보기</title>
-</head>
-<body>
 <p class="pjname"><%= gathering.getTitle() %></p><!-- 프로젝트명 -->
 <p class="pjwriter"><img src="/멤버 이미지.png" alt="멤버아이디"><%= gathering.getWriter() %></p>
 <!--지원자 현황은 글쓴이=로그인한 사용자 일치할 때만 보이게 하기-->
-<button id="pjdetail"><a href="/projectDetailView.jsp">프로젝트 상세</a></button><button id="pjstatue"><a href="/projectApplicantStatue.jsp">지원자 현황</a></button>
+<button id="pjdetail"><a href="/projectDetailView.jsp">프로젝트 상세</a></button><button id="pjstatue"><a href="/gathering/showApplicants?psNo=<%= gathering.getPsNo()%>">지원자 현황</a></button>
 <br>
 <hr>
 <h3>모집 현황</h3>
 <table>
     <tr>
         <td>기획</td>
-        <td><span id="statue">1</span>/<span id="total"><%= gatheringExt.getPlanning_cnt() %></span></td>
+        <td><span id="statue">1</span>/<span id="total"><%= gathering.getPlanning_cnt() %></span></td>
         <td><button id="apply" onclick="apply();">지원하기</button></td>
     </tr>
     <tr>
         <td>프론트엔드</td>
-        <td><span id="statue">1</span>/<span id="total"><%= gatheringExt.getFrontend_cnt() %></span></td>
+        <td><span id="statue">1</span>/<span id="total"><%= gathering.getFrontend_cnt() %></span></td>
         <td><button onclick="apply();">지원하기</button></td>
     </tr>
     <tr>
