@@ -48,7 +48,7 @@ public class ProjectListServlet extends HttpServlet {
 
 			// 모집인원
 			// List<Gathering> projectList = gatheringService.findGatheringAll(param);
-			List<GatheringExt> capacityJobList = gatheringService.getCapacityAll(param);
+			// List<GatheringExt> capacityJobList = gatheringService.getCapacityAll(param);
 			
 			// 북마크 (param에 넣어보기)
 			String loginMember = request.getParameter("loginMember");

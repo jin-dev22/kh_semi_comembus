@@ -223,40 +223,15 @@ select *from project_study where gathering_type = 'P' and status = 'N' and local
 -- select count(*) from project_study where gathering_type = '?' and upper(#) like upper('?')
 -- select * from (select row_number() over(order by reg_date desc) rnum, ps.* from project_study ps where gathering_type = 'P' and exists (select 1 from bookmarked_prj_std where ps_no = ps.ps_no and member_id = ?)) p where rnum between ? and ?
 -- 아래걸로 하면 됨
-select ps_no, sum(recruited_number) from project_member_dept group by ps_no;
+select * from (select row_number() over(order by reg_date desc) rnum, ps.*, (select nvl(sum(recruited_number), 0)from project_member_dept where ps_no = ps.ps_no) recruited_cnt from project_study ps where gathering_type ='P'  and end_date > sysdate)p where rnum between 13 and 24;
+-- select * from (select row_number() over(order by reg_date desc) rnum, ps.*, (select nvl(sum(recruited_number), 0)from project_member_dept where ps_no = ps.ps_no) recruited_cnt from project_study ps where gathering_type ='P'  and end_date > sysdate)p where rnum between ? and ?
+-- select ps.*, (select nvl(sum(recruited_number), 0)from project_member_dept where ps_no = ps.ps_no) 모집인원 from project_study ps where gathering_type ='P';
+-- select ps.*, (select nvl(sum(recruited_number), 0)from project_member_dept where ps_no = ps.ps_no) 모집인원 from project_study ps where gathering_type ='P'
+--select ps_no, sum(recruited_number) from project_member_dept group by ps_no;
+
 select * from (select row_number() over(order by reg_date desc) rnum, ps.* from project_study ps where gathering_type = 'P' and end_date > sysdate) p where rnum between 1 and 12;
 select * from project_member_dept;
 select count(*) from project_member_dept group by ps_no;
-(select count(*) from project_study where ps_no in (select ps_no from member_application_status where member_id = m.member_id and result = 'O')
-
-select
-        pmd.*,
-        (select count(*) from project_member_dept )
-from
-        project_member_dept pmd
-where
-        exists (select 1 from project_study where gathering_type = 'P')
-        and
-        exists (select 2 from project_study where ps_no = pmd.ps_no);
-
-select *from project_study where gathering_type = 'P';
-select
-        *
-from (
-        select
-                row_number() over(order by reg_date desc) rnum,
-                
-                ps.*
-        from 
-                project_study ps
-        where 
-                gathering_type = 'P'
-                and
-                --[str1]
-                -- member_id = 'test'
-                 exists (select 1 from bookmarked_prj_std where ps_no = ps.ps_no and member_id = 'test')
-        ) p
-where rnum between 1 and 12;
 
 -- delete from bookmarked_prj_std where member_id = '?' and ps_no = ?
 -- 모집인원 추가
