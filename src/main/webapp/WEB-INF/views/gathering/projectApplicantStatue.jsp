@@ -38,8 +38,9 @@
         	<form name="aplcntResultFrm<%=psNo %>" action="">
         		<input type="hidden" name="psNum" value="<%= psNo%>"/>
         		<input type="hidden" name="psType" value="<%= psType%>"/>
-        		<input class="applview-btn accept" type="button" value="수락" onclick="accept('<%= mem.getMemberId()%>');"/>/
-        		<input class="applview-btn reject" type="button" value="거절" onclick="reject('<%= mem.getMemberId()%>');"/>
+        		<input type="hidden" name=apldMemberId value="<%= mem.getMemberId()%>" />
+        		<input class="applview-btn accept" type="button" value="수락" onclick="apldResult('O');"/>/
+        		<input class="applview-btn reject" type="button" value="거절" onclick="apldResult('X');"/>
         	</form>
        	</td>
     </tr>
@@ -51,24 +52,30 @@
 </div>
 
 <script>
-function accept(apldMemberId){
+function apldResult(apldResult){
 	const frm = document.querySelector('[name="aplcntResultFrm<%=psNo %>"]');
 	const psNo = frm.psNum.value;
 	const psType = frm.psType.value;
+	const apldMemberId = frm.apldMemberId.value;
 	console.log(psNo);
 	$.ajax({
 		type : 'POST',
 		url : '<%= request.getContextPath()%>/gathering/showApplicants',
-		data : {'psNo' : psNo, 'apldMemberId' : apldMemberId, 'result' : 'O', 'psType' : psType},
+		data : {'psNo' : psNo, 'apldMemberId' : apldMemberId, 'apldResult' : apldResult, 'psType' : psType},
 		success(result){
-			
-		}
+			if(result){
+				console.log("지원수락 완료");
+				const btns = frm.querySelectorAll(".applview-btn");
+				const btnArr = [...btns];
+				btnArr.forEach((e)=>{
+					e.disabled = true;
+				});				
+			}			
+		},
+		error: console.log
 	});
 };
 
-function reject(){
-	
-};
 </script>
 </html>
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>

@@ -52,7 +52,9 @@ public class GatheringApplcntStatueViewServlet extends HttpServlet {
 			String pagebar = ComembusUtils.getPagebar(cPage, numPerPage, totalApldMemberNum, url);
 			
 			//게시물 정보
-//			GatheringExt gathering = gatheringService.findByNo(psNo);
+			GatheringExt gathering = (GatheringExt) gatheringService.findByNo(psNo);
+			
+			request.setAttribute("gathering", gathering);
 			request.setAttribute("memberList", memberList);
 			request.setAttribute("pagebar", pagebar);
 			request.getRequestDispatcher("/WEB-INF/views/gathering/projectApplicantStatue.jsp").forward(request, response);
@@ -64,11 +66,21 @@ public class GatheringApplcntStatueViewServlet extends HttpServlet {
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * 모임게시글상세>>지원자현황 페이지에서 비동기요청
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
+		//모임게시글번호, 지원자 아이디, 지원결과, 게시물타입을 받아옴
+		//data : {'psNo' : psNo, 'apldMemberId' : apldMemberId, 'apldResult' : apldResult, 'psType' : psType},
+		int psNo = Integer.parseInt(request.getParameter("psNo"));
+		String apldMemberId = request.getParameter("apldMemberId");
+		String apldResult = request.getParameter("apldResult");
+		String psType = request.getParameter("psType");
+		
+		//모임지원현황 테이블에 update
+		
+		//알림테이블 insert
+		
+		//만약 지원결과가 O라면 project_member_dept에 insert처리
 	}
 
 }
