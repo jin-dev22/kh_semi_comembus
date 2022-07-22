@@ -47,16 +47,16 @@ public class GatheringService {
 		return totalContent;
 	}
 	
-	public List<Gathering> findMemberBookmarkList(String memberId) {
-		Connection conn = getConnection();
-		List<Gathering> bookmarkList = gatheringDao.findMemberBookmarkList(conn, memberId);
-		close(conn);
-		return bookmarkList;
-	}
+//	public List<Gathering> findMemberBookmarkList(String memberId) {
+//		Connection conn = getConnection();
+//		List<Gathering> bookmarkList = gatheringDao.findMemberBookmarkList(conn, memberId);
+//		close(conn);
+//		return bookmarkList;
+//	}
 
-	public List<Gathering> findMemberBookmarkFilterList(Map<String, Object> param) {
+	public List<Gathering> findProBookmarkFilter(Map<String, Object> param) {
 		Connection conn = getConnection();
-		List<Gathering> bookmarkFilterlist = gatheringDao.findMemberBookmarkFilterList(conn, param);
+		List<Gathering> bookmarkFilterlist = gatheringDao.findProBookmarkFilter(conn, param);
 		close(conn);
 		return bookmarkFilterlist;
 	}
@@ -68,9 +68,9 @@ public class GatheringService {
 		return totalbookmarkFilterContent;
 	}
 
-	public List<Gathering> findAllProBookmarked(Map<String, Object> param) {
+	public List<Gathering> findAllProBookmarked(Map<String, Object> bmParam) {
 		Connection conn = getConnection();
-		List<Gathering> proBookmarkList = gatheringDao.findAllProBookmarked(conn, param);
+		List<Gathering> proBookmarkList = gatheringDao.findAllProBookmarked(conn, bmParam);
 		close(conn);
 		return proBookmarkList;
 	}
