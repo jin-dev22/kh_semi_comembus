@@ -15,6 +15,11 @@
 	margin-top: 10px;
 }
 
+.login-sub-btn{
+	border: none;
+	background-color: #fff;
+}
+
 .login-sub-btn:hover{
 	color: var(--btn-color);
 }
