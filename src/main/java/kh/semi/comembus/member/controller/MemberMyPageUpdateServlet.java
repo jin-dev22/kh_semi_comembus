@@ -31,15 +31,13 @@ public class MemberMyPageUpdateServlet extends HttpServlet {
 			Member loginMember = (Member) session.getAttribute("loginMember");
 			
 			String nickName = request.getParameter("nickName");
-			String jobCode = request.getParameter("jobCode"); 
 			String introduction = request.getParameter("introduction");
 			String memberId = loginMember.getMemberId();
 			Map<String, Object> param = new HashMap<>();
 			param.put("nickName", nickName);
-			param.put("jobCode", jobCode);
 			param.put("introduction", introduction);
 			param.put("memberId", memberId);
-			System.out.println("[@mpUpdateSrv]: params>>"+nickName+", "+jobCode+", "+ introduction+", "+memberId);
+//			System.out.println("[@mpUpdateSrv]: params>>"+nickName+", "+ introduction+", "+memberId);
 			
 			int result = memberService.updateMember(param);
 			if(result > 0) {
