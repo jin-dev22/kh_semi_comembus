@@ -3,131 +3,119 @@
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/gathering/Enroll.css">
-<form name="projectEnrollFrm"
-	action="<%=request.getContextPath()%>/gathering/projectEnrollView"
-	method="post" enctype="multipart/form-data">
+<form
+	name="projectEnrollFrm"
+	action="<%=request.getContextPath() %>/gathering/projectEnrollView" 
+	method="post"
+	enctype="multipart/form-data">
 	<table id="tbl-project-enrollview">
-		<tbody>
-			<tr>
-				<th>*프로젝트명</th>
-			</tr>
-			<tr>
-				<td colspan="3">❗ 프로젝트 제목을 적어주세요</td>
-			</tr>
-			<tr>
-				<td><input type="text" name="title" id="name"
-					placeholder="3~20자로 적어주세요" required></td>
-			</tr>
-			<tr></tr>
-			<tr>
-				<th>*프로젝트 주제</th>
-			</tr>
-			<tr>
-				<td colspan="3">❗ 프로젝트 제목을 적어주세요</td>
-			</tr>
-			<tr>
-				<td colspan="3">
-					<input type="radio" name="topic" id="soscial">소셜네트워크
-					<input type="radio" name="topic" id="game">게임 
-					<input type="radio" name="topic" id="travel">여행 
-					<input type="radio" name="topic" id="finance">금융
-					<input type="radio" name="topic" id="ecommerce">이커머스
-				</td>
-			</tr>
-			<tr></tr>
-			<tr>
-				<th>*지역</th>
-			</tr>
-			<tr>
-				<td colspan="3">❗ 지역을 선택해 주세요</td>
-			</tr>
-			<tr>
-				<td><select name="local" id="local">
-						<option value="online">온라인</option>
-						<option value="sudo">수도권</option>
-						<option value="kangwon">강원도</option>
-						<option value="chungcheong">충청도</option>
-						<option value="junla">전라도</option>
-						<option value="kyungsang">경상도</option>
-						<option value="jeju">제주도</option>
-				</select></td>
-			</tr>
-			<tr></tr>
-			<tr>
-				<th>*모집인원</th>
-			</tr>
-			<tr>
-				<td colspan="3">❗ 3~4명을 추천합니다. 인원 설정 후 저장 버튼을 눌러주세요. (최대 9명까지
-					가능)</td>
-			</tr>
-			<tr id="memberAdd">
-				<td><select name="job_code" id="job_code1">
-						<option value="planning">기획</option>
-						<option value="design">디자인</option>
-						<option value="frontend">프론트엔드</option>
-						<option value="backend">백엔드</option>
-				</select></td>
-				<td>
-					<button class="count" id="plus1">+</button> <span id="count1">1</span>
-					<button class="count" id="minus1">-</button>
-				</td>
-				<td><input type="button" id="delete" value="삭제"
-					onclick="deleteRow()" /> <input type="button" id="add" value="추가"
-					onclick="addRow()" /> <input type="button" id="clear" value="저장"
-					onclick="checkTotal()" /></td>
-			</tr>
-			<tr></tr>
-			<tr>
-				<th>*기간 설정</th>
-			</tr>
-			<tr>
-				<td colspan="3">❗ 날짜는 수정이 가능합니다.</td>
-			</tr>
-			<tr>
-				<td class="date">시작일</td>
-				<td colspan="2">
-					<p>
-						<input type="date" id="date_start">
-					</p>
-				</td>
-			</tr>
-			<tr>
-				<td class="date">종료일</td>
-				<td colspan="2">
-					<p>
-						<input type="date" id="date_end">
-					</p>
-				</td>
-			</tr>
-			<tr></tr>
-			<tr>
-				<th>*프로젝트 설명</th>
-			</tr>
-			<tr>
-				<td colspan="3" id="summernoteWidth">❗ 프로젝트에 대한 자세한 설명을 적어주세요.
-					자세할수록 지원률이 올라갑니다. <br>
-					<div>
-						<textarea id="summernote" name="editordata"></textarea>
-					</div>
-				</td>
-			</tr>
-			<tr></tr>
-			<tr>
-				<th colspan="2"><br> <input type="submit" value="등록하기" onclick="";></th>
-			</tr>
-		</tbody>
-	</table>
+        <tbody>
+		<tr><th>*프로젝트명</th></tr>
+		<tr><td colspan="3">❗ 프로젝트 제목을 적어주세요</td></tr>
+		<tr><td><input type="text" name="title" id="name" placeholder="3~20자로 적어주세요" required></td></tr>
+        <tr></tr>
+		<tr><th>*프로젝트 주제</th></tr>
+		<tr><td colspan="3">❗ 프로젝트 제목을 적어주세요</td></tr>
+		<tr>
+            <td colspan="3">
+                <input type="radio" name="social">소셜네트워크
+                <input type="radio" name="social">게임
+                <input type="radio" name="social">여행
+                <input type="radio" name="social">금융
+                <input type="radio" name="social">이커머스
+            </td>
+        </tr>
+        <tr></tr>
+    	<tr><th>*지역</th></tr>
+        <tr><td colspan="3">❗ 지역을 선택해 주세요</td></tr>
+		<tr>
+            <td>			
+                <select name="local" id="local">
+                    <option value="online">온라인</option>
+                    <option value="sudo">수도권</option>
+                    <option value="kangwon">강원도</option>
+                    <option value="chungcheong">충청도</option>
+                    <option value="junla">전라도</option>
+                    <option value="kyungsang">경상도</option>
+                    <option value="jeju">제주도</option>
+                </select>
+            </td>
+        </tr>
+        <tr></tr>
+    	<tr><th>*모집인원</th></tr>
+        <tr><td colspan="3">❗ 3~4명을 추천합니다. 인원 설정 후 저장 버튼을 눌러주세요. (최대 9명까지 가능) </td></tr>
+		<tr id="memberAdd">
+            <td>			
+                <select name="job_code" id="job_code1" onchange="ChangeJobCode()">
+                    <option value="planning">기획</option>
+                    <option value="design">디자인</option>
+                    <option value="frontend">프론트엔드</option>
+                    <option value="backend">백엔드</option>
+                </select>
+            </td>
+            <td>
+                <button class="count" id="plus1">+</button><span id="count1">1</span><button class="count" id="minus1">-</button>
+            </td>
+            <td>
+                <input type="button" id="delete" value="삭제" onclick="deleteRow()"/>
+                <input type="button" id="add" value="추가" onclick="addRow()"/>
+                <input type="button" id="clear" value="저장" onclick="checkTotal()"/>
+            </td>
+        </tr>
+        <tr></tr>
+        <tr><th>*기간 설정</th></tr>
+        <tr><td colspan="3">❗ 날짜는 시작일 전까지 수정이 가능합니다.</td></tr>
+        <tr>
+            <td class="date">
+               시작일 
+            </td>
+            <td colspan="2">
+                <p><input type="date" name="date_start" id="date_start"></p>
+            </td>
+        </tr>
+        <tr>
+            <td class="date">
+                종료일
+            </td>
+            <td colspan="2">
+                <p><input type="date" name="date_end" id="date_end"></p>
+            </td>
+        </tr>
+        <tr></tr>
+	<tr><th>*프로젝트 설명</th></tr>
+    <tr><td colspan="3" id="summernoteWidth">❗ 프로젝트에 대한 자세한 설명을 적어주세요. 자세할수록 지원률이 올라갑니다. <br><div><textarea id="summernote" name="editordata"></textarea></div></td></tr>
+    <tr></tr>
+	<tr>
+		<th colspan="2">
+			<br><input type="submit" value="등록하기">
+		</th>
+	</tr>
+</tbody>
+<form name="jobcodeFrm"
+action="<%=request.getContextPath() %>/gathering/projectEnrollView" 
+method="post"
+enctype="multipart/form-data">
+    <input type="hidden" name="jobcode" id="planning"/>
+    <input type="hidden" name="jobcodeCnt" id="planning_cnt"/>
+    <input type="hidden" name="jobcode" id="design"/>
+    <input type="hidden" name="jobcodeCnt" id="design_cnt"/>
+    <input type="hidden" name="jobcode" id="frontend"/>
+    <input type="hidden" name="jobcodeCnt" id="frontend_cnt"/>
+    <input type="hidden" name="jobcode" id="backend"/>
+    <input type="hidden" name="jobcodeCnt" id="backend_cnt"/>
 </form>
+</table>
+</form>
+</body>
 <script>
+    var now_date = Date.now()
+    var timeoff=new Date().getTimezoneOffset()*60000;
+    var today=new Date(now_date-timeoff).toISOString().split("T")[0];
 
-	var now_date = Date.now()
-	var timeoff=new Date().getTimezoneOffset()*60000;
-	var today=new Date(now_date-timeoff).toISOString().split("T")[0];
-	
-	document.getElementById("date_start").setAttribute("min",today);
-	document.getElementById("date_start").setAttribute("value",today);
-	document.getElementById("date_end").setAttribute("min",today);
-	document.getElementById("date_end").setAttribute("value",today);
+    document.getElementById("date_start").setAttribute("min",today);
+    document.getElementById("date_start").setAttribute("value",today);
+    document.getElementById("date_end").setAttribute("min",today);
+    document.getElementById("date_end").setAttribute("value",today);
 
     let container = document.querySelector('#memberAdd');
     const plusBtn = container.querySelector('#plus1');
@@ -226,7 +214,10 @@
             addRowNum-=1;
         }
     };
-
+    
+    var param=[];
+    var arrJobcode=$('[name="jobcode"]');
+    var arrJobcodeCnt = $('[name="jobcodeCnt"]');
     function checkTotal(){
         //모집인원 인원체크, 분야체크 -> 맞으면 값 저장
         let checkError=0;
@@ -259,7 +250,42 @@
             //저장 안할 경우 폼 제출 불가능하도록 설정
             //저장 버튼 누르고 값 수정할 경우 확인
         }
+        for(let n=1;n<=addRowNum;n++){
+            var val_jobcode = document.getElementById('job_code'+n);
+            var cnt_jobcode = document.querySelector('#count'+n);
+            alert("value : "+val_jobcode.options[val_jobcode.selectedIndex].value+
+            " cnt : "+cnt_jobcode.innerText);   
+
+        }
+        for(var i=0;i<arrJobcode.length;i++){
+                var obj={};
+                obj.name=arrJobcode[i].value;
+                obj.cnt=arrJobcodeCnt[i].value;
+                param.push(obj);
+            }
+
+            param.map(function(item){
+                nameStr+=item+'|';
+                cntStr+=item+'|';
+            });
+
+            nameStr=nameStr.substr(0,nameStr.lastIndexOf('|'));
+            cntStr=cntStr.substr(0,cntStr.lastIndexOf('|'));
+            
+            console.log(param);
+            console.log(nameStr);
+            console.log(cntStr);
     }
+
+    // function ChangeJobCode(){
+    //     for(let n=1;n<=addRowNum;n++){
+    //         var val_jobcode = document.getElementById('job_code'+n);
+    //         var cnt_jobcode = document.querySelector('#count'+n);
+    //         alert("value : "+val_jobcode.options[val_jobcode.selectedIndex].value+
+    //         " cnt : "+cnt_jobcode.innerText);
+            
+    //     }
+    // }
 
     $(document).ready(function() {
     
@@ -299,10 +325,18 @@
     
             $('#summernote').summernote(setting);
             });
-    function saveContent(){
-        var summernoteContent = $('#summernote').summernote('code');        //썸머노트(설명)
-        console.log("summernoteContent : "+summernoteContent);
-    }
+    // function saveContent(){
+    //     var summernoteContent = $('#summernote').summernote('code');        //썸머노트(설명)
+    //     console.log("summernoteContent : "+summernoteContent);
+    // }
+
+    // document.querySelectorAll("jobcode").forEach((jobcode))=>{
+    //     jobcode.addEventListener('click',(e)=>{
+    //        let {planning, planning_cnt, design, design_cnt, frontend, frontend_cnt, backend, backend_cnt} = e.target;
+    //        frm=document.jobcodeFrm;
+    //        frm.planning.value= 
+    //     });
+    // }
 
     document.projectEnrollFrm.onsubmit = (e) => {
 	const frm = e.target;
@@ -319,25 +353,19 @@
 		frm.editordata.focus();	
 		return false;
 	}
-	
-    //시작일이 종료일보다 늦은경우 폼제출할 수 없음.
+    
+    //시작일이 종료일보다 늦은경우 폼제출 불가
     const startDate = document.getElementById("date_start").value;
     const endDate = document.getElementById("date_end").value;
     if(startDate>=endDate){
     	alert("시작일이 종료일보다 늦거나 같습니다.");
     	return false;
     }
-	
-    //주제 선택을 하지 않은 경우 폼제출할 수 없음.
-    if($('input[name=topic]:checked').length<=0){
-    	alert("주제를 선택해 주세요.");
-    	return false;
-    }
-    
-    //인원수를 분야별로 전송 or 
-    
-	return true;
-}
 
-</script>
+
+	return true;
+    }
+
+
+    </script>
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>
