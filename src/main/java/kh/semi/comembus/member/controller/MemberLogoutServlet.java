@@ -23,7 +23,7 @@ public class MemberLogoutServlet extends HttpServlet {
 		if(session != null)
 			session.invalidate();
 	
-		response.sendRedirect(request.getContextPath() + "/");
+		response.sendRedirect(request.getContextPath() + "/main");
 	}
 
 }
