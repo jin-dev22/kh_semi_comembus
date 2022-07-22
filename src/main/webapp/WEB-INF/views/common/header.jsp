@@ -1,3 +1,4 @@
+<%@page import="kh.semi.comembus.member.model.dto.MemberRole"%>
 <%@page import="kh.semi.comembus.member.model.dto.Member"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
@@ -62,7 +63,7 @@
   <header>
     <div class="menubar">
       <div class="h__logo">
-        <a href="<%= request.getContextPath() %>"><img src="<%= request.getContextPath() %>/images/logo_w.png" alt="logo이미지"></a>
+        <a href="<%= request.getContextPath() %>/main"><img src="<%= request.getContextPath() %>/images/logo_w.png" alt="logo이미지"></a>
       </div>
   
       <ul class="h__menu__main">
@@ -82,10 +83,11 @@
             <li><a href="<%= request.getContextPath() %>/community/communityList?co_type=S">정보공유</a></li>
           </ul>
         </li>
-        <li><a href="javascript:void(0)">공지사항</a></li>
         <!-- 관리자로그인시 노출 -->
+        <% if(loginMember != null && loginMember.getMemberRole() == MemberRole.A){ %>
         <li><a href="javascript:void(0)">회원관리</a></li>
         <li><a href="javascript:void(0)">통계관리</a></li>
+        <% } %>
       </ul>
   
   <!-- 미송 코드 시작 -->
