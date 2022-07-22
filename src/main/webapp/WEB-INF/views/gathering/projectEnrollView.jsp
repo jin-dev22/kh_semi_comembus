@@ -6,8 +6,8 @@
 <form
 	name="projectEnrollFrm"
 	action="<%=request.getContextPath() %>/gathering/projectEnrollView" 
-	method="post"
-	enctype="multipart/form-data">
+	method="post">
+	<!-- enctype="multipart/form-data" -->
 	<table id="tbl-project-enrollview">
         <tbody>
 		<tr><th>*프로젝트명</th></tr>
@@ -15,14 +15,14 @@
 		<tr><td><input type="text" name="title" id="name" placeholder="3~20자로 적어주세요" required></td></tr>
         <tr></tr>
 		<tr><th>*프로젝트 주제</th></tr>
-		<tr><td colspan="3">❗ 프로젝트 제목을 적어주세요</td></tr>
+		<tr><td colspan="3">❗ 프로젝트 주제를 골라주세요</td></tr>
 		<tr>
             <td colspan="3">
-                <input type="radio" name="social">소셜네트워크
-                <input type="radio" name="social">게임
-                <input type="radio" name="social">여행
-                <input type="radio" name="social">금융
-                <input type="radio" name="social">이커머스
+                <input type="radio" name="topic" id="social">소셜네트워크
+                <input type="radio" name="topic" id="game">게임
+                <input type="radio" name="topic" id="travel">여행
+                <input type="radio" name="topic" id="finance">금융
+                <input type="radio" name="topic" id="ecommerce">이커머스
             </td>
         </tr>
         <tr></tr>
@@ -54,7 +54,7 @@
                 </select>
             </td>
             <td>
-                <button class="count" id="plus1">+</button><span id="count1">1</span><button class="count" id="minus1">-</button>
+                <input type="button" class="count" id="plus1" value="+"><span id="count1">1</span><input type="button" class="count" id="minus1" value="-">
             </td>
             <td>
                 <input type="button" id="delete" value="삭제" onclick="deleteRow()"/>
@@ -84,26 +84,28 @@
         <tr></tr>
 	<tr><th>*프로젝트 설명</th></tr>
     <tr><td colspan="3" id="summernoteWidth">❗ 프로젝트에 대한 자세한 설명을 적어주세요. 자세할수록 지원률이 올라갑니다. <br><div><textarea id="summernote" name="editordata"></textarea></div></td></tr>
-    <tr></tr>
-	<tr>
+        <tr><th><input type="hidden" name="psType" value="P"></th></tr>
+        <tr><th><input type="hidden" name="writer" value="<%= loginMember.getMemberId() %>"/></th></tr>
 		<th colspan="2">
 			<br><input type="submit" value="등록하기">
 		</th>
 	</tr>
 </tbody>
-<form name="jobcodeFrm"
-action="<%=request.getContextPath() %>/gathering/projectEnrollView" 
-method="post"
-enctype="multipart/form-data">
-    <input type="hidden" name="jobcode" id="planning"/>
-    <input type="hidden" name="jobcodeCnt" id="planning_cnt"/>
-    <input type="hidden" name="jobcode" id="design"/>
-    <input type="hidden" name="jobcodeCnt" id="design_cnt"/>
-    <input type="hidden" name="jobcode" id="frontend"/>
-    <input type="hidden" name="jobcodeCnt" id="frontend_cnt"/>
-    <input type="hidden" name="jobcode" id="backend"/>
-    <input type="hidden" name="jobcodeCnt" id="backend_cnt"/>
-</form>
+<tfoot>
+	<tr>
+		<th colspan="2">
+		    <input type="hidden" name="planning" id="planning"/>
+		    <input type="hidden" name="planning_cnt" id="planning_cnt"/>
+		    <input type="hidden" name="design" id="design"/>
+		    <input type="hidden" name="design_cnt" id="design_cnt"/>
+		    <input type="hidden" name="frontend" id="frontend"/>
+		    <input type="hidden" name="frontend_cnt" id="frontend_cnt"/>
+		    <input type="hidden" name="backend" id="backend"/>
+		    <input type="hidden" name="backend_cnt" id="backend_cnt"/>
+		</th>
+	</tr>
+</tfoot>
+
 </table>
 </form>
 </body>
@@ -146,14 +148,16 @@ enctype="multipart/form-data">
         let n=++cnt;
         const tr=document.createElement("tr");
         const td=document.createElement("td");
-        const buttonPlus=document.createElement("button");
+        const buttonPlus=document.createElement("input");
+        buttonPlus.type="button";
         buttonPlus.classList.add("count");
         buttonPlus.id="plus"+n;
         buttonPlus.innerHTML='+';
         const span=document.createElement("span");
         span.id="count"+n;
         span.innerHTML='1';
-        const buttonMinus=document.createElement("button");
+        const buttonMinus=document.createElement("input");
+        buttonMinus.type="button";
         buttonMinus.classList.add("count");
         buttonMinus.id="minus"+n;
         buttonMinus.innerHTML='-';
@@ -257,8 +261,8 @@ enctype="multipart/form-data">
             const setPlanning = document.querySelector("#planning");
             const setPlanningCnt = document.querySelector("#planning_cnt")
             if('planning'==val_jobcode.options[val_jobcode.selectedIndex].value){
-                setPlanning.innerText=val_jobcode.options[val_jobcode.selectedIndex].value;
-                setPlanningCnt.innerText=cnt_jobcode.innerText;
+                setPlanning.value=val_jobcode.options[val_jobcode.selectedIndex].value;
+                setPlanningCnt.value=cnt_jobcode.innerText;
                 console.log(setPlanning.innerText);
                 console.log(setPlanningCnt.innerText);
                 console.log('planning & planningcnt 값 저장');
@@ -267,18 +271,19 @@ enctype="multipart/form-data">
             const setDesign = document.querySelector("#design");
             const setDesignCnt = document.querySelector("#design_cnt");
             if('design'==val_jobcode.options[val_jobcode.selectedIndex].value){
-                setDesign.innerText=val_jobcode.options[val_jobcode.selectedIndex].value;
-                setDesignCnt.innerText=cnt_jobcode.innerText;
+                setDesign.value=val_jobcode.options[val_jobcode.selectedIndex].value;
+                setDesignCnt.value=cnt_jobcode.innerText;
                 console.log(setDesign.innerText);
-                console.log(setDesignCnt.innerText);
+                console.log("text",setDesignCnt.innerText);
                 console.log('design & designCnt 값 저장');
+                console.log(typeof setDesignCnt.innerText, setDesignCnt.innerText);
             }
 
             const setFrontend = document.querySelector("#frontend");
             const setFrontendCnt = document.querySelector("#frontend_cnt");
             if('frontend'==val_jobcode.options[val_jobcode.selectedIndex].value){
-                setFrontend.innerText=val_jobcode.options[val_jobcode.selectedIndex].value;
-                setFrontendCnt.innerText=cnt_jobcode.innerText;
+                setFrontend.value=val_jobcode.options[val_jobcode.selectedIndex].value;
+                setFrontendCnt.value=cnt_jobcode.innerText;
                 console.log(setFrontend.innerText);
                 console.log(setFrontendCnt.innerText);
                 console.log('frontend & frontendCnt 값 저장');
@@ -287,8 +292,8 @@ enctype="multipart/form-data">
             const setBackend = document.querySelector("#backend");
             const setBackendCnt = document.querySelector("#backend_cnt");
             if('backend'==val_jobcode.options[val_jobcode.selectedIndex].value){
-                setBackend.innerText=val_jobcode.options[val_jobcode.selectedIndex].value;
-                setBackendCnt.innerText=cnt_jobcode.innerText;
+                setBackend.value=val_jobcode.options[val_jobcode.selectedIndex].value;
+                setBackendCnt.value=cnt_jobcode.innerText;
                 console.log(setBackend.innerText);
                 console.log(setBackendCnt.innerText);
                 console.log('backend & backendCnt 값 저장');
