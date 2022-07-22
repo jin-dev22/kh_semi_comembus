@@ -137,7 +137,7 @@ public class GatheringService {
 	//수진코드 끝
 	
 	//유경 추가
-	public int enrollGathering(Gathering project) {
+	public static int enrollProject(Gathering project) {
 		Connection conn=getConnection();
 		int result = 0;
 		try {
@@ -176,6 +176,30 @@ public class GatheringService {
 		}
 		return project;
 	}
+
+	public static int enrollGathering(Gathering study) {
+		Connection conn=getConnection();
+		int result = 0;
+		try {
+			//gathering table에 insert
+			result = gatheringDao.enrollStudy(conn,study);
+			//방금 등록된 Gathering.no조회
+			int psNo = gatheringDao.getLastStudyNo(conn);
+			System.out.println("projectNo = "+psNo);
+			
+			commit(conn);
+		}catch(Exception e) {
+			rollback(conn);
+			throw e;
+		}finally {
+			close(conn);
+		}
+		return result;
+	}
+	
+	
+	
+	
 	//유경 끝
 
 }
