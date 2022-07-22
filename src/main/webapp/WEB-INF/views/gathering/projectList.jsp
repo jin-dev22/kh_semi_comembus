@@ -284,7 +284,7 @@ function pageLink(cPage, totalPages, funName){
 							String topic = project.getTopic();
 				%>
 				<div class="swiper-slide">
-				<a href="<%= request.getContextPath()%>/gathering/projectView?pNo=<%= project.getPsNo()%>">
+				<a href="<%= request.getContextPath()%>/gathering/projectView?psNo=<%= project.getPsNo()%>">
 					<img src="<%= request.getContextPath() %>/images/<%= topic %>.jpg" class="ps__header__content__img" alt="해당 프로젝트 주제 이미지">
 				</a>
 					<ul class="ps__header__content-info">
@@ -354,12 +354,11 @@ function pageLink(cPage, totalPages, funName){
 					int projectNo = project.getPsNo();
 			%>
 				<div class="ps-pre">
-					<!-- a태그로 링크 주소 연결해야함 -->
-					<a href="<%= request.getContextPath()%>/gathering/projectView?ps_no=<%= projectNo %>">
+					<a href="<%= request.getContextPath()%>/gathering/projectView?psNo=<%= projectNo %>">
 						<img src="<%= request.getContextPath() %>/images/<%= project.getTopic() %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
 					</a>
 					<p class="bold"><%= "social".equals(project.getTopic()) ? "소셜네트워크" : ("game".equals(project.getTopic()) ? "게임" : ("travel".equals(project.getTopic()) ? "여행" : ("finance".equals(project.getTopic()) ? "금융" : "이커머스"))) %></p>
-					<a href="">
+					<a href="<%= request.getContextPath()%>/gathering/projectView?psNo=<%= projectNo %>">
 						<p class="bold ps-title"><%= project.getTitle() %></p>
 					</a>
 					<ul class="ps-pre__etc">
