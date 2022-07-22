@@ -351,34 +351,28 @@ public class GatheringDao {
 		}
 		return totalbookmarkFilterContent;
 	}
-
-	public List<GatheringExt> getCapacityAll(Connection conn, Map<String, Object> param) {
+	
+	public List<Gathering> findAllProBookmarked(Connection conn, Map<String, Object> param) {
+		List<Gathering> gatheringBookmarkList = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		List<GatheringExt> getCapacityAll = new ArrayList<>();
-		String sql = prop.getProperty("getCapacityAll");
-		
+		String sql = prop.getProperty("findAllProBookmarked");
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, (int)param.get("start"));
-			pstmt.setInt(2, (int)param.get("end"));
+			// pstmt.setString(1, param); 겟 파라미터로 수정
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
-				GatheringExt gathering = handleGatheringExtResultSet(rset);
-				getCapacityAll.add(gathering);
+				GatheringExt gathering = handleGatheringResultSet(rset);
+				gathering.setRecruited_cnt(rset.getInt("recruited_cnt"));
+				gatheringBookmarkList.add(gathering);
 			}
 		} catch (SQLException e) {
-			throw new GatheringException("프로젝트 모집인원추가 목록 조회 오류", e);
+			throw new GatheringException("찜하기 모임 조회 오류", e);
 		} finally {
 			close(rset);
 			close(pstmt);
-		}
-		return getCapacityAll;
-	}
-
-	private GatheringExt handleGatheringExtResultSet(ResultSet rset) {
-		// TODO Auto-generated method stub
-		return null;
+		}	
+		return gatheringBookmarkList;
 	}
 	// 선아 코드 끝
 	
@@ -620,5 +614,6 @@ public class GatheringDao {
 		}
 		return studyNo;
 	}
+
 
 }

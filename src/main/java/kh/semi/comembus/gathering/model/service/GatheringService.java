@@ -68,11 +68,11 @@ public class GatheringService {
 		return totalbookmarkFilterContent;
 	}
 
-	public List<GatheringExt> getCapacityAll(Map<String, Object> param) {
+	public List<Gathering> findAllProBookmarked(Map<String, Object> param) {
 		Connection conn = getConnection();
-		List<GatheringExt> getCapacityAll = gatheringDao.getCapacityAll(conn, param);
+		List<Gathering> proBookmarkList = gatheringDao.findAllProBookmarked(conn, param);
 		close(conn);
-		return getCapacityAll;
+		return proBookmarkList;
 	}
 	
 	// 선아 끝
@@ -205,5 +205,7 @@ public class GatheringService {
 	
 	
 	//유경 끝
+
+
 
 }

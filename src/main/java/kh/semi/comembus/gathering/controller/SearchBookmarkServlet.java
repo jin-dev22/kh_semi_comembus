@@ -55,20 +55,27 @@ public class SearchBookmarkServlet extends HttpServlet {
 			// 2. 업무로직
 			// bookmark 영역
 			List<Gathering> bookmarkProjectList = new ArrayList<>();
-			if(memberId != null) {
+			if(memberId != null && bookmarkYN == "Y") {
 				bookmarkProjectList = gatheringService.findMemberBookmarkFilterList(param);
-			} 
+			}
+			List<Gathering> projectList = new ArrayList<>();
+			if(memberId != null && bookmarkYN == "All") {
+				projectList = gatheringService.findGatheringAll(param);
+				bookmarkProjectList = gatheringService.findAllProBookmarked(param);
+			}
 			
 			// pagebar 영역
 			int totalContent = gatheringService.getTotalBookmarkFilter(param);
 			
 			System.out.println("필터링확인용 bookmarkProjectLists: " + bookmarkProjectList); // 확인용
+			System.out.println("필터링확인용 projectList: " + projectList); // 확인용
 			System.out.println("필터링 totalContent = " + totalContent); // 확인용
 			System.out.println("cPage = " + cPage);
 			
 			response.setContentType("application/json; charset=utf-8");
 			Map<String, Object> bookmarkFilterList = new HashMap<>();
 			bookmarkFilterList.put("bookmarkProjectList", bookmarkProjectList);
+			bookmarkFilterList.put("projectList", projectList);			
 			bookmarkFilterList.put("totalContent", totalContent);
 			bookmarkFilterList.put("cPage", cPage);
 			
