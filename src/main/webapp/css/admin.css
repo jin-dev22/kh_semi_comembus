@@ -1,0 +1,72 @@
+/*관리자 페이지 : 회원관리 */
+#memberList-container { 
+	width: 1200px;
+	left: 0;
+	right: 0;
+	margin: auto;
+	text-align:center;
+}
+	
+#tbl-member {
+	width:100%; 
+	border:1px solid gray; 
+	border-collapse:collapse;
+}
+#tbl-member th {
+	border:1px solid gray; 
+	padding:10px; 
+	text-align:center;
+	background-color: #F1F1F1;
+	font-weight: bold;
+}
+
+#tbl-member td {
+	border:1px solid gray; 
+	padding:10px; 
+	text-align:center;
+}
+
+#search-container {
+	width: 100%; 
+	margin:0 0 30px 0; 
+	padding:15px; 
+	background-color: var(--yellow-color);
+}
+
+#quitMember{
+	background-color: var(--accent-color);
+	border: none;
+	border-radius: 30px;
+	padding: 3px 12px;
+	color: #ffffff;
+}
+
+/*페이징 : 페이지당회원수*/
+#numPerPage-container{
+	float:right; 
+	margin-top: 10px;
+}
+
+#numPerPageFrm{
+	display:inline;
+}
+
+/*페이징 : 페이지바 */
+#pagebar{
+	margin-top:10px; 
+	text-align:center; 
+}
+
+#pagebar span.cPage{
+	color: #0066ff; 
+	margin-right: 5px;
+}
+
+#pagebar a{
+	margin-right: 5px; 
+	text-decoration: none;
+}
+
+#pagebar a:hover {
+	text-decoration: underline;
+}
