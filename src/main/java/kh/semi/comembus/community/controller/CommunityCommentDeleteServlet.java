@@ -6,38 +6,42 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
-import kh.semi.comembus.community.model.dto.Community;
 import kh.semi.comembus.community.model.service.CommunityService;
 
 /**
- * Servlet implementation class CommunityDeleteServlet
+ * Servlet implementation class CommunityCommentDeleteServlet
  */
-@WebServlet("/community/communityDelete")
-public class CommunityDeleteServlet extends HttpServlet {
+@WebServlet("/community/communityCommentDelete")
+public class CommunityCommentDeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private CommunityService communityService = new CommunityService();
-	
+       
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		try {
+	try {
+			
+			// 1.사용자입력값 처리(삭제하고싶은 게시글번호)
 			int no = Integer.parseInt(request.getParameter("no"));
-			String type = (String) request.getParameter("co_type");
 			
-			int result = communityService.deleteCommu(no);
+			// 2.업무로직
 			
-			if("Q".equals(type)) {
-				response.sendRedirect(request.getContextPath() + "/community/communityList?co_type=Q");
-				
-			}else if("F".equals(type)) {
-				response.sendRedirect(request.getContextPath() + "/community/communityList?co_type=F");
-			}else if("S".equals(type)) {
-				response.sendRedirect(request.getContextPath() + "/community/communityList?co_type=S");
-			}
+				int result = communityService.deleteCommuComment(no);
+				response.sendRedirect(request.getHeader("Referer"));				
+			
+			
+			// 3.리다이렉트
 			
 		}catch(Exception e) {
 			e.printStackTrace();
 			throw e;
+		}finally {
+			
 		}
 	
 	}
+
 }

@@ -13,7 +13,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+
+import kh.semi.comembus.community.model.dto.CommentLevel;
 import kh.semi.comembus.community.model.dto.Community;
+import kh.semi.comembus.community.model.dto.CommunityRepl;
 import kh.semi.comembus.community.model.exception.CommunityException;
 
 public class CommunityDao {
@@ -239,10 +242,10 @@ public class CommunityDao {
 		return totalContent;
 	}
 
-	public Community findByQnaNo(Connection conn, int no) {
+	public Community findByCommuNo(Connection conn, int no) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		String sql = prop.getProperty("findByQnaNo");
+		String sql = prop.getProperty("findByCommuNo");
 		Community qview = null;
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -258,170 +261,132 @@ public class CommunityDao {
 		}
 		return qview;
 	}
-	
-	public Community findByFreeNo(Connection conn, int no) {
+
+
+	public int updateCommu(Connection conn, Community commu) {
 		PreparedStatement pstmt = null;
-		ResultSet rset = null;
-		String sql = prop.getProperty("findByFreeNo");
-		Community fview = null;
+		int result = 0;
+		String sql = prop.getProperty("updateCommu");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, commu.getCoTitle());
+			pstmt.setString(2, commu.getCoContent());
+			pstmt.setInt(3, commu.getCoNo());
+			
+			result = pstmt.executeUpdate();
+		} 
+		catch (SQLException e) {
+			throw new CommunityException("게시글 수정 오류!", e);
+		}
+		finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
+	public int deleteCommu(Connection conn, int no) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("deleteCommu");
+		
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, no);
+			result = pstmt.executeUpdate();
+		} 
+		catch (SQLException e) {
+			throw new CommunityException("게시글 삭제 오류!", e);
+		}
+		finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	public int insertCommuComment(Connection conn, CommunityRepl commuRepl) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("insertCommuComment");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, commuRepl.getReplWriter());
+			pstmt.setInt(2, commuRepl.getCoNo());
+			pstmt.setString(3, commuRepl.getContent());
+			pstmt.setInt(4,commuRepl.getReplLevel().getValue());
+			pstmt.setObject(5, commuRepl.getRefReplNo() == 0 ? 
+									null : 
+										commuRepl.getRefReplNo());
+			result = pstmt.executeUpdate();
+		} 
+		
+		catch (SQLException e) {
+			throw new CommunityException("댓글/답글 등록 오류!", e);
+		}
+		finally {
+			close(pstmt);
+		}
+		return result;
+		}
+	
+	public List<CommunityRepl> findCommuCommentcoNo(Connection conn, int coNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<CommunityRepl> replList = new ArrayList<>();
+		String sql = prop.getProperty("findCommuCommentcoNo");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, coNo);
 			rset = pstmt.executeQuery();
 			
 			while(rset.next()) {
-				fview = handleCommunityResultSet(rset);
+				replList.add(handleCommuReplResultSet(rset));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new CommunityException("게시글 조회를 실패했습니다.",e);
+			throw new CommunityException("게시글별 댓글 조회를 실패했습니다.",e);
+		}finally {
+			close(rset);
+			close(pstmt);
 		}
-		return fview;
+		return replList;
+		
 	}
-	
 
-	public Community findByShareNo(Connection conn, int no) {
+
+	private CommunityRepl handleCommuReplResultSet(ResultSet rset) throws SQLException {
+		int replNo = rset.getInt("repl_no");
+		String replWriter = rset.getString("repl_writer");
+		int coNo = rset.getInt("co_no");
+		Timestamp regDate = rset.getTimestamp("reg_date");
+		String content = rset.getString("content");
+		CommentLevel replLevel = CommentLevel.valueOf(rset.getInt("repl_level"));
+		int refReplNo = rset.getInt("ref_repl_no");
+		return new CommunityRepl(replNo, replWriter, coNo, regDate, content, replLevel, refReplNo);
+	}
+
+	public int deleteCommuComment(Connection conn, int no) {
 		PreparedStatement pstmt = null;
-		ResultSet rset = null;
-		String sql = prop.getProperty("findByShareNo");
-		Community sview = null;
+		int result = 0;
+		String sql = prop.getProperty("deleteCommuComment");
+		
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, no);
-			rset = pstmt.executeQuery();
-			
-			while(rset.next()) {
-				sview = handleCommunityResultSet(rset);
-			}
+			result = pstmt.executeUpdate();
+		
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new CommunityException("게시글 조회를 실패했습니다.",e);
+			throw new CommunityException("댓글 삭제에 실패하였습니다", e);
+		}finally {
+			close(pstmt);
 		}
-		return sview;
-	}
 
-	public int updateQna(Connection conn, Community commu) {
-		PreparedStatement pstmt = null;
-		int result = 0;
-		String sql = prop.getProperty("updateQna");
-		
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, commu.getCoTitle());
-			pstmt.setString(2, commu.getCoContent());
-			pstmt.setInt(3, commu.getCoNo());
-			
-			result = pstmt.executeUpdate();
-		} 
-		catch (SQLException e) {
-			throw new CommunityException("게시글 수정 오류!", e);
-		}
-		finally {
-			close(pstmt);
-		}
 		return result;
-	}
+		}
 	
-	public int deleteQna(Connection conn, int no) {
-		PreparedStatement pstmt = null;
-		int result = 0;
-		String sql = prop.getProperty("deleteQna");
-		
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, no);
-			result = pstmt.executeUpdate();
-		} 
-		catch (SQLException e) {
-			throw new CommunityException("게시글 삭제 오류!", e);
-		}
-		finally {
-			close(pstmt);
-		}
-		return result;
-	}
 	
-	public int updateFree(Connection conn, Community commu) {
-		PreparedStatement pstmt = null;
-		int result = 0;
-		String sql = prop.getProperty("updateFree");
-		
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, commu.getCoTitle());
-			pstmt.setString(2, commu.getCoContent());
-			pstmt.setInt(3, commu.getCoNo());
-			
-			result = pstmt.executeUpdate();
-		} 
-		catch (SQLException e) {
-			throw new CommunityException("게시글 수정 오류!", e);
-		}
-		finally {
-			close(pstmt);
-		}
-		return result;
-	}
-	
-	public int updateShare(Connection conn, Community commu) {
-		PreparedStatement pstmt = null;
-		int result = 0;
-		String sql = prop.getProperty("updateShare");
-		
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, commu.getCoTitle());
-			pstmt.setString(2, commu.getCoContent());
-			pstmt.setInt(3, commu.getCoNo());
-			
-			result = pstmt.executeUpdate();
-		} 
-		catch (SQLException e) {
-			throw new CommunityException("게시글 수정 오류!", e);
-		}
-		finally {
-			close(pstmt);
-		}
-		return result;
-	}
-	
-	public int deleteFree(Connection conn, int no) {
-		PreparedStatement pstmt = null;
-		int result = 0;
-		String sql = prop.getProperty("deleteFree");
-		
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, no);
-			result = pstmt.executeUpdate();
-		} 
-		catch (SQLException e) {
-			throw new CommunityException("게시글 삭제 오류!", e);
-		}
-		finally {
-			close(pstmt);
-		}
-		return result;
-	}
-	
-	public int deleteShare(Connection conn, int no) {
-		PreparedStatement pstmt = null;
-		int result = 0;
-		String sql = prop.getProperty("deleteShare");
-		
-		try {
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, no);
-			result = pstmt.executeUpdate();
-		} 
-		catch (SQLException e) {
-			throw new CommunityException("게시글 삭제 오류!", e);
-		}
-		finally {
-			close(pstmt);
-		}
-		return result;
-	}
 	//태연코드 끝
 	
 	//수진코드 시작
@@ -489,18 +454,6 @@ public class CommunityDao {
 		return new Community(coNo, coTitle, coWriter, coContent, coReadCount, coRegDate, coLike, coType);
 	}
 
-
-	
-
-
-
-
-
-	
-
-
-
-	
 
 	//수진코드 끝
 }

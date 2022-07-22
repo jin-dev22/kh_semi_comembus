@@ -299,6 +299,7 @@ CREATE TABLE community_board (
     constraint ck_community_type check (co_type in('F', 'Q', 'S'))
 );
 update community_board set co_title='tttt', co_content='다시' where co_no = 141;
+
 commit;
 insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'sinsa', '제목', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'Q');
 insert into community_board (co_no, co_writer, co_title, co_content, co_read_count, co_reg_date, co_like, co_type) values (seq_co_no.nextval, 'maxston0', '제목', '그렇구나', 0, to_date('22/07/12','RR/MM/DD'), 0, 'Q');
@@ -367,8 +368,15 @@ CREATE TABLE community_repl (
     constraint fk_community_comment_co_no foreign key(co_no) references community_board(co_no) on delete cascade,
     constraint fk_community_comment_ref_repl_no foreign key(ref_repl_no) references community_repl(repl_no) on delete cascade
 );
+select * from community_repl;
+alter table community_repl modify reg_date date null;
+desc community_repl;
+commit;
 --drop table community_repl;
 create sequence seq_community_repl_no;
+insert into community_repl 
+values (seq_community_repl_no.nextval, 'test', 161 , default, '아니', default, null);
+select * from community_repl;
 
 COMMENT ON COLUMN community_repl.repl_no IS 'seq 자동생성';
 COMMENT ON COLUMN community_repl.repl_writer IS '커뮤니티게시판 댓글 작성자';

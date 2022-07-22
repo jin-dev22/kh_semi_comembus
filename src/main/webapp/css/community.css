@@ -1,35 +1,119 @@
 @import url("https://font.elice.io/EliceDigitalBaeum.css");
 
-#commuListWrapper {
-	font-family: var(--elice-font);
+#boardListWrapper {
 	width: 1200px;
+	/*height: 350px;*/
 	margin: 0;
 }
-
-#titleText{
-	text-align:right;
-
-}
-
-#commuHeader p{
+h2{
 	font-family: var(--elice-font);
 	margin-top:70px;
 	margin-left:150px;
 	font-size: 25px;
 	font-weight: 600;
-
+}
+h4{
+	font-family: var(--elice-font);
+	margin-left:150px;
 }
 #btn-add{
-	float: right;
+	margin-left:1150px;
+    margin-top:5px;
 	width: 100px;
     height: 40px;
 	font-weight: 600;
     background-color: #92B4EC;
     border:none;
     color:white;
-    margin-top:20px;
+}
+#tbl-board {
+    font-size: 14px;
+    clear: both;
+    border-collapse: collapse;
+    width: 980px;
+    margin-left: 250px;
+	
 }
 
+#tbl-board td:nth-of-type(1) {
+	width: 300px;
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    border-right: 1px solid lightgray;
+    font-size: 14px;
+}
+
+#tbl-board td:nth-of-type(2) {
+	width: 10px;
+	text-align:center;
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    font-size: 14px;
+	padding: 10px 9px;
+}
+
+#tbl-board td:nth-of-type(3) {
+	width: 100px;
+	text-align:center;
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    font-size: 14px;
+}
+
+#tbl-board td:nth-of-type(4) {
+	width: 10px;
+	text-align:center;
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    font-size: 14px;
+}
+
+#tbl-board td:nth-of-type(5) {
+	width: 10px;
+	text-align:center;
+    border-top: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
+    font-size: 14px;
+}
+
+#tbl-board td{
+	word-break:break-all;
+	
+}
+
+#pagebar{
+	height:50px;
+	margin-top:30px;
+	text-align: center;
+}
+
+#pagebar span{
+    border-radius: 15%;
+    padding: 9px 15px;
+    background-color: #FFE69A;
+    text-decoration: none;
+    color: white;
+}
+#pagebar a{
+	border-radius: 15%;
+    padding: 9px 15px;
+    background-color: white;
+    text-decoration: none;
+    color: black;
+}
+
+#tbl-board th{
+	
+    background-color: #FFE69A;
+    font-size: 16px;
+    padding: 20px 40px;
+  	text-align: center;
+  	font-weight: 700;
+  	
+}
+#titleText{
+	margin-left:900px;
+}
 
 #btn{
 	border-radius: 10%;
@@ -40,65 +124,218 @@
 	height: 27px;
 }
 
+input[type=text] {
+	width: 700px;
+	padding: 12px 20px;
+	margin: 8px 0;
+	display: inline-block;
+	border: 1px solid;
+	border-radius: 4px;
+	box-sizing: border-box;
+	}
 
-#tbl-commu {
-    font-size: 12px;
-    width: 980px;
-    margin-left: 265px;
-  
+input[type=text]:focus {
+background-color: #FFE69A;
+border: 2px solid lightgray;
 }
 
-
-#tbl-commu th{
-    background-color: #FFE69A;
-    font-size: 16px;
-    padding: 20px 40px;
-  	text-align: center;
-  	font-weight: 700;
-  	
+#tbl-board-view{
+  display : flex;
+  justify-content: center;
+  align-items : center;
 }
 
-#tbl-commu td{
-	padding: 10px;
-}
-
-#tbl-commu td:nth-of-type(1) {
-	width: 300px;
-    border-top: 1px solid lightgray;
-    border-bottom: 1px solid lightgray;
-    border-right: 1px solid lightgray;
-    font-size: 14px;
-}
-
-#tbl-commu td:nth-of-type(2) {
-	width: 10px;
-	text-align:center;
-    border-top: 1px solid lightgray;
-    border-bottom: 1px solid lightgray;
-    font-size: 14px;
-	padding: 10px 9px;
-}
-
-#tbl-commu td:nth-of-type(3) {
+#btn1{
+	margin-left:250px;
+	border-radius: 10%;
+	background-color: #92B4EC;
+	border: none;
+	color:white;
 	width: 100px;
-	text-align:center;
-    border-top: 1px solid lightgray;
-    border-bottom: 1px solid lightgray;
-    font-size: 14px;
+	height: 40px;
+	font-weight: 700;
+}
+#btn2{
+	border-radius: 10%;
+	background-color: gray;
+	border: none;
+	color:white;
+	width: 100px;
+	height: 40px;
+	font-weight: 700;
 }
 
-#tbl-commu td:nth-of-type(4) {
-	width: 10px;
-	text-align:center;
-    border-top: 1px solid lightgray;
-    border-bottom: 1px solid lightgray;
-    font-size: 14px;
+/* boardView  게시글 볼때*/
+#boardViewDesc div:nth-of-type(1) {
+	margin-left: 20px;
+	text-align: left;
+}
+#boardViewDesc div:nth-of-type(2) {
+	margin:10px;
+	text-align: right;
+}
+#boardViewContent{
+	text-align: center;
 }
 
-#tbl-commu td:nth-of-type(5) {
-	width: 10px;
-	text-align:center;
-    border-top: 1px solid lightgray;
-    border-bottom: 1px solid lightgray;
-    font-size: 14px;
+#btn3{
+	margin-left:1250px;
+	border-radius: 10%;
+	background-color:#92B4EC;
+	border: none;
+	color:white;
+	width: 100px;
+	height: 40px;
+	font-weight: 700;
 }
+#btn4{
+	border-radius: 10%;
+	background-color: gray;
+	border: none;
+	color:white;
+	width: 100px;
+	height: 40px;
+	font-weight: 700;
+}
+div#boardViewRe{
+	  text-align:center;
+}
+div#boardViewRe #btn-insert{
+	width: 65px;
+    height: 55px;
+    background: #FFD24C;
+    position: relative;
+    top: -30px;
+    right: -15px;
+    border-radius: 15%;
+    border:none;
+    font-size: 15px;
+    font-weight: 600;	
+    } 
+div#boardViewRe #btn-insert:hover{background:#FFE69A;; transition: all ease 0.3s;}
+
+table#tbl-comment{
+  display : flex;
+  justify-content: center;
+  align-items : center;
+
+} 
+table#tbl-comment tr td{border-bottom:1px solid white; border-top:1px solid white; padding:5px; text-align:left; line-height:120%;}
+table#tbl-comment tr td:first-of-type {padding: 5px 5px 5px 10px;}/*수정*/
+table#tbl-comment button.btn-reply{display:none; outline:0; margin:0}/*수정*/
+table#tbl-comment tr:hover button.btn-reply{display:inline;}/*수정*/
+table#tbl-comment sub.comment-writer {
+	color: black;
+    font-weight: 900;
+    display: inline;
+    font-size: 16px;
+    position:absolute;
+    left:10px;
+    top:10px;
+	}
+table#tbl-comment sub.comment-date {
+	color: white;
+    font-weight: 900;
+    position:absolute;
+    right:10px;
+    top:10px;
+	}
+table#tbl-comment tr.level2 {color:gray; font-size: 14px;}
+table#tbl-comment tr.level2 td:first-of-type{padding-left:75px; text-align:left;}/*수정*/
+table#tbl-comment tr.level2 sub.comment-writer {
+	color:#0037fff7; font-size:14px; font-weight: 900;
+	
+	font-size: 16px;
+	}
+table#tbl-comment tr.level2 sub.comment-date {	color: white;
+    font-weight: 900;
+    margin-left: 407px;
+    
+    }
+
+table#tbl-comment tr.level1 .comment-level1{
+	position:relative; 
+	width:676px;
+	background: #FFD24C;
+	border-radius: 10px;
+	padding: 5px 7.5px 10px;
+	text-align: left;
+	min-height: 44px;
+	font-size: 18px;
+    line-height: 35px;
+}
+
+table#tbl-comment tr.level1 .comment-level1:after{
+	border-top:0px solid transparent;
+	border-left: 6px solid transparent;
+	border-right: 6px solid transparent;
+	border-bottom: 6px solid  #FFD24C;
+	content:""; 
+	position:absolute;
+	top:-6px;
+	left:50px;
+}
+
+table#tbl-comment tr.level2 .comment-level2{
+	position:relative; 
+	width:676px; 
+	background:#ffd88e;
+	border-radius: 10px;
+	padding: 5px 7.5px 10px;
+	min-height: 44px;
+	font-size: 18px;
+    line-height: 35px;
+}
+
+table#tbl-comment tr.level2 .comment-level2:after{
+	border-top:0px solid transparent;
+	border-left: 6px solid transparent;
+	border-right: 6px solid transparent;
+	border-bottom: 6px solid #ffd88e; 
+	content:""; 
+	position:absolute;
+	top:-6px;
+	left:50px;
+}
+
+
+table#tbl-comment button.btn-reply{background:lightgray; height: 45px;width: 59px;color:black; display:none; border: 1px solid transparent; border-radius: 15%; margin-left:-72px;} /*수정*/
+table#tbl-comment button.btn-reply:hover{background:#92B4EC; color:white; transition: all ease 0.3s;} /*수정*/
+table#tbl-comment button.btn-delete{background:lightgray; width: 59px; color:black; display:none; border: 1px solid transparent; border-radius: 15%; height: 45px;} /*수정*/
+table#tbl-comment button.btn-delete:hover{background:red; color:white; transition: all ease 0.3s;} /*수정*/
+table#tbl-comment tr:hover button.btn-delete{display:inline;}
+
+textarea{
+	width: 700px;
+	resize:none;
+    margin-top: 14px;
+}
+
+/*대댓글*/
+
+td [name=boardCommentFrm]{
+	overflow: hidden;
+	animation-duration: .3s;
+	animation-name:comment-animation;
+}
+@keyframes comment-animation{
+	0%{
+		transform: translateY(-100px);
+	}
+	100%{
+		transform: translateY(0px);
+	}
+}
+
+.btn-insert-reply{
+	position: relative;
+	top:-12px;
+	left: 5px;
+	outline: 0;
+	border-radius: 15%;
+	border: 1px solid transparent;
+	
+}
+<!-- -->
+
+
