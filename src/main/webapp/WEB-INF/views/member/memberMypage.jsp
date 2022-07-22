@@ -26,7 +26,7 @@
 			<div class="nickname-badge"><%= member.getNickName().charAt(0)%></div>
 			<div>
 				<div>
-				 <span class="memberName">이름 : </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=member.getMemberName() %>
+				 <span class="mypage-span-like-label">이름 : </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=member.getMemberName() %>
 				</div>
 				<div>
 					<label for="nickName">닉네임 :</label> &nbsp;&nbsp;
@@ -45,15 +45,8 @@
 			            <span></span>
 		          	</div>
 		        </div>
-				<div><label for="jobCode">직무분야 : </label> 
-					<!-- <select id="search-jobCode" onchange="changeSelected('searchJobcode', this.value)"> -->
-					<select id="jobCode" name="jobCode">
-                    <option value="PL" <%= "PL".equals(jobCode)? "selected" : "" %>>기획</option>
-                    <option value="DG" <%= "DG".equals(jobCode)? "selected" : "" %>>디자인</option>
-                    <option value="FE" <%= "FE".equals(jobCode)? "selected" : "" %>>프론트엔드</option>
-                    <option value="BE"  <%= "BE".equals(jobCode)? "selected" : "" %>>백엔드</option>		
-                </select>
-                <%-- <input type="hidden" name="searchJobcode" value="<%= jobCode != null? jobCode : "ALL"%>"/>	 --%>			
+				<div>
+					<span class="mypage-span-like-label">직무 : </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<%=member.getJobName() %>
 				</div>
 			</div>
 		</div>
