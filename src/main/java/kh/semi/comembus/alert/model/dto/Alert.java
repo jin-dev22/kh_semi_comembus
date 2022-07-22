@@ -1,7 +1,5 @@
 package kh.semi.comembus.alert.model.dto;
 
-import kh.semi.comembus.ws.endpoint.MessageType;
-
 public class Alert {
 	private int alertNo;
 	private String receiverId;

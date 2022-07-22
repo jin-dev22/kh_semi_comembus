@@ -9,10 +9,10 @@ import java.util.Map;
 import kh.semi.comembus.alert.model.dao.AlertDao;
 import kh.semi.comembus.alert.model.dao.AlertException;
 import kh.semi.comembus.alert.model.dto.Alert;
+import kh.semi.comembus.alert.model.dto.MessageType;
 import kh.semi.comembus.community.model.dto.Community;
 import kh.semi.comembus.gathering.model.dto.Gathering;
 import kh.semi.comembus.ws.endpoint.ComembusWebSocket;
-import kh.semi.comembus.ws.endpoint.MessageType;
 
 public class AlertService {
 

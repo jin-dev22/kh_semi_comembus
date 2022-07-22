@@ -1,4 +1,4 @@
-package kh.semi.comembus.ws.endpoint;
+package kh.semi.comembus.alert.model.dto;
 
 public enum MessageType {
 	NEW_COMMENT,

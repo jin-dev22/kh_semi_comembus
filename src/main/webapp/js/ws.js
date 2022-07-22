@@ -13,11 +13,15 @@ ws.addEventListener('message', (e) => {
 		case 'APPLY_RESULT' :
 		case 'APPLY_CANCELED':
 			const wrapper = document.querySelector("#notification");
+			const blackBell = wrapper.querySelector("#blackBell");
 			const i = document.createElement('i');
+			blackBell.style.display = 'none';
+			i.style.color = 'red';
 			i.classList.add('fa-solid', 'fa-bell', 'bell');
 			i.addEventListener('click', () => {
 				alert(msg);
 				i.remove();
+				blackBell.style.display = 'inline-block';
 			});
 			wrapper.append(i);
 			break;

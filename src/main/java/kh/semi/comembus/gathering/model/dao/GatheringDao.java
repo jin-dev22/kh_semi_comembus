@@ -1,6 +1,7 @@
 package kh.semi.comembus.gathering.model.dao;
 
-import static kh.semi.comembus.common.JdbcTemplate.*;
+import static kh.semi.comembus.common.JdbcTemplate.close;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
@@ -8,7 +9,6 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +19,7 @@ import kh.semi.comembus.gathering.model.dto.GatheringExt;
 import kh.semi.comembus.gathering.model.dto.GatheringType;
 import kh.semi.comembus.gathering.model.dto.Status;
 import kh.semi.comembus.gathering.model.exception.GatheringException;
+import kh.semi.comembus.member.model.dto.MemberExt;
 
 public class GatheringDao {
 	private Properties prop = new Properties();
@@ -377,7 +378,7 @@ public class GatheringDao {
 	
 	//수진코드 시작
 	/**
-	 * 멤버스 프로필,마이페이지: 회원 참가중인 모임 게시글 조회
+	 * 멤버스 프로필,마이페이지: 회원이 참가한 모임 게시글 조회
 	 */
 	public List<Gathering> findAllByMemberId(Connection conn, String memberId) {
 		List<Gathering> gatheringIngList = new ArrayList<>();
@@ -403,6 +404,9 @@ public class GatheringDao {
 		return gatheringIngList;
 	}
 	
+	/**
+	 * 멤버스 프로필,마이페이지: 찜하기 한 모임게시글목록 조회
+	 */
 	public List<Gathering> findAllBookmarked(Connection conn, String memberId) {
 		List<Gathering> gatheringBookmarkList = new ArrayList<>();
 		PreparedStatement pstmt = null;
@@ -426,6 +430,9 @@ public class GatheringDao {
 		return gatheringBookmarkList;
 	}
 	
+	/**
+	 * 멤버스마이페이지: 회원별 지원한 모임게시글목록조회
+	 */
 	public List<Gathering> findAllApldByMemberId(Connection conn, String memberId) {
 		List<Gathering> gatheringApldList = new ArrayList<>();
 		PreparedStatement pstmt = null;
@@ -450,6 +457,9 @@ public class GatheringDao {
 		return gatheringApldList;
 	}
 	
+	/**
+	 * 멤버스마이페이지: 모임 지원 취소하기
+	 */
 	public int cancelApld(Connection conn, Map<String, Object> param) {
 		int result = 0;
 		PreparedStatement pstmt = null;
@@ -473,8 +483,8 @@ public class GatheringDao {
 	 * 모임 게시글 번호로 조회하기
 	 * - 지원신청 취소시 해당 게시글 정보 확인을 위해 작성했습니다. 
 	 */
-	public Gathering findByNo(Connection conn, int psNo) {
-		Gathering gather = null;
+	public GatheringExt findByNo(Connection conn, int psNo) {
+		GatheringExt gather = null;
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		String sql = prop.getProperty("findByNo");
@@ -495,6 +505,7 @@ public class GatheringDao {
 		
 		return gather;
 	}
+	
 	
 	//수진코드 끝
 	
@@ -548,26 +559,60 @@ public class GatheringDao {
 		}
 		return projectNo;
 	}
-	
-	private GatheringExt handleProjectResultSet(ResultSet rset) throws SQLException{
-		int psNo=rset.getInt("psNo");
-		String writer = rset.getString("writer");
-		GatheringType psType = GatheringType.valueOf(rset.getString("psType"));
-		String title = rset.getString("title");
-		Date regDate = rset.getDate("reg_date");
-		String content = rset.getString("content");
-		int viewcount = rset.getInt("viewcount");
-		int bookmark = rset.getInt("bookmark");
-		String topic = rset.getString("topic");
-		String local = rset.getString("local");
-		int people = rset.getInt("people");
-		Status status = Status.valueOf(rset.getString("status"));
-		Date start_date = rset.getDate("start_date");
-		Date end_date = rset.getDate("end_date");
-//		String planning = rset.getString(")
-		
-		
-		return new GatheringExt(psNo,writer,psType,title,regDate,content,viewcount,bookmark,topic,local,people,status,start_date,end_date);
+
+	public int updateReadCount(Connection conn, int psNo) {
+		int result=0;
+		return result;
+	}
+
+	public int enrollStudy(Connection conn, Gathering study) {
+		PreparedStatement pstmt=null;
+		int result = 0;
+		String sql=prop.getProperty("insertStudy");
+		try {
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, study.getWriter());
+			pstmt.setObject(2, "S");
+			pstmt.setString(3, study.getTitle());
+			pstmt.setDate(4, study.getRegDate());
+			pstmt.setString(5, study.getContent());
+//			pstmt.setInt(6, study.getViewcount());
+//			pstmt.setInt(7, study.getBookmark());
+			pstmt.setString(8, study.getTopic());
+			pstmt.setString(9, study.getLocal());
+			pstmt.setInt(10, study.getPeople());
+			pstmt.setObject(11, "N");
+			pstmt.setDate(12, study.getStartDate());
+			pstmt.setDate(13, study.getEndDate());
+			
+			result=pstmt.executeUpdate();
+		}catch(SQLException e) {
+			throw new GatheringException("스터디 등록 오류",e);
+		}finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	public int getLastStudyNo(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int studyNo=0;
+		//sql설정
+		String sql = prop.getProperty("getLaststudyNo");
+		try {
+			pstmt=conn.prepareStatement(sql);
+			rset=pstmt.executeQuery();
+			if(rset.next()) {
+				studyNo=rset.getInt(1);
+			}
+		}catch(SQLException e) {
+			throw new GatheringException("생성된 스터디 번호 조회 오류",e);
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		return studyNo;
 	}
 
 

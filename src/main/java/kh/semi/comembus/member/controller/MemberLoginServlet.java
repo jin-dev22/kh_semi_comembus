@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,8 +23,6 @@ public class MemberLoginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String location = request.getHeader("Referer");
-		request.setAttribute("location", location);
 		
 		request.getRequestDispatcher("/WEB-INF/views/member/memberLogin.jsp")
 			.forward(request, response);
@@ -37,36 +36,36 @@ public class MemberLoginServlet extends HttpServlet {
 			
 			String memberId = request.getParameter("memberId");
 			String password = ComembusUtils.getEncryptedPassword(request.getParameter("password"), memberId);
-			String location = request.getParameter("location");
-			System.out.println("memberId = " + memberId);
-			System.out.println("password = " + password);
-			System.out.println("location = " + location);
+			// System.out.println("memberId = " + memberId);
+			// System.out.println("password = " + password);
 			
-			String[] specialLocation = {"/membus/showMemberId", "/membus/enroll", "/membus/login", "/membus/findMemberId", "/membus/findMemberPassword", "membus/resetMemberPassword"};
-			boolean contain = false;
-			for(int i = 0; i < specialLocation.length; i++) {
-				if(location.contains(specialLocation[i])) {
-					contain = true;
-					// System.out.println("true>> specialLocation[" + i + "] = " + specialLocation[i]);
+			// 로그인 성공 시 리다이렉트 할 경로 가져오기
+			Cookie[] cookies = request.getCookies();
+
+			String location = "";
+			if(cookies != null) {
+				for(Cookie c : cookies) {
+					String name = c.getName();
+					String value = c.getValue();
+					if("locationCookie".equals(name)) {
+						location = value;
+						// System.out.println("location = " + location);
+						
+						break;
+					}
 				}
 			}
 			
-			Member member = memberService.findById(memberId);
-			System.out.println("member@MemberLoginServlet = " + member); 
 			
-			HttpSession session = request.getSession(true); // session이 존재하지 않으면, 새로 생성해서 반환. true 생략 가능
+			Member member = memberService.findById(memberId);
+			// System.out.println("member@MemberLoginServlet = " + member); 
+			
+			HttpSession session = request.getSession(true);
 			
 			// 로그인 성공
 			if(member != null && password.equals(member.getPassword())) {
 				session.setAttribute("loginMember", member);
-				
-				// 특정 경로에 머물다가 로그인한 경우 메인페이지로 리다이렉트
-				if(contain) {
-					response.sendRedirect(request.getContextPath() + "/main");
-				}
-				else {
-					response.sendRedirect(location);
-				}
+				response.sendRedirect(location);
 			}
 			// 로그인 실패
 			else {

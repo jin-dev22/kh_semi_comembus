@@ -2,11 +2,9 @@
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <link rel="stylesheet" href="<%= request.getContextPath() %>/css/member/memberLogin.css" />
-<%
-	String location = (String) request.getAttribute("location");
-%>
 
 <section id=login-container>
+
 	<h1>회원가입/로그인</h1>
 	<form id="loginFrm" name="loginFrm" action="<%= request.getContextPath() %>/membus/login" method="POST">
 	<input type="hidden" id="location" value="<%= location %>" name="location"/>
@@ -35,13 +33,6 @@
      	<input type="button" value="회원가입하기" class="login-sub-btn"
 			onclick="location.href='<%= request.getContextPath() %>/membus/enroll';">
    	</div>
-   	
-<style>
-button, input[type=button]{
-	border: none;
-	background-color: #fff;
-}
-</style>
 
 </section>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>

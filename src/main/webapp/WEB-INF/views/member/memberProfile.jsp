@@ -20,8 +20,8 @@
 		<div class="profile-row part-1 ">
 			<div class="nickname-badge"><%= member.getNickName().charAt(0)%></div>
 			<div>
-				<div>닉네임 : <%=member.getNickName() %></div>
-				<div>직무분야 : <%=member.getJobName() %></div>
+				<div><span class="mypage-span-like-label">닉네임 : </span><%=member.getNickName() %></div>
+				<div><span class="mypage-span-like-label">직무분야 : </span><%=member.getJobName() %></div>
 			</div>
 		</div>
 		<div class="profile-row part-2">

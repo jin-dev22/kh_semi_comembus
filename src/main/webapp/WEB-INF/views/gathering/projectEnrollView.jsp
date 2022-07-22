@@ -46,7 +46,7 @@
         <tr><td colspan="3">❗ 3~4명을 추천합니다. 인원 설정 후 저장 버튼을 눌러주세요. (최대 9명까지 가능) </td></tr>
 		<tr id="memberAdd">
             <td>			
-                <select name="job_code" id="job_code1" onchange="ChangeJobCode()">
+                <select name="job_code" id="job_code1">
                     <option value="planning">기획</option>
                     <option value="design">디자인</option>
                     <option value="frontend">프론트엔드</option>
@@ -250,31 +250,52 @@ enctype="multipart/form-data">
             //저장 안할 경우 폼 제출 불가능하도록 설정
             //저장 버튼 누르고 값 수정할 경우 확인
         }
+
         for(let n=1;n<=addRowNum;n++){
             var val_jobcode = document.getElementById('job_code'+n);
             var cnt_jobcode = document.querySelector('#count'+n);
-            alert("value : "+val_jobcode.options[val_jobcode.selectedIndex].value+
-            " cnt : "+cnt_jobcode.innerText);   
-
-        }
-        for(var i=0;i<arrJobcode.length;i++){
-                var obj={};
-                obj.name=arrJobcode[i].value;
-                obj.cnt=arrJobcodeCnt[i].value;
-                param.push(obj);
+            const setPlanning = document.querySelector("#planning");
+            const setPlanningCnt = document.querySelector("#planning_cnt")
+            if('planning'==val_jobcode.options[val_jobcode.selectedIndex].value){
+                setPlanning.innerText=val_jobcode.options[val_jobcode.selectedIndex].value;
+                setPlanningCnt.innerText=cnt_jobcode.innerText;
+                console.log(setPlanning.innerText);
+                console.log(setPlanningCnt.innerText);
+                console.log('planning & planningcnt 값 저장');
             }
 
-            param.map(function(item){
-                nameStr+=item+'|';
-                cntStr+=item+'|';
-            });
+            const setDesign = document.querySelector("#design");
+            const setDesignCnt = document.querySelector("#design_cnt");
+            if('design'==val_jobcode.options[val_jobcode.selectedIndex].value){
+                setDesign.innerText=val_jobcode.options[val_jobcode.selectedIndex].value;
+                setDesignCnt.innerText=cnt_jobcode.innerText;
+                console.log(setDesign.innerText);
+                console.log(setDesignCnt.innerText);
+                console.log('design & designCnt 값 저장');
+            }
 
-            nameStr=nameStr.substr(0,nameStr.lastIndexOf('|'));
-            cntStr=cntStr.substr(0,cntStr.lastIndexOf('|'));
-            
-            console.log(param);
-            console.log(nameStr);
-            console.log(cntStr);
+            const setFrontend = document.querySelector("#frontend");
+            const setFrontendCnt = document.querySelector("#frontend_cnt");
+            if('frontend'==val_jobcode.options[val_jobcode.selectedIndex].value){
+                setFrontend.innerText=val_jobcode.options[val_jobcode.selectedIndex].value;
+                setFrontendCnt.innerText=cnt_jobcode.innerText;
+                console.log(setFrontend.innerText);
+                console.log(setFrontendCnt.innerText);
+                console.log('frontend & frontendCnt 값 저장');
+            }
+
+            const setBackend = document.querySelector("#backend");
+            const setBackendCnt = document.querySelector("#backend_cnt");
+            if('backend'==val_jobcode.options[val_jobcode.selectedIndex].value){
+                setBackend.innerText=val_jobcode.options[val_jobcode.selectedIndex].value;
+                setBackendCnt.innerText=cnt_jobcode.innerText;
+                console.log(setBackend.innerText);
+                console.log(setBackendCnt.innerText);
+                console.log('backend & backendCnt 값 저장');
+            }
+        }
+        
+
     }
 
     // function ChangeJobCode(){

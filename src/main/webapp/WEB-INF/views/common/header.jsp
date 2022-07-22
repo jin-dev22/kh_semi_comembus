@@ -8,6 +8,30 @@
 	String msg = (String) session.getAttribute("msg");
 	if(msg != null) session.removeAttribute("msg");
 	Member loginMember = (Member) session.getAttribute("loginMember");
+
+	
+	String location = request.getHeader("Referer");
+	// System.out.println(location);
+	String[] specialLocation = {"/membus/login", "/membus/enroll", "/membus/findMemberId", "/membus/showMemberId", "/membus/findMemberPassword", "/membus/resetMemberPassword"};
+	boolean contain = false;
+	for(int i = 0; i < specialLocation.length; i++) {
+		if(location.contains(specialLocation[i])) {
+			contain = true;
+			// System.out.println("true>> specialLocation[" + i + "] = " + specialLocation[i]);
+		}
+	}
+	
+	Cookie[] cookies = request.getCookies();
+	boolean toMain = false;
+
+	if(!contain) {
+		Cookie cookie = new Cookie("locationCookie", location);
+		cookie.setPath("/");
+		cookie.setMaxAge(24 * 60 * 60);
+		response.addCookie(cookie);
+		System.out.println("[locationCookie 발급: " + cookie.getValue() + "]");
+	}
+	
 %>
 <!-- 미송 코드 끝 -->
     
@@ -85,7 +109,7 @@
         </li>
         <!-- 관리자로그인시 노출 -->
         <% if(loginMember != null && loginMember.getMemberRole() == MemberRole.A){ %>
-        <li><a href="javascript:void(0)">회원관리</a></li>
+        <li><a href="<%= request.getContextPath() %>/admin/memberList">회원관리</a></li>
         <li><a href="javascript:void(0)">통계관리</a></li>
         <% } %>
       </ul>
@@ -103,7 +127,7 @@
 	  	</span>
 	  	<li class="h__loginMember">
 	  		<a href="<%= request.getContextPath()%>/membus/mypage"><%= loginMember.getNickName() %></a>
-	  		<span id="noification"></span>
+	  		<span id="notification"><a href="<%= request.getContextPath() %>/alertList"></a><i id="blackBell" class="fa-solid fa-bell bell"></i></span>
   		</li>	  	
 	  	<li class="h__memberLogout"><a href="<%= request.getContextPath() %>/membus/logout">로그아웃</a></li>
 	  </ul>
