@@ -1,6 +1,7 @@
 package kh.semi.comembus.gathering.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,11 +11,13 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import kh.semi.comembus.common.ComembusUtils;
 import kh.semi.comembus.gathering.model.dto.Gathering;
 import kh.semi.comembus.gathering.model.dto.GatheringExt;
 import kh.semi.comembus.gathering.model.service.GatheringService;
+import kh.semi.comembus.member.model.dto.MemberExt;
 
 /**
  * Servlet implementation class ProjectListServlet
@@ -44,27 +47,29 @@ public class ProjectListServlet extends HttpServlet {
 			
 			// content 영역 
 			List<Gathering> projectList = gatheringService.findGatheringAll(param);
-			// System.out.println("projectList: " + projectList);
-
-			// 모집인원
-			// List<Gathering> projectList = gatheringService.findGatheringAll(param);
-			// List<GatheringExt> capacityJobList = gatheringService.getCapacityAll(param);
 			
-			// 북마크 (param에 넣어보기)
-			String loginMember = request.getParameter("loginMember");
-			List<Gathering> bookmarkList = gatheringService.findAllBookmarked(loginMember);
-
+			// 북마크
+			HttpSession session = request.getSession();
+			MemberExt loginMember = (MemberExt) session.getAttribute("loginMember");
+			String loginMemberId ="";
+			List<Gathering> bookmarkList = new ArrayList<>();
+			if(loginMember != null) {
+				loginMemberId = loginMember.getMemberId();
+				param.put("bookmarkYN", "Y");
+				param.put("loginMemberId", loginMemberId);
+				bookmarkList = gatheringService.findAllProBookmarked(param);
+			}
+			System.out.println(">>loginMember" + loginMember);
 						
 			// pagebar 영역
 			int totalContent = gatheringService.getTotalContent();
 			String url = request.getRequestURI();
 			String pagebar = ComembusUtils.getPagebar(cPage, numPerPage, totalContent, url);
-
 			
 			// view단처리
 			request.setAttribute("projectList", projectList);
 			request.setAttribute("pagebar", pagebar);
-			request.setAttribute("bookmarkList", bookmarkList); // 처음 모임화면 들어갈 때 뿌려지게 해야하는데 안되고 있음
+			request.setAttribute("bookmarkList", bookmarkList);
 			request.getRequestDispatcher("/WEB-INF/views/gathering/projectList.jsp").forward(request, response);
 			
 		} catch(Exception e) {

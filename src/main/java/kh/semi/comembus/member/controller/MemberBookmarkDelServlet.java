@@ -2,6 +2,7 @@ package kh.semi.comembus.member.controller;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -10,6 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import kh.semi.comembus.gathering.model.dto.Gathering;
+import kh.semi.comembus.gathering.model.service.GatheringService;
 import kh.semi.comembus.member.model.service.MemberService;
 
 /**
@@ -19,6 +22,8 @@ import kh.semi.comembus.member.model.service.MemberService;
 public class MemberBookmarkDelServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private MemberService memberService = new MemberService();
+	private GatheringService gatheringService = new GatheringService();
+	
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -30,10 +35,8 @@ public class MemberBookmarkDelServlet extends HttpServlet {
 			String memberId = request.getParameter("member_id");
 			int psNo = 0;
 			try {
-				psNo = Integer.parseInt(request.getParameter("ps_no"));
+				psNo = Integer.parseInt(request.getParameter("psNo"));
 			} catch(NumberFormatException e) {}
-			System.out.println("memberId = " + memberId);
-			System.out.println("psNo = " + psNo);
 			
 			Map<String, Object> param = new HashMap<>();
 			param.put("memberId", memberId);
@@ -41,9 +44,11 @@ public class MemberBookmarkDelServlet extends HttpServlet {
 			
 			// 업무로직
 			int result = memberService.deleteBookmark(param);
-			System.out.println("result = " + result);
+			List<Gathering> bookmarkList = gatheringService.findAllBookmarked(memberId);
 			
 			response.sendRedirect(request.getHeader("Referer"));
+			request.setAttribute("bookmarkList", bookmarkList);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

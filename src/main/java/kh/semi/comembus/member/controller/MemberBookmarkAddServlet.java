@@ -34,10 +34,6 @@ public class MemberBookmarkAddServlet extends HttpServlet {
 			String memberId = request.getParameter("member_id");
 			int psNo = 0;
 			psNo = Integer.parseInt(request.getParameter("psNo"));
-			/*
-			 * try { psNo = Integer.parseInt(request.getParameter("psNo")); }
-			 * catch(NumberFormatException e) {}
-			 */
 			System.out.println("memberId = " + memberId);
 			System.out.println("psNo = " + psNo);
 			
@@ -51,9 +47,10 @@ public class MemberBookmarkAddServlet extends HttpServlet {
 			System.out.println("result = " + result);
 			
 			
-			// response.sendRedirect(request.getHeader("Referer"));
+			response.sendRedirect(request.getHeader("Referer"));
 			request.setAttribute("bookmarkList", bookmarkList);
-			request.getRequestDispatcher("/WEB-INF/views/gathering/projectList.jsp").forward(request, response);
+			
+			// request.getRequestDispatcher("/WEB-INF/views/gathering/projectList.jsp").forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;

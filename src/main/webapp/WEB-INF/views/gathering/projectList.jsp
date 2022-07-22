@@ -42,20 +42,40 @@ const bookmarkFilter = (num) => {
 			memberId: memberId
 			},
 		success(bookmarkProjectLists){
-			const {bookmarkProjectList, totalContent, cPage} = bookmarkProjectLists;
- 				console.log("bookmarkProjectList = ",bookmarkProjectList);
+			const {bookmarkProjectList, projectList, totalContent, cPage} = bookmarkProjectLists;
+ 				console.log("bookmarkProjectList = ", bookmarkProjectList);
+ 				console.log("projectList = ", projectList);
+ 				
 				if(bookmarkProjectList == null){
 					alert("찜한 프로젝트가 존재하지 않습니다.");
 					location.reload();
 					return;
 				}
 			document.querySelector(".ps-lists").innerHTML =
-				
 				bookmarkProjectList.reduce((html, bookmarkList, index) => {
 					const {psNo, title, viewcount, bookmark, topic, people} = bookmarkList;
 					// console.log("@@@bookmarkList ", bookmarkList);
 					// console.log("html ", html);
 					// console.log("확인용", psNo, title, viewcount, bookmark, topic, people); // 확인용
+					
+					
+					<%-- outer:
+	 				for(let i = 0; i < memberBookmarkList.length; i++){
+	 					console.log(memberBookmarkList[i].psNo);
+	 					console.log(psNo);
+	 					if(psNo == memberBookmarkList[i].psNo){
+	 						bookmarkButton = "bookmark-back";
+	 						bookmarkShape = "♥";
+	 						break outer;
+	 					} else {
+	 						bookmarkButton = "bookmark-front";
+	 						bookmarkShape = "♡";
+	 					}
+					};
+							<button class="bookmark-back" value="<%= projectNo %>">♥</button>
+							<button style="display:none" class="bookmark-front" value="<%= projectNo %>">♡</button>
+					 --%>
+					
 					
 					return `\${html}
 					<div class="ps-pre">
@@ -263,9 +283,10 @@ function pageLink(cPage, totalPages, funName){
 						for(int i = 0; i < 3; i++){
 							String topic = project.getTopic();
 				%>
-				<!-- swiper-slide 3개 생성 및 추후 진행 -->
 				<div class="swiper-slide">
+				<a href="<%= request.getContextPath()%>/gathering/projectView?pNo=<%= project.getPsNo()%>">
 					<img src="<%= request.getContextPath() %>/images/<%= topic %>.jpg" class="ps__header__content__img" alt="해당 프로젝트 주제 이미지">
+				</a>
 					<ul class="ps__header__content-info">
 						<li><p class="bold"><%= "social".equals(topic) ? "소셜네트워크" : ("game".equals(topic) ? "게임" : ("travel".equals(topic) ? "여행" : ("finance".equals(topic) ? "금융" : "이커머스"))) %></p></li>
 						<li><p class="bold"><%= project.getTitle() %></p></li>
@@ -334,7 +355,7 @@ function pageLink(cPage, totalPages, funName){
 			%>
 				<div class="ps-pre">
 					<!-- a태그로 링크 주소 연결해야함 -->
-					<a href="">
+					<a href="<%= request.getContextPath()%>/gathering/projectView?ps_no=<%= projectNo %>">
 						<img src="<%= request.getContextPath() %>/images/<%= project.getTopic() %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
 					</a>
 					<p class="bold"><%= "social".equals(project.getTopic()) ? "소셜네트워크" : ("game".equals(project.getTopic()) ? "게임" : ("travel".equals(project.getTopic()) ? "여행" : ("finance".equals(project.getTopic()) ? "금융" : "이커머스"))) %></p>
@@ -346,37 +367,32 @@ function pageLink(cPage, totalPages, funName){
 							<span class="heart-emoji">&#9829;</span><%= project.getBookmark() %></li>
 						<li>
 							<span>&#128064;</span><%= project.getViewcount() %></li>
-						<!-- 나중에 모임 게시물별 모집인원현황 테이블과 연결 -->
 						<li>모집인원 <%= project.getRecruited_cnt() %> / <%= project.getPeople() %></li>
 					</ul>
 					<div class="ps__bookmark">
 						<% if(loginMember == null){ %>
 							<button class="bookmark-front" value="<%= projectNo %>">♡</button>
 						<%
-							} 
+							}
+						%>
+							<button class="bookmark-front" value="<%= projectNo %>">♡</button>
+							<button style="display:none" class="bookmark-back" value="<%= projectNo %>">♥</button>
+						<%
 							if(loginMember != null){
 								if(bookmarkList != null && !bookmarkList.isEmpty()){
-									System.out.println("2");
 									for(Gathering bookmark : bookmarkList){
-										System.out.println("3");
 										int bookPsNo = bookmark.getPsNo();
 										if(projectNo == bookPsNo){
-											System.out.println("4");
+											System.out.println("일치한다 = 프로젝트" + projectNo + " 북마크 " + bookPsNo);
 						%>
 											<button class="bookmark-back" value="<%= projectNo %>">♥</button>
-						<%
-										} else {
-											System.out.println("5");
-						%>
-											<button class="bookmark-front" value="<%= projectNo %>">♡</button>
+											<button style="display:none" class="bookmark-front" value="<%= projectNo %>">♡</button>
 						<%
 										}
+										
 									}
-								} else {
-						%>
-									<button class="bookmark-front" value="<%= projectNo %>">♡</button>
-						<%
 								}
+								
 							}
 						%>
 					</div>
@@ -409,24 +425,26 @@ function pageLink(cPage, totalPages, funName){
 document.querySelectorAll(".ps__bookmark").forEach((bookmark) => {
 	bookmark.addEventListener('click', (e) => {
 		let mark = e.target;
-		console.log(mark);
-		const frm = document.addBookmarkFrm;
+		const frmAdd = document.addBookmarkFrm;
+		const frmDel = document.delBookmarkFrm;
 		let psnum = mark.value;
+		// console.log(psnum); // 확인용
+
 		if(mark.classList.contains("bookmark-front")) {
 			mark.style.display = 'none';
-			mark.previousElementSibling.style.display = "block";
+			console.log(mark.nextElementSibling);
+			mark.nextElementSibling.style.display = 'block';
 			
 			const addBookPs = document.querySelector("#addBookPs");
 			addBookPs.value = psnum;
-			frm.submit();			
+			frmAdd.submit();			
 		} else {
 			mark.style.display = 'none';
-			mark.nextElementSibling.style.display = "block";
-			
+			mark.nextElementSibling.style.display = 'block';
 			const delBookPs = document.querySelector("#delBookPs");
 			delBookPs.value = psnum;
-			frm.submit();
-		}		
+			frmDel.submit();
+		}
 	})
 });
 </script>	
