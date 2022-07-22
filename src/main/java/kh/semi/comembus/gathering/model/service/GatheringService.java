@@ -124,8 +124,22 @@ public class GatheringService {
 
 
 	public static Gathering findByNo(int psNo, boolean hasRead) {
-		// TODO Auto-generated method stub
-		return null;
+		Connection conn = getConnection();
+		Gathering project = null;
+		try {
+			if(!hasRead) {
+				int result = gatheringDao.updateReadCount(conn,psNo);
+				project=gatheringDao.findByNo(conn,psNo);
+				
+				commit(conn);
+			}
+		}catch(Exception e) {
+			rollback(conn);
+			throw e;
+		}finally {
+			close(conn);
+		}
+		return project;
 	}
 	//유경 끝
 

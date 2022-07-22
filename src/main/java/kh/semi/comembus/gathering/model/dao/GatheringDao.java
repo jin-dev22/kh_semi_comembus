@@ -450,10 +450,15 @@ public class GatheringDao {
 		Status status = Status.valueOf(rset.getString("status"));
 		Date start_date = rset.getDate("start_date");
 		Date end_date = rset.getDate("end_date");
-//		String planning = rset.getString(")
-		
 		
 		return new GatheringExt(psNo,writer,psType,title,regDate,content,viewcount,bookmark,topic,local,people,status,start_date,end_date);
+	}
+
+
+
+	public int updateReadCount(Connection conn, int psNo) {
+		int result=0;
+		return result;
 	}
 
 }
