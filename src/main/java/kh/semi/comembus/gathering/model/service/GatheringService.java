@@ -8,6 +8,7 @@ import java.util.Map;
 
 import kh.semi.comembus.gathering.model.dao.GatheringDao;
 import kh.semi.comembus.gathering.model.dto.Gathering;
+import kh.semi.comembus.gathering.model.dto.GatheringExt;
 
 public class GatheringService {
 	GatheringDao gatheringDao = new GatheringDao();
@@ -100,9 +101,35 @@ public class GatheringService {
 		close(conn);
 		return gather;
 	}
-
-	
-	
 	
 	//수진코드 끝
+	
+	public List<Gathering> findMemberBookmarkList(String memberId) {
+		Connection conn = getConnection();
+		List<Gathering> bookmarkList = gatheringDao.findMemberBookmarkList(conn, memberId);
+		close(conn);
+		return bookmarkList;
+	}
+
+	public List<Gathering> findMemberBookmarkFilterList(Map<String, Object> param) {
+		Connection conn = getConnection();
+		List<Gathering> bookmarkFilterlist = gatheringDao.findMemberBookmarkFilterList(conn, param);
+		close(conn);
+		return bookmarkFilterlist;
+	}
+
+	public int getTotalBookmarkFilter(Map<String, Object> param) {
+		Connection conn = getConnection();
+		int totalbookmarkFilterContent = gatheringDao.getTotalBookmarkFilter(conn, param);
+		close(conn);
+		return totalbookmarkFilterContent;
+	}
+
+	public List<GatheringExt> getCapacityAll(Map<String, Object> param) {
+		Connection conn = getConnection();
+		List<GatheringExt> getCapacityAll = gatheringDao.getCapacityAll(conn, param);
+		close(conn);
+		return getCapacityAll;
+	}
+
 }
