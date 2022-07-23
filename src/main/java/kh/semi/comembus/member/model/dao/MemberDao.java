@@ -207,6 +207,143 @@ public class MemberDao {
 		return checkNickname;
 	}
 
+	/**
+	 * 회원권한 변경
+	 */
+	public int updateMemberRole(Connection conn, Member member) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("updateMemberRole");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, member.getMemberRole().name());
+			pstmt.setString(2, member.getMemberId());
+			result = pstmt.executeUpdate();
+		} catch (Exception e) {
+			throw new MemberException("회원 권한 정보 수정 오류!", e);
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
+	/**
+	 * 관리자 - 특정 회원 검색
+	 */
+	public List<Member> adminFindMemberLike(Connection conn, Map<String, Object> param) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<Member> memberList = new ArrayList<>();
+		String sql = prop.getProperty("adminFindMemberLike");
+		// select * from(select row_number() over (order by enroll_date desc) rnum, m.* from member m where # like ? quit_yn = 'N') m where rnum between ? and ?
+
+		String col = (String) param.get("searchType");
+		String val = (String) param.get("searchKeyword");
+		int start = (int) param.get("start");
+		int end = (int) param.get("end");
+		
+		sql = sql.replace("#", col);
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "%" + val + "%");
+			pstmt.setInt(2, start);
+			pstmt.setInt(3, end);
+			rset = pstmt.executeQuery();
+			while(rset.next())
+				memberList.add(handleMemberResultSet(rset));
+			
+		} catch (SQLException e) {
+			throw new MemberException("관리자 회원 검색 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return memberList;
+	}
+	
+	/**
+	 * 관리자 - 특정 회원 검색에 대한 회원 수 반환(페이징)
+	 */
+	public int adminGetTotalMemberNumLike(Connection conn, Map<String, Object> param) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int totalMember = 0;
+		String sql = prop.getProperty("adminGetTotalMemberNumLike");
+		// select count(*) from member where # like ? and quit_yn = 'N'
+		
+		String col = (String) param.get("searchType");
+		String val = (String) param.get("searchKeyword");
+		
+		sql = sql.replace("#", col);
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, "%" + val + "%");
+			rset = pstmt.executeQuery();
+			if(rset.next())
+				totalMember = rset.getInt(1); 
+		} catch (SQLException e) {
+			throw new MemberException("관리자 검색된 회원수 조회 오류!", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return totalMember;
+	}
+	
+	/**
+	 * 관리자 - 당일 회원가입 수
+	 */
+	public int getMemberEnrollNumToday(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int memberEnrollNumToday = 0;
+		String sql = prop.getProperty("getMemberEnrollNumToday");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			if(rset.next())
+				memberEnrollNumToday = rset.getInt(1);
+			
+		} catch (SQLException e) {
+			throw new MemberException("일일 회원가입 수 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return memberEnrollNumToday;
+	}
+	
+	/**
+	 * 관리자 - 조회 기간 회원가입 수
+	 */
+	public int getMemberEnrollNumPeriod(Connection conn, Map<String, Object> param) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int memberEnrollNumPeriod = 0;
+		String sql = prop.getProperty("getMemberEnrollNumPeriod");
+
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, (String) param.get("startDate"));
+			pstmt.setString(2, (String) param.get("endDate"));
+			rset = pstmt.executeQuery();
+			if(rset.next())
+				memberEnrollNumPeriod = rset.getInt(1);
+			
+		} catch (SQLException e) {
+			throw new MemberException("특정 기간 회원가입 수 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return memberEnrollNumPeriod;
+	}
 	
 	// 미송 코드 끝
 	

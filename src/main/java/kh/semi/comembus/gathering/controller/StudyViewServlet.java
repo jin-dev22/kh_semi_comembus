@@ -1,8 +1,6 @@
 package kh.semi.comembus.gathering.controller;
 
 import java.io.IOException;
-import java.util.List;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -10,16 +8,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import kh.semi.comembus.common.ComembusUtils;
 import kh.semi.comembus.gathering.model.dto.Gathering;
 import kh.semi.comembus.gathering.model.service.GatheringService;
-import kh.semi.comembus.*;
-import kh.semi.comembus.common.ComembusUtils;
 
 /**
- * Servlet implementation class ProjectViewServlet
+ * Servlet implementation class StudyViewServlet
  */
-@WebServlet("/gathering/projectView")
-public class ProjectViewServlet extends HttpServlet {
+@WebServlet("/gathering/studyView")
+public class StudyViewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private GatheringService gatheringService = new GatheringService();
 
@@ -33,15 +30,15 @@ public class ProjectViewServlet extends HttpServlet {
 
 			// 읽음여부판단
 			Cookie[] cookies = request.getCookies();
-			String projectCookieVal = "";
+			String studyCookieVal = "";
 			boolean hasRead = false;
 			
 			if(cookies != null) {
 				for(Cookie c : cookies) {
 					String name = c.getName();
 					String value = c.getValue();
-					if("projectCookie".equals(name)) {
-						projectCookieVal = value;
+					if("studyCookie".equals(name)) {
+						studyCookieVal = value;
 						if(value.contains("[" + psNo + "]")) {
 							hasRead = true;
 						}
@@ -52,37 +49,45 @@ public class ProjectViewServlet extends HttpServlet {
 			
 			// 쿠키처리
 			if(!hasRead) {
-				Cookie cookie = new Cookie("projectCookie", projectCookieVal + "[" + psNo + "]");
-				cookie.setPath(request.getContextPath() + "/gathering/projectView");
+				Cookie cookie = new Cookie("studyCookie", studyCookieVal + "[" + psNo + "]");
+				cookie.setPath(request.getContextPath() + "/gathering/studyView");
 				cookie.setMaxAge(365 * 24 * 60 * 60);
 				response.addCookie(cookie);
-				System.out.println("[projectCookie 새로 발급되었음 : " + cookie.getValue() + "]");
+				System.out.println("[studyCookie 새로 발급되었음 : " + cookie.getValue() + "]");
 			}
 			
 			
 			
 			// 2. 업무로직
 			// 게시글조회 및 조회수 증가처리
-			Gathering project = hasRead ? gatheringService.findByNo(psNo) : gatheringService.findByNo(psNo, hasRead);								
-			System.out.println("project = " + project);
+			Gathering study = hasRead ? gatheringService.findByNo(psNo) : gatheringService.findByNo(psNo, hasRead);								
+			System.out.println("study = " + study);
 			
 			// XSS공격대비 (Cross-site Scripting)
-			project.setTitle(ComembusUtils.escapeXml(project.getTitle()));
-			project.setContent(ComembusUtils.escapeXml(project.getContent()));
+			study.setTitle(ComembusUtils.escapeXml(study.getTitle()));
+			study.setContent(ComembusUtils.escapeXml(study.getContent()));
 			
 			// 개행문자 변환처리
-			project.setContent(ComembusUtils.convertLineFeedToBr(project.getContent()));
+			study.setContent(ComembusUtils.convertLineFeedToBr(study.getContent()));
 //			
 			
 			// 3. view단 처리
-			request.setAttribute("project", project);
-			request.getRequestDispatcher("/WEB-INF/views/gathering/projectDetailView.jsp")
+			request.setAttribute("study", study);
+			request.getRequestDispatcher("/WEB-INF/views/gathering/studyDetailView.jsp")
 				.forward(request, response);
 			
 		}catch(Exception e) {
 			e.printStackTrace();
 			throw e;
 		}
+	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
 	}
 
 }

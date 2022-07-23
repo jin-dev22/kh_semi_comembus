@@ -83,6 +83,63 @@ public class MemberService {
 		return checkNickname;
 	}
 	
+	/**
+	 * 관리자 - 회원권한 변경
+	 */
+	public int updateMemberRole(Member member) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			result = memberDao.updateMemberRole(conn, member);
+			commit(conn);
+		} catch (Exception e) {
+			rollback(conn);
+			throw e;
+		} finally {
+			close(conn);
+		}
+		return result;
+	}
+	
+	/**
+	 * 관리자 - 특정 회원 검색
+	 */
+	public List<Member> adminFindMemberLike(Map<String, Object> param) {
+		Connection conn = getConnection();
+		List<Member> memberList = memberDao.adminFindMemberLike(conn, param);
+		close(conn);
+		return memberList;
+	}
+	
+	/**
+	 * 관리자 - 특정 회원 검색에 대한 회원 수 반환(페이징)
+	 */
+	public int adminGetTotalMemberNumLike(Map<String, Object> param) {
+		Connection conn = getConnection();
+		int totalMember = memberDao.adminGetTotalMemberNumLike(conn, param);
+		close(conn);
+		return totalMember;
+	}
+	
+	/**
+	 * 관리자 - 당일 회원가입 수
+	 */
+	public int getMemberEnrollNumToday() {
+		Connection conn = getConnection();
+		int memberEnrollNumToday = memberDao.getMemberEnrollNumToday(conn);
+		close(conn);
+		return memberEnrollNumToday;
+	}
+	
+	/**
+	 * 관리자 - 조회 기간 회원가입 수
+	 */
+	public int getMemberEnrollNumPeriod(Map<String, Object> param) {
+		Connection conn = getConnection();
+		int memberEnrollNumPeriod = memberDao.getMemberEnrollNumPeriod(conn, param);
+		close(conn);
+		return memberEnrollNumPeriod;
+	}
 	// 미송 코드 끝
 	
 	

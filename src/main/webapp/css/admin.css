@@ -1,4 +1,4 @@
-/*관리자 페이지 : 회원관리 */
+/* ------------------------- 회원관리 ----------------------------- */
 #memberList-container { 
 	width: 1200px;
 	left: 0;
@@ -31,6 +31,37 @@
 	margin:0 0 30px 0; 
 	padding:15px; 
 	background-color: var(--yellow-color);
+}
+
+.search-option{
+    padding: 7px;
+    margin: 2px;
+}
+
+.search-input{
+    padding: 5px;
+    margin: 2px;
+}
+
+#memberFinderBtn{
+	background-color: var(--btn-color);
+    border-color: var(--btn-color);
+    border-style: none;
+    border-radius: 3px;
+    width: fit-content;
+    padding: 7px;
+    margin-left: 10px;
+    color: white;
+}
+
+#memberFinderBtn:hover{
+  cursor: pointer;
+  background-color: #77a0e2;
+  color: black;
+}
+
+.member-role{
+	padding: 5px;
 }
 
 #quitMember{
@@ -69,4 +100,80 @@
 
 #pagebar a:hover {
 	text-decoration: underline;
+}
+
+
+/* ------------------------- 통계관리 ----------------------------- */
+.statistics{
+	width: 1200px;
+	left: 0;
+	right: 0;
+	margin: 50px auto;
+	text-align:center;
+	font-family: var(--elice-font);
+}
+
+.statistics-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 50px;
+}
+
+.member-enroll-statistics{
+	width: 300px;
+	height: 200px;
+	border: 1px solid var(--yellow-color);
+	text-align: center; 
+	margin: 0 50px 70px 50px;
+}
+
+.preiod-statistics-container .member-enroll-statistics{
+	margin: 20px auto;	
+}
+.statistics-title{
+	display: block;
+	height: fit-content;
+	background-color: var(--yellow-color);
+	padding: 15px;
+	font-size: 20px;
+}
+
+.statistics-num{
+	display: block;
+	padding: 30px;
+	font-size: 28px;
+}
+
+.statistics-date{
+	display: block;
+	padding: 10px;
+	font-size: 14px;
+}
+
+.preiod-statistics-container{
+	margin-top: 30px;
+	text-align: center;
+}
+
+.date-input{
+    padding: 5px;
+    margin: 0 10px 20px 0;
+}
+
+#statisticsViewBtn{
+	background-color: var(--btn-color);
+    border-color: var(--btn-color);
+    border-style: none;
+    border-radius: 3px;
+    width: fit-content;
+    padding: 7px;
+    margin-left: 10px;
+    color: white;
+}
+
+#statisticsViewBtn:hover{
+  cursor: pointer;
+  background-color: #77a0e2;
+  color: black;
 }
