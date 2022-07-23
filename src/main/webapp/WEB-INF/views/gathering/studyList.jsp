@@ -15,6 +15,284 @@
 	String type = request.getParameter("searchType");
 	String keyword = request.getParameter("searchKeyword");
 %>
+<script>
+const bookmarkFilter = (num) => {
+	// 체크 시 다른 필터 체크 해제처리해야함
+	$("#p__local").prop('checked', false);
+	$("#p__job_code").prop('checked', false);
+	$("#p__status").prop('checked', false);
+	
+	const bookmarkYN = $("#s__bookmark").is(':checked') ? "Y" : "All";
+	let memberId = "";
+	<% if(loginMember == null){ %>
+		alert("로그인 후 이용해주세요");
+		$("#s__bookmark").prop('checked', false);
+		return;
+	<%	} %>
+	<% if(loginMember != null){ %>
+		memberId = '<%= loginMember.getMemberId() %>';
+	<%
+		}	
+	%>
+	let cPage = num;
+	const numPerPage = 12;
+	let totalPages = 0;
+	
+	$.ajax({
+		url: '<%= request.getContextPath() %>/gathering/searchStdBookmark',
+		data: {
+			cPage: cPage,
+			bookmarkYN: bookmarkYN,
+			memberId: memberId
+			},
+		success(bookmarkFilterLists){
+			const {bookmarkList, studyList, totalContent, cPage} = bookmarkFilterLists;
+ 				console.log(">> bookmarkList = ", bookmarkList);
+ 				console.log(">> studyList = ", studyList);
+ 				
+				if(bookmarkList == null){
+					alert("찜한 스터디가 존재하지 않습니다.");
+					location.reload();
+					return;
+				}
+				if(studyList == ""){
+					document.querySelector(".ps-lists").innerHTML =
+						bookmarkList.reduce((html, bookmarkStd, index) => {
+							const {psNo, title, viewcount, bookmark, topic, recruited_cnt, people} = bookmarkStd;
+							console.log("@@@bookmarkStd ", bookmarkStd);
+							// console.log("html ", html);
+							console.log(">>@@ 확인용", psNo, title, viewcount, bookmark, topic, recruited_cnt, people); // 확인용
+							
+							return `\${html}
+							<div class="ps-pre">
+								<a href="">
+									<img src="<%= request.getContextPath() %>/images/\${topic}.jpg" class="ps-pre__img" alt="해당 스터디 주제 이미지">
+								</a>
+								<p class="bold">\${topic === 'Planning' ? '기획' : (topic === 'Design' ? '디자인' : (topic === 'Frontend' ? '프론트엔드' : (topic === 'Backend' ? '백엔드' : (topic === 'Interview' ? '면접' : '코딩테스트'))))}</p>
+								<p class="bold ps-title">\${title}</p>
+								<ul class="ps-pre__etc">
+									<li>
+										<span class="heart-emoji">&#9829;</span>\${bookmark}
+									</li>
+									<li>
+										<span>&#128064;</span>\${viewcount}
+									</li>
+									<li>모집인원 \${recruited_cnt} / \${people}</li>
+								</ul>
+								<div class="ps__bookmark">
+									<button class='bookmark-back' value='\${psNo}'>♥</button>
+									<button style='display:none' class='bookmark-front' value='\${psNo}'>♡</button>
+								</div>
+							</div>
+							`;
+						}, "");
+				}
+				else {
+					document.querySelector(".ps-lists").innerHTML =
+						studyList.reduce((html, studyListAll, index) => {
+							const {psNo, title, viewcount, bookmark, topic, recruited_cnt, people} = studyListAll;
+							console.log("@@@bookmarkStd ", studyListAll);
+							console.log(">>@@ 확인용", psNo, title, viewcount, bookmark, topic, recruited_cnt, people); // 확인용
+							
+							let tagFront = "";
+							let tagBack = "";
+							outer:
+							for(let i = 0; i < bookmarkList.length; i++){
+								if(psNo == bookmarkList[i].psNo){
+									tagBack = "<button class='bookmark-back' value='\${psNo}'>♥</button>";
+									tagFront = "<button style='display:none' class='bookmark-front' value='\${psNo}'>♡</button>";
+									break outer;
+								} else {
+									tagBack = "<button style='display:none' class='bookmark-back' value='\${psNo}'>♥</button>";
+									tagFront = "<button class='bookmark-front' value='\${psNo}'>♡</button>";
+								}
+							};
+							
+							return `\${html}
+							<div class="ps-pre">
+								<a href="">
+									<img src="<%= request.getContextPath() %>/images/\${topic}.jpg" class="ps-pre__img" alt="해당 스터디 주제 이미지">
+								</a>
+								<p class="bold">\${topic === 'Planning' ? '기획' : (topic === 'Design' ? '디자인' : (topic === 'Frontend' ? '프론트엔드' : (topic === 'Backend' ? '백엔드' : (topic === 'Interview' ? '면접' : '코딩테스트'))))}</p>
+								<p class="bold ps-title">\${title}</p>
+								<ul class="ps-pre__etc">
+									<li>
+										<span class="heart-emoji">&#9829;</span>\${bookmark}
+									</li>
+									<li>
+										<span>&#128064;</span>\${viewcount}
+									</li>
+									<li>모집인원 \${recruited_cnt} / \${people}</li>
+								</ul>
+								<div class="ps__bookmark">
+									\${tagBack}
+									\${tagFront}
+								</div>
+							</div>
+							`;
+						}, "");
+				}
+			
+			if(totalContent != 0){
+				totalPages = Math.ceil(totalContent / numPerPage);
+				// pageLink(현재페이지, 전체페이지, 호출할 함수 이름)
+				let htmlStr = pageLink(cPage, totalPages, "bookmarkFilter");
+				$("#pagebar").html("");
+				$("#pagebar").html(htmlStr);
+			} else {
+				
+			}
+		},
+		error: console.log
+	});
+}; 
+
+const gatheringFilter = (num) => {
+	$("#s__bookmark").prop('checked', false);
+	
+	const localAll = $("#p__local").val();
+	const jobAll = $("#p__job_code").val();
+	const statusYN = $("#p__status").is(':checked') ? "N" : "All";
+	let memberId = "";
+<% if(loginMember != null){ %>
+	memberId = '<%= loginMember.getMemberId() %>';
+<%
+	}
+%>
+	let cPage = num;
+	const numPerPage = 12;
+	let totalPages = 0;
+	
+	let searchLocal = 'local';
+	let searchJobcode = 'jobcode';
+	let selectLocalKeyword = localAll;
+	let selectJobKeyword = jobAll;
+
+	console.log("statusYN = ", statusYN); // 확인용
+	console.log("memberId = ", memberId) // 확인용
+	$.ajax({
+		url: '<%= request.getContextPath() %>/gathering/searchStdFilter',
+		data: {
+			cPage: cPage,
+			searchLocal: searchLocal,
+			searchJobcode: searchJobcode,
+			selectLocalKeyword: selectLocalKeyword,
+			selectJobKeyword: selectJobKeyword,
+			statusYN : statusYN,
+			memberId: memberId
+			},
+		success(studySelectLists){
+			console.log(">>> studySelectLists", studySelectLists); // 확인용
+			const {studyList, totalContent, cPage, bookmarkList} = studySelectLists;
+			
+			document.querySelector(".ps-lists").innerHTML =
+				// 스터디 필터링
+				studyList.reduce((html, selectList, index) => {
+					const {psNo, title, viewcount, bookmark, topic, recruited_cnt, people} = selectList;
+					// bookmark 개수 쿼리문 다시 작성해야함
+					console.log(">>> 확인용 ", psNo, title, viewcount, bookmark, topic, recruited_cnt, people); // 확인용
+					console.log(">>> #bookmarkList", bookmarkList);
+					let tagFront = "";
+					let tagBack = "";
+					
+					outer:
+	 				for(let i = 0; i < bookmarkList.length; i++){
+	 					console.log(bookmarkList[i].psNo);
+	 					console.log(psNo);
+	 					if(psNo == bookmarkList[i].psNo){
+	 						tagBack = "<button class='bookmark-back' value='\${psNo}'>♥</button>";
+	 						tagFront = "<button style='display:none' class='bookmark-front' value='\${psNo}'>♡</button>";
+	 						break outer;
+	 					} else {
+	 						tagBack = "<button style='display:none' class='bookmark-back' value='\${psNo}'>♥</button>";
+	 						tagFront = "<button class='bookmark-front' value='\${psNo}'>♡</button>";
+	 					}
+					};
+					return `\${html}
+					<div class="ps-pre">
+						<a href="">
+							<img src="<%= request.getContextPath() %>/images/\${topic}.jpg" class="ps-pre__img" alt="해당 스터디 주제 이미지">
+						</a>
+						<p class="bold">\${topic === 'Planning' ? '기획' : (topic === 'Design' ? '디자인' : (topic === 'Frontend' ? '프론트엔드' : (topic === 'Backend' ? '백엔드' : (topic === 'Interview' ? '면접' : '코딩테스트'))))}</p>
+						<p class="bold ps-title">\${title}</p>
+						<ul class="ps-pre__etc">
+							<li>
+								<span class="heart-emoji">&#9829;</span>\${bookmark}
+							</li>
+							<li>
+								<span>&#128064;</span>\${viewcount}
+							</li>
+							<li>모집인원 \${recruited_cnt} / \${people}</li>
+						</ul>
+						<div class="ps__bookmark">
+						<% if(loginMember == null){ %>
+							<button class="bookmark-front" value="\${psNo}">♡</button>
+						<% } %>
+						<% if(loginMember != null){ %>
+							\${tagBack}
+							\${tagFront}
+						<%
+						}
+						%>
+						</div>
+					</div>
+					`;
+				}, '');
+
+			if(totalContent != 0){
+				totalPages = Math.ceil(totalContent / numPerPage);
+				// pageLink(현재페이지, 전체페이지, 호출할 함수 이름)
+				let htmlStr = pageLink(cPage, totalPages, "gatheringFilter");
+				$("#pagebar").html("");
+				$("#pagebar").html(htmlStr);
+			} else {
+				alert("해당 스터디가 존재하지 않습니다.");
+			}
+		},
+		error: console.log
+	});
+};
+
+function pageLink(cPage, totalPages, funName){
+	cPage = Number(cPage);
+	totalPages = Number(totalPages);
+	let pagebarTag = "";
+	const pagebarSize = 5;
+	let pagebarStart = (Math.floor((cPage - 1) / pagebarSize) * pagebarSize) + 1;
+	let pagebarEnd = pagebarStart + pagebarSize - 1;
+	let pageNo = pagebarStart;
+	console.log("cPage, totalPages, funName = ", cPage, totalPages, funName); // 확인용
+	console.log("pagebarStart, pagebarEnd, pageNo = ", pagebarStart, pagebarEnd, pageNo); // 확인용
+	
+	// 이전영역
+	if(pageNo == 1) {
+		
+	}
+	else {
+		pagebarTag += "<a href='javascript:" + funName + "(" + (pageNo - 1) + ");'>이전</a>\n";
+	}
+	// pageNo영역
+	while(pageNo <= pagebarEnd && pageNo <= totalPages) {
+		// 현재페이지
+		if(pageNo == cPage) {
+			pagebarTag += "<span class='cPage'>" + pageNo + "</span>\n";
+		}
+		// 현재페이지가 아닌 경우
+		else {
+			pagebarTag += "<a href='javascript:" + funName + "(" + pageNo + ");'>" + pageNo + "</a>\n";
+		}
+		pageNo++;
+	}
+	// 다음영역
+	if(pageNo > totalPages) {}
+	else {
+		pagebarTag += "<a href='javascript:" + funName + "(" + pageNo + ")'>다음</a>\n";
+	}
+	console.log(pagebarTag);
+	return pagebarTag;
+};
+
+</script>
 
 	<section class="gathering">
 		<!-- 모임페이지 시작 -->
@@ -184,7 +462,6 @@ document.querySelectorAll(".ps__bookmark").forEach((bookmark) => {
 		const frmAdd = document.addBookmarkFrm;
 		const frmDel = document.delBookmarkFrm;
 		let psnum = mark.value;
-		console.log("북마크 타겟 넘버", psnum); // 확인용
 
 		if(mark.classList.contains("bookmark-front")) {
 			mark.style.display = 'none';
@@ -197,7 +474,7 @@ document.querySelectorAll(".ps__bookmark").forEach((bookmark) => {
 		} else {
 			mark.style.display = 'none';
 			mark.nextElementSibling.style.display = 'block';
-			const delBookPs = document.querySelector("#addBookStd");
+			const delBookPs = document.querySelector("#delBookStd");
 			delBookPs.value = psnum;
 			frmDel.submit();
 		}

@@ -22,8 +22,8 @@ import kh.semi.comembus.gathering.model.service.GatheringService;
 /**
  * Servlet implementation class SearchLocalServlet
  */
-@WebServlet("/gathering/searchFilter")
-public class SearchLocalServlet extends HttpServlet {
+@WebServlet("/gathering/searchProFilter")
+public class SearchProFilterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private GatheringService gatheringService = new GatheringService();
 

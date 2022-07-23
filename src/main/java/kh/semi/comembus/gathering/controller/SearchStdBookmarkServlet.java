@@ -18,13 +18,13 @@ import kh.semi.comembus.gathering.model.dto.Gathering;
 import kh.semi.comembus.gathering.model.service.GatheringService;
 
 /**
- * Servlet implementation class SearchBookmarkServlet
+ * Servlet implementation class SearchStdBookmarkServlet
  */
-@WebServlet("/gathering/searchBookmark")
-public class SearchBookmarkServlet extends HttpServlet {
+@WebServlet("/gathering/searchStdBookmark")
+public class SearchStdBookmarkServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private GatheringService gatheringService = new GatheringService();
-       
+
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -41,46 +41,49 @@ public class SearchBookmarkServlet extends HttpServlet {
 			String bookmarkYN = request.getParameter("bookmarkYN");
 			// 로그인을 했다면 memberId가, 안했다면 "" 공백문자가
 			String memberId = request.getParameter("memberId");
+			String type = "S";
 			
-			System.out.println(">>> 확인용 bookmarkYN = " + bookmarkYN);
-			System.out.println(">>> 확인용 memberId = " + memberId);
+			System.out.println(">>> 23일 스터디 확인용 bookmarkYN = " + bookmarkYN);
+			System.out.println(">>> 23일 스터디 확인용 memberId = " + memberId);
 			
 			Map<String, Object> param = new HashMap<>();
 			param.put("memberId", memberId);
 			param.put("bookmarkYN", bookmarkYN);
 			param.put("start", (cPage - 1) * numPerPage + 1);
 			param.put("end", cPage * numPerPage);
-			System.out.println(">>> 확인용 param = " + param); // 여기까지 확인완료
+			param.put("type", type);
+			
+			System.out.println(">>> 23일 스터디 확인용 param = " + param);
 			
 			// 2. 업무로직
 			// bookmark 영역
 			List<Gathering> bookmarkList = new ArrayList<>();
 			if(memberId != null && "Y".equals(bookmarkYN)) { // 로그인멤버가 있고, 찜한거 체크 시
-				bookmarkList = gatheringService.findProBookmarkFilter(param);
+				bookmarkList = gatheringService.findStdBookmarkFilter(param);
 			}
 			System.out.println("> 3 <");
-			List<Gathering> projectList = new ArrayList<>();
+			List<Gathering> studyList = new ArrayList<>();
 			Map<String, Object> bmParam = new HashMap<>();
 			if(memberId != null && "All".equals(bookmarkYN)) {
-				projectList = gatheringService.findGatheringAll(param);	
+				studyList = gatheringService.findGatheringAll(param);
 				bmParam.put("loginMemberId", memberId);
-				bookmarkList = gatheringService.findAllProBookmarked(bmParam);
+				bookmarkList = gatheringService.findAllStdBookmarked(bmParam);
 				System.out.println(">>> memberId " + memberId);
 				System.out.println(">>> bmParam = " + bmParam);
+				System.out.println("> 4 <");
 			};
-			System.out.println("> 4 <");
 			// pagebar 영역
 			int totalContent = gatheringService.getTotalBookmarkFilter(param);
 			
 			System.out.println(">>> 필터링확인용 bookmarkList: " + bookmarkList); // 확인용
-			System.out.println(">>> 필터링확인용 projectList: " + projectList); // 확인용
+			System.out.println(">>> 필터링확인용 studyList = " + studyList); // 확인용
 			System.out.println(">>> 필터링 totalContent = " + totalContent); // 확인용
 			System.out.println(">>> cPage = " + cPage);
 			
 			response.setContentType("application/json; charset=utf-8");
 			Map<String, Object> bookmarkFilterLists = new HashMap<>();
 			bookmarkFilterLists.put("bookmarkList", bookmarkList);
-			bookmarkFilterLists.put("projectList", projectList);			
+			bookmarkFilterLists.put("studyList", studyList);			
 			bookmarkFilterLists.put("totalContent", totalContent);
 			bookmarkFilterLists.put("cPage", cPage);
 			
@@ -92,6 +95,7 @@ public class SearchBookmarkServlet extends HttpServlet {
 			throw e;
 		}
 	}
+
 
 
 }

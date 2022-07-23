@@ -492,9 +492,7 @@ public class MemberDao {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, (String) param.get("memberId"));
 			pstmt.setInt(2, (int) param.get("psNo"));
-			
 			result = pstmt.executeUpdate();
-			System.out.println("@북마크 추가 result = " + result);
 			
 		} catch (SQLException e) {
 			throw new MemberException("찜 추가 오류", e);
@@ -508,14 +506,13 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		String sql = prop.getProperty("deleteBookmark");
+		String memberId = (String) param.get("memberId");
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, (String) param.get("memberId"));
+			pstmt.setString(1, memberId);
 			pstmt.setInt(2, (int) param.get("psNo"));
-			
 			result = pstmt.executeUpdate();
-			System.out.println("@북마크 삭제 result = " + result);
 			
 		} catch (SQLException e) {
 			throw new MemberException("찜 삭제 오류", e);

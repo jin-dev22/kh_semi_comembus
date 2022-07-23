@@ -40,7 +40,7 @@ const bookmarkFilter = (num) => {
 	let totalPages = 0;
 	
 	$.ajax({
-		url: '<%= request.getContextPath() %>/gathering/searchBookmark',
+		url: '<%= request.getContextPath() %>/gathering/searchProBookmark',
 		data: {
 			cPage: cPage,
 			bookmarkYN: bookmarkYN,
@@ -171,7 +171,7 @@ const gatheringFilter = (num) => {
 	console.log("statusYN = ", statusYN); // 확인용
 	console.log("memberId = ", memberId) // 확인용
 	$.ajax({
-		url: '<%= request.getContextPath() %>/gathering/searchFilter',
+		url: '<%= request.getContextPath() %>/gathering/searchProFilter',
 		data: {
 			cPage: cPage,
 			searchLocal: searchLocal,
