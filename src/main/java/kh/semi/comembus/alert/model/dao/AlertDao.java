@@ -26,10 +26,10 @@ public class AlertDao {
 	}
 	
 	
-	public int insertCancelAlert(Connection conn, Alert alert) {
+	public int insertGatheringAlert(Connection conn, Alert alert) {
 		PreparedStatement pstmt = null;
 		int result = 0;
-		String sql = prop.getProperty("insertCancelAlert");
+		String sql = prop.getProperty("insertGatheringAlert");
 		//insert into member_notification values(seq_alert_no.nextval, ?, ?, null, ?, ?, default)
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -67,4 +67,5 @@ public class AlertDao {
 		}	
 		return result;
 	}
+
 }

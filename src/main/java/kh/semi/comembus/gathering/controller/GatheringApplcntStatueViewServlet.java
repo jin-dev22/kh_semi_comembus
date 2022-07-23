@@ -13,7 +13,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
+import kh.semi.comembus.alert.model.dto.Alert;
+import kh.semi.comembus.alert.model.dto.IsRead;
+import kh.semi.comembus.alert.model.dto.MessageType;
+import kh.semi.comembus.alert.model.service.AlertService;
 import kh.semi.comembus.common.ComembusUtils;
+import kh.semi.comembus.gathering.model.dto.Gathering;
 import kh.semi.comembus.gathering.model.dto.GatheringExt;
 import kh.semi.comembus.gathering.model.dto.GatheringType;
 import kh.semi.comembus.gathering.model.service.GatheringService;
@@ -29,6 +34,7 @@ public class GatheringApplcntStatueViewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private GatheringService gatheringService = new GatheringService();
 	private MemberService memberService = new MemberService();
+	private AlertService alertService = new AlertService();
 	/**
 	 * 모임 상세보기 페이지에서 지원현황 탭 클릭시 페이지 이동.
 	 */
@@ -129,8 +135,15 @@ public class GatheringApplcntStatueViewServlet extends HttpServlet {
 		result = _result > 0;
 			
 		//알림테이블 insert
+		String nickName = request.getParameter("nickName");
+		Gathering gather = gatheringService.findByNo(psNo);
+		//알림내용 글자 수 줄이기
+		String title = gather.getTitle();
+		String substrTitle = title.length() > 8? title.substring(0, 7)+"...": title;
+		String alertContent = "["+substrTitle +"]에 지원자가 있습니다.";
 		
-		//만약 지원결과가 O라면 project_member_dept에 insert처리
+		Alert alert = new Alert(0, gather.getWriter(), psNo, 0, MessageType.APPLY_CANCELED, alertContent, IsRead.N);
+		_result = alertService.notifyNewAplcnt(alert);
 		
 		//응답
 		response.setContentType("application/json; charset=utf-8");

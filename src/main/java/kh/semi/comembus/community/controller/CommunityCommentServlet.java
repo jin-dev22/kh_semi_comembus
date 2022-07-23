@@ -1,12 +1,14 @@
 package kh.semi.comembus.community.controller;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import kh.semi.comembus.alert.model.dto.Alert;
 import kh.semi.comembus.alert.model.dto.IsRead;
@@ -42,11 +44,15 @@ public class CommunityCommentServlet extends HttpServlet {
 			
 			//게시글작성자에게 댓글알림
 			Community comm = communityService.findByCommuNo(coNo);
+			Map<String, Object> param = new HashMap<>();
+			param.put("coNo", coNo);
+			param.put("writer", writer);
+			int replNo = communityService.getLastReplNoByMemIdCoNo(param);
 			String title = comm.getCoTitle();
 			String substrTitle = title.length() > 8? title.substring(0, 7)+"...": title;
 			String alertContent = "["+substrTitle +"]에 새 댓글이 달렸습니다.";
 			
-			Alert alert = new Alert(0, writer, 0, coNo, MessageType.NEW_COMMENT, alertContent, IsRead.N);
+			Alert alert = new Alert(0, writer, 0, replNo, MessageType.NEW_COMMENT, alertContent, IsRead.N);
 			result = alertService.notifyNewComment(alert);
 			
 			if("Q".equals(type)) {

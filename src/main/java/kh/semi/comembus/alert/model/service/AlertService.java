@@ -27,9 +27,9 @@ public class AlertService {
 		int result = 0;
 		try {
 			// db insert
-			result = alertDao.insertCancelAlert(conn, alert);
+			result = alertDao.insertReplAlert(conn, alert);
 			//user alert
-			if(ComembusWebSocket.isConnected(alert.getReceiverId())) {
+			if(ComembusWebSocket.isConnected(alert.getReceiverId())&& result == 1) {
 				System.out.println(">새댓글 알림. 수신자 접속중..");
 				ComembusWebSocket.sendMessage(MessageType.NEW_COMMENT, handleAlertData(alert));
 			}
@@ -52,11 +52,36 @@ public class AlertService {
 		int result = 0;
 		try {
 			// db insert
-			result = alertDao.insertCancelAlert(conn, alert);
+			result = alertDao.insertGatheringAlert(conn, alert);
 			//user alert
 			if(ComembusWebSocket.isConnected(alert.getReceiverId()) && result == 1) {
 				System.out.println(">지원취소 알림. 수신자 접속중..");
 				ComembusWebSocket.sendMessage(MessageType.APPLY_CANCELED, handleAlertData(alert));
+			}
+			commit(conn);
+		} catch (Exception e) {
+			rollback(conn);
+			throw e;
+		} finally {
+			close(conn);
+		}
+		return result;
+	}
+	
+	/**
+	 * 모임 지원자발생 알림
+	 */
+	public int notifyNewAplcnt(Alert alert) {
+		Connection conn = getConnection();
+		System.out.println("@알림서비스:신규지원자");
+		int result = 0;
+		try {
+			// db insert
+			result = alertDao.insertGatheringAlert(conn, alert);
+			//user alert
+			if(ComembusWebSocket.isConnected(alert.getReceiverId()) && result == 1) {
+				System.out.println(">지원자 발생 알림. 수신자 접속중..");
+				ComembusWebSocket.sendMessage(MessageType.NEW_APPLICANT, handleAlertData(alert));
 			}
 			commit(conn);
 		} catch (Exception e) {
