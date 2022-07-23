@@ -26,8 +26,7 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 %>
 <button id="ststatue">
 	<a
-		href="<%=request.getContextPath()%>/gathering/showApplicants?psNo=<%=gathering.getPsNo()%>">지원자
-		현황</a>
+		href="<%=request.getContextPath()%>/gathering/showApplicants?psNo=<%=gathering.getPsNo()%>">지원자 현황</a>
 </button>
 <%
 }
@@ -75,6 +74,7 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 <br>
 <br>
 <hr>
+
 <input type="button" id="bookmark" onclick="bookmark()"
 	value="이 프로젝트 찜하기"></input>
 <input type="button" id="bookmarkCancel" onclick="bookmarkCancel()"
@@ -83,6 +83,7 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 <br>
 <br>
 <br>
+
 <!--로그인 했을 경우+작성자일 경우에만 되도록 설정하기-->
 <%
 if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId())) {
@@ -134,12 +135,12 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 
 	const applyStatue = document.querySelector('#statue');
 	const applyTotal = document.querySelector('#total');
-	if (cntStatue == cntTotal) {
+	if (applyStatue == applyTotal) {
 		const target = document.getElementById('apply');
 		target.disabled = true;
 		//처음부터 지원이 불가능한 경우 작성하기
 	}
-
+	
 </script>
 <%if(loginMember != null && gathering.getWriter().equals(loginMember.getMemberId())){ %>
 <form action="<%= request.getContextPath()%>/gathering/studyDelete"
@@ -148,7 +149,7 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 </form>
 <script>
 const updateStudy=()=>{
-	location.href="<%=request.getContextPath()%>/gathering/gatheringUpdate?psNo=<%=gathering.getPsNo()%>";
+	location.href="<%=request.getContextPath()%>/gathering/studyUpdateView?psNo=<%=gathering.getPsNo()%>";
 };
 const deleteStudy=()=>{
 	if(confirm("정말 스터디를 삭제하시겠습니까?")){
