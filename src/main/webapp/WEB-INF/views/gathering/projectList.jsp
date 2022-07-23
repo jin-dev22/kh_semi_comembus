@@ -56,7 +56,7 @@ const bookmarkFilter = (num) => {
 					location.reload();
 					return;
 				}
-				if(projectList == null){
+				if(projectList == ""){
 					document.querySelector(".ps-lists").innerHTML =
 						bookmarkList.reduce((html, bookmarkPro, index) => {
 							const {psNo, title, viewcount, bookmark, topic, recruited_cnt, people} = bookmarkPro;
@@ -88,23 +88,52 @@ const bookmarkFilter = (num) => {
 							`;
 						}, "");
 				}
-/* 			
-			let tagFront = "";
-			let tagBack = "";
-			
-			outer:
-				for(let i = 0; i < bookmarkList.length; i++){
-					console.log(bookmarkList[i].psNo);
-					console.log(psNo);
-					if(psNo == bookmarkList[i].psNo){
-						tagBack = "<button class='bookmark-back' value='\${psNo}'>♥</button>";
-						tagFront = "<button style='display:none' class='bookmark-front' value='\${psNo}'>♡</button>";
-						break outer;
-					} else {
-						tagBack = "<button style='display:none' class='bookmark-back' value='\${psNo}'>♥</button>";
-						tagFront = "<button class='bookmark-front' value='\${psNo}'>♡</button>";
-					}
-			}; */
+				else {
+
+					document.querySelector(".ps-lists").innerHTML =
+						projectList.reduce((html, projectListAll, index) => {
+							const {psNo, title, viewcount, bookmark, topic, recruited_cnt, people} = projectListAll;
+							console.log("@@@bookmarkPro ", projectListAll);
+							console.log(">>@@ 확인용", psNo, title, viewcount, bookmark, topic, recruited_cnt, people); // 확인용
+							
+							let tagFront = "";
+							let tagBack = "";
+							outer:
+							for(let i = 0; i < bookmarkList.length; i++){
+								if(psNo == bookmarkList[i].psNo){
+									tagBack = "<button class='bookmark-back' value='\${psNo}'>♥</button>";
+									tagFront = "<button style='display:none' class='bookmark-front' value='\${psNo}'>♡</button>";
+									break outer;
+								} else {
+									tagBack = "<button style='display:none' class='bookmark-back' value='\${psNo}'>♥</button>";
+									tagFront = "<button class='bookmark-front' value='\${psNo}'>♡</button>";
+								}
+							};
+							
+							return `\${html}
+							<div class="ps-pre">
+								<a href="">
+									<img src="<%= request.getContextPath() %>/images/\${topic}.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
+								</a>
+								<p class="bold">\${topic === 'social' ? '소셜네트워크' : (topic === 'game' ? '게임' : (topic === 'travel' ? '여행' : (topic === 'finance' ? '금융' : '이커머스')))}</p>
+								<p class="bold ps-title">\${title}</p>
+								<ul class="ps-pre__etc">
+									<li>
+										<span class="heart-emoji">&#9829;</span>\${bookmark}
+									</li>
+									<li>
+										<span>&#128064;</span>\${viewcount}
+									</li>
+									<li>모집인원 \${recruited_cnt} / \${people}</li>
+								</ul>
+								<div class="ps__bookmark">
+									\${tagBack}
+									\${tagFront}
+								</div>
+							</div>
+							`;
+						}, "");
+				}
 			
 			if(totalContent != 0){
 				totalPages = Math.ceil(totalContent / numPerPage);
