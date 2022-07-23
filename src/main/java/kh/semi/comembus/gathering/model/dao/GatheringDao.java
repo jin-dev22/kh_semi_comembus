@@ -880,6 +880,28 @@ public class GatheringDao {
 		return rctdCnt;
 	}
 	
+	public int enrollDeptCnt(Connection conn, Map<String, Object> param) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("enrollProjectDept");
+		String jobCode = (String)param.get("jobCode");
+		int cnt = (int)param.get("cnt");
+		try {//psNo jobCode cnt
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, (int)param.get("psNo"));
+			pstmt.setString(2, jobCode);
+			pstmt.setInt(3, cnt);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new GatheringException("직무별 정원 등록 오류", e);
+		} finally {
+			close(pstmt);
+		}			
+		
+		return result;
+	}
+
+	
 	//수진코드 끝
 	
 	// 유경 코드 시작
@@ -898,7 +920,7 @@ public class GatheringDao {
 //			pstmt.setInt(7, project.getBookmark());
 			pstmt.setString(4, project.getTopic());
 			pstmt.setString(5, project.getLocal());
-			pstmt.setInt(6, project.getPeople());
+			pstmt.setInt(6, project.getPeople());//people추후 설정하기
 //			pstmt.setString(8, project.getStatus().name());
 			pstmt.setDate(7, project.getStartDate());
 			pstmt.setDate(8, project.getEndDate());
@@ -1013,38 +1035,7 @@ public class GatheringDao {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		String sql = prop.getProperty("enrollProjectDep");
-		
-		String planning = projectDep.getPlanning();
-		String design = projectDep.getDesign();
-		String frontend = projectDep.getFrontend();
-		String backend = projectDep.getBackend();
-		int planningCnt = projectDep.getPlanning_cnt();
-		int designCnt = projectDep.getDesign_cnt();
-		int frontendCnt = projectDep.getFrontend_cnt();
-		int backendCnt = projectDep.getBackend_cnt();
-		String fetch = "";
-		int psNo = (int)projectDep.getPsNo();
-		if(planning != "") {
-			sql = sql.replace("[str1]", "insert into project_member_dept values(seq_p_m_dept_no.nextval, "+psNo+", 'PL', " + planningCnt + ", default)");
-		}else {
-			sql = sql.replace("[str1]", fetch);
-		}
-		if(design!= "") {
-			sql = sql.replace("[str2]", "insert into project_member_dept values(seq_p_m_dept_no.nextval, "+psNo+", 'DG', " + designCnt + ", default);");
-		}else {
-			sql = sql.replace("[str2]", fetch);
-		}
-		if(frontend!= "") {
-			sql = sql.replace("[str3]", "insert into project_member_dept values(seq_p_m_dept_no.nextval,"+psNo+", 'FE', " + frontendCnt + ", default);");
-		}else {
-			sql = sql.replace("[str3]", fetch);
-		}
-		if(backend != "") {
-			sql = sql.replace("[str4]", "insert into project_member_dept values(seq_p_m_dept_no.nextval,"+psNo+", 'BE', " + backendCnt + ", default);");
-		}else {
-			sql = sql.replace("[str4]", fetch);
-		}
-		
+		//psNo dept cnt		
 		try {
 			pstmt = conn.prepareStatement(sql);
 			result = pstmt.executeUpdate();
