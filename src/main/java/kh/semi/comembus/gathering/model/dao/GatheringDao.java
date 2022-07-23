@@ -109,14 +109,17 @@ public class GatheringDao {
 		String selectLocalKeyword = (String) param.get("selectLocalKeyword");
 		String selectJobKeyword = (String) param.get("selectJobKeyword");
 		String statusYN = (String) param.get("statusYN");
+		int start = (int) param.get("start");
+		int end = (int) param.get("end");
 		System.out.println("DAO확인용 searchLocal = " + searchLocal);
 		System.out.println("DAO확인용 searchJobcode = " + searchJobcode);
 		System.out.println("DAO확인용 selectLocalKeyword = " + selectLocalKeyword);
 		System.out.println("DAO확인용 selectJobKeyword = " + selectJobKeyword);
 		System.out.println("DAO확인용 statusYN = " + statusYN);
+		System.out.println(">> DAO확인용 sql = " + sql);
 
-		// [str1] = "and exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('" + searchLocal + "'))"
-        // [str2] = "and exists (select 2 from project_member_dept where ps_no = ps.ps_no and job_code = '" + searchJobcode + "')"
+		// [str1] = "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))"
+        // [str2] = "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectJobKeyword + "') and capacity_number > recruited_number)"
 		// [str3] = "and status = '" + statusYN + "'"
 
 		// 랜딩페이지(필터 미지정시)
@@ -134,11 +137,11 @@ public class GatheringDao {
 			} else {
 				if("All".equals(statusYN)) {
 					sql = sql.replace("[str1]", " ");
-					sql = sql.replace("[str2]", "and exists (select 2 from project_member_dept where ps_no = ps.ps_no and job_code = '" + selectJobKeyword + "')");
+					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectJobKeyword + "') and capacity_number > recruited_number)");
 					sql = sql.replace("[str3]", " ");
 				} else {
 					sql = sql.replace("[str1]", " ");
-					sql = sql.replace("[str2]", "and exists (select 2 from project_member_dept where ps_no = ps.ps_no and job_code = '" + selectJobKeyword + "')");
+					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectJobKeyword + "') and capacity_number > recruited_number)");
 					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
 				}
 			}
@@ -146,32 +149,32 @@ public class GatheringDao {
 		else {
 			if("All".equals(selectJobKeyword)) {
 				if("All".equals(statusYN)) {
-					sql = sql.replace("[str1]", "and exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
+					sql = sql.replace("[str1]", "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
 					sql = sql.replace("[str2]", " ");
 					sql = sql.replace("[str3]", " ");
 				} else {
-					sql = sql.replace("[str1]", "and exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
+					sql = sql.replace("[str1]", "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
 					sql = sql.replace("[str2]", " ");
 					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
 				}
 			} else {
 				if("All".equals(statusYN)) {
-					sql = sql.replace("[str1]", "and exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
-					sql = sql.replace("[str2]", "and exists (select 2 from project_member_dept where ps_no = ps.ps_no and job_code = '" + selectJobKeyword + "')");
+					sql = sql.replace("[str1]", "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
+					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectJobKeyword + "') and capacity_number > recruited_number)");
 					sql = sql.replace("[str3]", " ");
 				} else {
-					sql = sql.replace("[str1]", "and exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
-					sql = sql.replace("[str2]", "and exists (select 2 from project_member_dept where ps_no = ps.ps_no and job_code = '" + selectJobKeyword + "')");
+					sql = sql.replace("[str1]", "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
+					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectJobKeyword + "') and capacity_number > recruited_number)");
 					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
 				}
 			}
 		}
-		System.out.println(sql);
+		System.out.println("@@ " + sql);
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, (int)param.get("start"));
-			pstmt.setInt(2, (int)param.get("end"));
+			pstmt.setInt(1, start);
+			pstmt.setInt(2, end);
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
 				GatheringExt gathering = handleGatheringResultSet(rset);
@@ -219,11 +222,11 @@ public class GatheringDao {
 			} else {
 				if("All".equals(statusYN)) {
 					sql = sql.replace("[str1]", " ");
-					sql = sql.replace("[str2]", "and exists (select 2 from project_member_dept where ps_no = ps.ps_no and job_code = '" + selectJobKeyword + "')");
+					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectJobKeyword + "') and capacity_number > recruited_number)");
 					sql = sql.replace("[str3]", " ");
 				} else {
 					sql = sql.replace("[str1]", " ");
-					sql = sql.replace("[str2]", "and exists (select 2 from project_member_dept where ps_no = ps.ps_no and job_code = '" + selectJobKeyword + "')");
+					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectJobKeyword + "') and capacity_number > recruited_number)");
 					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
 				}
 			}
@@ -231,22 +234,22 @@ public class GatheringDao {
 		else {
 			if("All".equals(selectJobKeyword)) {
 				if("All".equals(statusYN)) {
-					sql = sql.replace("[str1]", "and exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
+					sql = sql.replace("[str1]", "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
 					sql = sql.replace("[str2]", " ");
 					sql = sql.replace("[str3]", " ");
 				} else {
-					sql = sql.replace("[str1]", "and exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
+					sql = sql.replace("[str1]", "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
 					sql = sql.replace("[str2]", " ");
 					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
 				}
 			} else {
 				if("All".equals(statusYN)) {
-					sql = sql.replace("[str1]", "and exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
-					sql = sql.replace("[str2]", "and exists (select 2 from project_member_dept where ps_no = ps.ps_no and job_code = '" + selectJobKeyword + "')");
+					sql = sql.replace("[str1]", "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
+					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectJobKeyword + "') and capacity_number > recruited_number)");
 					sql = sql.replace("[str3]", " ");
 				} else {
-					sql = sql.replace("[str1]", "and exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
-					sql = sql.replace("[str2]", "and exists (select 2 from project_member_dept where ps_no = ps.ps_no and job_code = '" + selectJobKeyword + "')");
+					sql = sql.replace("[str1]", "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
+					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectJobKeyword + "') and capacity_number > recruited_number)");
 					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
 				}
 			}
@@ -293,7 +296,7 @@ public class GatheringDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		List<Gathering> bookmarkFilterlist = new ArrayList<>();
-		String sql = prop.getProperty("findMemberProBookmarkFilter");
+		String sql = prop.getProperty("findProBookmarkFilter");
 		
 		String bookmarkYN = (String) param.get("bookmarkYN");
 		String memberId = (String) param.get("memberId");
@@ -313,7 +316,8 @@ public class GatheringDao {
 			pstmt.setInt(2, (int)param.get("end"));
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
-				Gathering gathering = handleGatheringResultSet(rset);
+				GatheringExt gathering = handleGatheringResultSet(rset);
+				gathering.setRecruited_cnt(rset.getInt("recruited_cnt"));
 				bookmarkFilterlist.add(gathering);
 			}
 		} catch (SQLException e) {
@@ -647,18 +651,18 @@ public class GatheringDao {
 		try {
 			pstmt=conn.prepareStatement(sql);
 			pstmt.setString(1, study.getWriter());
-			pstmt.setObject(2, "S");
-			pstmt.setString(3, study.getTitle());
-			pstmt.setDate(4, study.getRegDate());
-			pstmt.setString(5, study.getContent());
+//			pstmt.setObject(2, "S");
+			pstmt.setString(2, study.getTitle());
+//			pstmt.setDate(4, study.getRegDate());
+			pstmt.setString(3, study.getContent());
 //			pstmt.setInt(6, study.getViewcount());
 //			pstmt.setInt(7, study.getBookmark());
-			pstmt.setString(8, study.getTopic());
-			pstmt.setString(9, study.getLocal());
-			pstmt.setInt(10, study.getPeople());
-			pstmt.setObject(11, "N");
-			pstmt.setDate(12, study.getStartDate());
-			pstmt.setDate(13, study.getEndDate());
+			pstmt.setString(4, study.getTopic());
+			pstmt.setString(5, study.getLocal());
+			pstmt.setInt(6, study.getPeople());
+//			pstmt.setObject(11, "N");
+			pstmt.setDate(7, study.getStartDate());
+			pstmt.setDate(8, study.getEndDate());
 			
 			result=pstmt.executeUpdate();
 		}catch(SQLException e) {
@@ -674,7 +678,7 @@ public class GatheringDao {
 		ResultSet rset = null;
 		int studyNo=0;
 		//sql설정
-		String sql = prop.getProperty("getLaststudyNo");
+		String sql = prop.getProperty("getLastStudyNo");
 		try {
 			pstmt=conn.prepareStatement(sql);
 			rset=pstmt.executeQuery();

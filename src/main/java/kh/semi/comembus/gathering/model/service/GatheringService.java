@@ -249,6 +249,26 @@ public class GatheringService {
 		}
 		return result;
 	}
+
+	public static int enrollStudy(Gathering study) {
+		Connection conn=getConnection();
+		int result = 0;
+		try {
+			//gathering table에 insert
+			result = gatheringDao.enrollStudy(conn,study);
+			
+			//방금 등록된 Gathering.no조회
+			int psNo = gatheringDao.getLastStudyNo(conn);
+			System.out.println("studyNo = "+psNo);
+			commit(conn);
+		}catch(Exception e) {
+			rollback(conn);
+			throw e;
+		}finally {
+			close(conn);
+		}
+		return result;
+	}
 	
 	
 	

@@ -60,6 +60,7 @@
                 <input type="button" id="delete" value="삭제" onclick="deleteRow()"/>
                 <input type="button" id="add" value="추가" onclick="addRow()"/>
                 <input type="button" id="clear" value="저장" onclick="checkTotal()"/>
+                <input type="hidden" id="saveCheck">           
             </td>
         </tr>
         <tr></tr>
@@ -83,12 +84,14 @@
         </tr>
         <tr></tr>
 	<tr><th>*프로젝트 설명</th></tr>
-    <tr><td colspan="3" id="summernoteWidth">❗ 프로젝트에 대한 자세한 설명을 적어주세요. 자세할수록 지원률이 올라갑니다. <br><div><textarea id="summernote" name="editordata"></textarea></div></td></tr>
-        <tr><th><input type="hidden" name="psType" value="P"></th></tr>
-        <tr><th><input type="hidden" name="writer" value="<%= loginMember.getMemberId() %>"/></th></tr>
-		<th colspan="2">
-			<br><input type="submit" value="등록하기">
-		</th>
+    <tr>
+    	<td colspan="3" id="summernoteWidth">❗ 프로젝트에 대한 자세한 설명을 적어주세요. 자세할수록 지원률이 올라갑니다. <br><div><textarea id="summernote" name="editordata"></textarea></div></td></tr>
+	<tr>
+		<th><input type="hidden" name="psType" value="P"></th>
+		<th><input type="hidden" name="writer" value="<%= loginMember.getMemberId() %>"/></th>
+	</tr>
+	<tr>
+		<th colspan="2"><input type="submit" value="등록하기"></th>
 	</tr>
 </tbody>
 <tfoot>
@@ -152,7 +155,7 @@
         buttonPlus.type="button";
         buttonPlus.classList.add("count");
         buttonPlus.id="plus"+n;
-        buttonPlus.innerHTML='+';
+        buttonPlus.value='+';
         const span=document.createElement("span");
         span.id="count"+n;
         span.innerHTML='1';
@@ -160,7 +163,7 @@
         buttonMinus.type="button";
         buttonMinus.classList.add("count");
         buttonMinus.id="minus"+n;
-        buttonMinus.innerHTML='-';
+        buttonMinus.value='-';
         const select=document.createElement("select");
         select.name="job_code";
         select.id="job_code"+n;
@@ -253,6 +256,9 @@
             //값 저장하는 코드 추가
             //저장 안할 경우 폼 제출 불가능하도록 설정
             //저장 버튼 누르고 값 수정할 경우 확인
+            const checkSaveVal =document.getElementById('saveCheck');
+            checkSaveVal.value='save';
+            console.log(checkSaveVal.value);
         }
 
         for(let n=1;n<=addRowNum;n++){
@@ -389,7 +395,13 @@
     	alert("시작일이 종료일보다 늦거나 같습니다.");
     	return false;
     }
-
+    //인원수 저장을 안한 경우 제출 불가
+    const clickSave=document.getElementById("saveCheck").value;
+    console.log(clickSave);
+    if(clickSave==""){
+        alert("인원수 저장을 해주세요.")
+        return false;
+    }
 
 	return true;
     }

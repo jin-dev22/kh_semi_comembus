@@ -2,6 +2,8 @@
 <%@page import="java.util.List"%>
 <%@page import="kh.semi.comembus.gathering.model.dto.Gathering"%>
 <%@page import="kh.semi.comembus.gathering.model.dto.GatheringExt" %>
+<%@page import="kh.semi.comembus.member.model.dto.Member" %>
+<%@page import="kh.semi.comembus.member.model.dto.MemberExt" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
@@ -12,7 +14,7 @@
 %>
 <link rel="stylesheet" href="<%=request.getContextPath() %>/css/gathering/ProjectView.css" />
 <p class="pjname"><%= gathering.getTitle() %></p><!-- 프로젝트명 -->
-<p class="pjwriter"><img src="/멤버 이미지.png" alt="멤버아이디"><%= gathering.getWriter() %></p>
+<p class="pjwriter"><img src="/멤버 이미지.png" alt="멤버아이디"><%= loginMember.getNickName() %></p>
 <!--지원자 현황은 글쓴이=로그인한 사용자 일치할 때만 보이게 하기-->
 <button id="pjdetail"><a href="<%=request.getContextPath() %>/projectDetailView?psNo=<%= gathering.getPsNo()%>">프로젝트 상세</a></button><button id="pjstatue"><a href="<%=request.getContextPath() %>/gathering/showApplicants?psNo=<%= gathering.getPsNo()%>">지원자 현황</a></button>
 <br>
@@ -22,17 +24,21 @@
     <tr>
         <td>기획</td>
         <td><span id="statue">1</span>/<span id="total"><%= gathering.getPlanning_cnt() %></span></td>
-        <td><button id="apply" onclick="apply();">지원하기</button></td>
+    </tr>
+    <tr>
+        <td>디자인</td>
+        <td><span id="statue">1</span>/<span id="total"><%= gathering.getDesign_cnt() %></span></td>
     </tr>
     <tr>
         <td>프론트엔드</td>
         <td><span id="statue">1</span>/<span id="total"><%= gathering.getFrontend_cnt() %></span></td>
-        <td><button onclick="apply();">지원하기</button></td>
     </tr>
     <tr>
         <td>백엔드</td>
-        <td><span id="statue">1</span>/<span id="total">2</span></td>
-        <td><button onclick="apply();">지원하기</button></td>
+        <td><span id="statue">1</span>/<span id="total"><%= gathering.getBackend_cnt() %></span></td>
+    </tr>
+    <tr>
+        <td><input type="button" id="apply" value="지원하기" onclick="applyStatus()"></td>
     </tr>
 </table>
 <h3>프로젝트 주제</h3>
@@ -114,7 +120,7 @@ if(cntStatue==cntTotal){
     target.disabled=true;
     //처음부터 지원이 불가능한 경우 작성하기
 }
-function apply(){
+function applyStatus(){
     if(confirm("지원 하시겠습니까?")){
         alert("지원이 완료되었습니다.");
         let cntStatue=Number(applyStatue.textContent)
