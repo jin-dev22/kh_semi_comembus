@@ -1,3 +1,4 @@
+<%@page import="kh.semi.comembus.gathering.model.dto.GatheringExt"%>
 <%@page import="kh.semi.comembus.common.ComembusUtils"%>
 <%@page import="kh.semi.comembus.community.model.dto.Community"%>
 <%@page import="kh.semi.comembus.gathering.model.dto.Gathering"%>
@@ -14,6 +15,9 @@
 <section class="slide">
 <%
 	List<Gathering> projectList = (List<Gathering>) request.getAttribute("projectList");
+	List<Gathering> proBookmarkList = (List<Gathering>) request.getAttribute("proBookmarkList");
+	List<Gathering> studyList = (List<Gathering>) request.getAttribute("studyList");
+	List<Gathering> stdBookmarkList = (List<Gathering>) request.getAttribute("stdBookmarkList");
 	List<Member> memberList = (List<Member>) request.getAttribute("memberList");
 	List<Community> flist = (List<Community>) request.getAttribute("flist"); 
 	List<Community> slist = (List<Community>) request.getAttribute("slist"); 
@@ -46,39 +50,103 @@
 		<p class="move-page"><a href="<%= request.getContextPath()%>/gathering/projectList">전체보기</a></p>
 	</div>
 	<div class="ps-lists">
-	<%
-	if(projectList != null && !projectList.isEmpty()){
-		for(Gathering project : projectList){
-			int psNo = project.getPsNo();
-	%>
-		<div class="ps-pre">
-			<!-- a태그로 링크 주소 연결해야함 -->
-			<a href="">
-				<img src="<%= request.getContextPath() %>/images/<%= project.getTopic() %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
-			</a>
-			<p class="bold"><%= "social".equals(project.getTopic()) ? "소셜네트워크" : ("game".equals(project.getTopic()) ? "게임" : ("travel".equals(project.getTopic()) ? "여행" : ("finance".equals(project.getTopic()) ? "금융" : "이커머스"))) %></p>
-			<a href="">
-				<p class="bold"><%= project.getTitle() %></p>
-			</a>
-			<ul class="ps-pre__etc">
-				<li> 
-					<span class="heart-emoji">&#9829;</span><%= project.getBookmark() %></li>
-				<li>
-					<span>&#128064;</span><%= project.getViewcount() %></li>
-				<!-- 나중에 모임 게시물별 모집인원현황 테이블과 연결 -->
-				<li>모집인원 0 / <%= project.getPeople() %></li>
-			</ul>
-			<div class="ps__bookmark">
-				<button class="bookmark-front" value="<%= psNo %>">♡</button>
-				<!-- <input type="button" value="♡" class="bookmark-front"/> -->
-				<button class="bookmark-back" value="<%= psNo %>">♥</button>
-				<!-- <input type="button" value="♥" onClick="delBookmark()" class="bookmark-back"/> -->
-			</div>
+<%
+if(projectList != null && !projectList.isEmpty()){
+	for(Gathering _project : projectList){
+		GatheringExt project = (GatheringExt) _project;
+		int projectNo = project.getPsNo();
+%>
+	<div class="ps-pre">
+		<a href="<%= request.getContextPath()%>/gathering/projectView?psNo=<%= projectNo %>">
+			<img src="<%= request.getContextPath() %>/images/<%= project.getTopic() %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
+		</a>
+		<p class="bold"><%= "social".equals(project.getTopic()) ? "소셜네트워크" : ("game".equals(project.getTopic()) ? "게임" : ("travel".equals(project.getTopic()) ? "여행" : ("finance".equals(project.getTopic()) ? "금융" : "이커머스"))) %></p>
+		<a href="<%= request.getContextPath()%>/gathering/projectView?psNo=<%= projectNo %>">
+			<p class="bold ps-title"><%= project.getTitle() %></p>
+		</a>
+		<ul class="ps-pre__etc">
+			<li> 
+				<span class="heart-emoji">&#9829;</span><%= project.getBookmark() %></li>
+			<li>
+				<span>&#128064;</span><%= project.getViewcount() %></li>
+			<li>모집인원 <%= project.getRecruited_cnt() %> / <%= project.getPeople() %></li>
+		</ul>
+		<div class="ps__bookmark">
+			<% if(loginMember == null){ %>
+				<button <%=loginMember == null?"disabled":""%> class="bookmark-front">♡</button>
+			<%
+				}
+
+				if(loginMember != null){
+					if(proBookmarkList != null && !proBookmarkList.isEmpty()){
+						int finish = 0;
+						for(Gathering bookmark : proBookmarkList){
+							int bookPsNo = bookmark.getPsNo();
+							if(projectNo == bookPsNo){
+								System.out.println("일치한다 = 프로젝트" + projectNo + " 북마크 " + bookPsNo);
+			%>
+								<button class="bookmark-back" value="<%= projectNo %>">♥</button>
+								<button style="display:none" class="bookmark-front" value="<%= projectNo %>">♡</button>
+			<%
+							}
+							
+						}
+					}
+					
+				}
+			%>
 		</div>
-	<%
-		}
+	</div>
+<%
 	}
-	%>
+}
+%>
+
+<% if(loginMember != null){ %>
+<form
+	action="<%= request.getContextPath() %>/membus/bookmarkAdd" id="tt" method="POST" name="addBookmarkFrm">
+	<input type="hidden" name="psNo" id="addBookPs"/>
+	<input type="hidden" name="member_id" value="<%= loginMember.getMemberId() %>" />
+</form>
+<form
+	action="<%= request.getContextPath() %>/membus/bookmarkDel" method="POST" name="delBookmarkFrm">
+	<input type="hidden" name="psNo" id="delBookPs"/>
+	<input type="hidden" name="member_id" value="<%= loginMember.getMemberId() %>" />
+</form>
+<%
+}
+%>
+			
+			
+<script>
+document.querySelectorAll(".ps__bookmark").forEach((bookmark) => {
+	bookmark.addEventListener('click', (e) => {
+		let mark = e.target;
+		const frmAdd = document.addBookmarkFrm;
+		const frmDel = document.delBookmarkFrm;
+		let psnum = mark.value;
+		// console.log(psnum); // 확인용
+
+		if(mark.classList.contains("bookmark-front")) {
+			mark.style.display = 'none';
+			console.log(mark.nextElementSibling);
+			mark.nextElementSibling.style.display = 'block';
+			
+			const addBookPs = document.querySelector("#addBookPs");
+			addBookPs.value = psnum;
+			frmAdd.submit();			
+		} else {
+			mark.style.display = 'none';
+			mark.nextElementSibling.style.display = 'block';
+			const delBookPs = document.querySelector("#delBookPs");
+			delBookPs.value = psnum;
+			frmDel.submit();
+		}
+	})
+});
+
+</script>	
+	
 	</div>
 </div>
 <div class="preview-container">
@@ -86,6 +154,65 @@
 		<h3 class="container-title">스터디 미리보기</h3>
 		<p class="move-page"><a href="<%= request.getContextPath()%>/gathering/studyList">전체보기</a></p>
 	</div>
+	
+		<div class="ps-lists">
+		<%
+		if(studyList != null && !studyList.isEmpty()){
+			for(Gathering _study : studyList){
+				GatheringExt study = (GatheringExt) _study;
+				int studyNo = study.getPsNo();
+		%>
+			<div class="ps-pre">
+				<a href="<%= request.getContextPath()%>/gathering/studyView?psNo=<%= studyNo %>">
+					<img src="<%= request.getContextPath() %>/images/<%= study.getTopic() %>.jpg" class="ps-pre__img" alt="해당 스터디 주제 이미지">
+				</a>
+				<p class="bold">
+					<%= "Planning".equals(study.getTopic()) ? "기획" : ("Design".equals(study.getTopic()) ? "디자인" : ("Frontend".equals(study.getTopic()) ? "프론트엔드" : ("Backend".equals(study.getTopic()) ? "백엔드" : ("Interview".equals(study.getTopic()) ? "면접" : "코딩테스트")))) %>
+				</p>
+				<a href="<%= request.getContextPath()%>/gathering/studyView?psNo=<%= studyNo %>">
+					<p class="bold"><%= study.getTitle() %></p>
+				</a>
+				<ul class="ps-pre__etc">
+					<li> 
+						<span class="heart-emoji">&#9829;</span><%= study.getBookmark() %></li>
+					<li>
+						<span>&#128064;</span><%= study.getViewcount() %></li>
+					<li>모집인원 <%= study.getRecruited_cnt() %> / <%= study.getPeople() %></li>
+				</ul>
+				<div class="ps__bookmark">
+					<% if(loginMember == null){ %>
+						<button <%=loginMember == null?"disabled":""%> class="bookmark-front">♡</button>
+					<%
+						}
+					%>		
+						<button class="bookmark-front" value="<%= studyNo %>">♡</button>
+						<button style="display:none" class="bookmark-back" value="<%= studyNo %>">♥</button>					
+					<%
+						if(loginMember != null){
+							if(stdBookmarkList != null && !stdBookmarkList.isEmpty()){
+								for(Gathering bookmark : stdBookmarkList){
+									int bookPsNo = bookmark.getPsNo();
+									if(studyNo == bookPsNo){
+										System.out.println("일치한다 = 스터디" + studyNo + " 북마크 " + bookPsNo);
+					%>
+										<button class="bookmark-back" value="<%= studyNo %>"></button>
+										<button style="display:none" class="bookmark-front" value="<%= studyNo %>">♡</button>
+					<%
+									}
+									
+								}
+							}
+							
+						}
+					%>
+				</div>
+			</div>
+		<%
+			}
+		}
+		%>
+		</div>
+			
 </div>
 	
 	
@@ -104,7 +231,7 @@
 				int gatheringCnt = mem.getGetheringCnt();
 	%>
 		        <div class="profile-box">
-		            <div class="profile-row">
+		            <div class="profile-nickNames">
 		                <span class="profile-badge"><b><%=nickName.charAt(0) %></b></span>
 		                <span class="profile-nickName"><%=nickName %></span>
 		            </div>
