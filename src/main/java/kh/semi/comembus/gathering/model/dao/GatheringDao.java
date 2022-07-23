@@ -994,17 +994,10 @@ public class GatheringDao {
 		String sql=prop.getProperty("updateProject");
 		try {
 			pstmt=conn.prepareStatement(sql);
-//			pstmt.setString(1, project.getWriter());
-//			pstmt = setString(2, project.getPsType() != null ? project.getPsType().name() : null);
 			pstmt.setString(1, project.getTitle());
-//			pstmt.setDate(3, project.getRegDate());
 			pstmt.setString(2, project.getContent());
-//			pstmt.setInt(6, project.getViewcount());
-//			pstmt.setInt(7, project.getBookmark());
-//			pstmt.setString(4, project.getTopic());
 			pstmt.setInt(3, project.getPeople());
 			pstmt.setString(4, project.getLocal());
-//			pstmt.setString(8, project.getStatus().name());
 			pstmt.setDate(5, project.getStartDate());
 			pstmt.setDate(6, project.getEndDate());
 			pstmt.setInt(7, project.getPsNo());

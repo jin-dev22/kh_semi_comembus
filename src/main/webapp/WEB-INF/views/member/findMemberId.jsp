@@ -29,11 +29,19 @@
      document.querySelector("#findIdBtn").addEventListener('click', (e) => {
     	const nameVal = document.querySelector("#name").value;
     	const phoneVal= document.querySelector("#phone").value;
-    	if(nameVal === "" || phoneVal === ""){
-    		alert("이름과 핸드폰 번호를 모두 입력하신 후 아이디 찾기가 가능합니다.");
-    		return;
-    	}
     	
+		const regExp1 = /^[가-힣]{2,}$/;
+		const regExp2 = /^(010){1}[0-9]{7,8}$/;
+
+    	if(nameVal === "" || phoneVal === ""){
+     		alert("이름과 핸드폰 번호를 모두 입력하셔야 아이디 찾기가 가능합니다.");
+     		return false;
+     	}
+     	else if(!regExp1.test(nameVal) || !regExp2.test(phoneVal)){
+     		alert('이름과 핸드폰 번호를 모두 올바른 형식으로 입력해주세요.');
+     		return false;
+   		}
+   
    		// popup제어
    		const title = "findIdPopup";
    		const spec = "width=480px, height=300px";
