@@ -20,7 +20,7 @@ import kh.semi.comembus.gathering.model.service.GatheringService;
 @WebServlet("/gathering/studyEnrollView")
 public class studyEnrollViewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private GatheringService studyService = new GatheringService();
+	private GatheringService gatheringService = new GatheringService();
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
@@ -65,7 +65,7 @@ public class studyEnrollViewServlet extends HttpServlet {
 			System.out.println("study = "+study);
 			
 			//2. 업무로직
-			int result = GatheringService.enrollStudy(study);
+			int result = gatheringService.enrollStudy(study);
 			
 			//3. redirect
 			request.getSession().setAttribute("msg", "스터디를 성공적으로 등록했습니다.");

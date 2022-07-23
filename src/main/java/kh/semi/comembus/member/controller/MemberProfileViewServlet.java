@@ -41,6 +41,13 @@ public class MemberProfileViewServlet extends HttpServlet {
 			MemberExt member = (MemberExt) memberService.findById(memberId);
 			member.setJobName(memberService.getJobName(member.getJobCode()));
 			
+			// XSS공격대비 
+			String intro = member.getIntroduction();
+			if(intro != null) {
+				member.setIntroduction(ComembusUtils.escapeXml(intro));				
+				member.setIntroduction(ComembusUtils.convertLineFeedToBr(member.getIntroduction()));				
+			}
+			
 			//커뮤니티 게시글 페이지바 설정및 입력값 map담기
 			int cPage = 1;
 			int numPerPage = 5;

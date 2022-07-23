@@ -1,3 +1,4 @@
+<%@page import="java.util.Map"%>
 <%@page import="kh.semi.comembus.member.model.dto.MemberExt"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.List"%>
@@ -10,7 +11,6 @@
 	/* Gathering gathering = (Gathering) request.getAttribute("project"); */
 	GatheringExt gathering = (GatheringExt) request.getAttribute("gathering");
 	List<MemberExt> apldMemberList = (List<MemberExt>) request.getAttribute("memberList");
-	
 	int psNo = gathering.getPsNo();
 	String psType = gathering.getPsType().name();
 %>
@@ -38,7 +38,8 @@
         	<form name="aplcntResultFrm<%=psNo %>" action="">
         		<input type="hidden" name="psNum" value="<%= psNo%>"/>
         		<input type="hidden" name="psType" value="<%= psType%>"/>
-        		<input type="hidden" name=apldMemberId value="<%= mem.getMemberId()%>" />
+        		<input type="hidden" name=apldMemberId value="<%= mem.getMemberId()%>"/>
+        		<input type="hidden" name="apldMemberJobCode" value="<%=mem.getJobCode() %>" />
         		<input class="applview-btn accept" type="button" value="수락" onclick="apldResult('O');"/>/
         		<input class="applview-btn reject" type="button" value="거절" onclick="apldResult('X');"/>
         	</form>
@@ -57,20 +58,29 @@ function apldResult(apldResult){
 	const psNo = frm.psNum.value;
 	const psType = frm.psType.value;
 	const apldMemberId = frm.apldMemberId.value;
+	const apldMemberJobCode = frm.apldMemberJobCode.value;
 	console.log(psNo);
+	
 	$.ajax({
 		type : 'POST',
 		url : '<%= request.getContextPath()%>/gathering/showApplicants',
-		data : {'psNo' : psNo, 'apldMemberId' : apldMemberId, 'apldResult' : apldResult, 'psType' : psType},
-		success(result){
+		data : {'psNo' : psNo, 'apldMemberId' : apldMemberId, 'jobCode': apldMemberJobCode,'apldResult' : apldResult, 'psType' : psType},
+		success(acceptResults){
+			console.log(acceptResults);
+			const {jobCode, psType, result, capa, memCnt} = acceptResults;	
+			console.log(capa, memCnt);
 			if(result){
-				console.log("지원수락 완료");
+				alert("지원결과 전송 완료");
 				const btns = frm.querySelectorAll(".applview-btn");
 				const btnArr = [...btns];
 				btnArr.forEach((e)=>{
 					e.disabled = true;
 				});				
-			}			
+			}else if(capa == 0 || capa == memCnt){
+				alert("해당 직무의 인원수는 더이상 변경 할 수 없습니다.");
+			}else{
+				alert("지원결과 처리에 오류가 발생했습니다.");
+			}
 		},
 		error: console.log
 	});

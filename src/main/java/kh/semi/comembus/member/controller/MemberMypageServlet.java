@@ -43,6 +43,14 @@ public class MemberMypageServlet extends HttpServlet {
 			String jobName = memberService.getJobName(loginMember.getJobCode());
 			loginMember.setJobName(jobName);
 			
+			// XSS공격대비, 개행문자 
+			String intro = loginMember.getIntroduction();
+			if(intro != null) {
+				loginMember.setIntroduction(ComembusUtils.escapeXml(intro));	
+//				loginMember.setIntroduction(ComembusUtils.convertLineFeedToBr(loginMember.getIntroduction()));	
+				
+			}
+			
 			//커뮤니티 게시글 페이지바 설정및 입력값 map담기
 			int cPage = 1;
 			int numPerPage = 5;
