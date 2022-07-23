@@ -34,14 +34,14 @@
 			if(canEdit) { 
 		%>
 <%-- 해당 게시글 작성자와 관리자만 마지막행 수정/삭제버튼이 보일수 있게 할 것 --%>
-			<% } %> 
+			
 </div>
 		<hr />	
 		<div>
 			<input id="btn3" type="button" value="수정하기" onclick="updateCommu()">&nbsp;&nbsp;&nbsp;
 			<input id="btn4" type="button" value="삭제하기" onclick="deleteCommu()">
 		</div>
-	
+	<% } %> 
 <br /><br />
 		<!-- 댓글 -->
     
@@ -74,7 +74,8 @@
 					boolean canDelete = loginMember != null && 
 							(loginMember.getMemberId().equals(cr.getReplWriter())|| loginMember.getMemberRole() == MemberRole.A);
 					 if(cr.getReplLevel() == CommentLevel.COMMENT){
-		   %> <tr class="level1">
+		   %> 
+		   	<tr class="level1">
 				<td>
 					<div class="comment-level1">
 						<sub class="comment-writer"><%= cr.getReplWriter() %></sub>
@@ -139,7 +140,7 @@
 		<% } %>
 		
 		//대댓글 작성폼 동적 생성
-		let html = "<tr>"; 
+		var html = "<tr>"; 
 		html += "<td colspan='2' style='display:none; text-align:left;'>";
 		html += '<form action="<%=request.getContextPath()%>/community/communityCommentEnroll?co_type=Q"  method="post" name="boardCommentFrm">';
 		html += '<input type="hidden" name="coNo" value="<%= qview.getCoNo() %>" />';
@@ -152,7 +153,7 @@
 		html += "</td>";
 		html += "</tr>";
 		
-		let $trOfBtn = $(this).parent().parent();
+		var $trOfBtn = $(this).parent().parent();
 		$(html)
 			.insertAfter($trOfBtn)
 			.children("td")
