@@ -32,6 +32,7 @@ public class CommunityListServlet extends HttpServlet {
 			List<Community> qlist = null;
 			List<Community> flist = null;
 			List<Community> slist = null;
+			List<Community> best = null;
 			
 			int numPerPage = 10;
 			int cPage = 1; //기본값설정
@@ -70,11 +71,16 @@ public class CommunityListServlet extends HttpServlet {
 				.forward(request, response);
 				
 			}else if("S".equals(type)) {
+				best = communityService.findShareBest();
 				slist = communityService.findShare(param);
 				int totalContent = communityService.getShareContent();
+				
+				//페이징
 				String url = request.getRequestURI() + "?co_type=S"; 
 				String pagebar = 
 						ComembusUtils.getPagebar(cPage, numPerPage, totalContent, url);
+				
+				request.setAttribute("best", best);
 				request.setAttribute("slist", slist);
 				request.setAttribute("pagebar", pagebar);
 				request.getRequestDispatcher("/WEB-INF/views/community/shareList.jsp")

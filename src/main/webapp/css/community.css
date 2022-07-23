@@ -81,26 +81,7 @@ h4{
 	
 }
 
-#pagebar{
-	height:50px;
-	margin-top:30px;
-	text-align: center;
-}
 
-#pagebar span{
-    border-radius: 15%;
-    padding: 9px 15px;
-    background-color: #FFE69A;
-    text-decoration: none;
-    color: white;
-}
-#pagebar a{
-	border-radius: 15%;
-    padding: 9px 15px;
-    background-color: white;
-    text-decoration: none;
-    color: black;
-}
 
 #tbl-board th{
 	
@@ -165,7 +146,7 @@ border: 2px solid lightgray;
 	font-weight: 700;
 }
 
-/* boardView  게시글 볼때*/
+/* 게시글 볼때*/
 #boardViewDesc div:nth-of-type(1) {
 	margin-left: 20px;
 	text-align: left;
@@ -212,18 +193,23 @@ div#boardViewRe #btn-insert{
     font-size: 15px;
     font-weight: 600;	
     } 
-div#boardViewRe #btn-insert:hover{background:#FFE69A;; transition: all ease 0.3s;}
+    
+    
+div#boardViewRe #btn-insert:hover{background:#FFE69A; transition: all ease 0.3s;}
 
 table#tbl-comment{
   display : flex;
   justify-content: center;
   align-items : center;
+  padding-top: 30px;
+  
 
 } 
 table#tbl-comment tr td{border-bottom:1px solid white; border-top:1px solid white; padding:5px; text-align:left; line-height:120%;}
 table#tbl-comment tr td:first-of-type {padding: 5px 5px 5px 10px;}/*수정*/
-table#tbl-comment button.btn-reply{display:none; outline:0; margin:0}/*수정*/
-table#tbl-comment tr:hover button.btn-reply{display:inline;}/*수정*/
+table#tbl-comment tr td:last-of-type {text-align:right; width: 70px;}
+table#tbl-comment button.btn-reply{display:none; outline:0; margin:0}
+table#tbl-comment tr:hover button.btn-reply{display:inline;}
 table#tbl-comment sub.comment-writer {
 	color: black;
     font-weight: 900;
@@ -231,32 +217,33 @@ table#tbl-comment sub.comment-writer {
     font-size: 16px;
     position:absolute;
     left:10px;
-    top:10px;
+    top:5px;
 	}
-table#tbl-comment sub.comment-date {
+table#tbl-comment .comment-date {
 	color: white;
     font-weight: 900;
     position:absolute;
     right:10px;
     top:10px;
 	}
+
 table#tbl-comment tr.level2 {color:gray; font-size: 14px;}
-table#tbl-comment tr.level2 td:first-of-type{padding-left:75px; text-align:left;}/*수정*/
+table#tbl-comment tr.level2 td:first-of-type{padding-left:75px; text-align:left;}
 table#tbl-comment tr.level2 sub.comment-writer {
-	color:#0037fff7; font-size:14px; font-weight: 900;
-	
+	color:rgb(0, 0, 255); font-size:14px; font-weight: 900;
 	font-size: 16px;
-	}
-table#tbl-comment tr.level2 sub.comment-date {	color: white;
+}
+table#tbl-comment tr.level2 sub.comment-date {	
+	color: white;
     font-weight: 900;
     margin-left: 407px;
     
     }
 
 table#tbl-comment tr.level1 .comment-level1{
-	position:relative; 
+    position:relative; 
 	width:676px;
-	background: #FFD24C;
+	background:#FFD24C;
 	border-radius: 10px;
 	padding: 5px 7.5px 10px;
 	text-align: left;
@@ -264,6 +251,10 @@ table#tbl-comment tr.level1 .comment-level1{
 	font-size: 18px;
     line-height: 35px;
 }
+/*table#tbl-comment tr.level1 .comment-level1 .comment-content{
+사진 가운데정렬하고싶다...
+}*/
+
 
 table#tbl-comment tr.level1 .comment-level1:after{
 	border-top:0px solid transparent;
@@ -279,7 +270,7 @@ table#tbl-comment tr.level1 .comment-level1:after{
 table#tbl-comment tr.level2 .comment-level2{
 	position:relative; 
 	width:676px; 
-	background:#ffd88e;
+	background:#FFE69A;
 	border-radius: 10px;
 	padding: 5px 7.5px 10px;
 	min-height: 44px;
@@ -299,10 +290,10 @@ table#tbl-comment tr.level2 .comment-level2:after{
 }
 
 
-table#tbl-comment button.btn-reply{background:lightgray; height: 45px;width: 59px;color:black; display:none; border: 1px solid transparent; border-radius: 15%; margin-left:-72px;} /*수정*/
-table#tbl-comment button.btn-reply:hover{background:#92B4EC; color:white; transition: all ease 0.3s;} /*수정*/
-table#tbl-comment button.btn-delete{background:lightgray; width: 59px; color:black; display:none; border: 1px solid transparent; border-radius: 15%; height: 45px;} /*수정*/
-table#tbl-comment button.btn-delete:hover{background:red; color:white; transition: all ease 0.3s;} /*수정*/
+table#tbl-comment button.btn-reply{background:lightgray; height: 45px;width: 59px;color:black; display:none; border: 1px solid transparent; border-radius: 15%; margin-left:-72px;} 
+table#tbl-comment button.btn-reply:hover{background:#92B4EC; color:white; transition: all ease 0.3s;}
+table#tbl-comment button.btn-delete{background:lightgray; width: 59px; color:black; display:none; border: 1px solid transparent; border-radius: 15%; height: 45px;} 
+table#tbl-comment button.btn-delete:hover{background:red; color:white; transition: all ease 0.3s;}
 table#tbl-comment tr:hover button.btn-delete{display:inline;}
 
 textarea{
@@ -336,6 +327,62 @@ td [name=boardCommentFrm]{
 	border: 1px solid transparent;
 	
 }
+#search-container{
+	margin-left:825px;
+}
+#search-container [name=searchKeyword]{
+	width:200px;
+	height: 10px;
+}
+
+.community-s-container{
+	margin-bottom: 20px;	
+}
+
+.co-share-lists{
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content: space-evenly;
+	
+}
+
+.co-share{
+    width: 250px;
+    margin: 0;
+}
+
+.co-share-title{
+    height: 150px;
+    border: 1px solid black;
+    padding: 10px;
+    text-align: center;
+    font-size: 20px;
+}
+
+.co-share-title a{
+    display: flex;
+    height: 130px;
+    text-decoration: none;
+}
+
+
+.co-share-info{
+	margin-top: 5px;
+	text-align: end;
+}
+
+.co-share-writer{
+    display: block;
+}
+
+.co-share-info span{
+    margin: 0 0 5px 20px;
+}
+.heart-emoji {
+	color: var(--accent-color);
+}
+
 <!-- -->
 
 
