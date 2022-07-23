@@ -78,38 +78,26 @@ public class ProjectUpdateServlet extends HttpServlet {
 			int people = planning_cnt+design_cnt+frontend_cnt+backend_cnt;
 			
 			//1.1 사용자 입력값 처리 (project_study테이블 저장)
-			String writer = request.getParameter("writer");
-//			String _psType=request.getParameter("psType");
+			int psNo = Integer.parseInt(request.getParameter("psNo"));
+			// System.out.println(psNo);
 			String title = request.getParameter("title");
-			System.out.println(title);
-			String _regDate = request.getParameter("reg_date");
-//			System.out.println(_regDate);
 			String content = request.getParameter("editordata");
-			System.out.println(content);
-//			int viewcount = Integer.parseInt(request.getParameter("viewcount"));
-//			int bookmark=Integer.parseInt(request.getParameter("bookmark"));
+			// System.out.println(content);
 			String topic = request.getParameter("topic");
 			String local = request.getParameter("local");
-//			int people = Integer.parseInt(request.getParameter("people"));
-//			String _status = request.getParameter("status");
 			String _startDate = request.getParameter("date_start");
 			String _endDate = request.getParameter("date_end");
 			
-//			GatheringType psType = _psType != null ? GatheringType.valueOf(_psType) : null;
-//			Date regDate = (_regDate != null && !"".equals(_regDate))?Date.valueOf(_regDate):null;
-//			Status status = _status != null ? Status.valueOf(_status):null;
 			Date startDate = (_startDate != null && !"".equals(_startDate))?Date.valueOf(_startDate):null;
 			Date endDate = (_endDate != null && !"".equals(_endDate))?Date.valueOf(_endDate):null;
 			
-			Gathering project = new Gathering(0,writer,null,title,null,content,0,0,topic,local,people,null,startDate,endDate);
-//			System.out.println(_psType);
-//			System.out.println(psType);
+			Gathering project = new Gathering(psNo, null, null, title, null, content, 0, 0, null, local, people, null, startDate, endDate);
+
 			System.out.println("project = "+project);
 
 			//1.2 dept 저장
-			GatheringExt projectExt = new GatheringExt(0,writer,null,title,null,content,0,0,topic,local,people,null,startDate,endDate,
-					planning,design,frontend,backend,planning_cnt,design_cnt,frontend_cnt,backend_cnt);
-			System.out.println("projectExt = "+projectExt);
+			//GatheringExt projectExt = new GatheringExt(0,null,null,title,null,content,0,0,topic,local,people,null,startDate,endDate,planning,design,frontend,backend,planning_cnt,design_cnt,frontend_cnt,backend_cnt);
+			//System.out.println("projectExt = "+projectExt);
 			
 			//2. 업무로직
 			int result = gatheringService.updateProject(project);
