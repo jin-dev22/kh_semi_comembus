@@ -66,6 +66,7 @@ public class ComembusWebSocket {
 		if(session != null) {
 			Basic basic = session.getBasicRemote();
 			try {
+				//System.out.println("[@comemWS]#sendMsg()>>"+data);
 				basic.sendText(msgToJson(messageType, data));
 			}catch(IOException e) {
 				e.printStackTrace();
