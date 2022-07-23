@@ -1,3 +1,4 @@
+<%@page import="kh.semi.comembus.gathering.model.dto.GatheringType"%>
 <%@page import="java.util.Map"%>
 <%@page import="kh.semi.comembus.member.model.dto.MemberExt"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -18,7 +19,8 @@
 <p class="pjname"><%= gathering.getTitle() %></p><!-- 프로젝트명 -->
 <p class="pjwriter"><img src="/멤버 이미지.png" alt="멤버아이디"><%= gathering.getWriter() %></p>
 <!--지원자 현황은 글쓴이=로그인한 사용자 일치할 때만 보이게 하기-->
-<button id="pjdetail"><a href="/projectDetailView.jsp">프로젝트 상세</a></button><button id="pjstatue"><a href="/gathering/showApplicants?psNo=<%= psNo%>">지원자 현황</a></button>
+<%String putUrl = gathering.getPsType() == GatheringType.P ? "/gathering/projectView?psNo=" : "/gathering/studyView?psNo="; %>
+<button id="pjdetail"><a href="<%= request.getContextPath()%><%=putUrl %><%= psNo%>">모임 상세</a></button><button id="pjstatue"><a href="#">지원자 현황</a></button>
 <br>
 <hr>
 <h3>지원자 현황</h3>
@@ -35,55 +37,33 @@
         <td><%= mem.getNickName() %></td>
         <td><%= mem.getJobName() %></td>
         <td>
-        	<form name="aplcntResultFrm<%=psNo %>" action="">
-        		<input type="hidden" name="psNum" value="<%= psNo%>"/>
-        		<input type="hidden" name="psType" value="<%= psType%>"/>
-        		<input type="hidden" name=apldMemberId value="<%= mem.getMemberId()%>"/>
-        		<input type="hidden" name="apldMemberJobCode" value="<%=mem.getJobCode() %>" />
-        		<input class="applview-btn accept" type="button" value="수락" onclick="apldResult('O');"/>/
-        		<input class="applview-btn reject" type="button" value="거절" onclick="apldResult('X');"/>
-        	</form>
+			<input class="applview-btn accept" type="button" value="수락" onclick="apldResult('O', '<%=mem.getMemberId()%>', '<%=mem.getJobCode()%>');"/>/
+			<input class="applview-btn reject" type="button" value="거절" onclick="apldResult('X', '<%=mem.getMemberId()%>','<%=mem.getJobCode()%>');"/>
        	</td>
     </tr>
   <%} %>
 </table>
-
+<form name="aplcntResultFrm" action="<%=request.getContextPath()%>/gathering/showApplicants" method="POST">
+	<input type="hidden" name="psNum" value="<%= psNo%>" />
+	<input type="hidden" name="psType" value="<%= psType%>"/>
+	<input type="hidden" name="apldResult" />
+	<input type="hidden" name=apldMemberId />
+	<input type="hidden" name="apldMemberJobCode"/>
+</form>
 <div id='pagebar'>
 	<%= request.getAttribute("pagebar") %>
 </div>
 
 <script>
-function apldResult(apldResult){
-	const frm = document.querySelector('[name="aplcntResultFrm<%=psNo %>"]');
+function apldResult(apldResult, memberId, jobCode){
+	const frm = document.aplcntResultFrm;
 	const psNo = frm.psNum.value;
 	const psType = frm.psType.value;
-	const apldMemberId = frm.apldMemberId.value;
-	const apldMemberJobCode = frm.apldMemberJobCode.value;
-	console.log(psNo);
+	frm.apldResult.value = apldResult;
+	frm.apldMemberId.value = memberId;
+	frm.apldMemberJobCode.value = jobCode;
 	
-	$.ajax({
-		type : 'POST',
-		url : '<%= request.getContextPath()%>/gathering/showApplicants',
-		data : {'psNo' : psNo, 'apldMemberId' : apldMemberId, 'jobCode': apldMemberJobCode,'apldResult' : apldResult, 'psType' : psType},
-		success(acceptResults){
-			console.log(acceptResults);
-			const {jobCode, psType, result, capa, memCnt} = acceptResults;	
-			console.log(capa, memCnt);
-			if(result){
-				alert("지원결과 전송 완료");
-				const btns = frm.querySelectorAll(".applview-btn");
-				const btnArr = [...btns];
-				btnArr.forEach((e)=>{
-					e.disabled = true;
-				});				
-			}else if(capa == 0 || capa == memCnt){
-				alert("해당 직무의 인원수는 더이상 변경 할 수 없습니다.");
-			}else{
-				alert("지원결과 처리에 오류가 발생했습니다.");
-			}
-		},
-		error: console.log
-	});
+	frm.submit();
 };
 
 </script>

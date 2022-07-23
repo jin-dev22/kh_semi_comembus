@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import kh.semi.comembus.gathering.model.dto.Gathering;
+import kh.semi.comembus.gathering.model.dto.GatheringExt;
 import kh.semi.comembus.gathering.model.service.GatheringService;
 import kh.semi.comembus.member.model.service.MemberService;
 
@@ -41,7 +41,7 @@ public class MemberBookmarkAddServlet extends HttpServlet {
 			
 			// 업무로직
 			int result = memberService.insertBookmark(param);
-			List<Gathering> bookmarkList = gatheringService.findAllBookmarked(memberId);
+			List<GatheringExt> bookmarkList = gatheringService.findAllBookmarked(memberId);
 			
 			response.sendRedirect(request.getHeader("Referer"));
 			request.setAttribute("bookmarkList", bookmarkList);

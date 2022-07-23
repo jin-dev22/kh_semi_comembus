@@ -52,7 +52,7 @@ public class CommunityCommentServlet extends HttpServlet {
 			String substrTitle = title.length() > 8? title.substring(0, 7)+"...": title;
 			String alertContent = "["+substrTitle +"]에 새 댓글이 달렸습니다.";
 			
-			Alert alert = new Alert(0, writer, 0, replNo, MessageType.NEW_COMMENT, alertContent, IsRead.N);
+			Alert alert = new Alert(0, comm.getCoWriter(), 0, replNo, MessageType.NEW_COMMENT, alertContent, IsRead.N);
 			result = alertService.notifyNewComment(alert);
 			
 			if("Q".equals(type)) {

@@ -16,6 +16,7 @@ import kh.semi.comembus.common.ComembusUtils;
 import kh.semi.comembus.community.model.dto.Community;
 import kh.semi.comembus.community.model.service.CommunityService;
 import kh.semi.comembus.gathering.model.dto.Gathering;
+import kh.semi.comembus.gathering.model.dto.GatheringExt;
 import kh.semi.comembus.gathering.model.service.GatheringService;
 import kh.semi.comembus.member.model.dto.Member;
 import kh.semi.comembus.member.model.dto.MemberExt;
@@ -74,13 +75,25 @@ public class MemberMypageServlet extends HttpServlet {
 			String pagebar = ComembusUtils.getPagebar(cPage, numPerPage, end, url);
 			
 			//프로젝트/스터디 참여중인 게시글 목록
-			List<Gathering> gatheringIngList = gatheringService.findAllIngByMemberId(memberId);
+			List<GatheringExt> gatheringIngList = gatheringService.findAllIngByMemberId(memberId);
+			for(GatheringExt gather : gatheringIngList) {
+				int rctdCnt =  gatheringService.attachRctdCntToGather(gather.getPsNo());
+				gather.setRecruited_cnt(rctdCnt);
+			}
 			
 			//프로젝트/스터디 지원한 게시글 목록
-			List<Gathering> gatheringApldList = gatheringService.findAllApldByMemberId(memberId);
+			List<GatheringExt> gatheringApldList = gatheringService.findAllApldByMemberId(memberId);
+			for(GatheringExt gather : gatheringApldList) {
+				int rctdCnt =  gatheringService.attachRctdCntToGather(gather.getPsNo());
+				gather.setRecruited_cnt(rctdCnt);
+			}
 			
 			//찜한 프로젝트 ,스터디 목록
-			List<Gathering> gatheringBookmarkList = gatheringService.findAllBookmarked(memberId);			
+			List<GatheringExt> gatheringBookmarkList = gatheringService.findAllBookmarked(memberId);
+			for(GatheringExt gather : gatheringBookmarkList) {
+				int rctdCnt =  gatheringService.attachRctdCntToGather(gather.getPsNo());
+				gather.setRecruited_cnt(rctdCnt);
+			}
 			
 			//view단 처리
 			session.setAttribute("loginMember", loginMember);

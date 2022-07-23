@@ -1,3 +1,4 @@
+<%@page import="kh.semi.comembus.gathering.model.dto.GatheringExt"%>
 <%@page import="kh.semi.comembus.gathering.model.dto.GatheringType"%>
 <%@page import="kh.semi.comembus.gathering.model.dto.Gathering"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -11,8 +12,8 @@
 <%
 	MemberExt member = (MemberExt) request.getAttribute("member");
 	List<Community> communityList = (List<Community>) request.getAttribute("communityList");
-	List<Gathering> gatheringIngList = (List<Gathering>) request.getAttribute("gatheringIngList");
-	List<Gathering> gatheringBookmarkList = (List<Gathering>) request.getAttribute("gatheringBookmarkList");
+	List<GatheringExt> gatheringIngList = (List<GatheringExt>) request.getAttribute("gatheringIngList");
+	List<GatheringExt> gatheringBookmarkList = (List<GatheringExt>) request.getAttribute("gatheringBookmarkList");
 	String introduction = member.getIntroduction();
 %>
 <form name="profileFrm">
@@ -35,10 +36,12 @@
 					for(Community co : communityList){
 				%>
 				<div class="coBoard">
-					<span class="coTitle"><%= co.getCoTitle() %></span>
-					<span class="coRegDate"><%= new SimpleDateFormat("yyyy-MM-dd").format(co.getCoRegdate()) %></span>
-					<span class="coNums coLike"><%= co.getCoLike() %></span>
-					<span class="coNums coReadCnt"><%= co.getCoReadcount() %></span>
+					<a href="<%= request.getContextPath()%>/community/communityView?co_type=<%=co.getCoType()%>&no=<%=co.getCoNo()%>">
+						<span class="coTitle"><%= co.getCoTitle() %></span>
+						<span class="coRegDate"><%= new SimpleDateFormat("yyyy-MM-dd").format(co.getCoRegdate()) %></span>
+						<span class="coNums coLike"><%= co.getCoLike() %></span>
+						<span class="coNums coReadCnt"><%= co.getCoReadcount() %></span>
+					</a>
 				</div>
 				<%  }%>
 				<div class="pagebar"><%= request.getAttribute("pagebar")%></div>
@@ -52,23 +55,39 @@
 			<div class="subtitle">모임 참여이력</div>
 			<div class="gathering-align">
 				<%if(gatheringIngList != null && !gatheringIngList.isEmpty()){
-					for(Gathering gather : gatheringIngList){	  
+					for(GatheringExt gather : gatheringIngList){
+						String putUrl = gather.getPsType() == GatheringType.P ? "/gathering/projectView?psNo=" : "/gathering/studyView?psNo="; 									
+						int psNo = gather.getPsNo();
+						String topic = "";
+						switch(gather.getTopic()){
+						case "social" : topic ="소셜네트워크"; break;
+						case "game" : topic = "게임"; break;
+						case "travel": topic = "여행"; break;
+						case "finance": topic = "금융"; break;
+						case "ecommerce": topic = "이커머스"; break;
+						case "Planning": topic = "기획"; break;
+						case "Design": topic = "디자인"; break;
+						case "Frontend": topic = "프론트엔드"; break;
+						case "Backend": topic = "백엔드"; break;
+						case "Interview": topic = "면접"; break;
+						case "Codingtest": topic = "코딩테스트"; break;
+						}
 				%>	
-				<div class="ps-pre">
-					<!-- 추후에 a태그로 링크걸어야함 -->
-						<img src="<%= request.getContextPath() %>/images/<%= gather.getTopic() %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
-						<p class="bold"><%= "social".equals(gather.getTopic()) ? "소셜네트워크" : ("game".equals(gather.getTopic()) ? "게임" : ("travel".equals(gather.getTopic()) ? "여행" : ("finance".equals(gather.getTopic()) ? "금융" : "이커머스"))) %></p>
+					<div class="ps-pre"><!-- /studyView?psNo=107 -->
+						<a href="<%= request.getContextPath()%><%=putUrl %><%= psNo%>">
+							<img src="<%= request.getContextPath() %>/images/<%= gather.getTopic() %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
+						</a>
+						<p class="bold"><%= topic%>
+						</p>
 						<p class="bold"><%= gather.getTitle() %></p>
 						<ul class="ps-pre__etc">
 							<li> 
 								<span class="heart-emoji">&#9829;</span><%= gather.getBookmark() %></li>
 							<li>
 								<span>&#128064;</span><%= gather.getViewcount() %></li>
-							<!-- 나중에 모임 게시물별 모집인원현황 테이블과 연결 -->
-							<li>모집인원 0 / 10</li>
+							<li>모집인원 <%= gather.getRecruited_cnt() %> / <%= gather.getPeople() %></li>
 						</ul>
-						<span class="bookmark bookmark-front">♡</span>
-						<span class="bookmark bookmark-back">♥</span>
+					</div>
 				</div>				
 				<% 
 					}
@@ -82,25 +101,33 @@
 			<div class="subtitle">찜한 프로젝트</div>
 			<div class="gathering-align">
 				<%if(gatheringBookmarkList != null && !gatheringBookmarkList.isEmpty()){
-					for(Gathering gather : gatheringBookmarkList){	  
+					for(GatheringExt gather : gatheringBookmarkList){	
+						String topic = "";
+						switch(gather.getTopic()){
+						case "social" : topic ="소셜네트워크"; break;
+						case "game" : topic = "게임"; break;
+						case "travel": topic = "여행"; break;
+						case "finance": topic = "금융"; break;
+						case "ecommerce": topic = "이커머스"; break;
+						}
 						if(gather.getPsType() == GatheringType.P){
 					%>	    	
-							<div class="ps-pre">
-							<!-- 추후에 a태그로 링크걸어야함 -->
-								<img src="<%= request.getContextPath() %>/images/<%= gather.getTopic() %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
-								<p class="bold"><%= "social".equals(gather.getTopic()) ? "소셜네트워크" : ("game".equals(gather.getTopic()) ? "게임" : ("travel".equals(gather.getTopic()) ? "여행" : ("finance".equals(gather.getTopic()) ? "금융" : "이커머스"))) %></p>
-								<p class="bold"><%= gather.getTitle() %></p>
-								<ul class="ps-pre__etc">
-									<li> 
-										<span class="heart-emoji">&#9829;</span><%= gather.getBookmark() %></li>
-									<li>
-										<span>&#128064;</span><%= gather.getViewcount() %></li>
-									<!-- 나중에 모임 게시물별 모집인원현황 테이블과 연결 -->
-									<li>모집인원 0 / 10</li>
-								</ul>
-								<span class="bookmark bookmark-front">♡</span>
-								<span class="bookmark bookmark-back">♥</span>
-							</div>				
+						<div class="ps-pre">
+						<a href="<%= request.getContextPath()%>/gathering/projectView?psNo=<%= gather.getPsNo() %>">
+							<img src="<%= request.getContextPath() %>/images/<%= gather.getTopic() %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
+						</a>
+							<p class="bold"><%= topic %></p>
+							<p class="bold"><%= gather.getTitle() %></p>
+							<ul class="ps-pre__etc">
+								<li> 
+									<span class="heart-emoji">&#9829;</span><%= gather.getBookmark() %></li>
+								<li>
+									<span>&#128064;</span><%= gather.getViewcount() %></li>
+								<li>모집인원 <%= gather.getRecruited_cnt() %> / <%= gather.getPeople() %></li>
+							</ul>
+							<span class="bookmark bookmark-front">♡</span>
+							<span class="bookmark bookmark-back">♥</span>
+						</div>				
 				<% 
 						}
 					}
@@ -113,24 +140,31 @@
 			<div class="subtitle">찜한 스터디</div>
 				<div class="gathering-align">
 					<%if(gatheringBookmarkList != null && !gatheringBookmarkList.isEmpty()){
-						for(Gathering gather : gatheringBookmarkList){	  
+						for(GatheringExt gather : gatheringBookmarkList){
+							String topic = "";
+							switch(gather.getTopic()){
+							case "Planning": topic = "기획"; break;
+							case "Design": topic = "디자인"; break;
+							case "Frontend": topic = "프론트엔드"; break;
+							case "Backend": topic = "백엔드"; break;
+							case "Interview": topic = "면접"; break;
+							case "Codingtest": topic = "코딩테스트"; break;
+							}
 							if(gather.getPsType() == GatheringType.S){
 						%>	 
 						<div class="ps-pre">
-							<!-- 추후에 a태그로 링크걸어야함 -->
-							<img src="<%= request.getContextPath() %>/images/<%= gather.getTopic() %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
-							<p class="bold"><%= "social".equals(gather.getTopic()) ? "소셜네트워크" : ("game".equals(gather.getTopic()) ? "게임" : ("travel".equals(gather.getTopic()) ? "여행" : ("finance".equals(gather.getTopic()) ? "금융" : "이커머스"))) %></p>
+							<a href="<%= request.getContextPath()%>/gathering/studyView?psNo=<%= gather.getPsNo() %>">
+								<img src="<%= request.getContextPath() %>/images/<%= gather.getTopic() %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
+							</a>
+							<p class="bold"><%= topic %></p>
 							<p class="bold"><%= gather.getTitle() %></p>
 							<ul class="ps-pre__etc">
 								<li> 
 									<span class="heart-emoji">&#9829;</span><%= gather.getBookmark() %></li>
 								<li>
 									<span>&#128064;</span><%= gather.getViewcount() %></li>
-								<!-- 나중에 모임 게시물별 모집인원현황 테이블과 연결 -->
-								<li>모집인원 0 / 10</li>
-							</ul>
-							<span class="bookmark bookmark-front">♡</span>
-							<span class="bookmark bookmark-back">♥</span>
+								<li>모집인원 <%= gather.getRecruited_cnt() %> / <%= gather.getPeople() %></li>
+							</ul>							
 						</div>				
 					<% 		}
 						}
@@ -139,6 +173,49 @@
 				<%}%>   	
 			</div>
 		</div>
+		
 	</section>
 </form>
+<% if(loginMember != null){ %>
+<form
+	action="<%= request.getContextPath() %>/membus/bookmarkAdd" id="tt" method="POST" name="addBookmarkFrm">
+	<input type="hidden" name="psNo" id="addBookMark"/>
+	<input type="hidden" name="member_id" value="<%= loginMember.getMemberId() %>" />
+</form>
+<form
+	action="<%= request.getContextPath() %>/membus/bookmarkDel" method="POST" name="delBookmarkFrm">
+	<input type="hidden" name="psNo" id="delBookmark"/>
+	<input type="hidden" name="member_id" value="<%= loginMember.getMemberId() %>" />
+</form>
+<%
+}
+%>
+<script>
+document.querySelectorAll(".ps__bookmark").forEach((bookmark) => {
+	bookmark.addEventListener('click', (e) => {
+		let mark = e.target;
+		const frmAdd = document.addBookmarkFrm;
+		const frmDel = document.delBookmarkFrm;
+		let psnum = mark.value;
+		// console.log(psnum); // 확인용
+
+		if(mark.classList.contains("bookmark-front")) {
+			mark.style.display = 'none';
+			console.log(mark.nextElementSibling);
+			mark.nextElementSibling.style.display = 'block';
+			
+			const addBookPs = document.querySelector("#addBookPs");
+			addBookPs.value = psnum;
+			frmAdd.submit();			
+		} else {
+			mark.style.display = 'none';
+			mark.nextElementSibling.style.display = 'block';
+			const delBookPs = document.querySelector("#delBookPs");
+			delBookPs.value = psnum;
+			frmDel.submit();
+		}
+	})
+});
+
+</script>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
