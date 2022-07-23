@@ -1,0 +1,97 @@
+@charset "UTF-8";
+@import url("https://font.elice.io/EliceDigitalBaeum.css");
+
+#container{
+	font-family: "Elice Digital Baeum", sans-serif;
+	width: 1200px;	
+	left:0;
+	right:0;
+	margin:auto;
+}
+.name{
+    text-align: center;
+    font-size: 30px;
+}
+.writer{
+    text-align: center;
+    align-items: center;
+    font-size: 20px;
+}
+#listBm{
+    white-space: nowrap;
+}
+#list{
+    width: 200px;
+    overflow: auto;
+}
+input#bookmark, input#bookmarkCancel{
+    width: 200px;
+    height: 40px;
+}
+button#detail,button#statue{
+    border: 0px;
+    border-top-left-radius: 10%;
+    border-top-right-radius: 10%;
+    width: 150px;
+    height: 30px;
+}
+button#detail{
+    background: var(--jjin-yellow-color);
+    font-weight: bold;
+    width:250px;
+    height:40px;
+}
+button#statue{
+    background-color: var(--yellow-color);
+    width:250px;
+    height:40px;
+}
+.submitEdit{
+	background-color:  #C3DBFC;
+	border: 0px;
+	border-radius: 5%;
+	width: 200px;
+    height: 40px;
+}
+.submitDel{
+	background-color: #7F7F7F;
+	color:white;
+	border:0px;
+	border-radius: 5%;
+    width: 200px;
+    height: 40px;
+}
+#apply{
+	border:0px;
+	background-color:#C3DBFC;
+	border-radius: 5%;
+	width: 150px;
+    height: 30px;
+}
+#bookmark{
+	background-color:  #C3DBFC;
+	border: 0px;
+	border-radius: 5%;	
+}
+#bookmarkCancel{
+	background-color: #7F7F7F;
+	color:white;
+	border:0px;
+	border-radius: 5%;
+}
+.h__profile-badge {
+    display: inline-block;
+    position: absolute;
+	width: 36px;
+    height: 36px;
+    line-height: 32px;
+    background-color: #fff;
+    border-radius: 50%;
+    border: 1px solid black;
+    text-align: center;
+    z-index:999;
+}
+#editDel{
+	margin-left:30%;
+	margin-right:30%;
+}
