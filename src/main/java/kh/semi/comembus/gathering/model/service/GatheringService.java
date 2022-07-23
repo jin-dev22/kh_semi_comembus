@@ -26,9 +26,16 @@ public class GatheringService {
 		return projectList;
 	}
 
-	public int getTotalContent() {
+	public int getProTotalContent() {
 		Connection conn = getConnection();
-		int totalContent = gatheringDao.getTotalContent(conn);
+		int totalContent = gatheringDao.getProTotalContent(conn);
+		close(conn);
+		return totalContent;
+	}
+	
+	public int getStdTotalContent() {
+		Connection conn = getConnection();
+		int totalContent = gatheringDao.getStdTotalContent(conn);
 		close(conn);
 		return totalContent;
 	}
@@ -46,6 +53,21 @@ public class GatheringService {
 		close(conn);
 		return totalContent;
 	}
+	
+	public List<Gathering> findStudyLike(Map<String, Object> param) {
+		Connection conn = getConnection();
+		List<Gathering> list = gatheringDao.findStudyLike(conn, param);
+		close(conn);
+		return list;
+	}
+	
+	public int getStdTotalContentLike(Map<String, Object> param) {
+		Connection conn = getConnection();
+		int totalContent = gatheringDao.getStdTotalContentLike(conn, param);
+		close(conn);
+		return totalContent;
+	}
+
 
 	public List<Gathering> findProBookmarkFilter(Map<String, Object> param) {
 		Connection conn = getConnection();
@@ -59,6 +81,13 @@ public class GatheringService {
 		int totalbookmarkFilterContent = gatheringDao.getTotalBookmarkFilter(conn, param);
 		close(conn);
 		return totalbookmarkFilterContent;
+	}
+
+	public List<Gathering> findStdBookmarkFilter(Map<String, Object> param) {
+		Connection conn = getConnection();
+		List<Gathering> bookmarkFilterlist = gatheringDao.findStdBookmarkFilter(conn, param);
+		close(conn);
+		return bookmarkFilterlist;
 	}
 
 	public List<Gathering> findAllProBookmarked(Map<String, Object> bmParam) {
@@ -287,6 +316,9 @@ public class GatheringService {
 		}
 		return result;
 	}
+
+
+
 	
 	//유경 끝
 

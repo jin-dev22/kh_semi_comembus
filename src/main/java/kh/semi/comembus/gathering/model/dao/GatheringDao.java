@@ -85,7 +85,7 @@ public class GatheringDao {
 		return new GatheringExt(psNo, writer, psType, title, regDate, content, viewcount, bookmark, topic, local, people, status, startDate, endDate);
 	}
 
-	public int getTotalContent(Connection conn) {
+	public int getProTotalContent(Connection conn) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		int totalContent = 0;
@@ -104,6 +104,27 @@ public class GatheringDao {
 		}		
 		return totalContent;
 	}
+	
+	public int getStdTotalContent(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int totalContent = 0;
+		String sql = prop.getProperty("getStdTotalContent");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			if(rset.next())
+				totalContent = rset.getInt(1);
+		} catch (SQLException e) {
+			throw new GatheringException("총 스터디 게시물 수 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}		
+		return totalContent;
+	}
+
 
 	public List<Gathering> findProjectLike(Connection conn, Map<String, Object> param) {
 		PreparedStatement pstmt = null;
@@ -118,12 +139,6 @@ public class GatheringDao {
 		String statusYN = (String) param.get("statusYN");
 		int start = (int) param.get("start");
 		int end = (int) param.get("end");
-		System.out.println("DAO확인용 searchLocal = " + searchLocal);
-		System.out.println("DAO확인용 searchJobcode = " + searchJobcode);
-		System.out.println("DAO확인용 selectLocalKeyword = " + selectLocalKeyword);
-		System.out.println("DAO확인용 selectJobKeyword = " + selectJobKeyword);
-		System.out.println("DAO확인용 statusYN = " + statusYN);
-		System.out.println(">> DAO확인용 sql = " + sql);
 
 		// [str1] = "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))"
         // [str2] = "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectJobKeyword + "') and capacity_number > recruited_number)"
@@ -176,7 +191,6 @@ public class GatheringDao {
 				}
 			}
 		}
-		System.out.println("@@ " + sql);
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -208,11 +222,6 @@ public class GatheringDao {
 		String selectLocalKeyword = (String) param.get("selectLocalKeyword");
 		String selectJobKeyword = (String) param.get("selectJobKeyword");
 		String statusYN = (String) param.get("statusYN");
-		System.out.println("DAO확인용 토탈 searchLocal = " + searchLocal);
-		System.out.println("DAO확인용 토탈 searchJobcode = " + searchJobcode);
-		System.out.println("DAO확인용 토탈 selectLocalKeyword = " + selectLocalKeyword);
-		System.out.println("DAO확인용 토탈 selectJobKeyword = " + selectJobKeyword);
-		System.out.println("DAO확인용 토탈 statusYN = " + statusYN);
 		
 		// 랜딩페이지(필터 미지정시)
 		if("All".equals(selectLocalKeyword)) {
@@ -275,7 +284,167 @@ public class GatheringDao {
 		}
 		return totalContent;
 	}
+	
+	public List<Gathering> findStudyLike(Connection conn, Map<String, Object> param) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<Gathering> list = new ArrayList<>();
+		String sql = prop.getProperty("findStudyLike");
+		
+		String searchLocal = (String) param.get("searchLocal");
+		String searchTopic = (String) param.get("searchTopic");
+		String selectLocalKeyword = (String) param.get("selectLocalKeyword");
+		String selectTopicKeyword = (String) param.get("selectTopicKeyword");
+		String statusYN = (String) param.get("statusYN");
+		int start = (int) param.get("start");
+		int end = (int) param.get("end");
 
+		// [str1] = "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))"
+        // [str2] = "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectJobKeyword + "') and capacity_number > recruited_number)"
+		// [str3] = "and status = '" + statusYN + "'"
+
+		// 랜딩페이지(필터 미지정시)
+		if("All".equals(selectLocalKeyword)) {
+			if("All".equals(selectTopicKeyword)) {
+				if("All".equals(statusYN)) {
+					sql = sql.replace("[str1]", " ");
+					sql = sql.replace("[str2]", " ");
+					sql = sql.replace("[str3]", " ");
+				} else {
+					sql = sql.replace("[str1]", " ");
+					sql = sql.replace("[str2]", " ");
+					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
+				}
+			} else {
+				if("All".equals(statusYN)) {
+					sql = sql.replace("[str1]", " ");
+					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectTopicKeyword + "') and capacity_number > recruited_number)");
+					sql = sql.replace("[str3]", " ");
+				} else {
+					sql = sql.replace("[str1]", " ");
+					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectTopicKeyword + "') and capacity_number > recruited_number)");
+					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
+				}
+			}
+		}
+		else {
+			if("All".equals(selectTopicKeyword)) {
+				if("All".equals(statusYN)) {
+					sql = sql.replace("[str1]", "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
+					sql = sql.replace("[str2]", " ");
+					sql = sql.replace("[str3]", " ");
+				} else {
+					sql = sql.replace("[str1]", "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
+					sql = sql.replace("[str2]", " ");
+					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
+				}
+			} else {
+				if("All".equals(statusYN)) {
+					sql = sql.replace("[str1]", "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
+					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectTopicKeyword + "') and capacity_number > recruited_number)");
+					sql = sql.replace("[str3]", " ");
+				} else {
+					sql = sql.replace("[str1]", "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
+					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectTopicKeyword + "') and capacity_number > recruited_number)");
+					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
+				}
+			}
+		}
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, start);
+			pstmt.setInt(2, end);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				GatheringExt gathering = handleGatheringResultSet(rset);
+				gathering.setRecruited_cnt(rset.getInt("recruited_cnt"));
+				list.add(gathering);
+			}
+		} catch (SQLException e) {
+			throw new GatheringException("스터디 필터 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return list;
+	}
+
+	public int getStdTotalContentLike(Connection conn, Map<String, Object> param) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int totalContent = 0;		
+		String sql = prop.getProperty("getStdTotalContentLike");
+		
+		String searchLocal = (String) param.get("searchLocal");
+		String searchTopic = (String) param.get("searchTopic");
+		String selectLocalKeyword = (String) param.get("selectLocalKeyword");
+		String selectTopicKeyword = (String) param.get("selectTopicKeyword");
+		String statusYN = (String) param.get("statusYN");
+		
+		// 랜딩페이지(필터 미지정시)
+		if("All".equals(selectLocalKeyword)) {
+			if("All".equals(selectTopicKeyword)) {
+				if("All".equals(statusYN)) {
+					sql = sql.replace("[str1]", " ");
+					sql = sql.replace("[str2]", " ");
+					sql = sql.replace("[str3]", " ");
+				} else {
+					sql = sql.replace("[str1]", " ");
+					sql = sql.replace("[str2]", " ");
+					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
+				}
+			} else {
+				if("All".equals(statusYN)) {
+					sql = sql.replace("[str1]", " ");
+					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectTopicKeyword + "') and capacity_number > recruited_number)");
+					sql = sql.replace("[str3]", " ");
+				} else {
+					sql = sql.replace("[str1]", " ");
+					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectTopicKeyword + "') and capacity_number > recruited_number)");
+					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
+				}
+			}
+		}
+		else {
+			if("All".equals(selectTopicKeyword)) {
+				if("All".equals(statusYN)) {
+					sql = sql.replace("[str1]", "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
+					sql = sql.replace("[str2]", " ");
+					sql = sql.replace("[str3]", " ");
+				} else {
+					sql = sql.replace("[str1]", "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
+					sql = sql.replace("[str2]", " ");
+					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
+				}
+			} else {
+				if("All".equals(statusYN)) {
+					sql = sql.replace("[str1]", "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
+					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectTopicKeyword + "') and capacity_number > recruited_number)");
+					sql = sql.replace("[str3]", " ");
+				} else {
+					sql = sql.replace("[str1]", "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
+					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectTopicKeyword + "') and capacity_number > recruited_number)");
+					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
+				}
+			}
+		}
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			if(rset.next())
+				totalContent = rset.getInt(1);
+		} catch (SQLException e) {
+			throw new GatheringException("스터디 필터 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return totalContent;
+	}
+	
+	// pagebar 필요한 찜 필터용
 	public List<Gathering> findProBookmarkFilter(Connection conn, Map<String, Object> param) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -316,11 +485,56 @@ public class GatheringDao {
 	public int getTotalBookmarkFilter(Connection conn, Map<String, Object> param) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		int totalbookmarkFilterContent = 0;		
-		String sql = prop.getProperty("getTotalProBookmarkFilter");
+		int totalbookmarkFilterContent = 0;
+		String bookmarkYN = (String) param.get("bookmarkYN");
+		String memberId = (String) param.get("memberId");
+		String type = (String) param.get("type");
+		String sql = "";
+		
+		System.out.println("DAO의 bookmarkYN" + bookmarkYN);
+		
+		if(type == "P") {
+			sql = prop.getProperty("getTotalProBookmarkFilter");
+		} else {
+			System.out.println("22");
+			sql = prop.getProperty("getTotalStdBookmarkFilter");
+		}
+
+		if("Y".equals(bookmarkYN)) {
+			System.out.println("33");
+			sql = sql.replace("[str1]", "and exists (select 1 from bookmarked_prj_std where ps_no = ps.ps_no and member_id = '" + memberId + "')");			
+		} else {
+			System.out.println("44");
+			sql = sql.replace("[str1]", " ");
+		}
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				totalbookmarkFilterContent = rset.getInt(1);
+				System.out.println("totalbookmarkFilterContent");
+			}
+		} catch (SQLException e) {
+			throw new GatheringException("스터디 찜 필터 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return totalbookmarkFilterContent;
+	}
+	
+	// pagebar 필요한 찜 필터용
+	public List<Gathering> findStdBookmarkFilter(Connection conn, Map<String, Object> param) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<Gathering> bookmarkFilterlist = new ArrayList<>();
+		String sql = prop.getProperty("findStdBookmarkFilter");
+		
 		String bookmarkYN = (String) param.get("bookmarkYN");
 		String memberId = (String) param.get("memberId");
 
+		// 체크 시
 		if("Y".equals(bookmarkYN)) {
 			sql = sql.replace("[str1]", "and exists (select 1 from bookmarked_prj_std where ps_no = ps.ps_no and member_id = '" + memberId + "')");			
 		} else {
@@ -329,16 +543,21 @@ public class GatheringDao {
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, (int)param.get("start"));
+			pstmt.setInt(2, (int)param.get("end"));
 			rset = pstmt.executeQuery();
-			if(rset.next())
-				totalbookmarkFilterContent = rset.getInt(1);
+			while(rset.next()) {
+				GatheringExt gathering = handleGatheringResultSet(rset);
+				gathering.setRecruited_cnt(rset.getInt("recruited_cnt"));
+				bookmarkFilterlist.add(gathering);
+			}
 		} catch (SQLException e) {
-			throw new GatheringException("프로젝트 찜 필터 조회 오류", e);
+			throw new GatheringException("스터디 찜 필터 조회 오류", e);
 		} finally {
 			close(rset);
 			close(pstmt);
 		}
-		return totalbookmarkFilterContent;
+		return bookmarkFilterlist;
 	}
 	
 	public List<Gathering> findAllProBookmarked(Connection conn, Map<String, Object> bmParam) {
