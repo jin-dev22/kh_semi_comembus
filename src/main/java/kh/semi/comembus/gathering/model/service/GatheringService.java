@@ -230,7 +230,7 @@ public class GatheringService {
 		return project;
 	}
 
-	public static int enrollStudy(Gathering study) {
+	public int enrollStudy(Gathering study) {
 		Connection conn=getConnection();
 		int result = 0;
 		try {
