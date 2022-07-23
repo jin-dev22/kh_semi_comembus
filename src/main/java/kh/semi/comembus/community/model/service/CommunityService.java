@@ -255,6 +255,16 @@ public class CommunityService {
 		return lastRepleNoByMemCo;
 	}
 
+	/**
+	 * 알림목록페이지: 댓글알림 해당 커뮤니티 게시글번호 조회
+	 */
+	public Community getCoNoByReplNo(int replNo) {
+		Connection conn = getConnection();
+		Community comm = communityDao.getCoNoByReplNo(conn, replNo);
+		close(conn);
+		return comm;
+	}
+
 
 	
 

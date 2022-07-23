@@ -60,21 +60,27 @@ function apldResult(apldResult){
 	const apldMemberId = frm.apldMemberId.value;
 	const apldMemberJobCode = frm.apldMemberJobCode.value;
 	console.log(psNo);
-	if(psType == 'P')	
 	
 	$.ajax({
 		type : 'POST',
 		url : '<%= request.getContextPath()%>/gathering/showApplicants',
 		data : {'psNo' : psNo, 'apldMemberId' : apldMemberId, 'jobCode': apldMemberJobCode,'apldResult' : apldResult, 'psType' : psType},
-		success(result){
+		success(acceptResults){
+			console.log(acceptResults);
+			const {jobCode, psType, result, capa, memCnt} = acceptResults;	
+			console.log(capa, memCnt);
 			if(result){
-				console.log("지원수락 완료");
+				alert("지원결과 전송 완료");
 				const btns = frm.querySelectorAll(".applview-btn");
 				const btnArr = [...btns];
 				btnArr.forEach((e)=>{
 					e.disabled = true;
 				});				
-			}			
+			}else if(capa == 0 || capa == memCnt){
+				alert("해당 직무의 인원수는 더이상 변경 할 수 없습니다.");
+			}else{
+				alert("지원결과 처리에 오류가 발생했습니다.");
+			}
 		},
 		error: console.log
 	});

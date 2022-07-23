@@ -99,7 +99,7 @@ public class GatheringApplcntStatueViewServlet extends HttpServlet {
 		if(psType == GatheringType.P && "O".equals(apldResult)) {
 			capacitiesByDept = gatheringService.getCapacitiesByDept(psNo);
 			GatheringExt project = (GatheringExt) gatheringService.findByNo(psNo);
-			int capa = capacitiesByDept.get(jobCode);
+			int capa = capacitiesByDept.get(jobCode) != null? capacitiesByDept.get(jobCode) : 0;
 			int memCnt = 0;
 			switch(JobCode.valueOf(jobCode)) {
 			case PL: memCnt = project.getPlanning_cnt(); break;
@@ -107,8 +107,9 @@ public class GatheringApplcntStatueViewServlet extends HttpServlet {
 			case BE: memCnt = project.getBackend_cnt(); break;
 			case FE: memCnt = project.getFrontend_cnt(); break;
 			}
-			
-			if(capa == memCnt) {
+			acceptResults.put("capa", capa);//프로젝트 게시물일경우 직무별 정원, 인원수현황 추가
+			acceptResults.put("memCnt", memCnt);
+			if(capa == memCnt || capa == 0) {
 				acceptResults.put("result", result);
 				//응답
 				response.setContentType("application/json; charset=utf-8");
@@ -140,12 +141,13 @@ public class GatheringApplcntStatueViewServlet extends HttpServlet {
 		//알림내용 글자 수 줄이기
 		String title = gather.getTitle();
 		String substrTitle = title.length() > 8? title.substring(0, 7)+"...": title;
-		String alertContent = "["+substrTitle +"]에 지원자가 있습니다.";
+		String alertContent = "["+substrTitle +"]의 모임장이 회원님의 지원을 "+ ("O".equals(apldResult) ? "수락" : "거절"+"하셨습니다.");
 		
-		Alert alert = new Alert(0, gather.getWriter(), psNo, 0, MessageType.APPLY_CANCELED, alertContent, IsRead.N);
-		_result = alertService.notifyNewAplcnt(alert);
+		Alert alert = new Alert(0, apldMemberId, psNo, 0, MessageType.APPLY_RESULT, alertContent, IsRead.N);
+		_result = alertService.notifyAplcntResult(alert);
 		
-		//응답
+		//응답(JobCode, psType, result:boolean
+		acceptResults.put("result", result);
 		response.setContentType("application/json; charset=utf-8");
 		String jsonStr  = new Gson().toJson(acceptResults);
 		response.getWriter().print(jsonStr);

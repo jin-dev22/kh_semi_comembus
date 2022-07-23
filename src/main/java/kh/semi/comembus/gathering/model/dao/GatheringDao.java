@@ -520,6 +520,7 @@ public class GatheringDao {
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, psNo);
+			rset = pstmt.executeQuery();
 			while(rset.next()) {
 				JobCode jobCode = JobCode.valueOf(rset.getString("job_code"));
 				int capa = rset.getInt("capacity_number");

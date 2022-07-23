@@ -479,5 +479,28 @@ public class CommunityDao {
 	}
 
 
+	public Community getCoNoByReplNo(Connection conn, int replNo) {
+		Community comm = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("getCoByReplNo");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, replNo);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				comm = handleCommunityResultSet(rset);
+			}
+		} catch (SQLException e) {
+			throw new CommunityException("회원 댓글알림 게시글 조회 오류",e);
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return comm;
+	}
+
+
 	//수진코드 끝
 }
