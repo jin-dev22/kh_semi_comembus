@@ -617,6 +617,25 @@ public class MemberDao {
 		return apldMemberNum;
 	}
 	
+	public int updateApldResult(Connection conn, Map<String, Object> param) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("updateApldResult");
+		//update member_application_status set result = ? where member_id = ? and ps_no = ?
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, (String) param.get("apldResult"));
+			pstmt.setString(2, (String) param.get("apldMemberId"));
+			pstmt.setInt(3, (int) param.get("psNo"));
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new MemberException("회원 지원결과 수정 오류", e);
+		} finally {
+			close(pstmt);
+		}	
+		return result;
+	}
+	
 	// 수진 코드 끝
 	
 	// 선아 코드 시작

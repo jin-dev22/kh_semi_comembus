@@ -19,6 +19,9 @@
 <button id="pjdetail"><a href="<%=request.getContextPath() %>/projectDetailView?psNo=<%= gathering.getPsNo()%>">프로젝트 상세</a></button><button id="pjstatue"><a href="<%=request.getContextPath() %>/gathering/showApplicants?psNo=<%= gathering.getPsNo()%>">지원자 현황</a></button>
 <br>
 <hr>
+<form 	name="projectUpdateFrm"
+	action="<%=request.getContextPath() %>/gathering/projectUpdateView" 
+	method="get">
 <h3>모집 현황</h3>
 <table>
     <tr>
@@ -39,6 +42,10 @@
     </tr>
     <tr>
         <td><input type="button" id="apply" value="지원하기" onclick="applyStatus()"></td>
+    </tr>
+    <tr>
+    	<td><input type="hidden" id="psNo" name="psNo" value="<%= gathering.getPsNo() %>"/></td>
+    	<% System.out.println("Detail : "+gathering.getPsNo()); %>
     </tr>
 </table>
 <h3>프로젝트 주제</h3>
@@ -71,7 +78,8 @@
 <input type="button" id="bookmark" onclick="bookmark()" value="이 프로젝트 찜하기"></input><input type="button" id="bookmarkCancel" onclick="bookmarkCancel()" value="프로젝트 찜하기 취소"></input>
 <br><br><br><br>
 <!--로그인 했을 경우+작성자일 경우에만 되도록 설정하기-->
-<button>수정</button><button>삭제</button>
+<input type="submit" value="수정"/><button>삭제</button>
+</form>
 </body>
 <script>
 const bookmarkNum=document.querySelector('#bookmarkCount');

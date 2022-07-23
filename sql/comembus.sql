@@ -292,6 +292,12 @@ commit;
 --drop table community_board;
 create sequence seq_co_no;
 
+
+select co_title, co_writer, co_like, co_read_count from (select co_title, co_writer, co_like, co_read_count, co_reg_date from community_board where co_type='S' order by co_read_count desc) where co_reg_date between sysdate-30 and sysdate and rownum <=4 ;
+
+
+
+
 COMMENT ON COLUMN community_board.co_no IS '커뮤니티게시판 글번호';
 COMMENT ON COLUMN community_board.co_writer IS '커뮤니티게시판 글 작성자';
 COMMENT ON COLUMN community_board.co_title IS '커뮤니티게시판 글 제목';
@@ -333,4 +339,5 @@ COMMENT ON COLUMN community_repl.reg_date IS '커뮤니티게시판 작성일(�
 COMMENT ON COLUMN community_repl.content IS '커뮤니티게시판 댓글 내용';
 COMMENT ON COLUMN community_repl.repl_level IS '댓글레벨 2까지만';
 COMMENT ON COLUMN community_repl.ref_repl_no IS '대댓글인경우 원댓글번호값. 원댓글 on delete cascade';
+
 --태연님 코드 끝

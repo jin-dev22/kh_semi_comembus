@@ -110,9 +110,9 @@ public class GatheringService {
 	/**
 	 * 멤버스 프로필, 마이페이지: 회원 참가중인 모임 게시글 조회
 	 */
-	public List<Gathering> findAllIngByMemberId(String memberId) {
+	public List<GatheringExt> findAllIngByMemberId(String memberId) {
 		Connection conn = getConnection();
-		List<Gathering> gatheringIngList = gatheringDao.findAllByMemberId(conn, memberId);
+		List<GatheringExt> gatheringIngList = gatheringDao.findAllByMemberId(conn, memberId);
 		close(conn);
 		return gatheringIngList;
 	}
@@ -120,9 +120,9 @@ public class GatheringService {
 	/**
 	 * 회원 아이디로 찜하기한 모임 모두 조회
 	 */
-	public List<Gathering> findAllBookmarked(String memberId) {
+	public List<GatheringExt> findAllBookmarked(String memberId) {
 		Connection conn = getConnection();
-		List<Gathering> gatheringBookmarkList = gatheringDao.findAllBookmarked(conn, memberId);
+		List<GatheringExt> gatheringBookmarkList = gatheringDao.findAllBookmarked(conn, memberId);
 		close(conn);
 		return gatheringBookmarkList;
 	}
@@ -130,9 +130,9 @@ public class GatheringService {
 	/**
 	 * 회원 아이디로 지원한 모임 모두 조회
 	 */
-	public List<Gathering> findAllApldByMemberId(String memberId) {
+	public List<GatheringExt> findAllApldByMemberId(String memberId) {
 		Connection conn = getConnection();
-		List<Gathering> gatheringApldList = gatheringDao.findAllApldByMemberId(conn, memberId);
+		List<GatheringExt> gatheringApldList = gatheringDao.findAllApldByMemberId(conn, memberId);
 		close(conn);
 		return gatheringApldList;
 	}
@@ -216,6 +216,44 @@ public class GatheringService {
 		return result;
 	}
 	
+	/**
+	 * 스터디 지원자 모집인원에 추가해주기
+	 */
+	public int addStdMemNum(int psNo) {
+		int result = 0;
+		Connection conn = getConnection();
+		try {
+			result = gatheringDao.addStdMemNum(conn, psNo);
+			commit(conn);
+		} catch (Exception e) {
+			rollback(conn);
+			throw e;
+		}
+		finally {
+			close(conn);
+		}
+		
+		return result;
+	}
+	
+	public int getRcrtdForStd(int psNo) {
+		int capa = 0;
+		Connection conn = getConnection();
+		capa = gatheringDao.getRcrtdForStd(conn, psNo);
+		close(conn);
+		
+		return capa;
+	}
+	
+	/**
+	 * GatheringExt 변수 recruted_cnt추가 이전에 만들어진 코드에 사용하기 위한 메소드입니다.
+	 */
+	public int attachRctdCntToGather(int psNo) {
+		Connection conn = getConnection();
+		int rctdCnt = gatheringDao.attachRctdCntToGather(conn, psNo);
+		close(conn);
+		return rctdCnt;
+	}
 	//수진코드 끝
 	
 	//유경 추가
@@ -275,6 +313,24 @@ public class GatheringService {
 			throw e;
 		}finally {
 			close(conn);
+		}
+		return result;
+	}
+
+	public int updateProject(Gathering project) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			// 1. 게시글 수정
+			result = gatheringDao.updateProject(conn, project);
+			commit(conn);
+		} 
+		catch (Exception e) {
+			rollback(conn);
+			throw e;
+		}
+		finally {
+			close(conn);			
 		}
 		return result;
 	}
