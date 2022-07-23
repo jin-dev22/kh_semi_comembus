@@ -587,18 +587,18 @@ public class GatheringDao {
 		try {
 			pstmt=conn.prepareStatement(sql);
 			pstmt.setString(1, study.getWriter());
-			pstmt.setObject(2, "S");
-			pstmt.setString(3, study.getTitle());
-			pstmt.setDate(4, study.getRegDate());
-			pstmt.setString(5, study.getContent());
+//			pstmt.setObject(2, "S");
+			pstmt.setString(2, study.getTitle());
+//			pstmt.setDate(4, study.getRegDate());
+			pstmt.setString(3, study.getContent());
 //			pstmt.setInt(6, study.getViewcount());
 //			pstmt.setInt(7, study.getBookmark());
-			pstmt.setString(8, study.getTopic());
-			pstmt.setString(9, study.getLocal());
-			pstmt.setInt(10, study.getPeople());
-			pstmt.setObject(11, "N");
-			pstmt.setDate(12, study.getStartDate());
-			pstmt.setDate(13, study.getEndDate());
+			pstmt.setString(4, study.getTopic());
+			pstmt.setString(5, study.getLocal());
+			pstmt.setInt(6, study.getPeople());
+//			pstmt.setObject(11, "N");
+			pstmt.setDate(7, study.getStartDate());
+			pstmt.setDate(8, study.getEndDate());
 			
 			result=pstmt.executeUpdate();
 		}catch(SQLException e) {
@@ -614,7 +614,7 @@ public class GatheringDao {
 		ResultSet rset = null;
 		int studyNo=0;
 		//sql설정
-		String sql = prop.getProperty("getLaststudyNo");
+		String sql = prop.getProperty("getLastStudyNo");
 		try {
 			pstmt=conn.prepareStatement(sql);
 			rset=pstmt.executeQuery();
