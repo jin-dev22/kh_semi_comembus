@@ -61,10 +61,12 @@
 					for(Community co : communityList){
 				%>
 				<div class="coBoard">
-					<span class="coTitle"><%= co.getCoTitle() %></span>
-					<span class="coRegDate"><%= new SimpleDateFormat("yyyy-MM-dd").format(co.getCoRegdate()) %></span>
-					<span class="coNums coLike"><%= co.getCoLike() %></span>
-					<span class="coNums coReadCnt"><%= co.getCoReadcount() %></span>
+					<a href="<%= request.getContextPath()%>/community/communityView?co_type=<%=co.getCoType()%>&no=<%=co.getCoNo()%>">
+						<span class="coTitle"><%= co.getCoTitle() %></span>
+						<span class="coRegDate"><%= new SimpleDateFormat("yyyy-MM-dd").format(co.getCoRegdate()) %></span>
+						<span class="coNums coLike"><%= co.getCoLike() %></span>
+						<span class="coNums coReadCnt"><%= co.getCoReadcount() %></span>
+					</a>
 				</div>
 				<%  }%>
 				<div class="pagebar"><%= request.getAttribute("pagebar")%></div>

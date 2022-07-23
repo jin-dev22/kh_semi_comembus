@@ -1,7 +1,6 @@
 package kh.semi.comembus.member.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +15,8 @@ import kh.semi.comembus.common.ComembusUtils;
 import kh.semi.comembus.community.model.dto.Community;
 import kh.semi.comembus.community.model.service.CommunityService;
 import kh.semi.comembus.gathering.model.dto.Gathering;
+import kh.semi.comembus.gathering.model.dto.GatheringExt;
 import kh.semi.comembus.gathering.model.service.GatheringService;
-import kh.semi.comembus.member.model.dto.Member;
 import kh.semi.comembus.member.model.dto.MemberExt;
 import kh.semi.comembus.member.model.service.MemberService;
 
@@ -33,6 +32,7 @@ public class MemberProfileViewServlet extends HttpServlet {
 	
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * 추후 GatheringExt활용해서 리팩토링 필요
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
@@ -71,10 +71,20 @@ public class MemberProfileViewServlet extends HttpServlet {
 			String pagebar = ComembusUtils.getPagebar(cPage, numPerPage, end, url);
 			
 			//프로젝트/스터디 참여중인 게시글 목록
-			List<Gathering> gatheringIngList = gatheringService.findAllIngByMemberId(memberId);
+			List<GatheringExt> gatheringIngList = gatheringService.findAllIngByMemberId(memberId);
+			//모집된 인원수 추가하기
+			for(GatheringExt gather : gatheringIngList) {
+				int rctdCnt =  gatheringService.attachRctdCntToGather(gather.getPsNo());
+				gather.setRecruited_cnt(rctdCnt);
+			}
+			
 			
 			//찜한 프로젝트 ,스터디 목록
-			List<Gathering> gatheringBookmarkList = gatheringService.findAllBookmarked(memberId);			
+			List<GatheringExt> gatheringBookmarkList = gatheringService.findAllBookmarked(memberId);
+			for(GatheringExt gather : gatheringBookmarkList) {
+				int rctdCnt =  gatheringService.attachRctdCntToGather(gather.getPsNo());
+				gather.setRecruited_cnt(rctdCnt);
+			}
 			
 			//view단 처리
 			request.setAttribute("member", member);

@@ -81,9 +81,9 @@ public class GatheringService {
 	/**
 	 * 멤버스 프로필, 마이페이지: 회원 참가중인 모임 게시글 조회
 	 */
-	public List<Gathering> findAllIngByMemberId(String memberId) {
+	public List<GatheringExt> findAllIngByMemberId(String memberId) {
 		Connection conn = getConnection();
-		List<Gathering> gatheringIngList = gatheringDao.findAllByMemberId(conn, memberId);
+		List<GatheringExt> gatheringIngList = gatheringDao.findAllByMemberId(conn, memberId);
 		close(conn);
 		return gatheringIngList;
 	}
@@ -91,9 +91,9 @@ public class GatheringService {
 	/**
 	 * 회원 아이디로 찜하기한 모임 모두 조회
 	 */
-	public List<Gathering> findAllBookmarked(String memberId) {
+	public List<GatheringExt> findAllBookmarked(String memberId) {
 		Connection conn = getConnection();
-		List<Gathering> gatheringBookmarkList = gatheringDao.findAllBookmarked(conn, memberId);
+		List<GatheringExt> gatheringBookmarkList = gatheringDao.findAllBookmarked(conn, memberId);
 		close(conn);
 		return gatheringBookmarkList;
 	}
@@ -210,16 +210,20 @@ public class GatheringService {
 	public int getRcrtdForStd(int psNo) {
 		int capa = 0;
 		Connection conn = getConnection();
-		try {
-			capa = gatheringDao.getRcrtdForStd(conn, psNo);
-		} catch (Exception e) {
-			throw e;
-		}
-		finally {
-			close(conn);
-		}
+		capa = gatheringDao.getRcrtdForStd(conn, psNo);
+		close(conn);
 		
 		return capa;
+	}
+	
+	/**
+	 * GatheringExt 변수 recruted_cnt추가 이전에 만들어진 코드에 사용하기 위한 메소드입니다.
+	 */
+	public int attachRctdCntToGather(int psNo) {
+		Connection conn = getConnection();
+		int rctdCnt = gatheringDao.attachRctdCntToGather(conn, psNo);
+		close(conn);
+		return rctdCnt;
 	}
 	//수진코드 끝
 	
