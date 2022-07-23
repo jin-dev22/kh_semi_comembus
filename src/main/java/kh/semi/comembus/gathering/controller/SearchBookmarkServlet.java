@@ -42,44 +42,49 @@ public class SearchBookmarkServlet extends HttpServlet {
 			// 로그인을 했다면 memberId가, 안했다면 "" 공백문자가
 			String memberId = request.getParameter("memberId");
 			
-			System.out.println("확인용 bookmarkYN = " + bookmarkYN);
-			System.out.println("확인용 memberId = " + memberId);
+			System.out.println(">>> 확인용 bookmarkYN = " + bookmarkYN);
+			System.out.println(">>> 확인용 memberId = " + memberId);
 			
 			Map<String, Object> param = new HashMap<>();
 			param.put("memberId", memberId);
 			param.put("bookmarkYN", bookmarkYN);
 			param.put("start", (cPage - 1) * numPerPage + 1);
 			param.put("end", cPage * numPerPage);
-			System.out.println("확인용 param = " + param);
+			System.out.println(">>> 확인용 param = " + param); // 여기까지 확인완료
 			
 			// 2. 업무로직
 			// bookmark 영역
-			List<Gathering> bookmarkProjectList = new ArrayList<>();
-			if(memberId != null && bookmarkYN == "Y") {
-				bookmarkProjectList = gatheringService.findMemberBookmarkFilterList(param);
+			List<Gathering> bookmarkList = new ArrayList<>();
+			if(memberId != null && "Y".equals(bookmarkYN)) { // 로그인멤버가 있고, 찜한거 체크 시
+				bookmarkList = gatheringService.findProBookmarkFilter(param);
 			}
+			System.out.println("> 3 <");
 			List<Gathering> projectList = new ArrayList<>();
-			if(memberId != null && bookmarkYN == "All") {
-				projectList = gatheringService.findGatheringAll(param);
-				bookmarkProjectList = gatheringService.findAllProBookmarked(param);
-			}
-			
+			Map<String, Object> bmParam = new HashMap<>();
+			if(memberId != null && "All".equals(bookmarkYN)) {
+				projectList = gatheringService.findGatheringAll(param);	
+				bmParam.put("loginMemberId", memberId);
+				bookmarkList = gatheringService.findAllProBookmarked(bmParam);
+				System.out.println(">>> memberId " + memberId);
+				System.out.println(">>> bmParam = " + bmParam);
+			};
+			System.out.println("> 4 <");
 			// pagebar 영역
 			int totalContent = gatheringService.getTotalBookmarkFilter(param);
 			
-			System.out.println("필터링확인용 bookmarkProjectLists: " + bookmarkProjectList); // 확인용
-			System.out.println("필터링확인용 projectList: " + projectList); // 확인용
-			System.out.println("필터링 totalContent = " + totalContent); // 확인용
-			System.out.println("cPage = " + cPage);
+			System.out.println(">>> 필터링확인용 bookmarkList: " + bookmarkList); // 확인용
+			System.out.println(">>> 필터링확인용 projectList: " + projectList); // 확인용
+			System.out.println(">>> 필터링 totalContent = " + totalContent); // 확인용
+			System.out.println(">>> cPage = " + cPage);
 			
 			response.setContentType("application/json; charset=utf-8");
-			Map<String, Object> bookmarkFilterList = new HashMap<>();
-			bookmarkFilterList.put("bookmarkProjectList", bookmarkProjectList);
-			bookmarkFilterList.put("projectList", projectList);			
-			bookmarkFilterList.put("totalContent", totalContent);
-			bookmarkFilterList.put("cPage", cPage);
+			Map<String, Object> bookmarkFilterLists = new HashMap<>();
+			bookmarkFilterLists.put("bookmarkList", bookmarkList);
+			bookmarkFilterLists.put("projectList", projectList);			
+			bookmarkFilterLists.put("totalContent", totalContent);
+			bookmarkFilterLists.put("cPage", cPage);
 			
-			String jsonStr = new Gson().toJson(bookmarkFilterList);
+			String jsonStr = new Gson().toJson(bookmarkFilterLists);
 			response.getWriter().print(jsonStr);
 			
 		} catch(Exception e) {

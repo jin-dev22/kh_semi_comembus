@@ -3,6 +3,8 @@ package kh.semi.comembus.gathering.controller;
 import java.io.IOException;
 import java.sql.Date;
 import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -22,7 +24,7 @@ import kh.semi.comembus.gathering.model.service.GatheringService;
 @WebServlet("/gathering/projectEnrollView")
 public class projectEnrollViewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private GatheringService GatheringService = new GatheringService();
+	private GatheringService gatheringService = new GatheringService();
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -53,38 +55,75 @@ public class projectEnrollViewServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		try {
+			int planning_cnt=0;
+			int design_cnt=0;
+			int frontend_cnt=0;
+			int backend_cnt=0;
+			//0. people값 처리
+			String planning = request.getParameter("planning");
+			if(request.getParameter("planning_cnt")!="") {
+				System.out.println("test");
+				planning_cnt = Integer.parseInt(request.getParameter("planning_cnt"));
+			}
+			String design = request.getParameter("design");
+			if(request.getParameter("design_cnt")!="") {
+				design_cnt = Integer.parseInt(request.getParameter("design_cnt"));}
+			String frontend = request.getParameter("frontend");
+			if(request.getParameter("frontend_cnt")!="") {
+				frontend_cnt = Integer.parseInt(request.getParameter("frontend_cnt"));}
+			String backend = request.getParameter("backend");
+			if(request.getParameter("backend_cnt")!="") {
+			backend_cnt = Integer.parseInt(request.getParameter("backend_cnt"));}
+			
+			Map<String,Object> parameter = new HashMap<>();
+			parameter.put("planning",planning);
+			parameter.put("planning_cnt", planning_cnt);
+			parameter.put("design", design);
+			parameter.put("design_cnt", design_cnt);
+			parameter.put("frontend", frontend);
+			parameter.put("frontend_cnt", frontend_cnt);
+			parameter.put("backend", backend);
+			parameter.put("backend_cnt", backend_cnt);
+			System.out.println("확인용 parameter = " + parameter);
+			
+			int people = planning_cnt+design_cnt+frontend_cnt+backend_cnt;
 			
 			//1. 사용자 입력값 처리
 			String writer = request.getParameter("writer");
-			String _psType=request.getParameter("psType");
+//			String _psType=request.getParameter("psType");
 			String title = request.getParameter("title");
-			String _regDate = request.getParameter("regDate");
-			String content = request.getParameter("content");
+			System.out.println(title);
+			String _regDate = request.getParameter("reg_date");
+//			System.out.println(_regDate);
+			String content = request.getParameter("editordata");
+			System.out.println(content);
 //			int viewcount = Integer.parseInt(request.getParameter("viewcount"));
 //			int bookmark=Integer.parseInt(request.getParameter("bookmark"));
 			String topic = request.getParameter("topic");
 			String local = request.getParameter("local");
-			int people = Integer.parseInt(request.getParameter("people"));
-			String _status = request.getParameter("status");
-			String _startDate = request.getParameter("startDate");
-			String _endDate = request.getParameter("endDate");
+//			int people = Integer.parseInt(request.getParameter("people"));
+//			String _status = request.getParameter("status");
+			String _startDate = request.getParameter("date_start");
+			String _endDate = request.getParameter("date_end");
 			
-			GatheringType psType = _psType != null ? GatheringType.valueOf(_psType) : null;
-			Date regDate = (_regDate != null && !"".equals(_regDate))?Date.valueOf(_regDate):null;
-			Status status = _status != null ? Status.valueOf(_status):null;
+//			GatheringType psType = _psType != null ? GatheringType.valueOf(_psType) : null;
+//			Date regDate = (_regDate != null && !"".equals(_regDate))?Date.valueOf(_regDate):null;
+//			Status status = _status != null ? Status.valueOf(_status):null;
 			Date startDate = (_startDate != null && !"".equals(_startDate))?Date.valueOf(_startDate):null;
 			Date endDate = (_endDate != null && !"".equals(_endDate))?Date.valueOf(_endDate):null;
 			
-			Gathering project = new Gathering(0,writer,psType,title,regDate,content,0,0,topic,local,people,status,startDate,endDate);
-			
+			Gathering project = new Gathering(0,writer,null,title,null,content,0,0,topic,local,people,null,startDate,endDate);
+//			System.out.println(_psType);
+//			System.out.println(psType);
 			System.out.println("project = "+project);
+
 			
 			//2. 업무로직
-			int result = GatheringService.enrollProject(project);
+			int result = gatheringService.enrollProject(project);
 			
 			//3. redirect
 			request.getSession().setAttribute("msg", "프로젝트를 성공적으로 등록했습니다.");
-			response.sendRedirect(request.getContentLength()+"/gathering/projectList");
+			response.sendRedirect(request.getContextPath()+"/gathering/projectList");
 		}catch(Exception e) {
 			e.printStackTrace();
 			throw e;

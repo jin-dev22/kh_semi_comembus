@@ -69,12 +69,18 @@ public class SearchLocalServlet extends HttpServlet {
 			// content 영역
 			List<Gathering> projectList = gatheringService.findProjectLike(param);
 			// bookmark 영역
-			List<Gathering> memberBookmarkList = new ArrayList<>();
+			Map<String, Object> bmParam = new HashMap<>();
 			if(memberId != null) {
-				memberBookmarkList = gatheringService.findMemberBookmarkList(memberId);
-			} 
-			System.out.println("필터링확인용 projectList: " + projectList); // 확인용
-			System.out.println("필터링확인용 memberBookmarkList: " + memberBookmarkList); // 확인용
+				bmParam.put("loginMemberId", memberId);
+				System.out.println(">>> memberId " + memberId);
+				System.out.println(">>> bmParam = " + bmParam);
+			}
+			List<Gathering> bookmarkList = gatheringService.findAllProBookmarked(bmParam);
+			
+			System.out.println(">>> 필터링 확인 loginMemberId " + memberId);
+			System.out.println(">>> 필터링 확인 projectList " + projectList);
+			System.out.println(">>> 필터링 확인 bookmarkList " + bookmarkList);
+
 			
 			// pagebar 영역
 			int totalContent = gatheringService.getProTotalContentLike(param);
@@ -86,7 +92,7 @@ public class SearchLocalServlet extends HttpServlet {
 			searchList.put("projectList", projectList);
 			searchList.put("totalContent", totalContent);
 			searchList.put("cPage", cPage);
-			searchList.put("memberBookmarkList", memberBookmarkList);
+			searchList.put("bookmarkList", bookmarkList);
 			String jsonStr = new Gson().toJson(searchList);
 			response.getWriter().print(jsonStr);
 			

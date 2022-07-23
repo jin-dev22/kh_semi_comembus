@@ -33,7 +33,8 @@
 <body>
 	<form name="studyEnrollFrm"
 		action="<%=request.getContextPath()%>/gathering/studyEnrollView"
-		method="post" enctype="multipart/form-data">
+		method="post">
+		<!--  enctype="multipart/form-data"  -->
 		<table id="tbl-study-enrollview">
 			<tbody>
 				<tr>
@@ -43,7 +44,7 @@
 					<td colspan="3">❗ 스터디 제목을 적어주세요</td>
 				</tr>
 				<tr>
-					<td colspan="3" id="name"><input type="text" name="title" placeholder="3~20자로 적어주세요" style="width:900px;" required></td>
+					<td colspan="3" id="name"><input type="text" name="title" placeholder="3~20자로 적어주세요" required></td>
 				</tr>
 				<tr></tr>
 				<tr>
@@ -54,12 +55,12 @@
 				</tr>
 				<tr>
 					<td colspan="3" id="topic">
-						<input type="radio" name="Planning">기획
-						<input type="radio" name="Design">디자인 
-						<input type="radio" name="Frontend">프론트엔드 
-						<input type="radio" name="Backend">백엔드
-						<input type="radio" name="Interview">면접 
-						<input type="radio" name="Codingtest">코딩테스트
+						<input type="radio" name="topic" id="Planning" value="Planning">기획
+						<input type="radio" name="topic" id="Design" value="Design">디자인 
+						<input type="radio" name="topic" id="Frontend" value="Frontend">프론트엔드 
+						<input type="radio" name="topic" id="Backend" value="Backend">백엔드
+						<input type="radio" name="topic" id="Interview" value="Interview">면접 
+						<input type="radio" name="topic" id="Codingtest" value="Codingtest">코딩테스트
 					</td>
 				</tr>
 				<tr></tr>
@@ -85,19 +86,18 @@
 					<th>*모집인원</th>
 				</tr>
 				<tr>
-					<td colspan="3">❗ 3~4명을 추천합니다. (최대 9명까지 가능)</td>
+					<td colspan="3" >❗ 3~4명을 추천합니다. (최대 9명까지 가능)</td>
 				</tr>
 				<tr>
 					<td width="200px" colspan="3">
 						<div id="container">
 							<input type="button" class="count" id="plus" value="+">
 							<span id="count">1</span>
-							<input type="button" id="minus" value="-">
+							<input type="button" class="count" id="minus" value="-">
 
 						</div>
 					</td>
-					<td id="plus"></td>
-				</tr>
+ 				</tr>
 				<tr></tr>
 				<tr>
 					<th>*기간 설정</th>
@@ -134,12 +134,21 @@
 					</td>
 				</tr>
 				<tr></tr>
+				<tr><th><input type="hidden" name="psType" value="S"></th></tr>
+        		<tr><th><input type="hidden" name="writer" value="<%= loginMember.getMemberId() %>"/></th></tr>
                 <tr>
                     <th colspan="2">
                         <br><input type="submit" value="등록하기">
                     </th>
                 </tr>
 			</tbody>
+			<tfoot>
+				<tr>
+					<th colspan="2">
+						<input type="hidden" name="people" id="people" />
+					</th>
+				</tr>
+			</tfoot>
 		</table>
 	</form>
 </body>
@@ -165,6 +174,8 @@
 			count = count + 1;
 			number.textContent = count;
 		}
+		document.getElementById("people").value=count;
+		console.log(document.getElementById("people").value);
 	});
 	minusBtn.addEventListener('click', function() {
 		let count = Number(number.textContent)
@@ -172,8 +183,10 @@
 			count = count - 1;
 			number.textContent = count;
 		}
+		document.getElementById("people").value=count;
+		console.log(document.getElementById("people").value)
 	});
-
+	
 	$(document)
 			.ready(
 					function() {

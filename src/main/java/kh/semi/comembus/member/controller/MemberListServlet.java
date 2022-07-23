@@ -29,7 +29,7 @@ public class MemberListServlet extends HttpServlet {
 		try {
 			// 사용자 입력 페이지 정보
 			int cPage = 1;
-			int numPerPage = 5;
+			int numPerPage = 16;
 			try {
 				cPage = Integer.parseInt(request.getParameter("cPage"));
 			} catch (NumberFormatException e) {}
@@ -54,6 +54,7 @@ public class MemberListServlet extends HttpServlet {
 			e.printStackTrace();
 			throw e;
 		}
+		
 	}
 
 }

@@ -18,6 +18,11 @@
 <script>
 
 const bookmarkFilter = (num) => {
+	// 체크 시 다른 필터 체크 해제처리해야함
+	$("#p__local").prop('checked', false);
+	$("#p__job_code").prop('checked', false);
+	$("#p__status").prop('checked', false);
+	
 	const bookmarkYN = $("#p__bookmark").is(':checked') ? "Y" : "All";
 	let memberId = "";
 	<% if(loginMember == null){ %>
@@ -41,64 +46,95 @@ const bookmarkFilter = (num) => {
 			bookmarkYN: bookmarkYN,
 			memberId: memberId
 			},
-		success(bookmarkProjectLists){
-			const {bookmarkProjectList, projectList, totalContent, cPage} = bookmarkProjectLists;
- 				console.log("bookmarkProjectList = ", bookmarkProjectList);
- 				console.log("projectList = ", projectList);
+		success(bookmarkFilterLists){
+			const {bookmarkList, projectList, totalContent, cPage} = bookmarkFilterLists;
+ 				console.log(">> bookmarkList = ", bookmarkList);
+ 				console.log(">> projectList = ", projectList);
  				
-				if(bookmarkProjectList == null){
+				if(bookmarkList == null){
 					alert("찜한 프로젝트가 존재하지 않습니다.");
 					location.reload();
 					return;
 				}
-			document.querySelector(".ps-lists").innerHTML =
-				bookmarkProjectList.reduce((html, bookmarkList, index) => {
-					const {psNo, title, viewcount, bookmark, topic, people} = bookmarkList;
-					// console.log("@@@bookmarkList ", bookmarkList);
-					// console.log("html ", html);
-					// console.log("확인용", psNo, title, viewcount, bookmark, topic, people); // 확인용
-					
-					
-					<%-- outer:
-	 				for(let i = 0; i < memberBookmarkList.length; i++){
-	 					console.log(memberBookmarkList[i].psNo);
-	 					console.log(psNo);
-	 					if(psNo == memberBookmarkList[i].psNo){
-	 						bookmarkButton = "bookmark-back";
-	 						bookmarkShape = "♥";
-	 						break outer;
-	 					} else {
-	 						bookmarkButton = "bookmark-front";
-	 						bookmarkShape = "♡";
-	 					}
-					};
-							<button class="bookmark-back" value="<%= projectNo %>">♥</button>
-							<button style="display:none" class="bookmark-front" value="<%= projectNo %>">♡</button>
-					 --%>
-					
-					
-					return `\${html}
-					<div class="ps-pre">
-						<a href="">
-							<img src="<%= request.getContextPath() %>/images/\${topic}.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
-						</a>
-						<p class="bold">\${topic === 'social' ? '소셜네트워크' : (topic === 'game' ? '게임' : (topic === 'travel' ? '여행' : (topic === 'finance' ? '금융' : '이커머스')))}</p>
-						<p class="bold ps-title">\${title}</p>
-						<ul class="ps-pre__etc">
-							<li>
-								<span class="heart-emoji">&#9829;</span>\${bookmark}
-							</li>
-							<li>
-								<span>&#128064;</span>\${viewcount}
-							</li>
-							<li>모집인원 0 / \${people}</li>
-						</ul>
-						<div class="ps__bookmark">
-							<button class="bookmark-back" value='\${psNo}'>♥</button>
-						</div>
-					</div>
-					`;
-				}, "");
+				if(projectList == ""){
+					document.querySelector(".ps-lists").innerHTML =
+						bookmarkList.reduce((html, bookmarkPro, index) => {
+							const {psNo, title, viewcount, bookmark, topic, recruited_cnt, people} = bookmarkPro;
+							console.log("@@@bookmarkPro ", bookmarkPro);
+							// console.log("html ", html);
+							console.log(">>@@ 확인용", psNo, title, viewcount, bookmark, topic, recruited_cnt, people); // 확인용
+							
+							return `\${html}
+							<div class="ps-pre">
+								<a href="">
+									<img src="<%= request.getContextPath() %>/images/\${topic}.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
+								</a>
+								<p class="bold">\${topic === 'social' ? '소셜네트워크' : (topic === 'game' ? '게임' : (topic === 'travel' ? '여행' : (topic === 'finance' ? '금융' : '이커머스')))}</p>
+								<p class="bold ps-title">\${title}</p>
+								<ul class="ps-pre__etc">
+									<li>
+										<span class="heart-emoji">&#9829;</span>\${bookmark}
+									</li>
+									<li>
+										<span>&#128064;</span>\${viewcount}
+									</li>
+									<li>모집인원 \${recruited_cnt} / \${people}</li>
+								</ul>
+								<div class="ps__bookmark">
+									<button class='bookmark-back' value='\${psNo}'>♥</button>
+									<button style='display:none' class='bookmark-front' value='\${psNo}'>♡</button>
+								</div>
+							</div>
+							`;
+						}, "");
+				}
+				else {
+
+					document.querySelector(".ps-lists").innerHTML =
+						projectList.reduce((html, projectListAll, index) => {
+							const {psNo, title, viewcount, bookmark, topic, recruited_cnt, people} = projectListAll;
+							console.log("@@@bookmarkPro ", projectListAll);
+							console.log(">>@@ 확인용", psNo, title, viewcount, bookmark, topic, recruited_cnt, people); // 확인용
+							
+							let tagFront = "";
+							let tagBack = "";
+							outer:
+							for(let i = 0; i < bookmarkList.length; i++){
+								if(psNo == bookmarkList[i].psNo){
+									tagBack = "<button class='bookmark-back' value='\${psNo}'>♥</button>";
+									tagFront = "<button style='display:none' class='bookmark-front' value='\${psNo}'>♡</button>";
+									break outer;
+								} else {
+									tagBack = "<button style='display:none' class='bookmark-back' value='\${psNo}'>♥</button>";
+									tagFront = "<button class='bookmark-front' value='\${psNo}'>♡</button>";
+								}
+							};
+							
+							return `\${html}
+							<div class="ps-pre">
+								<a href="">
+									<img src="<%= request.getContextPath() %>/images/\${topic}.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
+								</a>
+								<p class="bold">\${topic === 'social' ? '소셜네트워크' : (topic === 'game' ? '게임' : (topic === 'travel' ? '여행' : (topic === 'finance' ? '금융' : '이커머스')))}</p>
+								<p class="bold ps-title">\${title}</p>
+								<ul class="ps-pre__etc">
+									<li>
+										<span class="heart-emoji">&#9829;</span>\${bookmark}
+									</li>
+									<li>
+										<span>&#128064;</span>\${viewcount}
+									</li>
+									<li>모집인원 \${recruited_cnt} / \${people}</li>
+								</ul>
+								<div class="ps__bookmark">
+									\${tagBack}
+									\${tagFront}
+								</div>
+							</div>
+							`;
+						}, "");
+				}
+			
 			if(totalContent != 0){
 				totalPages = Math.ceil(totalContent / numPerPage);
 				// pageLink(현재페이지, 전체페이지, 호출할 함수 이름)
@@ -114,7 +150,6 @@ const bookmarkFilter = (num) => {
 }; 
 
 const gatheringFilter = (num) => {
-	
 	const localAll = $("#p__local").val();
 	const jobAll = $("#p__job_code").val();
 	const statusYN = $("#p__status").is(':checked') ? "N" : "All";
@@ -132,15 +167,10 @@ const gatheringFilter = (num) => {
 	let searchJobcode = 'jobcode';
 	let selectLocalKeyword = localAll;
 	let selectJobKeyword = jobAll;
-	
-	/* console.log("searchLocal = ", searchLocal); // 확인용
-	console.log("searchJobcode = ", searchJobcode); // 확인용
-	console.log("selectLocalKeyword = ", selectLocalKeyword); // 확인용
-	console.log("selectJobKeyword = ", selectJobKeyword); // 확인용 */
+
 	console.log("statusYN = ", statusYN); // 확인용
 	console.log("memberId = ", memberId) // 확인용
 	$.ajax({
-		// url 서블릿주소 변경하기 나중에
 		url: '<%= request.getContextPath() %>/gathering/searchFilter',
 		data: {
 			cPage: cPage,
@@ -151,30 +181,31 @@ const gatheringFilter = (num) => {
 			statusYN : statusYN,
 			memberId: memberId
 			},
-		success(projectSelectList){
-			console.log(projectSelectList); // 확인용
-			const {projectList, totalContent, cPage, memberBookmarkList} = projectSelectList;
+		success(projectSelectLists){
+			console.log(">>> projectSelectLists", projectSelectLists); // 확인용
+			const {projectList, totalContent, cPage, bookmarkList} = projectSelectLists;
+			
 			document.querySelector(".ps-lists").innerHTML =
 				// 프로젝트 필터링
 				projectList.reduce((html, selectList, index) => {
-					const {psNo, title, viewcount, bookmark, topic, people} = selectList;
+					const {psNo, title, viewcount, bookmark, topic, recruited_cnt, people} = selectList;
 					// bookmark 개수 쿼리문 다시 작성해야함
-					console.log("확인용", psNo, title, viewcount, bookmark, topic, people); // 확인용
-					// 북마크
-					console.log("#memberBookmarkList", memberBookmarkList);
-					let bookmarkButton = "";
-					let bookmarkShape = "";
+					console.log(">>> 확인용 ", psNo, title, viewcount, bookmark, topic, recruited_cnt, people); // 확인용
+					console.log(">>> #bookmarkList", bookmarkList);
+					let tagFront = "";
+					let tagBack = "";
+					
 					outer:
-	 				for(let i = 0; i < memberBookmarkList.length; i++){
-	 					console.log(memberBookmarkList[i].psNo);
+	 				for(let i = 0; i < bookmarkList.length; i++){
+	 					console.log(bookmarkList[i].psNo);
 	 					console.log(psNo);
-	 					if(psNo == memberBookmarkList[i].psNo){
-	 						bookmarkButton = "bookmark-back";
-	 						bookmarkShape = "♥";
+	 					if(psNo == bookmarkList[i].psNo){
+	 						tagBack = "<button class='bookmark-back' value='\${psNo}'>♥</button>";
+	 						tagFront = "<button style='display:none' class='bookmark-front' value='\${psNo}'>♡</button>";
 	 						break outer;
 	 					} else {
-	 						bookmarkButton = "bookmark-front";
-	 						bookmarkShape = "♡";
+	 						tagBack = "<button style='display:none' class='bookmark-back' value='\${psNo}'>♥</button>";
+	 						tagFront = "<button class='bookmark-front' value='\${psNo}'>♡</button>";
 	 					}
 					};
 					return `\${html}
@@ -191,14 +222,15 @@ const gatheringFilter = (num) => {
 							<li>
 								<span>&#128064;</span>\${viewcount}
 							</li>
-							<li>모집인원 0 / \${people}</li>
+							<li>모집인원 \${recruited_cnt} / \${people}</li>
 						</ul>
 						<div class="ps__bookmark">
 						<% if(loginMember == null){ %>
 							<button class="bookmark-front" value="\${psNo}">♡</button>
 						<% } %>
 						<% if(loginMember != null){ %>
-							<button class='\${bookmarkButton}' value='\${psNo}'>\${bookmarkShape}</button>
+							\${tagBack}
+							\${tagFront}
 						<%
 						}
 						%>
@@ -207,7 +239,6 @@ const gatheringFilter = (num) => {
 					`;
 				}, '');
 
-			// 위에서 totalContent가 넘어옴 
 			if(totalContent != 0){
 				totalPages = Math.ceil(totalContent / numPerPage);
 				// pageLink(현재페이지, 전체페이지, 호출할 함수 이름)
@@ -221,6 +252,7 @@ const gatheringFilter = (num) => {
 		error: console.log
 	});
 };
+
 function pageLink(cPage, totalPages, funName){
 	cPage = Number(cPage);
 	totalPages = Number(totalPages);
@@ -278,15 +310,15 @@ function pageLink(cPage, totalPages, funName){
 				<div class="swiper-wrapper">
 				<%
 				if(projectList != null && !projectList.isEmpty()){
-					for(Gathering _project : projectList){
+					for(int i = 0; i < 3; i++){
+						Gathering _project = projectList.get(i);
 						GatheringExt project = (GatheringExt) _project;
-						for(int i = 0; i < 3; i++){
-							String topic = project.getTopic();
+						String topic = project.getTopic();
 				%>
 				<div class="swiper-slide">
-				<a href="<%= request.getContextPath()%>/gathering/projectView?psNo=<%= project.getPsNo()%>">
-					<img src="<%= request.getContextPath() %>/images/<%= topic %>.jpg" class="ps__header__content__img" alt="해당 프로젝트 주제 이미지">
-				</a>
+					<a href="<%= request.getContextPath()%>/gathering/projectView?psNo=<%= project.getPsNo()%>">
+						<img src="<%= request.getContextPath() %>/images/<%= topic %>.jpg" class="ps__header__content__img" alt="해당 프로젝트 주제 이미지">
+					</a>
 					<ul class="ps__header__content-info">
 						<li><p class="bold"><%= "social".equals(topic) ? "소셜네트워크" : ("game".equals(topic) ? "게임" : ("travel".equals(topic) ? "여행" : ("finance".equals(topic) ? "금융" : "이커머스"))) %></p></li>
 						<li><p class="bold"><%= project.getTitle() %></p></li>
@@ -299,7 +331,6 @@ function pageLink(cPage, totalPages, funName){
 					</ul>
 				</div>
 				<%
-						}
 					}
 				}
 				%>
@@ -446,6 +477,7 @@ document.querySelectorAll(".ps__bookmark").forEach((bookmark) => {
 		}
 	})
 });
+
 </script>	
 	
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
