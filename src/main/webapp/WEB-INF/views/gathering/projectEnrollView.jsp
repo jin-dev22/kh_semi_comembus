@@ -84,12 +84,14 @@
         </tr>
         <tr></tr>
 	<tr><th>*프로젝트 설명</th></tr>
-    <tr><td colspan="3" id="summernoteWidth">❗ 프로젝트에 대한 자세한 설명을 적어주세요. 자세할수록 지원률이 올라갑니다. <br><div><textarea id="summernote" name="editordata"></textarea></div></td></tr>
-        <tr><th><input type="hidden" name="psType" value="P"></th></tr>
-        <tr><th><input type="hidden" name="writer" value="<%= loginMember.getMemberId() %>"/></th></tr>
-		<th colspan="2">
-			<br><input type="submit" value="등록하기">
-		</th>
+    <tr>
+    	<td colspan="3" id="summernoteWidth">❗ 프로젝트에 대한 자세한 설명을 적어주세요. 자세할수록 지원률이 올라갑니다. <br><div><textarea id="summernote" name="editordata"></textarea></div></td></tr>
+	<tr>
+		<th><input type="hidden" name="psType" value="P"></th>
+		<th><input type="hidden" name="writer" value="<%= loginMember.getMemberId() %>"/></th>
+	</tr>
+	<tr>
+		<th colspan="2"><input type="submit" value="등록하기"></th>
 	</tr>
 </tbody>
 <tfoot>
