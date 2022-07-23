@@ -255,6 +255,8 @@ public class GatheringService {
 		close(conn);
 		return rctdCnt;
 	}
+	
+	
 	//수진코드 끝
 	
 	//유경 추가
@@ -293,33 +295,43 @@ public class GatheringService {
 //	}
 	
 
-	public int enrollProject(Map<Object, Object> parameter) {
+	public int enrollProject(GatheringExt project) {
 		Connection conn = getConnection();
 		int result = 0;
 		
 		try {
-			// project_study table에 insert
-			GatheringExt project = (GatheringExt) parameter.get("project");
-			//new GatheringExt(0, writer, null, title, null, content, 0, 0, topic, local, people, null, startDate, endDate);
 			result = gatheringDao.enrollProject(conn, project);
-			
-			// 방금 등록된 프로젝트 no조회
-			int psNo = gatheringDao.getLastProjectNo(conn);
-			System.out.println(">> projectNo = " + psNo);
-			HashMap<String,Object> innerMap = (HashMap<String, Object>) parameter.get("parameterDep");
-
-			project.setPsNo(psNo);
-			project.setPlanning((String)innerMap.get("planning"));
-			project.setPlanning_cnt((int)innerMap.get("planning_cnt"));
-			project.setDesign((String)innerMap.get("design"));
-			project.setDesign_cnt((int)innerMap.get("design_cnt"));
-			project.setFrontend((String)innerMap.get("frontend"));
-			project.setFrontend_cnt((int)innerMap.get("frontend_cnt"));
-			project.setBackend((String)innerMap.get("backend"));
-			project.setBackend_cnt((int)innerMap.get("backend_cnt"));
-			
-			result = gatheringDao.enrollProjectDep(conn, project);
-			
+			System.out.println("[@서비스단 플스 먼저 등록결과]>>"+result);
+			if(result > 0) {
+				Map<String, Object> param = new HashMap<String, Object>();
+				int psNo = gatheringDao.getLastProjectNo(conn);
+				param.put("psNo", psNo);
+				
+				int beCnt = project.getBackend_cnt();
+				param.put("cnt", beCnt);
+				param.put("jobCode", "BE");
+				result = beCnt > 0? gatheringDao.enrollDeptCnt(conn, param) : 0;
+				System.out.println("[@서비스단 BE맵 내용]>>"+param);
+				
+				int feCnt = project.getFrontend_cnt();
+				param.put("cnt", feCnt);
+				param.put("jobCode", "FE");
+				result = feCnt > 0? gatheringDao.enrollDeptCnt(conn, param) : 0;
+				System.out.println("[@서비스단 FE맵 내용]>>"+param);
+				
+				int dgCnt = project.getDesign_cnt();
+				param.put("cnt", dgCnt);
+				param.put("jobCode", "DG");
+				result = dgCnt > 0? gatheringDao.enrollDeptCnt(conn, param) : 0;
+				System.out.println("[@서비스단 DG맵 내용]>>"+param);
+				
+				int plCnt = project.getPlanning_cnt();
+				param.put("cnt", plCnt);
+				param.put("jobCode", "PL");
+				result = plCnt > 0? gatheringDao.enrollDeptCnt(conn, param) : 0;
+				System.out.println("[@서비스단 PL맵 내용]>>"+param);
+				
+			}
 			commit(conn);
 		}catch(Exception e) {
 			rollback(conn);

@@ -2,8 +2,6 @@ package kh.semi.comembus.gathering.controller;
 
 import java.io.IOException;
 import java.sql.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kh.semi.comembus.gathering.model.dto.GatheringExt;
+import kh.semi.comembus.gathering.model.dto.GatheringType;
+import kh.semi.comembus.gathering.model.dto.Status;
 import kh.semi.comembus.gathering.model.service.GatheringService;
 
 /**
@@ -96,26 +96,28 @@ public class projectEnrollViewServlet extends HttpServlet {
 			
 			Date startDate = (_startDate != null && !"".equals(_startDate))?Date.valueOf(_startDate):null;
 			Date endDate = (_endDate != null && !"".equals(_endDate))?Date.valueOf(_endDate):null;
-
-			GatheringExt project = new GatheringExt(0, writer, null, title, null, content, 0, 0, topic, local, people, null, startDate, endDate);
+			GatheringExt project = new GatheringExt(0, writer, GatheringType.P, title, null, content, 0, 0, topic, local, people, Status.N, startDate, endDate, 
+														planning, design, frontend, backend, planning_cnt, design_cnt, frontend_cnt, backend_cnt);
+			//ps 테이블에 먼저 insert 후 서비스에서 처리
+			int resultPsTbl = gatheringService.enrollProject(project);		
+					
+			System.out.println("[@플젝등록서블릿] people, project>>>"+people+project);
 			
 			
-			Map<Object,Object> parameter = new HashMap<>();
-			Map<String,Object> parameterDep = new HashMap<>();
-			parameter.put("project", project);
-			parameterDep.put("planning",planning);
-			parameterDep.put("planning_cnt", planning_cnt);
-			parameterDep.put("design", design);
-			parameterDep.put("design_cnt", design_cnt);
-			parameterDep.put("frontend", frontend);
-			parameterDep.put("frontend_cnt", frontend_cnt);
-			parameterDep.put("backend", backend);
-			parameterDep.put("backend_cnt", backend_cnt);
-			parameter.put("parameterDep", parameterDep);
-			System.out.println("확인용 parameter = " + parameter);
 			
-			//2. 업무로직
-			int result = gatheringService.enrollProject(parameter);
+//			Map<Object,Object> parameter = new HashMap<>();
+//			Map<String,Object> parameterDep = new HashMap<>();
+//			parameter.put("project", project);
+//			parameterDep.put("planning",planning);
+//			parameterDep.put("planning_cnt", planning_cnt);
+//			parameterDep.put("design", design);
+//			parameterDep.put("design_cnt", design_cnt);
+//			parameterDep.put("frontend", frontend);
+//			parameterDep.put("frontend_cnt", frontend_cnt);
+//			parameterDep.put("backend", backend);
+//			parameterDep.put("backend_cnt", backend_cnt);
+//			parameter.put("parameterDep", parameterDep);
+//			System.out.println("확인용 parameter = " + parameter);
 			
 			//3. redirect
 			request.getSession().setAttribute("msg", "프로젝트를 성공적으로 등록했습니다.");
