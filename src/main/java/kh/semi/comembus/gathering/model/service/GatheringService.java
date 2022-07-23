@@ -190,7 +190,7 @@ public class GatheringService {
 	//수진코드 끝
 	
 	//유경 추가
-	public static int enrollProject(Gathering project) {
+	public int enrollProject(Gathering project) {
 		Connection conn=getConnection();
 		int result = 0;
 		try {
@@ -211,7 +211,7 @@ public class GatheringService {
 	}
 
 
-	public static Gathering findByNo(int psNo, boolean hasRead) {
+	public Gathering findByNo(int psNo, boolean hasRead) {
 		Connection conn = getConnection();
 		Gathering project = null;
 		try {
@@ -230,32 +230,7 @@ public class GatheringService {
 		return project;
 	}
 
-	/**
-	 * 
-	 * 유경님 이거랑 아래 메소드 확인해주세요!!!!!! (enrollStudy)
-	 * 수정 후 commit해주세요!!!!!
-	 */
-	public static int enrollGathering(Gathering study) {
-		Connection conn=getConnection();
-		int result = 0;
-		try {
-			//gathering table에 insert
-			result = gatheringDao.enrollStudy(conn,study);
-			//방금 등록된 Gathering.no조회
-			int psNo = gatheringDao.getLastStudyNo(conn);
-			System.out.println("projectNo = "+psNo);
-			
-			commit(conn);
-		}catch(Exception e) {
-			rollback(conn);
-			throw e;
-		}finally {
-			close(conn);
-		}
-		return result;
-	}
-
-	public static int enrollStudy(Gathering study) {
+	public int enrollStudy(Gathering study) {
 		Connection conn=getConnection();
 		int result = 0;
 		try {
