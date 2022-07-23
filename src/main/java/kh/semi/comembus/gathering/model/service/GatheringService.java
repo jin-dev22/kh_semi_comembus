@@ -196,10 +196,10 @@ public class GatheringService {
 		try {
 			//gathering table에 insert
 			result = gatheringDao.enrollProject(conn,project);
+			
 			//방금 등록된 Gathering.no조회
 			int psNo = gatheringDao.getLastProjectNo(conn);
 			System.out.println("projectNo = "+psNo);
-			
 			commit(conn);
 		}catch(Exception e) {
 			rollback(conn);

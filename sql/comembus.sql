@@ -151,6 +151,7 @@ CREATE TABLE project_study (
         constraint ck_project_study_board_type check(board_type in ('P', 'S')),
         constraint ck_project_study_status check(status in ('Y', 'N'))
 );
+
 -- 모임 타입 컬럼명 수정(220714)
 alter table project_study rename column board_type to gathering_type;
 alter table project_study rename constraint ck_project_study_board_type to ck_project_study_gathering_type;
