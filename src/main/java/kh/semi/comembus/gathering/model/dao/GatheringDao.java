@@ -1022,22 +1022,31 @@ public class GatheringDao {
 		int designCnt = projectDep.getDesign_cnt();
 		int frontendCnt = projectDep.getFrontend_cnt();
 		int backendCnt = projectDep.getBackend_cnt();
-		if(planning != null) {
-			sql = sql.replace("[str1]", "insert into project_member_dept values(seq_p_m_dept_no.nextVal, ?, " + planning + ", " + planningCnt + ", default);");
+		String fetch = "";
+		int psNo = (int)projectDep.getPsNo();
+		if(planning != "") {
+			sql = sql.replace("[str1]", "insert into project_member_dept values(seq_p_m_dept_no.nextval, "+psNo+", 'PL', " + planningCnt + ", default)");
+		}else {
+			sql = sql.replace("[str1]", fetch);
 		}
-		if(design!= null) {
-			sql = sql.replace("[str2]", "insert into project_member_dept values(seq_p_m_dept_no.nextVal, ?, " + design + ", " + designCnt + ", default);");
+		if(design!= "") {
+			sql = sql.replace("[str2]", "insert into project_member_dept values(seq_p_m_dept_no.nextval, "+psNo+", 'DG', " + designCnt + ", default);");
+		}else {
+			sql = sql.replace("[str2]", fetch);
 		}
-		if(frontend!= null) {
-			sql = sql.replace("[str3]", "insert into project_member_dept values(seq_p_m_dept_no.nextVal, ?, " + frontend + ", " + frontendCnt + ", default);");
+		if(frontend!= "") {
+			sql = sql.replace("[str3]", "insert into project_member_dept values(seq_p_m_dept_no.nextval,"+psNo+", 'FE', " + frontendCnt + ", default);");
+		}else {
+			sql = sql.replace("[str3]", fetch);
 		}
-		if(backend != null) {
-			sql = sql.replace("[str4]", "insert into project_member_dept values(seq_p_m_dept_no.nextVal, ?, " + backend + ", " + backendCnt + ", default);");
+		if(backend != "") {
+			sql = sql.replace("[str4]", "insert into project_member_dept values(seq_p_m_dept_no.nextval,"+psNo+", 'BE', " + backendCnt + ", default);");
+		}else {
+			sql = sql.replace("[str4]", fetch);
 		}
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, projectDep.getPsNo());
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new GatheringException("직무 등록 오류!", e);

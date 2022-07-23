@@ -299,16 +299,26 @@ public class GatheringService {
 		
 		try {
 			// project_study table에 insert
-			Gathering project = (Gathering) parameter.get("project");
+			GatheringExt project = (GatheringExt) parameter.get("project");
+			//new GatheringExt(0, writer, null, title, null, content, 0, 0, topic, local, people, null, startDate, endDate);
 			result = gatheringDao.enrollProject(conn, project);
 			
 			// 방금 등록된 프로젝트 no조회
 			int psNo = gatheringDao.getLastProjectNo(conn);
 			System.out.println(">> projectNo = " + psNo);
+			HashMap<String,Object> innerMap = (HashMap<String, Object>) parameter.get("parameterDep");
+
+			project.setPsNo(psNo);
+			project.setPlanning((String)innerMap.get("planning"));
+			project.setPlanning_cnt((int)innerMap.get("planning_cnt"));
+			project.setDesign((String)innerMap.get("design"));
+			project.setDesign_cnt((int)innerMap.get("design_cnt"));
+			project.setFrontend((String)innerMap.get("frontend"));
+			project.setFrontend_cnt((int)innerMap.get("frontend_cnt"));
+			project.setBackend((String)innerMap.get("backend"));
+			project.setBackend_cnt((int)innerMap.get("backend_cnt"));
 			
-			GatheringExt projectDeps = (GatheringExt) parameter.get("parameterDep");
-			
-			result = gatheringDao.enrollProjectDep(conn, projectDeps);
+			result = gatheringDao.enrollProjectDep(conn, project);
 			
 			commit(conn);
 		}catch(Exception e) {
