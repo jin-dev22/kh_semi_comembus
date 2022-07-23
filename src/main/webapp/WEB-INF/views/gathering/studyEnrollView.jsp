@@ -174,6 +174,8 @@
 			count = count + 1;
 			number.textContent = count;
 		}
+		document.getElementById("people").value=count;
+		console.log(document.getElementById("people").value);
 	});
 	minusBtn.addEventListener('click', function() {
 		let count = Number(number.textContent)
@@ -181,8 +183,10 @@
 			count = count - 1;
 			number.textContent = count;
 		}
+		document.getElementById("people").value=count;
+		console.log(document.getElementById("people").value)
 	});
-
+	
 	$(document)
 			.ready(
 					function() {
