@@ -615,8 +615,8 @@ public class GatheringDao {
 	/**
 	 * 멤버스 프로필,마이페이지: 회원이 참가한 모임 게시글 조회
 	 */
-	public List<Gathering> findAllByMemberId(Connection conn, String memberId) {
-		List<Gathering> gatheringIngList = new ArrayList<>();
+	public List<GatheringExt> findAllByMemberId(Connection conn, String memberId) {
+		List<GatheringExt> gatheringIngList = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		String sql = prop.getProperty("findAllByMemberId");
@@ -626,7 +626,7 @@ public class GatheringDao {
 			pstmt.setString(1, memberId);
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
-				Gathering gather = handleGatheringResultSet(rset);
+				GatheringExt gather = handleGatheringResultSet(rset);
 				gatheringIngList.add(gather);
 			}
 		} catch (SQLException e) {
@@ -642,8 +642,8 @@ public class GatheringDao {
 	/**
 	 * 멤버스 프로필,마이페이지: 찜하기 한 모임게시글목록 조회
 	 */
-	public List<Gathering> findAllBookmarked(Connection conn, String memberId) {
-		List<Gathering> gatheringBookmarkList = new ArrayList<>();
+	public List<GatheringExt> findAllBookmarked(Connection conn, String memberId) {
+		List<GatheringExt> gatheringBookmarkList = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		String sql = prop.getProperty("findAllBookmarked");
@@ -653,7 +653,8 @@ public class GatheringDao {
 			pstmt.setString(1, memberId);
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
-				Gathering gather = handleGatheringResultSet(rset);
+				GatheringExt gather = handleGatheringResultSet(rset);
+				gather.setRecruited_cnt(0);
 				gatheringBookmarkList.add(gather);
 			}
 		} catch (SQLException e) {
@@ -668,8 +669,8 @@ public class GatheringDao {
 	/**
 	 * 멤버스마이페이지: 회원별 지원한 모임게시글목록조회
 	 */
-	public List<Gathering> findAllApldByMemberId(Connection conn, String memberId) {
-		List<Gathering> gatheringApldList = new ArrayList<>();
+	public List<GatheringExt> findAllApldByMemberId(Connection conn, String memberId) {
+		List<GatheringExt> gatheringApldList = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		String sql = prop.getProperty("findAllApldByMemberId");
@@ -679,7 +680,7 @@ public class GatheringDao {
 			pstmt.setString(1, memberId);
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
-				Gathering gather = handleGatheringResultSet(rset);
+				GatheringExt gather = handleGatheringResultSet(rset);
 				gatheringApldList.add(gather);
 			}
 		} catch (SQLException e) {
@@ -774,7 +775,7 @@ public class GatheringDao {
 	}
 	
 	/**
-	 * 모임게시글상세>지원자현황페이지: 직무별 모집인원 테이블 업데이트, ajax 처리를 위해 boolean값 반환
+	 * 모임게시글상세>지원자현황페이지: 직무별 모집인원 테이블 업데이트
 	 */
 	public int addPSMemNumByDept(Connection conn, Map<String, Object> param) {
 		int result = 0;
@@ -812,6 +813,68 @@ public class GatheringDao {
 			close(pstmt);
 		}	
 		return result;
+	}
+	
+	/**
+	 * 스터디 지원자 합격자 추가
+	 */
+	public int addStdMemNum(Connection conn, int psNo) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("addStdMemNum");
+		try {//1:psNo, 
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, psNo);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new GatheringException("스터디 모집된 인원수 업데이트 오류", e);
+		} finally {
+			close(pstmt);
+		}	
+		return result;
+	}
+	
+	public int getRcrtdForStd(Connection conn, int psNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int capa = 0;
+		String sql = prop.getProperty("getRcrtdForStd");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, psNo);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				capa = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			throw new GatheringException("스터디 정원 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}	
+		return capa;
+	}
+	
+	public int attachRctdCntToGather(Connection conn, int psNo) {
+		int rctdCnt = 0;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("attachRctdCntToGather");
+		try {//
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, psNo);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				rctdCnt = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			throw new GatheringException("총 모집된 인원 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}	
+				
+		return rctdCnt;
 	}
 	
 	//수진코드 끝

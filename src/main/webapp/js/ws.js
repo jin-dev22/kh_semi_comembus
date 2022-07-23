@@ -12,7 +12,7 @@ ws.addEventListener('message', (e) => {
 		case 'NEW_APPLICANT' :
 		case 'APPLY_RESULT' :
 		case 'APPLY_CANCELED':
-			const wrapper = document.querySelector("#notification");
+/*			const wrapper = document.querySelector("#notification");
 			const blackBell = wrapper.querySelector("#blackBell");
 			const i = document.createElement('i');
 			blackBell.style.display = 'none';
@@ -24,6 +24,7 @@ ws.addEventListener('message', (e) => {
 				blackBell.style.display = 'inline-block';
 			});
 			wrapper.append(i);
+*/
 			break;
 	}
 	
