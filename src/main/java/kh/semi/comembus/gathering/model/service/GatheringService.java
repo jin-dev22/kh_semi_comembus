@@ -381,7 +381,7 @@ public class GatheringService {
 		Connection conn = getConnection();
 		int result = 0;
 		try {
-			result = gatheringDao.deleteBoard(conn, psNo);
+			result = gatheringDao.deleteProject(conn, psNo);
 			commit(conn);
 		} catch (Exception e) {
 			rollback(conn);

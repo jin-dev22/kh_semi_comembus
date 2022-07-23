@@ -1069,7 +1069,7 @@ public class GatheringDao {
 		return result;
 	}
 
-	public int deleteBoard(Connection conn, int psNo) {
+	public int deleteProject(Connection conn, int psNo) {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		String sql = prop.getProperty("deleteProject");
