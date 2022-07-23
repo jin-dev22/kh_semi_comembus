@@ -50,9 +50,7 @@ public class StudyListServlet extends HttpServlet {
 			String loginMemberId = null;
 			
 			// content 영역 
-			List<Gathering> studyList = gatheringService.findGatheringAll(param); // 확인필요
-			System.out.println(">>> param = " + param);
-			System.out.println(">>> studyList = " + studyList);
+			List<Gathering> studyList = gatheringService.findGatheringAll(param);
 			
 			// 북마크
 			Map<String, Object> bmParam = new HashMap<>();
@@ -63,14 +61,13 @@ public class StudyListServlet extends HttpServlet {
 				System.out.println(">>> bmParam = " + bmParam);
 			}
 			List<Gathering> bookmarkList = gatheringService.findAllStdBookmarked(bmParam);
-			
-			System.out.println(">>> loginMemberId " + loginMemberId);
-			System.out.println(">>> 23일 bookmarkList " + bookmarkList);
 						
 			// pagebar 영역
-			int totalContent = gatheringService.getTotalContent();
+			int totalContent = gatheringService.getStdTotalContent();
+			System.out.println(">>> totalContent = " + totalContent);
 			String url = request.getRequestURI();
 			String pagebar = ComembusUtils.getPagebar(cPage, numPerPage, totalContent, url);
+			System.out.println(">>> page바 = " + pagebar);
 			
 			// view단처리
 			request.setAttribute("studyList", studyList);
