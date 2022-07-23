@@ -70,7 +70,7 @@ public class ProjectListServlet extends HttpServlet {
 			System.out.println(">>> bookmarkList " + bookmarkList);
 						
 			// pagebar 영역
-			int totalContent = gatheringService.getTotalContent();
+			int totalContent = gatheringService.getProTotalContent();
 			String url = request.getRequestURI();
 			String pagebar = ComembusUtils.getPagebar(cPage, numPerPage, totalContent, url);
 			
