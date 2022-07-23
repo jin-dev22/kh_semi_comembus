@@ -1,29 +1,32 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
-
+<%@page import="kh.semi.comembus.gathering.model.dto.Gathering"%>
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/gathering/Enroll.css">
+<%
+	Gathering gathering = (Gathering) request.getAttribute("project");
+%>
 <form
-	name="projectEnrollFrm"
-	action="<%=request.getContextPath() %>/gathering/projectEnrollView" 
+	name="projectUpdateFrm"
+	action="<%=request.getContextPath() %>/gathering/projectUpdateView" 
 	method="post">
 	<!-- enctype="multipart/form-data" -->
-	<table id="tbl-project-enrollview">
+	<table id="tbl-project-updateview">
         <tbody>
 		<tr><th>*프로젝트명</th></tr>
 		<tr><td colspan="3">❗ 프로젝트 제목을 적어주세요</td></tr>
-		<tr><td><input type="text" name="title" id="name" placeholder="3~20자로 적어주세요" required></td></tr>
+		<tr><td><input type="text" name="title" id="name" placeholder="3~20자로 적어주세요" value="" required></td></tr>
         <tr></tr>
 		<tr><th>*프로젝트 주제</th></tr>
-		<tr><td colspan="3">❗ 프로젝트 주제를 골라주세요</td></tr>
+		<tr><td colspan="3">❗ 프로젝트 주제는 변경 불가능합니다</td></tr>
 		<tr>
             <td colspan="3">
-                <input type="radio" name="topic" id="social" value="social">소셜네트워크
-                <input type="radio" name="topic" id="game" value="game">게임
-                <input type="radio" name="topic" id="travel" value="travel">여행
-                <input type="radio" name="topic" id="finance" value="finance">금융
-                <input type="radio" name="topic" id="ecommerce" value="ecommerce">이커머스
+                <input type="radio" name="topic" id="social" value="social"  onclick="return(false);">소셜네트워크
+                <input type="radio" name="topic" id="game" value="game"  onclick="return(false);">게임
+                <input type="radio" name="topic" id="travel" value="travel"  onclick="return(false);">여행
+                <input type="radio" name="topic" id="finance" value="finance"  onclick="return(false);">금융
+                <input type="radio" name="topic" id="ecommerce" value="ecommerce"  onclick="return(false);">이커머스
             </td>
         </tr>
         <tr></tr>
@@ -61,7 +64,7 @@
                 <input type="button" id="delete" value="삭제" onclick="deleteRow()"/>
                 <input type="button" id="add" value="추가" onclick="addRow()"/>
                 <input type="button" id="clear" value="저장" onclick="checkTotal()"/>
-                <input type="hidden" id="saveCheck">           
+                <input type="hidden" id="saveCheck">
             </td>
         </tr>
         <tr></tr>
@@ -85,14 +88,13 @@
         </tr>
         <tr></tr>
 	<tr><th>*프로젝트 설명</th></tr>
-    <tr>
-    	<td colspan="3" id="summernoteWidth">❗ 프로젝트에 대한 자세한 설명을 적어주세요. 자세할수록 지원률이 올라갑니다. <br><div><textarea id="summernote" name="editordata"></textarea></div></td></tr>
-	<tr>
-		<th><input type="hidden" name="psType" value="P"></th>
-		<th><input type="hidden" name="writer" value="<%= loginMember.getMemberId() %>"/></th>
-	</tr>
-	<tr>
-		<th colspan="2"><input type="submit" value="등록하기"></th>
+    <tr><td colspan="3" id="summernoteWidth">❗ 프로젝트에 대한 자세한 설명을 적어주세요. 자세할수록 지원률이 올라갑니다. <br><div><textarea id="summernote" name="editordata"></textarea></div></td></tr>
+        <tr><th><input type="hidden" name="psType" value="P"></th></tr>
+        <tr><th><input type="hidden" name="writer" value="<%= loginMember.getMemberId() %>"/></th></tr>
+        <tr><th><input type="hidden" name="psNo" value="<%= gathering.getPsNo() %>" /></th></tr>
+		<th colspan="2">
+			<br><input type="submit" value="등록하기">
+		</th>
 	</tr>
 </tbody>
 <tfoot>
@@ -306,10 +308,8 @@
                 console.log('backend & backendCnt 값 저장');
             }
         }
-        console.log(setPlanningCnt);
+        // console.log(setPlanningCnt);
         
-        
-
     }
 
     // function ChangeJobCode(){
@@ -359,10 +359,6 @@
              };
     
             $('#summernote').summernote(setting);
-            $('#summernote').summernote({
-            	  codeviewFilter: true,
-            	  codeviewIframeFilter: true
-            	});
             });
     // function saveContent(){
     //     var summernoteContent = $('#summernote').summernote('code');        //썸머노트(설명)
@@ -377,7 +373,7 @@
     //     });
     // }
 
-    document.projectEnrollFrm.onsubmit = (e) => {
+    document.projectUpdateFrm.onsubmit = (e) => {
 	const frm = e.target;
 	//제목을 작성하지 않은 경우 폼제출할 수 없음.
 	if(!/^.+$/.test(frm.title.value)){
@@ -400,7 +396,6 @@
     	alert("시작일이 종료일보다 늦거나 같습니다.");
     	return false;
     }
-    //인원수 저장을 안한 경우 제출 불가
     const clickSave=document.getElementById("saveCheck").value;
     console.log(clickSave);
     if(clickSave==""){
@@ -413,4 +408,5 @@
 
 
     </script>
+</html>
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>
