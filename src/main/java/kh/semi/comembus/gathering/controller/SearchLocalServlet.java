@@ -78,6 +78,7 @@ public class SearchLocalServlet extends HttpServlet {
 			List<Gathering> bookmarkList = gatheringService.findAllProBookmarked(bmParam);
 			
 			System.out.println(">>> 필터링 확인 loginMemberId " + memberId);
+			System.out.println(">>> 필터링 확인 projectList " + projectList);
 			System.out.println(">>> 필터링 확인 bookmarkList " + bookmarkList);
 
 			
