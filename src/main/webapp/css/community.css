@@ -81,26 +81,7 @@ h4{
 	
 }
 
-#pagebar{
-	height:50px;
-	margin-top:30px;
-	text-align: center;
-}
 
-#pagebar span{
-    border-radius: 15%;
-    padding: 9px 15px;
-    background-color: #FFE69A;
-    text-decoration: none;
-    color: white;
-}
-#pagebar a{
-	border-radius: 15%;
-    padding: 9px 15px;
-    background-color: white;
-    text-decoration: none;
-    color: black;
-}
 
 #tbl-board th{
 	
