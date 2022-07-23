@@ -78,7 +78,6 @@ public class MemberProfileViewServlet extends HttpServlet {
 				gather.setRecruited_cnt(rctdCnt);
 			}
 			
-			
 			//찜한 프로젝트 ,스터디 목록
 			List<GatheringExt> gatheringBookmarkList = gatheringService.findAllBookmarked(memberId);
 			for(GatheringExt gather : gatheringBookmarkList) {
