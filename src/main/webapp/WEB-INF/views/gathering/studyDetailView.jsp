@@ -23,7 +23,7 @@
 <table>
     <tr>
         <td>총 인원</td>
-        <td><span id="statue">1</span>/<span id="total"><%= gathering.getPeople() %></span></td>
+        <td><span id="statue"><%= gathering.getRecruited_cnt()%></span>/<span id="total"><%= gathering.getPeople() %></span></td>
     </tr>
     <tr>
         <td><input type="button" id="apply" value="지원하기" onclick="applyStatus()"></td>
@@ -39,65 +39,30 @@
 <p><%= gathering.getContent() %></p>
 <br><br><br>
 <hr>
-<h3>이 스터디를 찜한 사람<span id="bookmarkCount">7</span>명</h3>
-<div id="list">
-    <table id="listBm">
-        <tbody>
-            <tr>
-                <td><img src="/멤버 이미지.png" alt="멤버아이디"></td>
-                <td><img src="/멤버 이미지.png" alt="멤버아이디"></td>
-                <td><img src="/멤버 이미지.png" alt="멤버아이디"></td>
-                <td><img src="/멤버 이미지.png" alt="멤버아이디"></td>
-                <td><img src="/멤버 이미지.png" alt="멤버아이디"></td>
-                <td><img src="/멤버 이미지.png" alt="멤버아이디"></td>
-                <td><img src="/멤버 이미지.png" alt="멤버아이디"></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
-
-<input type="button" id="bookmark" onclick="bookmark()" value="이 프로젝트 찜하기"></input><input type="button" id="bookmarkCancel" onclick="bookmarkCancel()" value="프로젝트 찜하기 취소"></input>
+<input type="button" id="bookmark" onclick="bookmark()" value="이 프로젝트 찜하기"></input>
+<input type="button" id="bookmarkCancel" onclick="bookmarkCancel()" value="프로젝트 찜하기 취소"></input>
 <br><br><br><br>
 <!--로그인 했을 경우+작성자일 경우에만 되도록 설정하기-->
+<%if(loginMember != null && gathering.getWriter() == loginMember.getMemberId()){ %>
 <button>수정</button><button>삭제</button>
+<%} %>
 </body>
 <script>
-const bookmarkNum=document.querySelector('#bookmarkCount');
 const bmBtn=document.querySelector('#bookmark');
 const bmCancelBtn=document.querySelector('#bookmarkCancel');
-const table=document.getElementById('listBm');
 bmCancelBtn.style.display='none';
-let bmCount=0;
 
 function bookmark(){
-    if(bmCount==0){
-    let count=Number(bookmarkNum.textContent)
-    count=count+1;
-    bookmarkNum.textContent=count;
-    bmCount+=1;
-    }
     if(bmBtn.style.display!=='none'){
         bmBtn.style.display='none';
         bmCancelBtn.style.display='block';
     }
-    for(let i=0;i<table.rows.length;i++){
-        const newCell=table.rows[i].insertCell(-1);
-        newCell.innerHTML='<td><img src="/멤버 이미지.png" alt="멤버아이디"></td>'
-    }
 }
+
 function bookmarkCancel(){
-    if(bmCount==1){
-        let count=Number(bookmarkNum.textContent)
-        count-=1;
-        bookmarkNum.textContent=count;
-        bmCount-=1;
-    }
     if(bmCancelBtn.style.display!=='none'){
         bmCancelBtn.style.display='none';
         bmBtn.style.display='block';
-    }
-    for(let i=0;i<table.rows.length;i++){
-        const newCell=table.rows[i].deleteCell(-1);
     }
 }
 
