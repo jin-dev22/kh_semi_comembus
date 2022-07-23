@@ -187,6 +187,40 @@ public class GatheringService {
 		return result;
 	}
 	
+	/**
+	 * 스터디 지원자 모집인원에 추가해주기
+	 */
+	public int addStdMemNum(int psNo) {
+		int result = 0;
+		Connection conn = getConnection();
+		try {
+			result = gatheringDao.addStdMemNum(conn, psNo);
+			commit(conn);
+		} catch (Exception e) {
+			rollback(conn);
+			throw e;
+		}
+		finally {
+			close(conn);
+		}
+		
+		return result;
+	}
+	
+	public int getRcrtdForStd(int psNo) {
+		int capa = 0;
+		Connection conn = getConnection();
+		try {
+			capa = gatheringDao.getRcrtdForStd(conn, psNo);
+		} catch (Exception e) {
+			throw e;
+		}
+		finally {
+			close(conn);
+		}
+		
+		return capa;
+	}
 	//수진코드 끝
 	
 	//유경 추가

@@ -555,7 +555,7 @@ public class GatheringDao {
 	}
 	
 	/**
-	 * 모임게시글상세>지원자현황페이지: 직무별 모집인원 테이블 업데이트, ajax 처리를 위해 boolean값 반환
+	 * 모임게시글상세>지원자현황페이지: 직무별 모집인원 테이블 업데이트
 	 */
 	public int addPSMemNumByDept(Connection conn, Map<String, Object> param) {
 		int result = 0;
@@ -593,6 +593,46 @@ public class GatheringDao {
 			close(pstmt);
 		}	
 		return result;
+	}
+	
+	/**
+	 * 스터디 지원자 합격자 추가
+	 */
+	public int addStdMemNum(Connection conn, int psNo) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("addStdMemNum");
+		try {//1:psNo, 
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, psNo);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new GatheringException("스터디 모집된 인원수 업데이트 오류", e);
+		} finally {
+			close(pstmt);
+		}	
+		return result;
+	}
+	
+	public int getRcrtdForStd(Connection conn, int psNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int capa = 0;
+		String sql = prop.getProperty("getRcrtdForStd");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, psNo);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				capa = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			throw new GatheringException("스터디 정원 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}	
+		return capa;
 	}
 	
 	//수진코드 끝

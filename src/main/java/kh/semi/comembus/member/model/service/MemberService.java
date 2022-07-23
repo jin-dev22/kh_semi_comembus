@@ -187,6 +187,16 @@ public class MemberService {
 		return apldMemberNum;
 	}
 	
+	/**
+	 * 지원결과 반영
+	 */
+	public int updateApldResult(Map<String, Object> param) {
+		Connection conn = getConnection();
+		int apldMemupdateResult = memberDao.updateApldResult(conn, param);
+		close(conn);
+		return apldMemupdateResult;
+	}
+	
 	// 수진 코드 끝
 	
 	// 선아 코드 시작

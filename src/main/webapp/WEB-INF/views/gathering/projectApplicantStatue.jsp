@@ -18,7 +18,7 @@
 <p class="pjname"><%= gathering.getTitle() %></p><!-- 프로젝트명 -->
 <p class="pjwriter"><img src="/멤버 이미지.png" alt="멤버아이디"><%= gathering.getWriter() %></p>
 <!--지원자 현황은 글쓴이=로그인한 사용자 일치할 때만 보이게 하기-->
-<button id="pjdetail"><a href="/projectDetailView.jsp">프로젝트 상세</a></button><button id="pjstatue"><a href="/gathering/showApplicants?psNo=<%= psNo%>">지원자 현황</a></button>
+<button id="pjdetail"><a href="<%=request.getContextPath()%>/gathering/projectView?psNo=<%=psNo%>">프로젝트 상세</a></button><button id="pjstatue"><a href="#">지원자 현황</a></button>
 <br>
 <hr>
 <h3>지원자 현황</h3>
@@ -35,52 +35,33 @@
         <td><%= mem.getNickName() %></td>
         <td><%= mem.getJobName() %></td>
         <td>
-        	<form name="aplcntResultFrm<%=psNo %>" action="">
-        		<input type="hidden" name="psNum" value="<%= psNo%>"/>
-        		<input type="hidden" name="psType" value="<%= psType%>"/>
-        		<input type="hidden" name=apldMemberId value="<%= mem.getMemberId()%>"/>
-        		<input type="hidden" name="apldMemberJobCode" value="<%=mem.getJobCode() %>" />
-        		<input class="applview-btn accept" type="button" value="수락" onclick="apldResult('O');"/>/
-        		<input class="applview-btn reject" type="button" value="거절" onclick="apldResult('X');"/>
-        	</form>
+			<input class="applview-btn accept" type="button" value="수락" onclick="apldResult('O', '<%=mem.getMemberId()%>', '<%=mem.getJobCode()%>');"/>/
+			<input class="applview-btn reject" type="button" value="거절" onclick="apldResult('X', '<%=mem.getMemberId()%>','<%=mem.getJobCode()%>');"/>
        	</td>
     </tr>
   <%} %>
 </table>
-
+<form name="aplcntResultFrm" action="<%=request.getContextPath()%>/gathering/showApplicants" method="POST">
+	<input type="hidden" name="psNum" value="<%= psNo%>" />
+	<input type="hidden" name="psType" value="<%= psType%>"/>
+	<input type="hidden" name="apldResult" />
+	<input type="hidden" name=apldMemberId />
+	<input type="hidden" name="apldMemberJobCode"/>
+</form>
 <div id='pagebar'>
 	<%= request.getAttribute("pagebar") %>
 </div>
 
 <script>
-function apldResult(apldResult){
-	const frm = document.querySelector('[name="aplcntResultFrm<%=psNo %>"]');
+function apldResult(apldResult, memberId, jobCode){
+	const frm = document.aplcntResultFrm;
 	const psNo = frm.psNum.value;
 	const psType = frm.psType.value;
-	const apldMemberId = frm.apldMemberId.value;
-	const jobCode = frm.apldMemberJobCode.value;
-	$.ajax({
-		type : 'POST',
-		url : '<%= request.getContextPath()%>/gathering/showApplicants',
-		data : {'psNo' : psNo, 'apldMemberId' : apldMemberId, 'jobCode': jobCode,'apldResult' : apldResult, 'psType' : psType},
-		success(result){
-			const reqResult = JSON.parse(result);
-			if(psType == 'P'){
-				if(reqResult){
-					alert("지원결과 전송 완료");				
-				}else{
-					alert("직무별 인원 초과입니다.");
-				}				
-			}else{
-				alert(reqResult? "지원결과 전송 완료" : "인원이 초과되었습니다.");
-			}
-		},
-		error: console.log
-	});
-	const btn1 = frm.querySelector(".applview-btn accept");
-	const btn2 = frm.querySelector(".applview-btn reject");
-	btn1.disabled = true;
-	btn2.disabled = true;
+	frm.apldResult.value = apldResult;
+	frm.apldMemberId.value = memberId;
+	frm.apldMemberJobCode.value = jobCode;
+	
+	frm.submit();
 };
 
 </script>
