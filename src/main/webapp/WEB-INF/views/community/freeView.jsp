@@ -12,7 +12,7 @@
 	List<CommunityRepl> replList = (List<CommunityRepl>) request.getAttribute("replList");
 %>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/community.css" /> 
-<h2>자유주제 게시판</h2>
+<h2>자유 게시판</h2>
 <br />
 <hr style="margin-top:20px;"  />  
 
@@ -74,7 +74,8 @@
 					boolean canDelete = loginMember != null && 
 							(loginMember.getMemberId().equals(cr.getReplWriter())|| loginMember.getMemberRole() == MemberRole.A);
 					 if(cr.getReplLevel() == CommentLevel.COMMENT){
-		   %> <tr class="level1">
+		   %> 
+		   	<tr class="level1">
 				<td>
 					<div class="comment-level1">
 						<sub class="comment-writer"><%= cr.getReplWriter() %></sub>
@@ -139,7 +140,7 @@
 		<% } %>
 		
 		//대댓글 작성폼 동적 생성
-		let html = "<tr>"; 
+		var html = "<tr>"; 
 		html += "<td colspan='2' style='display:none; text-align:left;'>";
 		html += '<form action="<%=request.getContextPath()%>/community/communityCommentEnroll?co_type=F"  method="post" name="boardCommentFrm">';
 		html += '<input type="hidden" name="coNo" value="<%= fview.getCoNo() %>" />';
@@ -152,7 +153,7 @@
 		html += "</td>";
 		html += "</tr>";
 		
-		let $trOfBtn = $(this).parent().parent();
+		var $trOfBtn = $(this).parent().parent();
 		$(html)
 			.insertAfter($trOfBtn)
 			.children("td")

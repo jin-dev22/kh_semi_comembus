@@ -38,6 +38,7 @@
 			%>
 		</div>
 	<br />
+	<hr />
 	<table id="tbl-board">
 		<tr>
 			<th>제목</th>
