@@ -16,12 +16,12 @@
 <p class="pjname"><%= gathering.getTitle() %></p><!-- 프로젝트명 -->
 <p class="pjwriter"><img src="/멤버 이미지.png" alt="멤버아이디"><%= gathering.getWriter() %></p>
 <!--지원자 현황은 글쓴이=로그인한 사용자 일치할 때만 보이게 하기-->
-<button id="pjdetail"><a href="<%=request.getContextPath() %>/projectDetailView?psNo=<%= gathering.getPsNo()%>">프로젝트 상세</a></button><button id="pjstatue"><a href="<%=request.getContextPath() %>/gathering/showApplicants?psNo=<%= gathering.getPsNo()%>">지원자 현황</a></button>
+<button id="pjdetail"><a href="#">프로젝트 상세</a></button>
+<%if(loginMember != null && gathering.getWriter() == loginMember.getMemberId()){ %>
+<button id="pjstatue"><a href="<%=request.getContextPath() %>/gathering/showApplicants?psNo=<%= gathering.getPsNo()%>">지원자 현황</a></button>
+<%} %>
 <br>
 <hr>
-<form 	name="projectUpdateFrm"
-	action="<%=request.getContextPath() %>/gathering/projectUpdateView" 
-	method="get">
 <h3>모집 현황</h3>
 <table>
     <tr>
@@ -43,11 +43,22 @@
     <tr>
         <td><input type="button" id="apply" value="지원하기" onclick="applyStatus()"></td>
     </tr>
-    <tr>
-    	<td><input type="hidden" id="psNo" name="psNo" value="<%= gathering.getPsNo() %>"/></td>
-    	<% System.out.println("Detail : "+gathering.getPsNo()); %>
-    </tr>
+    <script>
+    function applyStatus(psNo, aplcntId){
+        if(confirm("지원 하시겠습니까?")){
+            const frm = document.applFrm;
+            frm.submit();
+        }
+    </script>
 </table>
+<%--지원하기 속성 제출 --%>
+<form name="applFrm" action="<%= request.getContextPath()%>/gathering/apply" method="POST">
+<input type="hidden" name="psNo" value="게더링.겟"/>
+<input type="hidden" name="aplcntId" value="<%= loginMember.getMemberId()%>"/>
+<input type="hidden" name="aplcntJobCode" value="<%= loginMember.getJobCode()%>"/>
+</form>
+
+
 <h3>프로젝트 주제</h3>
 <h5><%= gathering.getTopic() %></h5>
 
@@ -58,36 +69,21 @@
 <p><%= gathering.getContent() %></p>
 <br><br><br>
 <hr>
-<h3>이 프로젝트를 찜한 사람<span id="bookmarkCount">7</span>명</h3>
-<div id="list">
-    <table id="listBm">
-        <tbody>
-            <tr>
-                <td><img src="/멤버 이미지.png" alt="멤버아이디"></td>
-                <td><img src="/멤버 이미지.png" alt="멤버아이디"></td>
-                <td><img src="/멤버 이미지.png" alt="멤버아이디"></td>
-                <td><img src="/멤버 이미지.png" alt="멤버아이디"></td>
-                <td><img src="/멤버 이미지.png" alt="멤버아이디"></td>
-                <td><img src="/멤버 이미지.png" alt="멤버아이디"></td>
-                <td><img src="/멤버 이미지.png" alt="멤버아이디"></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
 
 <input type="button" id="bookmark" onclick="bookmark()" value="이 프로젝트 찜하기"></input><input type="button" id="bookmarkCancel" onclick="bookmarkCancel()" value="프로젝트 찜하기 취소"></input>
 <br><br><br><br>
-<!--로그인 했을 경우+작성자일 경우에만 되도록 설정하기-->
-<input type="submit" value="수정"/><button>삭제</button>
+<%--찜하기 속성 제출 --%>
+<form name="bmFrm" action="<%= request.getContextPath()%>/membus/bookmarkAdd" method="POST">
+<input type="hidden" name="BmId" />
+<input type="hidden" name="psNo" value="<%=gathering.getPsNo()%>"/>
 </form>
+<%if(loginMember != null && gathering.getWriter() == loginMember.getMemberId()){ %>
+<button>수정</button><button>삭제</button>
+<%} %>
+
 </body>
 <script>
-const bookmarkNum=document.querySelector('#bookmarkCount');
-const bmBtn=document.querySelector('#bookmark');
-const bmCancelBtn=document.querySelector('#bookmarkCancel');
-const table=document.getElementById('listBm');
 bmCancelBtn.style.display='none';
-let bmCount=0;
 
 function bookmark(){
     if(bmCount==0){
@@ -128,24 +124,7 @@ if(cntStatue==cntTotal){
     target.disabled=true;
     //처음부터 지원이 불가능한 경우 작성하기
 }
-function applyStatus(){
-    if(confirm("지원 하시겠습니까?")){
-        alert("지원이 완료되었습니다.");
-        let cntStatue=Number(applyStatue.textContent)
-        let cntTotal=Number(applyTotal.textContent)
-        if(cntStatue<cntTotal){
-            cntStatue+=1;
-            applyStatue.textContent=cntStatue;
-        }
-        if(cntStatue==cntTotal){
-            const target=document.getElementById('apply');
-            target.disabled=true;
-        }
-        //로그인 한 회원의 정보(id)전달 
-    }
-    else{
-        alert("지원이 취소되었습니다.");
-    }
+
 }
 
 
