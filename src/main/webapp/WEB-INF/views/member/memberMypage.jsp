@@ -221,8 +221,9 @@
 							if(gather.getPsType() == GatheringType.S){
 						%>	 
 						<div class="ps-pre">
-							<!-- 추후에 a태그로 링크걸어야함 -->
-							<img src="<%= request.getContextPath() %>/images/<%= gather.getTopic() %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
+							<a href="<%= request.getContextPath()%>/gathering/studyView?psNo=<%= gather.getPsNo() %>">
+								<img src="<%= request.getContextPath() %>/images/<%= gather.getTopic() %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
+							</a>
 							<p class="bold"><%= topic %></p>
 							<p class="bold"><%= gather.getTitle() %></p>
 							<ul class="ps-pre__etc">

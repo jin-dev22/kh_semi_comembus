@@ -1,3 +1,4 @@
+<%@page import="kh.semi.comembus.gathering.model.dto.GatheringType"%>
 <%@page import="java.util.Map"%>
 <%@page import="kh.semi.comembus.member.model.dto.MemberExt"%>
 <%@page import="java.text.SimpleDateFormat"%>
@@ -18,7 +19,8 @@
 <p class="pjname"><%= gathering.getTitle() %></p><!-- 프로젝트명 -->
 <p class="pjwriter"><img src="/멤버 이미지.png" alt="멤버아이디"><%= gathering.getWriter() %></p>
 <!--지원자 현황은 글쓴이=로그인한 사용자 일치할 때만 보이게 하기-->
-<button id="pjdetail"><a href="<%=request.getContextPath()%>/gathering/projectView?psNo=<%=psNo%>">프로젝트 상세</a></button><button id="pjstatue"><a href="#">지원자 현황</a></button>
+<%String putUrl = gathering.getPsType() == GatheringType.P ? "/gathering/projectView?psNo=" : "/gathering/studyView?psNo="; %>
+<button id="pjdetail"><a href="<%= request.getContextPath()%><%=putUrl %><%= psNo%>">모임 상세</a></button><button id="pjstatue"><a href="#">지원자 현황</a></button>
 <br>
 <hr>
 <h3>지원자 현황</h3>

@@ -16,7 +16,7 @@
 <p class="stname"><%= gathering.getTitle() %></p><!-- 프로젝트명 -->
 <p class="stwriter"><img src="/멤버 이미지.png" alt="멤버아이디"><%= gathering.getWriter() %></p>
 <!--지원자 현황은 글쓴이=로그인한 사용자 일치할 때만 보이게 하기-->
-<button id="stdetail"><a href="/studyDetailView.jsp">프로젝트 상세</a></button><button id="ststatue"><a href="/gathering/showApplicants?psNo=<%= gathering.getPsNo()%>">지원자 현황</a></button>
+<button id="stdetail"><a href="#">모임 상세</a></button><button id="ststatue"><a href="<%=request.getContextPath() %>/gathering/showApplicants?psNo=<%= gathering.getPsNo()%>">지원자 현황</a></button>
 <br>
 <hr>
 <h3>모집 현황</h3>
