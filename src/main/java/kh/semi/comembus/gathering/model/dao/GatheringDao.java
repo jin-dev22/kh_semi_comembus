@@ -521,18 +521,18 @@ public class GatheringDao {
 		try {
 			pstmt=conn.prepareStatement(sql);
 			pstmt.setString(1, project.getWriter());
-			pstmt.setObject(2, "P");
-			pstmt.setString(3, project.getTitle());
-			pstmt.setDate(4, project.getRegDate());
-			pstmt.setString(5, project.getContent());
+//			pstmt = setString(2, project.getPsType() != null ? project.getPsType().name() : null);
+			pstmt.setString(2, project.getTitle());
+//			pstmt.setDate(3, project.getRegDate());
+			pstmt.setString(3, project.getContent());
 //			pstmt.setInt(6, project.getViewcount());
 //			pstmt.setInt(7, project.getBookmark());
-			pstmt.setString(8, project.getTopic());
-			pstmt.setString(9, project.getLocal());
-			pstmt.setInt(10, project.getPeople());
-			pstmt.setObject(11, "N");
-			pstmt.setDate(12, project.getStartDate());
-			pstmt.setDate(13, project.getEndDate());
+			pstmt.setString(4, project.getTopic());
+			pstmt.setString(5, project.getLocal());
+			pstmt.setInt(6, project.getPeople());
+//			pstmt.setString(8, project.getStatus().name());
+			pstmt.setDate(7, project.getStartDate());
+			pstmt.setDate(8, project.getEndDate());
 			
 			result=pstmt.executeUpdate();
 		}catch(SQLException e) {
