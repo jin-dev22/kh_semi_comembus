@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 
 import kh.semi.comembus.alert.model.dto.AlertExt;
 import kh.semi.comembus.alert.model.service.AlertService;
+import kh.semi.comembus.common.ComembusUtils;
 import kh.semi.comembus.community.model.dto.Community;
 import kh.semi.comembus.community.model.service.CommunityService;
 import kh.semi.comembus.member.model.dto.Member;
@@ -39,7 +40,7 @@ public class MemberAlertListServlet extends HttpServlet {
 			String memberId = member.getMemberId();
 			//페이징처리
 			int cPage = 1;
-			int numPerPage = 3;
+			int numPerPage = 15;
 			try {
 				cPage = Integer.parseInt(request.getParameter("cPage"));
 			} catch (NumberFormatException e) {}
@@ -68,6 +69,10 @@ public class MemberAlertListServlet extends HttpServlet {
 			//페이징용 총 알림수
 			int totalAlertNum = alertService.getTotalAlertNum(memberId);
 			
+			String url = request.getRequestURI();
+			String pagebar = ComembusUtils.getPagebar(cPage, numPerPage, totalAlertNum, url);
+			
+			request.setAttribute("pagebar", pagebar);
 			request.setAttribute("alerts", alerts);
 			request.getRequestDispatcher("/WEB-INF/views/member/memberAlertList.jsp").forward(request, response);
 			
