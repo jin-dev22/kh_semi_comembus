@@ -69,7 +69,7 @@ public class studyEnrollViewServlet extends HttpServlet {
 			
 			//3. redirect
 			request.getSession().setAttribute("msg", "스터디를 성공적으로 등록했습니다.");
-			response.sendRedirect(request.getContextPath()+"/gathering/projectList");
+			response.sendRedirect(request.getContextPath()+"/gathering/studyList");
 		}catch(Exception e) {
 			e.printStackTrace();
 			throw e;

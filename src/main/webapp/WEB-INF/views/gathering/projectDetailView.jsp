@@ -113,6 +113,7 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 
 </body>
 <script>
+	const bmCancelBtn = document.querySelector('#bookmarkCancel');
 	bmCancelBtn.style.display = 'none';
 
 		function bookmark() {
