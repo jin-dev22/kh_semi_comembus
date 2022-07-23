@@ -42,6 +42,7 @@ public class SearchProBookmarkServlet extends HttpServlet {
 			// 로그인을 했다면 memberId가, 안했다면 "" 공백문자가
 			String memberId = request.getParameter("memberId");
 			String type = "P";
+			int totalContent = 0;
 			
 			System.out.println(">>> 확인용 bookmarkYN = " + bookmarkYN);
 			System.out.println(">>> 확인용 memberId = " + memberId);
@@ -59,20 +60,19 @@ public class SearchProBookmarkServlet extends HttpServlet {
 			List<Gathering> bookmarkList = new ArrayList<>();
 			if(memberId != null && "Y".equals(bookmarkYN)) { // 로그인멤버가 있고, 찜한거 체크 시
 				bookmarkList = gatheringService.findProBookmarkFilter(param);
+				totalContent = gatheringService.getTotalBookmarkFilter(param);
 			}
-			System.out.println("> 3 <");
+			
 			List<Gathering> projectList = new ArrayList<>();
 			Map<String, Object> bmParam = new HashMap<>();
 			if(memberId != null && "All".equals(bookmarkYN)) {
-				projectList = gatheringService.findGatheringAll(param);	
+				projectList = gatheringService.findGatheringAll(param);
+				totalContent = gatheringService.getProTotalContent();
 				bmParam.put("loginMemberId", memberId);
 				bookmarkList = gatheringService.findAllProBookmarked(bmParam);
 				System.out.println(">>> memberId " + memberId);
 				System.out.println(">>> bmParam = " + bmParam);
 			};
-			System.out.println("> 4 <");
-			// pagebar 영역
-			int totalContent = gatheringService.getTotalBookmarkFilter(param);
 			
 			System.out.println(">>> 필터링확인용 bookmarkList: " + bookmarkList); // 확인용
 			System.out.println(">>> 필터링확인용 projectList: " + projectList); // 확인용

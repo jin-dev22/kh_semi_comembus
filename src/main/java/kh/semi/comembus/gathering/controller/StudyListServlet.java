@@ -64,9 +64,9 @@ public class StudyListServlet extends HttpServlet {
 						
 			// pagebar 영역
 			int totalContent = gatheringService.getStdTotalContent();
+			System.out.println(">>> totalContent = " + totalContent);
 			String url = request.getRequestURI();
 			String pagebar = ComembusUtils.getPagebar(cPage, numPerPage, totalContent, url);
-			System.out.println(">>> totalContent = " + totalContent);
 			System.out.println(">>> page바 = " + pagebar);
 			
 			// view단처리

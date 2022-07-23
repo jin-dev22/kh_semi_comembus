@@ -18,9 +18,9 @@
 <script>
 const bookmarkFilter = (num) => {
 	// 체크 시 다른 필터 체크 해제처리해야함
-	$("#p__local").prop('checked', false);
-	$("#p__job_code").prop('checked', false);
-	$("#p__status").prop('checked', false);
+	$("#s__local").prop('checked', false);
+	$("#s__topic").prop('checked', false);
+	$("#s__status").prop('checked', false);
 	
 	const bookmarkYN = $("#s__bookmark").is(':checked') ? "Y" : "All";
 	let memberId = "";
@@ -49,6 +49,7 @@ const bookmarkFilter = (num) => {
 			const {bookmarkList, studyList, totalContent, cPage} = bookmarkFilterLists;
  				console.log(">> bookmarkList = ", bookmarkList);
  				console.log(">> studyList = ", studyList);
+ 				console.log(">> totalContent = ", totalContent);
  				
 				if(bookmarkList == null){
 					alert("찜한 스터디가 존재하지 않습니다.");
@@ -150,9 +151,9 @@ const bookmarkFilter = (num) => {
 const gatheringFilter = (num) => {
 	$("#s__bookmark").prop('checked', false);
 	
-	const localAll = $("#p__local").val();
-	const jobAll = $("#p__job_code").val();
-	const statusYN = $("#p__status").is(':checked') ? "N" : "All";
+	const localAll = $("#s__local").val();
+	const topicAll = $("#s__topic").val();
+	const statusYN = $("#s__status").is(':checked') ? "N" : "All";
 	let memberId = "";
 <% if(loginMember != null){ %>
 	memberId = '<%= loginMember.getMemberId() %>';
@@ -164,10 +165,11 @@ const gatheringFilter = (num) => {
 	let totalPages = 0;
 	
 	let searchLocal = 'local';
-	let searchJobcode = 'jobcode';
+	let searchTopic = 'topic';
 	let selectLocalKeyword = localAll;
-	let selectJobKeyword = jobAll;
-
+	let selectTopicKeyword = topicAll;
+	
+	console.log("topicAll = ", topicAll)
 	console.log("statusYN = ", statusYN); // 확인용
 	console.log("memberId = ", memberId) // 확인용
 	$.ajax({
@@ -175,9 +177,9 @@ const gatheringFilter = (num) => {
 		data: {
 			cPage: cPage,
 			searchLocal: searchLocal,
-			searchJobcode: searchJobcode,
+			searchTopic: searchTopic,
 			selectLocalKeyword: selectLocalKeyword,
-			selectJobKeyword: selectJobKeyword,
+			selectTopicKeyword: selectTopicKeyword,
 			statusYN : statusYN,
 			memberId: memberId
 			},
@@ -360,12 +362,14 @@ function pageLink(cPage, totalPages, funName){
 					</select>
 				</form>
 				<form name="searchFrm">
-					<select name="searchType" value="jobcode" id="s__job_code" class="ps-filter" onchange="gatheringFilter()">
+					<select name="searchType" value="topic" id="s__topic" class="ps-filter" onchange="gatheringFilter()">
 						<option value="All">직무 미지정</option>
-						<option value="PL">기획</option>
-						<option value="DG">디자인</option>
-						<option value="FE">프론트</option>
-						<option value="BE">백엔드</option>
+						<option value="Planning">기획</option>
+						<option value="Design">디자인</option>
+						<option value="Frontend">프론트</option>
+						<option value="Backend">백엔드</option>
+						<option value="Interview">면접</option>
+						<option value="Codingtest">코딩테스트</option>
 					</select>
 				</form>
 				<div class="ps-filter">
@@ -405,12 +409,10 @@ function pageLink(cPage, totalPages, funName){
 					</ul>
 					<div class="ps__bookmark">
 						<% if(loginMember == null){ %>
-							<button class="bookmark-front" value="<%= studyNo %>">♡</button>
+							<button <%=loginMember == null?"disabled":""%> class="bookmark-front">♡</button>
 						<%
 							}
-						%>
-							<button class="bookmark-front" value="<%= studyNo %>">♡</button>
-							<button style="display:none" class="bookmark-back" value="<%= studyNo %>">♥</button>
+						%>							
 						<%
 							if(loginMember != null){
 								if(bookmarkList != null && !bookmarkList.isEmpty()){
@@ -456,6 +458,7 @@ function pageLink(cPage, totalPages, funName){
 		</section>
 	</section>
 <script>
+
 document.querySelectorAll(".ps__bookmark").forEach((bookmark) => {
 	bookmark.addEventListener('click', (e) => {
 		let mark = e.target;

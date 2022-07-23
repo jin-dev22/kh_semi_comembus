@@ -292,9 +292,9 @@ public class GatheringDao {
 		String sql = prop.getProperty("findStudyLike");
 		
 		String searchLocal = (String) param.get("searchLocal");
-		String searchJobcode = (String) param.get("searchJobcode");
+		String searchTopic = (String) param.get("searchTopic");
 		String selectLocalKeyword = (String) param.get("selectLocalKeyword");
-		String selectJobKeyword = (String) param.get("selectJobKeyword");
+		String selectTopicKeyword = (String) param.get("selectTopicKeyword");
 		String statusYN = (String) param.get("statusYN");
 		int start = (int) param.get("start");
 		int end = (int) param.get("end");
@@ -305,7 +305,7 @@ public class GatheringDao {
 
 		// 랜딩페이지(필터 미지정시)
 		if("All".equals(selectLocalKeyword)) {
-			if("All".equals(selectJobKeyword)) {
+			if("All".equals(selectTopicKeyword)) {
 				if("All".equals(statusYN)) {
 					sql = sql.replace("[str1]", " ");
 					sql = sql.replace("[str2]", " ");
@@ -318,17 +318,17 @@ public class GatheringDao {
 			} else {
 				if("All".equals(statusYN)) {
 					sql = sql.replace("[str1]", " ");
-					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectJobKeyword + "') and capacity_number > recruited_number)");
+					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectTopicKeyword + "') and capacity_number > recruited_number)");
 					sql = sql.replace("[str3]", " ");
 				} else {
 					sql = sql.replace("[str1]", " ");
-					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectJobKeyword + "') and capacity_number > recruited_number)");
+					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectTopicKeyword + "') and capacity_number > recruited_number)");
 					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
 				}
 			}
 		}
 		else {
-			if("All".equals(selectJobKeyword)) {
+			if("All".equals(selectTopicKeyword)) {
 				if("All".equals(statusYN)) {
 					sql = sql.replace("[str1]", "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
 					sql = sql.replace("[str2]", " ");
@@ -341,11 +341,11 @@ public class GatheringDao {
 			} else {
 				if("All".equals(statusYN)) {
 					sql = sql.replace("[str1]", "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
-					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectJobKeyword + "') and capacity_number > recruited_number)");
+					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectTopicKeyword + "') and capacity_number > recruited_number)");
 					sql = sql.replace("[str3]", " ");
 				} else {
 					sql = sql.replace("[str1]", "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
-					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectJobKeyword + "') and capacity_number > recruited_number)");
+					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectTopicKeyword + "') and capacity_number > recruited_number)");
 					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
 				}
 			}
@@ -377,14 +377,14 @@ public class GatheringDao {
 		String sql = prop.getProperty("getStdTotalContentLike");
 		
 		String searchLocal = (String) param.get("searchLocal");
-		String searchJobcode = (String) param.get("searchJobcode");
+		String searchTopic = (String) param.get("searchTopic");
 		String selectLocalKeyword = (String) param.get("selectLocalKeyword");
-		String selectJobKeyword = (String) param.get("selectJobKeyword");
+		String selectTopicKeyword = (String) param.get("selectTopicKeyword");
 		String statusYN = (String) param.get("statusYN");
 		
 		// 랜딩페이지(필터 미지정시)
 		if("All".equals(selectLocalKeyword)) {
-			if("All".equals(selectJobKeyword)) {
+			if("All".equals(selectTopicKeyword)) {
 				if("All".equals(statusYN)) {
 					sql = sql.replace("[str1]", " ");
 					sql = sql.replace("[str2]", " ");
@@ -397,17 +397,17 @@ public class GatheringDao {
 			} else {
 				if("All".equals(statusYN)) {
 					sql = sql.replace("[str1]", " ");
-					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectJobKeyword + "') and capacity_number > recruited_number)");
+					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectTopicKeyword + "') and capacity_number > recruited_number)");
 					sql = sql.replace("[str3]", " ");
 				} else {
 					sql = sql.replace("[str1]", " ");
-					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectJobKeyword + "') and capacity_number > recruited_number)");
+					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectTopicKeyword + "') and capacity_number > recruited_number)");
 					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
 				}
 			}
 		}
 		else {
-			if("All".equals(selectJobKeyword)) {
+			if("All".equals(selectTopicKeyword)) {
 				if("All".equals(statusYN)) {
 					sql = sql.replace("[str1]", "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
 					sql = sql.replace("[str2]", " ");
@@ -420,11 +420,11 @@ public class GatheringDao {
 			} else {
 				if("All".equals(statusYN)) {
 					sql = sql.replace("[str1]", "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
-					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectJobKeyword + "') and capacity_number > recruited_number)");
+					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectTopicKeyword + "') and capacity_number > recruited_number)");
 					sql = sql.replace("[str3]", " ");
 				} else {
 					sql = sql.replace("[str1]", "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
-					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectJobKeyword + "') and capacity_number > recruited_number)");
+					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectTopicKeyword + "') and capacity_number > recruited_number)");
 					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
 				}
 			}
@@ -491,23 +491,30 @@ public class GatheringDao {
 		String type = (String) param.get("type");
 		String sql = "";
 		
+		System.out.println("DAO의 bookmarkYN" + bookmarkYN);
+		
 		if(type == "P") {
 			sql = prop.getProperty("getTotalProBookmarkFilter");
 		} else {
+			System.out.println("22");
 			sql = prop.getProperty("getTotalStdBookmarkFilter");
 		}
 
 		if("Y".equals(bookmarkYN)) {
+			System.out.println("33");
 			sql = sql.replace("[str1]", "and exists (select 1 from bookmarked_prj_std where ps_no = ps.ps_no and member_id = '" + memberId + "')");			
 		} else {
+			System.out.println("44");
 			sql = sql.replace("[str1]", " ");
 		}
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
 			rset = pstmt.executeQuery();
-			if(rset.next())
+			if(rset.next()) {
 				totalbookmarkFilterContent = rset.getInt(1);
+				System.out.println("totalbookmarkFilterContent");
+			}
 		} catch (SQLException e) {
 			throw new GatheringException("스터디 찜 필터 조회 오류", e);
 		} finally {

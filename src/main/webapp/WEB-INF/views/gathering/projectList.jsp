@@ -401,7 +401,7 @@ function pageLink(cPage, totalPages, funName){
 					</ul>
 					<div class="ps__bookmark">
 						<% if(loginMember == null){ %>
-							<button class="bookmark-front" value="<%= projectNo %>">♡</button>
+							<button <%=loginMember == null?"disabled":""%> class="bookmark-front">♡</button>
 						<%
 							}
 						%>
