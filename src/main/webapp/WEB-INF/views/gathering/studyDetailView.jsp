@@ -41,10 +41,18 @@
 <hr>
 <input type="button" id="bookmark" onclick="bookmark()" value="이 프로젝트 찜하기"></input>
 <input type="button" id="bookmarkCancel" onclick="bookmarkCancel()" value="프로젝트 찜하기 취소"></input>
+
+<form name="applFrm" action="<%= request.getContextPath()%>/gathering/studyUpdateView">
+<input type="hidden" name="psNo" value="<%= gathering.getPsNo() %>"/>
+<script>console.log('<%= gathering.getPsNo() %>=', <%= gathering.getPsNo() %>)</script>
+
 <br><br><br><br>
 <!--로그인 했을 경우+작성자일 경우에만 되도록 설정하기-->
-<%if(loginMember != null && gathering.getWriter() == loginMember.getMemberId()){ %>
-<button>수정</button><button>삭제</button>
+<%if(loginMember != null && gathering.getWriter().equals(loginMember.getMemberId())){ %>
+<button>수정</button>
+</form>
+<button>삭제</button>
+
 <%} %>
 </body>
 <script>
@@ -68,7 +76,7 @@ function bookmarkCancel(){
 
 const applyStatue=document.querySelector('#statue');
 const applyTotal=document.querySelector('#total');
-if(cntStatue==cntTotal){
+if(applyStatue==applyTotal){
     const target=document.getElementById('apply');
     target.disabled=true;
     //처음부터 지원이 불가능한 경우 작성하기

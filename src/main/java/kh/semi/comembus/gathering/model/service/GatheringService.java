@@ -382,6 +382,27 @@ public class GatheringService {
 
 	
 	//유경 끝
+	
+	
+	// 미송 시작
+	public int updateStudy(Gathering study) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			// 1. 게시글 수정
+			result = gatheringDao.updateStudy(conn, study);
+			commit(conn);
+		} 
+		catch (Exception e) {
+			rollback(conn);
+			throw e;
+		}
+		finally {
+			close(conn);			
+		}
+		return result;
+	}
+	// 미송 끝
 
 
 
