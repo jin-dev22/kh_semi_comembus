@@ -300,7 +300,7 @@ document.enrollFrm.onsubmit = (e) => {
   checkArr.forEach(function (el) {
     if (el.className !== "success") {
       e.preventDefault();
-      msg = "필수정보를 모두 입력해주세요.";
+      msg = "필수정보를 모두 올바르게 입력해주세요.";
     }
   });
 
