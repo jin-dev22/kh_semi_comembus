@@ -113,6 +113,7 @@ public class GatheringDao {
 		System.out.println("DAO확인용 selectLocalKeyword = " + selectLocalKeyword);
 		System.out.println("DAO확인용 selectJobKeyword = " + selectJobKeyword);
 		System.out.println("DAO확인용 statusYN = " + statusYN);
+		System.out.println(">> DAO확인용 sql = " + sql);
 
 		// [str1] = "and exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('" + searchLocal + "'))"
         // [str2] = "and exists (select 2 from project_member_dept where ps_no = ps.ps_no and job_code = '" + searchJobcode + "')"
@@ -292,7 +293,7 @@ public class GatheringDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		List<Gathering> bookmarkFilterlist = new ArrayList<>();
-		String sql = prop.getProperty("findMemberProBookmarkFilter");
+		String sql = prop.getProperty("findProBookmarkFilter");
 		
 		String bookmarkYN = (String) param.get("bookmarkYN");
 		String memberId = (String) param.get("memberId");
@@ -312,7 +313,8 @@ public class GatheringDao {
 			pstmt.setInt(2, (int)param.get("end"));
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
-				Gathering gathering = handleGatheringResultSet(rset);
+				GatheringExt gathering = handleGatheringResultSet(rset);
+				gathering.setRecruited_cnt(rset.getInt("recruited_cnt"));
 				bookmarkFilterlist.add(gathering);
 			}
 		} catch (SQLException e) {
