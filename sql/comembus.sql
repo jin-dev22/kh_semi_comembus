@@ -29,9 +29,15 @@ CREATE TABLE member (
     constraint ck_member_quit check(quit_yn in ('N', 'Y')),
     constraint fk_job_code foreign key(job_code) references department(job_code)
 );
+ALTER TABLE member MODIFY (enroll_date DEFAULT current_date);
+
 --drop table member;
 select * from member;
 select * from ( select row_number () over (order by enroll_date desc) rnum, m.* from member m ) m where rnum between 1 and 16;
+
+select to_char(enroll_date, 'yyyy-mm-dd hh24:mi:ss') "enroll_date", member_id from member where member_name like '%멜론%';
+select count(*) from member where to_char(enroll_date, 'yyyy/mm/dd')= to_char(current_date, 'yyyy/mm/dd');
+select count(*) from member where enroll_date between to_date('2022-07-20', 'yyyy-mm-dd') and to_date('2022-07-22', 'yyyy-mm-dd') + 0.99999;
 insert into member values ('test', 'BE', 'tester', '홍길동','1234', '01012341234', '안녕하세요', default, default, null, default);
 commit;
 COMMENT ON COLUMN member.member_id IS '회원 아이디';
@@ -70,6 +76,8 @@ CREATE TABLE notice (
     constraint pk_notice_no primary key(notice_no),
     constraint fk_writer foreign key  (writer) references member(member_id) on delete set null
 );
+ALTER TABLE notice MODIFY (reg_date DEFAULT current_date);
+
 --drop table notice;
 create sequence seq_notice_no;
 
@@ -126,12 +134,16 @@ CREATE TABLE admin_statistics (
 	enroll_cnt	number	DEFAULT 0	NOT NULL,
     constraint pk_date primary key (visit_date)
 );
+ALTER TABLE admin_statistics MODIFY (visit_date DEFAULT current_date);
+
 COMMENT ON COLUMN admin_statistics.visit_date IS '방문자 방문 날짜';
 COMMENT ON COLUMN admin_statistics.visit_cnt IS '세션 생성 시 cnt++';
 COMMENT ON COLUMN admin_statistics.enroll_cnt IS '회원가입수';
 commit;
 --수진 코드 끝
-
+select * from project_study;
+insert into project_study (ps_no, writer, gathering_type, title, reg_date, content, viewcount, bookmark, topic, local, people, status, start_date, end_date) values (seq_project_study_ps_no.nextval, 'traffic123','P','title','2022-07-22','내용',default,default,'game','Online',3,default,'2022-07-23','2022-07-28');
+insert into project_study (ps_no, writer, gathering_type, title, reg_date, content, viewcount, bookmark, topic, local, people, status, start_date, end_date) values (seq_project_study_ps_no.nextval, 'traffic123','P','title','2022-07-22','내용',default,default,'game','Online',3,default,'2022-07-23','2022-07-28');
 --선아님 코드 시작
 CREATE TABLE project_study (
 	ps_no number NOT NULL,
@@ -151,6 +163,7 @@ CREATE TABLE project_study (
         constraint ck_project_study_board_type check(board_type in ('P', 'S')),
         constraint ck_project_study_status check(status in ('Y', 'N'))
 );
+ALTER TABLE project_study MODIFY (reg_date DEFAULT current_date);
 
 -- 모임 타입 컬럼명 수정(220714)
 alter table project_study rename column board_type to gathering_type;
@@ -229,6 +242,8 @@ CREATE TABLE community_board (
     constraint fk_community_writer foreign key(co_writer) references member(member_id) on delete set null,
     constraint ck_community_type check (co_type in('F', 'Q', 'S'))
 );
+ALTER TABLE community_board MODIFY (co_reg_date DEFAULT current_date);
+
 update community_board set co_title='tttt', co_content='다시' where co_no = 141;
 
 commit;
@@ -299,6 +314,8 @@ CREATE TABLE community_repl (
     constraint fk_community_comment_co_no foreign key(co_no) references community_board(co_no) on delete cascade,
     constraint fk_community_comment_ref_repl_no foreign key(ref_repl_no) references community_repl(repl_no) on delete cascade
 );
+ALTER TABLE community_repl MODIFY (reg_date DEFAULT current_date);
+
 select * from community_repl;
 alter table community_repl modify reg_date date null;
 desc community_repl;
