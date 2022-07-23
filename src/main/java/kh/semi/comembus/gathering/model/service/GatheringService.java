@@ -75,6 +75,13 @@ public class GatheringService {
 		return proBookmarkList;
 	}
 	
+	public List<Gathering> findAllStdBookmarked(Map<String, Object> bmParam) {
+		Connection conn = getConnection();
+		List<Gathering> stdBookmarkList = gatheringDao.findAllStdBookmarked(conn, bmParam);
+		close(conn);
+		return stdBookmarkList;
+	}
+	
 	// 선아 끝
 
 	//수진코드 시작
@@ -200,6 +207,7 @@ public class GatheringService {
 		}
 		return result;
 	}
+
 	
 	
 	

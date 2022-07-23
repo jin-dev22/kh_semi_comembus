@@ -291,27 +291,29 @@ from (
 p where rnum between 1 and 12;
 
 -- select * from (select row_number() over(order by reg_date desc) rnum, ps.*, (select nvl(sum(recruited_number), 0) from project_member_dept where ps_no = ps.ps_no) recruited_cnt  from project_study ps where gathering_type ='P' and end_date > sysdate)p where rnum between ? and ?
--- 확인용 >> 필터 2개
+-- 확인용 >> 필터 2개 + 모집정원 꽉차면 노출안되게 필터
+-- select * from (select row_number() over(order by reg_date desc) rnum, ps.*, (select nvl(sum(recruited_number), 0) from project_member_dept where ps_no = ps.ps_no) recruited_cnt from project_study ps where gathering_type = 'P' [str1] [str2] [str3] and end_date > sysdate) p where rnum between ? and ?
 select
         * 
 from (
         select
                 row_number() over(order by reg_date desc) rnum, 
                 ps.*, 
-                (select nvl(sum(recruited_number), 0) from project_member_dept where ps_no = ps.ps_no) recruited_cnt 
+                (select nvl(sum(recruited_number), 0) from project_member_dept where ps_no = ps.ps_no) recruited_cnt
         from 
                 project_study ps
         where
                 gathering_type = 'P'
-                and 
-                exists (select 1 from project_study where ps_no = ps.ps_no and upper(local) = upper('Gangwon')) 
-                -- 기존 쿼리 and exists (select 2 from project_member_dept where ps_no = ps.ps_no and job_code = 'DG')
-                and
-                exists (select 2 from project_member_dept where ps_no in ((select ps_no from project_study)) and job_code in('DG'))
-                and end_date > sysdate) p where rnum between 1 and 12;
+                and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('capital')) 
+                and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('BE') and capacity_number > recruited_number)
+                and status = 'Y'
+                and end_date > sysdate
+                ) p
+where rnum between 1 and 12;
 
--- 73 15 45
 select * from project_member_dept;
+select * from project_study;
+select * from project_study where end_date > sysdate;
 
 select
         * 

@@ -41,9 +41,11 @@ public class ProjectListServlet extends HttpServlet {
 			
 			int start = (cPage - 1) * numPerPage + 1;
 			int end = cPage * numPerPage;
+			String type = "P";
 			Map<String, Object> param = new HashMap<>();
 			param.put("start", start);
 			param.put("end", end);
+			param.put("type", type);
 			
 			HttpSession session = request.getSession();
 			MemberExt loginMember = (MemberExt) session.getAttribute("loginMember");

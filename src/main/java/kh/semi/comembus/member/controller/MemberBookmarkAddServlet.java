@@ -46,11 +46,9 @@ public class MemberBookmarkAddServlet extends HttpServlet {
 			List<Gathering> bookmarkList = gatheringService.findAllBookmarked(memberId);
 			System.out.println("result = " + result);
 			
-			
 			response.sendRedirect(request.getHeader("Referer"));
 			request.setAttribute("bookmarkList", bookmarkList);
 			
-			// request.getRequestDispatcher("/WEB-INF/views/gathering/projectList.jsp").forward(request, response);
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
