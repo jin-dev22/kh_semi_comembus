@@ -412,7 +412,8 @@ function pageLink(cPage, totalPages, funName){
 							<button <%=loginMember == null?"disabled":""%> class="bookmark-front">♡</button>
 						<%
 							}
-						%>							
+						%>
+							
 						<%
 							if(loginMember != null){
 								if(bookmarkList != null && !bookmarkList.isEmpty()){
@@ -424,11 +425,14 @@ function pageLink(cPage, totalPages, funName){
 											<button class="bookmark-back" value="<%= studyNo %>">♥</button>
 											<button style="display:none" class="bookmark-front" value="<%= studyNo %>">♡</button>
 						<%
+										} else {
+						%>
+											<button class="bookmark-front" value="<%= studyNo %>">♡</button>
+											<button style="display:none" class="bookmark-back" value="<%= studyNo %>">♥</button>
+						<%
 										}
-										
 									}
 								}
-								
 							}
 						%>
 					</div>

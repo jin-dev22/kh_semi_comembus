@@ -6,13 +6,14 @@ import static kh.semi.comembus.common.JdbcTemplate.getConnection;
 import static kh.semi.comembus.common.JdbcTemplate.rollback;
 
 import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import kh.semi.comembus.gathering.model.dao.GatheringDao;
 import kh.semi.comembus.gathering.model.dto.Gathering;
 import kh.semi.comembus.gathering.model.dto.GatheringExt;
-import kh.semi.comembus.member.model.dto.MemberExt;
 
 public class GatheringService {
 	static GatheringDao gatheringDao = new GatheringDao();
@@ -257,16 +258,58 @@ public class GatheringService {
 	//수진코드 끝
 	
 	//유경 추가
-	public int enrollProject(Gathering project) {
-		Connection conn=getConnection();
+//	public int enrollProject(Gathering project) {
+//		Connection conn = getConnection();
+//		int result = 0;
+//		
+//		try {
+//			// project_study table에 insert
+//			result = gatheringDao.enrollProject(conn, project);
+//			
+//			// 방금 등록된 프로젝트 no조회
+//			int psNo = gatheringDao.getLastProjectNo(conn);
+//			System.out.println(">> projectNo = " + psNo);
+//			
+//			List<ProjectMemberDept> projectDeps = ((GatheringExt) project).getProjectDeps();
+//			if(projectDeps != null && !projectDeps.isEmpty()) {
+//				for(ProjectMemberDept projectDep : projectDeps) {
+//					projectDep.setPsNo(psNo);
+//					System.out.println(">> psNo" + psNo);
+//					System.out.println(">> 11projectDeps" + projectDeps);
+//					System.out.println(">> 11projectDep" + projectDep);
+//					result = gatheringDao.enrollProjectDep(conn, projectDep);
+//					
+//				}
+//			}
+//			
+//			commit(conn);
+//		}catch(Exception e) {
+//			rollback(conn);
+//			throw e;
+//		}finally {
+//			close(conn);
+//		}
+//		return result;
+//	}
+	
+
+	public int enrollProject(Map<Object, Object> parameter) {
+		Connection conn = getConnection();
 		int result = 0;
+		
 		try {
-			//gathering table에 insert
-			result = gatheringDao.enrollProject(conn,project);
+			// project_study table에 insert
+			Gathering project = (Gathering) parameter.get("project");
+			result = gatheringDao.enrollProject(conn, project);
 			
-			//방금 등록된 Gathering.no조회
+			// 방금 등록된 프로젝트 no조회
 			int psNo = gatheringDao.getLastProjectNo(conn);
-			System.out.println("projectNo = "+psNo);
+			System.out.println(">> projectNo = " + psNo);
+			
+			GatheringExt projectDeps = (GatheringExt) parameter.get("parameterDep");
+			
+			result = gatheringDao.enrollProjectDep(conn, projectDeps);
+			
 			commit(conn);
 		}catch(Exception e) {
 			rollback(conn);
@@ -276,7 +319,6 @@ public class GatheringService {
 		}
 		return result;
 	}
-
 
 	public Gathering findByNo(int psNo, boolean hasRead) {
 		Connection conn = getConnection();
@@ -334,6 +376,7 @@ public class GatheringService {
 		}
 		return result;
 	}
+
 
 
 
