@@ -1,5 +1,4 @@
 package kh.semi.comembus.gathering.model.dao;
-
 import static kh.semi.comembus.common.JdbcTemplate.close;
 
 import java.io.FileReader;
@@ -1012,6 +1011,25 @@ public class GatheringDao {
 		}catch(SQLException e) {
 			throw new GatheringException("프로젝트 수정 오류",e);
 		}finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	public int deleteBoard(Connection conn, int psNo) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("deleteProject");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, psNo);
+			result = pstmt.executeUpdate();
+		} 
+		catch (SQLException e) {
+			throw new GatheringException("프로젝트 삭제 오류!", e);
+		}
+		finally {
 			close(pstmt);
 		}
 		return result;
