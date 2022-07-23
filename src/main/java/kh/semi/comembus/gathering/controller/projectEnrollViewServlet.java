@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kh.semi.comembus.gathering.model.dto.Gathering;
+import kh.semi.comembus.gathering.model.dto.GatheringExt;
 import kh.semi.comembus.gathering.model.dto.GatheringType;
 import kh.semi.comembus.gathering.model.dto.Status;
 import kh.semi.comembus.gathering.model.service.GatheringService;
@@ -88,7 +89,7 @@ public class projectEnrollViewServlet extends HttpServlet {
 			
 			int people = planning_cnt+design_cnt+frontend_cnt+backend_cnt;
 			
-			//1. 사용자 입력값 처리
+			//1.1 사용자 입력값 처리 (project_study테이블 저장)
 			String writer = request.getParameter("writer");
 //			String _psType=request.getParameter("psType");
 			String title = request.getParameter("title");
@@ -117,6 +118,10 @@ public class projectEnrollViewServlet extends HttpServlet {
 //			System.out.println(psType);
 			System.out.println("project = "+project);
 
+			//1.2 dept 저장
+			GatheringExt projectExt = new GatheringExt(0,writer,null,title,null,content,0,0,topic,local,people,null,startDate,endDate,
+					planning,design,frontend,backend,planning_cnt,design_cnt,frontend_cnt,backend_cnt);
+			System.out.println("projectExt = "+projectExt);
 			
 			//2. 업무로직
 			int result = gatheringService.enrollProject(project);

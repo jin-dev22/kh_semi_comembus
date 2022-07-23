@@ -34,8 +34,6 @@ public class MemberBookmarkAddServlet extends HttpServlet {
 			String memberId = request.getParameter("member_id");
 			int psNo = 0;
 			psNo = Integer.parseInt(request.getParameter("psNo"));
-			System.out.println("memberId = " + memberId);
-			System.out.println("psNo = " + psNo);
 			
 			Map<String, Object> param = new HashMap<>();
 			param.put("memberId", memberId);
@@ -44,7 +42,6 @@ public class MemberBookmarkAddServlet extends HttpServlet {
 			// 업무로직
 			int result = memberService.insertBookmark(param);
 			List<Gathering> bookmarkList = gatheringService.findAllBookmarked(memberId);
-			System.out.println("result = " + result);
 			
 			response.sendRedirect(request.getHeader("Referer"));
 			request.setAttribute("bookmarkList", bookmarkList);
