@@ -404,10 +404,6 @@ function pageLink(cPage, totalPages, funName){
 							<button <%=loginMember == null?"disabled":""%> class="bookmark-front">♡</button>
 						<%
 							}
-						%>
-							<button class="bookmark-front" value="<%= projectNo %>">♡</button>
-							<button style="display:none" class="bookmark-back" value="<%= projectNo %>">♥</button>
-						<%
 							if(loginMember != null){
 								if(bookmarkList != null && !bookmarkList.isEmpty()){
 									for(Gathering bookmark : bookmarkList){
@@ -417,6 +413,11 @@ function pageLink(cPage, totalPages, funName){
 						%>
 											<button class="bookmark-back" value="<%= projectNo %>">♥</button>
 											<button style="display:none" class="bookmark-front" value="<%= projectNo %>">♡</button>
+						<%
+										} else {
+						%>
+											<button class="bookmark-front" value="<%= projectNo %>">♡</button>
+											<button style="display:none" class="bookmark-back" value="<%= projectNo %>">♥</button>
 						<%
 										}
 										
