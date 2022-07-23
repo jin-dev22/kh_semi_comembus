@@ -190,7 +190,7 @@ public class GatheringService {
 	//수진코드 끝
 	
 	//유경 추가
-	public static int enrollProject(Gathering project) {
+	public int enrollProject(Gathering project) {
 		Connection conn=getConnection();
 		int result = 0;
 		try {
@@ -211,7 +211,7 @@ public class GatheringService {
 	}
 
 
-	public static Gathering findByNo(int psNo, boolean hasRead) {
+	public Gathering findByNo(int psNo, boolean hasRead) {
 		Connection conn = getConnection();
 		Gathering project = null;
 		try {
