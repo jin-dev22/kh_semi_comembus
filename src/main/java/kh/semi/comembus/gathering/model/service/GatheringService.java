@@ -130,9 +130,9 @@ public class GatheringService {
 	/**
 	 * 회원 아이디로 지원한 모임 모두 조회
 	 */
-	public List<Gathering> findAllApldByMemberId(String memberId) {
+	public List<GatheringExt> findAllApldByMemberId(String memberId) {
 		Connection conn = getConnection();
-		List<Gathering> gatheringApldList = gatheringDao.findAllApldByMemberId(conn, memberId);
+		List<GatheringExt> gatheringApldList = gatheringDao.findAllApldByMemberId(conn, memberId);
 		close(conn);
 		return gatheringApldList;
 	}

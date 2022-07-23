@@ -654,6 +654,7 @@ public class GatheringDao {
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
 				GatheringExt gather = handleGatheringResultSet(rset);
+				gather.setRecruited_cnt(0);
 				gatheringBookmarkList.add(gather);
 			}
 		} catch (SQLException e) {
@@ -668,8 +669,8 @@ public class GatheringDao {
 	/**
 	 * 멤버스마이페이지: 회원별 지원한 모임게시글목록조회
 	 */
-	public List<Gathering> findAllApldByMemberId(Connection conn, String memberId) {
-		List<Gathering> gatheringApldList = new ArrayList<>();
+	public List<GatheringExt> findAllApldByMemberId(Connection conn, String memberId) {
+		List<GatheringExt> gatheringApldList = new ArrayList<>();
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		String sql = prop.getProperty("findAllApldByMemberId");
@@ -679,7 +680,7 @@ public class GatheringDao {
 			pstmt.setString(1, memberId);
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
-				Gathering gather = handleGatheringResultSet(rset);
+				GatheringExt gather = handleGatheringResultSet(rset);
 				gatheringApldList.add(gather);
 			}
 		} catch (SQLException e) {

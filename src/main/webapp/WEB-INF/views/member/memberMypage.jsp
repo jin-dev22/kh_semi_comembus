@@ -1,3 +1,4 @@
+<%@page import="kh.semi.comembus.gathering.model.dto.GatheringExt"%>
 <%@page import="kh.semi.comembus.member.model.dto.JobCode"%>
 <%@page import="kh.semi.comembus.gathering.model.dto.GatheringType"%>
 <%@page import="kh.semi.comembus.gathering.model.dto.Gathering"%>
@@ -15,9 +16,9 @@
 	String introduction = member.getIntroduction();
 	String jobCode = member.getJobCode().name();
 	List<Community> communityList = (List<Community>) request.getAttribute("communityList");
-	List<Gathering> gatheringIngList = (List<Gathering>) request.getAttribute("gatheringIngList");
-	List<Gathering> gatheringBookmarkList = (List<Gathering>) request.getAttribute("gatheringBookmarkList");
-	List<Gathering> gatheringApldList = (List<Gathering>) request.getAttribute("gatheringApldList");
+	List<GatheringExt> gatheringIngList = (List<GatheringExt>) request.getAttribute("gatheringIngList");
+	List<GatheringExt> gatheringBookmarkList = (List<GatheringExt>) request.getAttribute("gatheringBookmarkList");
+	List<GatheringExt> gatheringApldList = (List<GatheringExt>) request.getAttribute("gatheringApldList");
 %>
 
 <section id="membus-profile">
@@ -80,24 +81,39 @@
 			<div class="subtitle">모임 참여이력</div>
 			<div class="gathering-align">
 				<%if(gatheringIngList != null && !gatheringIngList.isEmpty()){
-					for(Gathering gather : gatheringIngList){	  
+					for(GatheringExt gather : gatheringIngList){
+						String putUrl = gather.getPsType() == GatheringType.P ? "/gathering/projectView?psNo=" : "/gathering/studyView?psNo="; 	
+						int psNo = gather.getPsNo();
+						String topic = "";
+						switch(gather.getTopic()){
+						case "social" : topic ="소셜네트워크"; break;
+						case "game" : topic = "게임"; break;
+						case "travel": topic = "여행"; break;
+						case "finance": topic = "금융"; break;
+						case "ecommerce": topic = "이커머스"; break;
+						case "Planning": topic = "기획"; break;
+						case "Design": topic = "디자인"; break;
+						case "Frontend": topic = "프론트엔드"; break;
+						case "Backend": topic = "백엔드"; break;
+						case "Interview": topic = "면접"; break;
+						case "Codingtest": topic = "코딩테스트"; break;
+						}
 				%>	
-				<div class="ps-pre">
-					<!-- 추후에 a태그로 링크걸어야함 -->
-						<img src="<%= request.getContextPath() %>/images/<%= gather.getTopic() %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
-						<p class="bold"><%= "social".equals(gather.getTopic()) ? "소셜네트워크" : ("game".equals(gather.getTopic()) ? "게임" : ("travel".equals(gather.getTopic()) ? "여행" : ("finance".equals(gather.getTopic()) ? "금융" : "이커머스"))) %></p>
-						<p class="bold"><%= gather.getTitle() %></p>
-						<ul class="ps-pre__etc">
-							<li> 
-								<span class="heart-emoji">&#9829;</span><%= gather.getBookmark() %></li>
-							<li>
-								<span>&#128064;</span><%= gather.getViewcount() %></li>
-							<!-- 나중에 모임 게시물별 모집인원현황 테이블과 연결 -->
-							<li>모집인원 0 / 10</li>
-						</ul>
-						<span class="bookmark bookmark-front">♡</span>
-						<span class="bookmark bookmark-back">♥</span>
-					</div>				
+				<div class="ps-pre"><!-- /studyView?psNo=107 -->
+					<a href="<%= request.getContextPath()%><%=putUrl %><%= psNo%>">
+						<img src="<%= request.getContextPath() %>/images/<%= topic %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
+					</a>
+					<p class="bold"><%= topic%>
+					</p>
+					<p class="bold"><%= gather.getTitle() %></p>
+					<ul class="ps-pre__etc">
+						<li> 
+							<span class="heart-emoji">&#9829;</span><%= gather.getBookmark() %></li>
+						<li>
+							<span>&#128064;</span><%= gather.getViewcount() %></li>
+						<li>모집인원 <%= gather.getRecruited_cnt() %> / <%= gather.getPeople() %></li>
+					</ul>
+				</div>			
 				<% 
 					}
 				}else{
@@ -110,25 +126,39 @@
 			<div class="subtitle">모임 지원현황</div>
 			<div class="gathering-align">
 				<%if(gatheringApldList != null && !gatheringApldList.isEmpty()){
-					for(Gathering gather : gatheringApldList){	  
+					for(GatheringExt gather : gatheringApldList){
+						String putUrl = gather.getPsType() == GatheringType.P ? "/gathering/projectView?psNo=" : "/gathering/studyView?psNo="; 	
+						int psNo = gather.getPsNo();
+						String topic = "";
+						switch(gather.getTopic()){
+						case "social" : topic ="소셜네트워크"; break;
+						case "game" : topic = "게임"; break;
+						case "travel": topic = "여행"; break;
+						case "finance": topic = "금융"; break;
+						case "ecommerce": topic = "이커머스"; break;
+						case "Planning": topic = "기획"; break;
+						case "Design": topic = "디자인"; break;
+						case "Frontend": topic = "프론트엔드"; break;
+						case "Backend": topic = "백엔드"; break;
+						case "Interview": topic = "면접"; break;
+						case "Codingtest": topic = "코딩테스트"; break;
+						}	  
 				%>	
-				<div class="ps-pre">
-					<!-- 추후에 a태그로 링크걸어야함 -->
-						<img src="<%= request.getContextPath() %>/images/<%= gather.getTopic() %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
-						<p class="bold"><%= "social".equals(gather.getTopic()) ? "소셜네트워크" : ("game".equals(gather.getTopic()) ? "게임" : ("travel".equals(gather.getTopic()) ? "여행" : ("finance".equals(gather.getTopic()) ? "금융" : "이커머스"))) %></p>
-						<p class="bold"><%= gather.getTitle() %></p>
-						<ul class="ps-pre__etc">
-							<li> 
-								<span class="heart-emoji">&#9829;</span><%= gather.getBookmark() %></li>
-							<li>
-								<span>&#128064;</span><%= gather.getViewcount() %></li>
-							<!-- 나중에 모임 게시물별 모집인원현황 테이블과 연결 -->
-							<li>모집인원 0 / 10</li>
-						</ul>
-						<span class="bookmark bookmark-front">♡</span>
-						<span class="bookmark bookmark-back">♥</span>
-						<input type="button" value="지원취소하기" class="cancelApld" onclick="cancelApld(<%= gather.getPsNo()%>);"/>
-					</div>				
+				<div class="ps-pre"><!-- /studyView?psNo=107 -->
+					<a href="<%= request.getContextPath()%><%=putUrl %><%= psNo%>">
+						<img src="<%= request.getContextPath() %>/images/<%= topic %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
+					</a>
+					<p class="bold"><%= topic%>
+					</p>
+					<p class="bold"><%= gather.getTitle() %></p>
+					<ul class="ps-pre__etc">
+						<li> 
+							<span class="heart-emoji">&#9829;</span><%= gather.getBookmark() %></li>
+						<li>
+							<span>&#128064;</span><%= gather.getViewcount() %></li>
+						<li>모집인원 <%= gather.getRecruited_cnt() %> / <%= gather.getPeople() %></li>
+					</ul>
+				</div>			
 				<% 
 					}
 				}else{
@@ -141,25 +171,31 @@
 			<div class="subtitle">찜한 프로젝트</div>
 			<div class="gathering-align">
 				<%if(gatheringBookmarkList != null && !gatheringBookmarkList.isEmpty()){
-					for(Gathering gather : gatheringBookmarkList){	  
+					for(GatheringExt gather : gatheringBookmarkList){	
+						String topic = "";
+						switch(gather.getTopic()){
+						case "social" : topic ="소셜네트워크"; break;
+						case "game" : topic = "게임"; break;
+						case "travel": topic = "여행"; break;
+						case "finance": topic = "금융"; break;
+						case "ecommerce": topic = "이커머스"; break;
+						}
 						if(gather.getPsType() == GatheringType.P){
 					%>	    	
-							<div class="ps-pre">
-							<!-- 추후에 a태그로 링크걸어야함 -->
-								<img src="<%= request.getContextPath() %>/images/<%= gather.getTopic() %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
-								<p class="bold"><%= "social".equals(gather.getTopic()) ? "소셜네트워크" : ("game".equals(gather.getTopic()) ? "게임" : ("travel".equals(gather.getTopic()) ? "여행" : ("finance".equals(gather.getTopic()) ? "금융" : "이커머스"))) %></p>
-								<p class="bold"><%= gather.getTitle() %></p>
-								<ul class="ps-pre__etc">
-									<li> 
-										<span class="heart-emoji">&#9829;</span><%= gather.getBookmark() %></li>
-									<li>
-										<span>&#128064;</span><%= gather.getViewcount() %></li>
-									<!-- 나중에 모임 게시물별 모집인원현황 테이블과 연결 -->
-									<li>모집인원 0 / 10</li>
-								</ul>
-								<span class="bookmark bookmark-front">♡</span>
-								<span class="bookmark bookmark-back">♥</span>
-							</div>				
+						<div class="ps-pre">
+						<a href="<%= request.getContextPath()%>/gathering/projectView?psNo=<%= gather.getPsNo() %>">
+							<img src="<%= request.getContextPath() %>/images/<%= gather.getTopic() %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
+						</a>
+							<p class="bold"><%= topic %></p>
+							<p class="bold"><%= gather.getTitle() %></p>
+							<ul class="ps-pre__etc">
+								<li> 
+									<span class="heart-emoji">&#9829;</span><%= gather.getBookmark() %></li>
+								<li>
+									<span>&#128064;</span><%= gather.getViewcount() %></li>
+								<li>모집인원 <%= gather.getRecruited_cnt() %> / <%= gather.getPeople() %></li>
+							</ul>
+						</div>				
 				<% 
 						}
 					}
@@ -172,24 +208,30 @@
 			<div class="subtitle">찜한 스터디</div>
 				<div class="gathering-align">
 					<%if(gatheringBookmarkList != null && !gatheringBookmarkList.isEmpty()){
-						for(Gathering gather : gatheringBookmarkList){	  
+						for(GatheringExt gather : gatheringBookmarkList){
+							String topic = "";
+							switch(gather.getTopic()){
+							case "Planning": topic = "기획"; break;
+							case "Design": topic = "디자인"; break;
+							case "Frontend": topic = "프론트엔드"; break;
+							case "Backend": topic = "백엔드"; break;
+							case "Interview": topic = "면접"; break;
+							case "Codingtest": topic = "코딩테스트"; break;
+							}
 							if(gather.getPsType() == GatheringType.S){
 						%>	 
 						<div class="ps-pre">
 							<!-- 추후에 a태그로 링크걸어야함 -->
 							<img src="<%= request.getContextPath() %>/images/<%= gather.getTopic() %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
-							<p class="bold"><%= "social".equals(gather.getTopic()) ? "소셜네트워크" : ("game".equals(gather.getTopic()) ? "게임" : ("travel".equals(gather.getTopic()) ? "여행" : ("finance".equals(gather.getTopic()) ? "금융" : "이커머스"))) %></p>
+							<p class="bold"><%= topic %></p>
 							<p class="bold"><%= gather.getTitle() %></p>
 							<ul class="ps-pre__etc">
 								<li> 
 									<span class="heart-emoji">&#9829;</span><%= gather.getBookmark() %></li>
 								<li>
 									<span>&#128064;</span><%= gather.getViewcount() %></li>
-								<!-- 나중에 모임 게시물별 모집인원현황 테이블과 연결 -->
-								<li>모집인원 0 / 10</li>
-							</ul>
-							<span class="bookmark bookmark-front">♡</span>
-							<span class="bookmark bookmark-back">♥</span>
+								<li>모집인원 <%= gather.getRecruited_cnt() %> / <%= gather.getPeople() %></li>
+							</ul>							
 						</div>				
 					<% 		}
 						}
