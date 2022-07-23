@@ -378,11 +378,7 @@ public class GatheringService {
 	}
 
 
-
-
-	
 	//유경 끝
-
-
+	
 
 }

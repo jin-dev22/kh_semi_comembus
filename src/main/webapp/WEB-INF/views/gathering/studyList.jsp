@@ -408,33 +408,32 @@ function pageLink(cPage, totalPages, funName){
 						<li>모집인원 <%= study.getRecruited_cnt() %> / <%= study.getPeople() %></li>
 					</ul>
 					<div class="ps__bookmark">
-						<% if(loginMember == null){ %>
-							<button <%=loginMember == null?"disabled":""%> class="bookmark-front">♡</button>
-						<%
-							}
-						%>
-							
-						<%
-							if(loginMember != null){
-								if(bookmarkList != null && !bookmarkList.isEmpty()){
-									for(Gathering bookmark : bookmarkList){
-										int bookPsNo = bookmark.getPsNo();
-										if(studyNo == bookPsNo){
-											System.out.println("일치한다 = 스터디" + studyNo + " 북마크 " + bookPsNo);
-						%>
-											<button class="bookmark-back" value="<%= studyNo %>">♥</button>
-											<button style="display:none" class="bookmark-front" value="<%= studyNo %>">♡</button>
-						<%
-										} else {
-						%>
-											<button class="bookmark-front" value="<%= studyNo %>">♡</button>
-											<button style="display:none" class="bookmark-back" value="<%= studyNo %>">♥</button>
-						<%
-										}
-									}
+					<% if(loginMember == null) { %>
+						<button "disabled" class="bookmark-front">♡</button>
+					<%
+					} else {
+						String tagBack = "";
+						String tagFront = "";
+						if(bookmarkList != null && !bookmarkList.isEmpty()){
+							outer:
+							for(int i = 0; i < bookmarkList.size(); i++){
+								int bookPsNo = bookmarkList.get(i).getPsNo();
+								if(studyNo == bookPsNo){
+									tagBack = "<button class='bookmark-back' value='" + studyNo + "'>♥</button>";
+									tagFront = "<button style='display:none' class='bookmark-front' value='" + studyNo + "'>♡</button>";
+									break outer;
+								} else {
+									tagBack = "<button style='display:none' class='bookmark-back' value='" + studyNo + "'>♥</button>";
+									tagFront = "<button class='bookmark-front' value='" + studyNo + "'>♡</button>";
 								}
 							}
-						%>
+					%>
+							<%= tagBack %>
+							<%= tagFront %>
+					<%
+						}
+					}
+					%>
 					</div>
 				</div>
 			<%
@@ -472,9 +471,7 @@ document.querySelectorAll(".ps__bookmark").forEach((bookmark) => {
 
 		if(mark.classList.contains("bookmark-front")) {
 			mark.style.display = 'none';
-			console.log("mark.nextElementSibling > ", mark.nextElementSibling);
-			mark.nextElementSibling.style.display = 'block';
-			
+			mark.previousElementSibling.style.display = 'block';
 			const addBookPs = document.querySelector("#addBookStd");
 			addBookPs.value = psnum;
 			frmAdd.submit();			
