@@ -10,12 +10,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import kh.semi.comembus.community.model.dto.Community;
 import kh.semi.comembus.community.model.service.CommunityService;
 import kh.semi.comembus.gathering.model.dto.Gathering;
 import kh.semi.comembus.gathering.model.service.GatheringService;
 import kh.semi.comembus.member.model.dto.Member;
+import kh.semi.comembus.member.model.dto.MemberExt;
 import kh.semi.comembus.member.model.service.MemberService;
 
 /**
@@ -35,16 +37,56 @@ public class MainServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		try {			
+			// 프로젝트 param
+			Map<String, Object> projectParam = new HashMap<>();
+			projectParam.put("start", 1);
+			projectParam.put("end", 4);
+			projectParam.put("type", "P");
 			
+			// 스터디 param
+			Map<String, Object> studyParam = new HashMap<>();
+			studyParam.put("start", 1);
+			studyParam.put("end", 4);
+			studyParam.put("type", "S");
+			
+			// 멤버스, 커뮤니티 param
 			Map<String, Object> param = new HashMap<>();
 			param.put("start", 1);
 			param.put("end", 4);
 			
+			// 북마크 여부 확인을 위한 loginMember 가져오기
+			HttpSession session = request.getSession();
+			MemberExt loginMember = (MemberExt) session.getAttribute("loginMember");
+			String loginMemberId = null;
+		
 			// 프로젝트 미리보기(최신 4개)
-			List<Gathering> projectList = gatheringService.findGatheringAll(param); 
-			// 모집인원
-			// List<GatheringExt> capacityJobList = gatheringService.findCapacityAll(param);
+			List<Gathering> projectList = gatheringService.findGatheringAll(projectParam); 
+			
+			Map<String, Object> proBmParam = new HashMap<>();
+			if(loginMember != null) {
+				loginMemberId = loginMember.getMemberId();
+				proBmParam.put("loginMemberId", loginMemberId);
+				// System.out.println(">>> loginMemberId " + loginMemberId);
+				// System.out.println(">>> proBmParam = " + proBmParam);
+			}
+			// 프로젝트 북마크
+			List<Gathering> proBookmarkList = gatheringService.findAllProBookmarked(proBmParam);
 
+			
+			// 스터디 미리보기(최신 4개)
+			List<Gathering> studyList = gatheringService.findGatheringAll(studyParam);
+			
+			Map<String, Object> stdBmParam = new HashMap<>();
+			if(loginMember != null) {
+				loginMemberId = loginMember.getMemberId();
+				stdBmParam.put("loginMemberId", loginMemberId);
+				// System.out.println(">>> loginMemberId " + loginMemberId);
+				// System.out.println(">>> stdBmParam = " + stdBmParam);
+			}
+			// 스터디 북마크
+			List<Gathering> stdBookmarkList = gatheringService.findAllStdBookmarked(stdBmParam);
+			
+			
 			// 멤버스 미리보기(최신 4개)			
 			List<Member> memberList = memberService.findAll(param);
 
@@ -60,6 +102,11 @@ public class MainServlet extends HttpServlet {
 			
 			// view단처리
 			request.setAttribute("projectList", projectList);
+			request.setAttribute("proBookmarkList", proBookmarkList);
+
+			request.setAttribute("studyList", studyList);
+			request.setAttribute("stdBookmarkList", stdBookmarkList);
+			
 			request.setAttribute("memberList", memberList);
 			request.setAttribute("qlist", qlist);
 			request.setAttribute("flist", flist);
