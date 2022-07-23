@@ -1069,6 +1069,7 @@ public class GatheringDao {
 		return result;
 	}
 
+
 	public int deleteProject(Connection conn, int psNo) {
 		PreparedStatement pstmt = null;
 		int result = 0;
@@ -1087,6 +1088,33 @@ public class GatheringDao {
 		}
 		return result;
 	}
+	
+	// 유경 코드 끝
+	
+	// 미송 코드 시작
+	public int updateStudy(Connection conn, Gathering study) {
+		PreparedStatement pstmt=null; 
+		int result = 0;
+		String sql=prop.getProperty("updateStudy");
+		try {
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, study.getTitle());
+			pstmt.setString(2, study.getContent());
+			pstmt.setInt(3, study.getPeople());
+			pstmt.setString(4, study.getLocal());
+			pstmt.setDate(5, study.getStartDate());
+			pstmt.setDate(6, study.getEndDate());
+			pstmt.setInt(7, study.getPsNo());
+			result=pstmt.executeUpdate();
+		}catch(SQLException e) {
+			throw new GatheringException("스터디 수정 오류",e);
+		}finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	// 미송 코드 끝
+
 
 
 }

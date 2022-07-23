@@ -12,22 +12,27 @@
 GatheringExt gathering = (GatheringExt) request.getAttribute("study");
 %>
 <link rel="stylesheet"
-	href="<%=request.getContextPath()%>/css/gathering/ProjectView.css" />
-<p class="stname"><%=gathering.getTitle()%></p>
+	href="<%=request.getContextPath()%>/css/gathering/GatheringView.css" />
+<div id="container">
+<p class="name"><%=gathering.getTitle()%></p>
 <!-- 스터디명 -->
-<p class="stwriter">
-	<img src="/멤버 이미지.png" alt="멤버아이디"><%=gathering.getWriter()%></p>
+<p class="writer">
+		<span class="h__profile-badge">
+	  		<b><%= gathering.getWriter().charAt(0) %></b>
+	  	</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	  	<%= gathering.getWriter() %>
+	</p>
+<br/>
 <!--지원자 현황은 글쓴이=로그인한 사용자 일치할 때만 보이게 하기-->
-<button id="stdetail">
+<button id="detail">
 	<a href="#">모임 상세</a>
 </button>
 <%
 if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId())) {
 %>
-<button id="ststatue">
+<button id="statue">
 	<a
-		href="<%=request.getContextPath()%>/gathering/showApplicants?psNo=<%=gathering.getPsNo()%>">지원자
-		현황</a>
+		href="<%=request.getContextPath()%>/gathering/showApplicants?psNo=<%=gathering.getPsNo()%>">지원자 현황</a>
 </button>
 <%
 }
@@ -75,6 +80,7 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 <br>
 <br>
 <hr>
+
 <input type="button" id="bookmark" onclick="bookmark()"
 	value="이 프로젝트 찜하기"></input>
 <input type="button" id="bookmarkCancel" onclick="bookmarkCancel()"
@@ -83,12 +89,15 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 <br>
 <br>
 <br>
+
 <!--로그인 했을 경우+작성자일 경우에만 되도록 설정하기-->
 <%
 if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId())) {
 %>
+<div id="editDel">
 <input type="button" value="수정" onclick="updateStudy()">
 <input type="button" value="삭제" onclick="deleteStudy()">
+</div>
 <%
 }
 %>
@@ -134,21 +143,22 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 
 	const applyStatue = document.querySelector('#statue');
 	const applyTotal = document.querySelector('#total');
-	if (cntStatue == cntTotal) {
+	if (applyStatue == applyTotal) {
 		const target = document.getElementById('apply');
 		target.disabled = true;
 		//처음부터 지원이 불가능한 경우 작성하기
 	}
-
+	
 </script>
 <%if(loginMember != null && gathering.getWriter().equals(loginMember.getMemberId())){ %>
 <form action="<%= request.getContextPath()%>/gathering/studyDelete"
 		method="post" name="studyDelFrm">
 		<input type="hidden" name="psNo" value="<%= gathering.getPsNo() %>" />
 </form>
+</div>
 <script>
 const updateStudy=()=>{
-	location.href="<%=request.getContextPath()%>/gathering/gatheringUpdate?psNo=<%=gathering.getPsNo()%>";
+	location.href="<%=request.getContextPath()%>/gathering/studyUpdateView?psNo=<%=gathering.getPsNo()%>";
 };
 const deleteStudy=()=>{
 	if(confirm("정말 스터디를 삭제하시겠습니까?")){
