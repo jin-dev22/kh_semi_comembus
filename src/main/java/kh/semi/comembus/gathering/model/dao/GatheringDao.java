@@ -725,6 +725,8 @@ public class GatheringDao {
 		ResultSet rset = null;
 		String sql = prop.getProperty("findByNo");
 		//1: psNo
+		System.out.println("dao1 : "+psNo);
+
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, psNo);
@@ -738,7 +740,8 @@ public class GatheringDao {
 			close(rset);
 			close(pstmt);
 		}	
-		
+		System.out.println("dao2 : "+psNo);
+
 		return gather;
 	}
 	
@@ -983,6 +986,35 @@ public class GatheringDao {
 			close(pstmt);
 		}
 		return studyNo;
+	}
+
+	public int updateProject(Connection conn, Gathering project) {
+		PreparedStatement pstmt=null;
+		int result = 0;
+		String sql=prop.getProperty("updateProject");
+		try {
+			pstmt=conn.prepareStatement(sql);
+//			pstmt.setString(1, project.getWriter());
+//			pstmt = setString(2, project.getPsType() != null ? project.getPsType().name() : null);
+			pstmt.setString(1, project.getTitle());
+//			pstmt.setDate(3, project.getRegDate());
+			pstmt.setString(2, project.getContent());
+//			pstmt.setInt(6, project.getViewcount());
+//			pstmt.setInt(7, project.getBookmark());
+//			pstmt.setString(4, project.getTopic());
+			pstmt.setInt(3, project.getPeople());
+			pstmt.setString(4, project.getLocal());
+//			pstmt.setString(8, project.getStatus().name());
+			pstmt.setDate(5, project.getStartDate());
+			pstmt.setDate(6, project.getEndDate());
+			pstmt.setInt(7, project.getPsNo());
+			result=pstmt.executeUpdate();
+		}catch(SQLException e) {
+			throw new GatheringException("프로젝트 수정 오류",e);
+		}finally {
+			close(pstmt);
+		}
+		return result;
 	}
 
 

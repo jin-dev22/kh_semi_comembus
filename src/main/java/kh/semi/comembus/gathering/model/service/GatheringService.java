@@ -317,6 +317,24 @@ public class GatheringService {
 		return result;
 	}
 
+	public int updateProject(Gathering project) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			// 1. 게시글 수정
+			result = gatheringDao.updateProject(conn, project);
+			commit(conn);
+		} 
+		catch (Exception e) {
+			rollback(conn);
+			throw e;
+		}
+		finally {
+			close(conn);			
+		}
+		return result;
+	}
+
 
 
 	
