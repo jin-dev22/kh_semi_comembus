@@ -18,6 +18,7 @@ import java.util.Properties;
 import kh.semi.comembus.gathering.model.dto.Gathering;
 import kh.semi.comembus.gathering.model.dto.GatheringExt;
 import kh.semi.comembus.gathering.model.dto.GatheringType;
+import kh.semi.comembus.gathering.model.dto.ProjectMemberDept;
 import kh.semi.comembus.gathering.model.dto.Status;
 import kh.semi.comembus.gathering.model.exception.GatheringException;
 import kh.semi.comembus.member.model.dto.JobCode;
@@ -922,6 +923,64 @@ public class GatheringDao {
 		return studyNo;
 	}
 
+//	public int enrollProjectDep(Connection conn, ProjectMemberDept projectDep) {
+//		PreparedStatement pstmt = null;
+//		int result = 0;
+//		String sql = prop.getProperty("enrollProjectDep");
+//		
+//		
+//		try {
+//			pstmt = conn.prepareStatement(sql);
+//			pstmt.setInt(1, projectDep.getPsNo());
+//			pstmt.setString(2, projectDep.getPlanning());
+//			pstmt.setInt(3, projectDep.getPlanning_cnt());
+//			result = pstmt.executeUpdate();
+//			
+//		} catch (SQLException e) {
+//			throw new GatheringException("직무 등록 오류!", e);
+//		} finally {
+//			close(pstmt);
+//		}	
+//		return result;
+//	}
+
+	public int enrollProjectDep(Connection conn, GatheringExt projectDep) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("enrollProjectDep");
+		
+		String planning = projectDep.getPlanning();
+		String design = projectDep.getDesign();
+		String frontend = projectDep.getFrontend();
+		String backend = projectDep.getBackend();
+		int planningCnt = projectDep.getPlanning_cnt();
+		int designCnt = projectDep.getDesign_cnt();
+		int frontendCnt = projectDep.getFrontend_cnt();
+		int backendCnt = projectDep.getBackend_cnt();
+		if(planning != null) {
+			sql = sql.replace("[str1]", "insert into project_member_dept values(seq_p_m_dept_no.nextVal, ?, " + planning + ", " + planningCnt + ", default);");
+		}
+		if(design!= null) {
+			sql = sql.replace("[str2]", "insert into project_member_dept values(seq_p_m_dept_no.nextVal, ?, " + design + ", " + designCnt + ", default);");
+		}
+		if(frontend!= null) {
+			sql = sql.replace("[str3]", "insert into project_member_dept values(seq_p_m_dept_no.nextVal, ?, " + frontend + ", " + frontendCnt + ", default);");
+		}
+		if(backend != null) {
+			sql = sql.replace("[str4]", "insert into project_member_dept values(seq_p_m_dept_no.nextVal, ?, " + backend + ", " + backendCnt + ", default);");
+		}
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, projectDep.getPsNo());
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new GatheringException("직무 등록 오류!", e);
+		} finally {
+			close(pstmt);
+		}	
+		return result;
+	}
 
 
 }

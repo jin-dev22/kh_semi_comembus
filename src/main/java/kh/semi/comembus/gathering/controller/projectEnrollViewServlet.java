@@ -2,21 +2,16 @@ package kh.semi.comembus.gathering.controller;
 
 import java.io.IOException;
 import java.sql.Date;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import kh.semi.comembus.gathering.model.dto.Gathering;
 import kh.semi.comembus.gathering.model.dto.GatheringExt;
-import kh.semi.comembus.gathering.model.dto.GatheringType;
-import kh.semi.comembus.gathering.model.dto.Status;
 import kh.semi.comembus.gathering.model.service.GatheringService;
 
 /**
@@ -56,75 +51,87 @@ public class projectEnrollViewServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		try {
+			// people 합계 처리
 			int planning_cnt=0;
 			int design_cnt=0;
 			int frontend_cnt=0;
 			int backend_cnt=0;
 			//0. people값 처리
 			String planning = request.getParameter("planning");
-			if(request.getParameter("planning_cnt")!="") {
-				System.out.println("test");
+			if(planning !="") {
 				planning_cnt = Integer.parseInt(request.getParameter("planning_cnt"));
 			}
 			String design = request.getParameter("design");
-			if(request.getParameter("design_cnt")!="") {
-				design_cnt = Integer.parseInt(request.getParameter("design_cnt"));}
+			if(design != "") {
+				design_cnt = Integer.parseInt(request.getParameter("design_cnt"));
+			}
 			String frontend = request.getParameter("frontend");
-			if(request.getParameter("frontend_cnt")!="") {
-				frontend_cnt = Integer.parseInt(request.getParameter("frontend_cnt"));}
+			if(frontend != "") {
+				frontend_cnt = Integer.parseInt(request.getParameter("frontend_cnt"));
+			}
 			String backend = request.getParameter("backend");
-			if(request.getParameter("backend_cnt")!="") {
-			backend_cnt = Integer.parseInt(request.getParameter("backend_cnt"));}
+			if(backend != "") {
+				backend_cnt = Integer.parseInt(request.getParameter("backend_cnt"));
+			}
 			
-			Map<String,Object> parameter = new HashMap<>();
-			parameter.put("planning",planning);
-			parameter.put("planning_cnt", planning_cnt);
-			parameter.put("design", design);
-			parameter.put("design_cnt", design_cnt);
-			parameter.put("frontend", frontend);
-			parameter.put("frontend_cnt", frontend_cnt);
-			parameter.put("backend", backend);
-			parameter.put("backend_cnt", backend_cnt);
-			System.out.println("확인용 parameter = " + parameter);
+			System.out.println(">> planning = " + planning);
+			System.out.println(">> planning_cnt = " + planning_cnt);
+			System.out.println(">> design = " + design);
+			System.out.println(">> design_cnt = " + design_cnt);
+			System.out.println(">> frontend = " + frontend);
+			System.out.println(">> frontend_cnt = " + frontend_cnt);
+			System.out.println(">> backend = " + backend);
+			System.out.println(">> backend_cnt = " + backend_cnt);
 			
-			int people = planning_cnt+design_cnt+frontend_cnt+backend_cnt;
-			
-			//1.1 사용자 입력값 처리 (project_study테이블 저장)
+			// 사용자 입력값 처리 (project_study테이블 저장)
 			String writer = request.getParameter("writer");
-//			String _psType=request.getParameter("psType");
 			String title = request.getParameter("title");
-			System.out.println(title);
 			String _regDate = request.getParameter("reg_date");
-//			System.out.println(_regDate);
 			String content = request.getParameter("editordata");
-			System.out.println(content);
-//			int viewcount = Integer.parseInt(request.getParameter("viewcount"));
-//			int bookmark=Integer.parseInt(request.getParameter("bookmark"));
 			String topic = request.getParameter("topic");
 			String local = request.getParameter("local");
-//			int people = Integer.parseInt(request.getParameter("people"));
-//			String _status = request.getParameter("status");
 			String _startDate = request.getParameter("date_start");
 			String _endDate = request.getParameter("date_end");
+			int people = planning_cnt+design_cnt+frontend_cnt+backend_cnt;
 			
-//			GatheringType psType = _psType != null ? GatheringType.valueOf(_psType) : null;
-//			Date regDate = (_regDate != null && !"".equals(_regDate))?Date.valueOf(_regDate):null;
-//			Status status = _status != null ? Status.valueOf(_status):null;
 			Date startDate = (_startDate != null && !"".equals(_startDate))?Date.valueOf(_startDate):null;
 			Date endDate = (_endDate != null && !"".equals(_endDate))?Date.valueOf(_endDate):null;
-			
-			Gathering project = new Gathering(0,writer,null,title,null,content,0,0,topic,local,people,null,startDate,endDate);
-//			System.out.println(_psType);
-//			System.out.println(psType);
-			System.out.println("project = "+project);
+
+			GatheringExt project = new GatheringExt(0, writer, null, title, null, content, 0, 0, topic, local, people, null, startDate, endDate);
 
 			//1.2 dept 저장
-			GatheringExt projectExt = new GatheringExt(0,writer,null,title,null,content,0,0,topic,local,people,null,startDate,endDate,
-					planning,design,frontend,backend,planning_cnt,design_cnt,frontend_cnt,backend_cnt);
-			System.out.println("projectExt = "+projectExt);
+
+//			GatheringExt projectDep = new GatheringExt(
+//					0, writer, null, title, null, content, 0, 0, topic, local, people, null, startDate, endDate,
+//					planning, design, frontend, backend, planning_cnt, design_cnt, frontend_cnt, backend_cnt);
+//			if(planning != "" && design != "" && frontend != "" && backend != "") {
+//				projectDep.setPlanning(planning);
+//				projectDep.setPlanning_cnt(planning_cnt);
+//				projectDep.setDesign(design);
+//				projectDep.setDesign_cnt(design_cnt);
+//				projectDep.setFrontend(frontend);
+//				projectDep.setFrontend_cnt(frontend_cnt);
+//				projectDep.setBackend(backend);
+//				projectDep.setBackend_cnt(backend_cnt);
+//			}
+			
+			
+			Map<Object,Object> parameter = new HashMap<>();
+			Map<String,Object> parameterDep = new HashMap<>();
+			parameter.put("project", project);
+			parameterDep.put("planning",planning);
+			parameterDep.put("planning_cnt", planning_cnt);
+			parameterDep.put("design", design);
+			parameterDep.put("design_cnt", design_cnt);
+			parameterDep.put("frontend", frontend);
+			parameterDep.put("frontend_cnt", frontend_cnt);
+			parameterDep.put("backend", backend);
+			parameterDep.put("backend_cnt", backend_cnt);
+			parameter.put("parameterDep", parameterDep);
+			System.out.println("확인용 parameter = " + parameter);
 			
 			//2. 업무로직
-			int result = gatheringService.enrollProject(project);
+			int result = gatheringService.enrollProject(parameter);
 			
 			//3. redirect
 			request.getSession().setAttribute("msg", "프로젝트를 성공적으로 등록했습니다.");
