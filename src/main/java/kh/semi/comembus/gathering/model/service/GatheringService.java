@@ -46,13 +46,6 @@ public class GatheringService {
 		close(conn);
 		return totalContent;
 	}
-	
-//	public List<Gathering> findMemberBookmarkList(String memberId) {
-//		Connection conn = getConnection();
-//		List<Gathering> bookmarkList = gatheringDao.findMemberBookmarkList(conn, memberId);
-//		close(conn);
-//		return bookmarkList;
-//	}
 
 	public List<Gathering> findProBookmarkFilter(Map<String, Object> param) {
 		Connection conn = getConnection();
@@ -73,6 +66,13 @@ public class GatheringService {
 		List<Gathering> proBookmarkList = gatheringDao.findAllProBookmarked(conn, bmParam);
 		close(conn);
 		return proBookmarkList;
+	}
+	
+	public List<Gathering> findAllStdBookmarked(Map<String, Object> bmParam) {
+		Connection conn = getConnection();
+		List<Gathering> stdBookmarkList = gatheringDao.findAllStdBookmarked(conn, bmParam);
+		close(conn);
+		return stdBookmarkList;
 	}
 	
 	// 선아 끝
@@ -230,6 +230,11 @@ public class GatheringService {
 		return project;
 	}
 
+	/**
+	 * 
+	 * 유경님 이거랑 아래 메소드 확인해주세요!!!!!! (enrollStudy)
+	 * 수정 후 commit해주세요!!!!!
+	 */
 	public static int enrollGathering(Gathering study) {
 		Connection conn=getConnection();
 		int result = 0;
@@ -269,9 +274,6 @@ public class GatheringService {
 		}
 		return result;
 	}
-	
-	
-	
 	
 	//유경 끝
 
