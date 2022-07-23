@@ -66,9 +66,13 @@ public class ProjectViewServlet extends HttpServlet {
 			Gathering project = hasRead ? gatheringService.findByNo(psNo) : gatheringService.findByNo(psNo, hasRead);								
 			System.out.println("project = " + project);
 			
-			// XSS공격대비 (Cross-site Scripting)
-			project.setTitle(ComembusUtils.escapeXml(project.getTitle()));
-			project.setContent(ComembusUtils.escapeXml(project.getContent()));
+			// XSS공격대비 
+			String content = project.getContent();
+			if(content != null) {
+				project.setContent(ComembusUtils.escapeXml(content));				
+				project.setContent(ComembusUtils.convertLineFeedToBr(project.getContent()));				
+			}
+			
 			
 			// 개행문자 변환처리
 			project.setContent(ComembusUtils.convertLineFeedToBr(project.getContent()));
