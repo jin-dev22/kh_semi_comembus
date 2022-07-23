@@ -387,6 +387,20 @@ public class GatheringService {
 		return result;
 	}
 
+	public int deleteProject(int psNo) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			result = gatheringDao.deleteProject(conn, psNo);
+			commit(conn);
+		} catch (Exception e) {
+			rollback(conn);
+			throw e;
+		}
+		close(conn);
+		return result;
+	}
+
 
 
 
