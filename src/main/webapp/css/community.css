@@ -207,7 +207,7 @@ table#tbl-comment{
 } 
 table#tbl-comment tr td{border-bottom:1px solid white; border-top:1px solid white; padding:5px; text-align:left; line-height:120%;}
 table#tbl-comment tr td:first-of-type {padding: 5px 5px 5px 10px;}/*수정*/
-table#tbl-comment tr td:last-of-type {text-align:right; width: 130px;}
+table#tbl-comment tr td:last-of-type {text-align:right; width: 70px;}
 table#tbl-comment button.btn-reply{display:none; outline:0; margin:0}
 table#tbl-comment tr:hover button.btn-reply{display:inline;}
 table#tbl-comment sub.comment-writer {
