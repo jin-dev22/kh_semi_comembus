@@ -121,6 +121,7 @@ public class projectEnrollViewServlet extends HttpServlet {
 			//1.2 dept 저장
 			GatheringExt projectExt = new GatheringExt(0,writer,null,title,null,content,0,0,topic,local,people,null,startDate,endDate,
 					planning,design,frontend,backend,planning_cnt,design_cnt,frontend_cnt,backend_cnt);
+			System.out.println("projectExt = "+projectExt);
 			
 			//2. 업무로직
 			int result = gatheringService.enrollProject(project);

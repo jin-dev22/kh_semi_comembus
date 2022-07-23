@@ -67,9 +67,9 @@ public class ProjectViewServlet extends HttpServlet {
 			System.out.println("project = " + project);
 			
 			// XSS공격대비 
-			String title = project.getContent();
-			if(title != null) {
-				project.setContent(ComembusUtils.escapeXml(title));				
+			String content = project.getContent();
+			if(content != null) {
+				project.setContent(ComembusUtils.escapeXml(content));				
 				project.setContent(ComembusUtils.convertLineFeedToBr(project.getContent()));				
 			}
 			
