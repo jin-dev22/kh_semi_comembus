@@ -218,7 +218,7 @@
     function deleteRow(){
         if(addRowNum>1){
             var table=document.getElementById("tbl-project-enrollview");
-            const delRow=table.deleteRow(table.rows.length-11);
+            const delRow=table.deleteRow(table.rows.length-12);
             addRowNum-=1;
         }
     };

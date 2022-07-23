@@ -1,5 +1,4 @@
 package kh.semi.comembus.gathering.model.dao;
-
 import static kh.semi.comembus.common.JdbcTemplate.close;
 
 import java.io.FileReader;
@@ -1023,22 +1022,31 @@ public class GatheringDao {
 		int designCnt = projectDep.getDesign_cnt();
 		int frontendCnt = projectDep.getFrontend_cnt();
 		int backendCnt = projectDep.getBackend_cnt();
-		if(planning != null) {
-			sql = sql.replace("[str1]", "insert into project_member_dept values(seq_p_m_dept_no.nextVal, ?, " + planning + ", " + planningCnt + ", default);");
+		String fetch = "";
+		int psNo = (int)projectDep.getPsNo();
+		if(planning != "") {
+			sql = sql.replace("[str1]", "insert into project_member_dept values(seq_p_m_dept_no.nextval, "+psNo+", 'PL', " + planningCnt + ", default)");
+		}else {
+			sql = sql.replace("[str1]", fetch);
 		}
-		if(design!= null) {
-			sql = sql.replace("[str2]", "insert into project_member_dept values(seq_p_m_dept_no.nextVal, ?, " + design + ", " + designCnt + ", default);");
+		if(design!= "") {
+			sql = sql.replace("[str2]", "insert into project_member_dept values(seq_p_m_dept_no.nextval, "+psNo+", 'DG', " + designCnt + ", default);");
+		}else {
+			sql = sql.replace("[str2]", fetch);
 		}
-		if(frontend!= null) {
-			sql = sql.replace("[str3]", "insert into project_member_dept values(seq_p_m_dept_no.nextVal, ?, " + frontend + ", " + frontendCnt + ", default);");
+		if(frontend!= "") {
+			sql = sql.replace("[str3]", "insert into project_member_dept values(seq_p_m_dept_no.nextval,"+psNo+", 'FE', " + frontendCnt + ", default);");
+		}else {
+			sql = sql.replace("[str3]", fetch);
 		}
-		if(backend != null) {
-			sql = sql.replace("[str4]", "insert into project_member_dept values(seq_p_m_dept_no.nextVal, ?, " + backend + ", " + backendCnt + ", default);");
+		if(backend != "") {
+			sql = sql.replace("[str4]", "insert into project_member_dept values(seq_p_m_dept_no.nextval,"+psNo+", 'BE', " + backendCnt + ", default);");
+		}else {
+			sql = sql.replace("[str4]", fetch);
 		}
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
-			pstmt.setInt(1, projectDep.getPsNo());
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new GatheringException("직무 등록 오류!", e);
@@ -1070,6 +1078,28 @@ public class GatheringDao {
 		return result;
 	}
 
+
+	public int deleteProject(Connection conn, int psNo) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("deleteProject");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, psNo);
+			result = pstmt.executeUpdate();
+		} 
+		catch (SQLException e) {
+			throw new GatheringException("프로젝트 삭제 오류!", e);
+		}
+		finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
+	// 유경 코드 끝
+	
 	// 미송 코드 시작
 	public int updateStudy(Connection conn, Gathering study) {
 		PreparedStatement pstmt=null; 
@@ -1092,7 +1122,8 @@ public class GatheringDao {
 		}
 		return result;
 	}
-	// 미송코드 
+	// 미송 코드 끝
+
 
 
 }

@@ -98,22 +98,6 @@ public class projectEnrollViewServlet extends HttpServlet {
 			Date endDate = (_endDate != null && !"".equals(_endDate))?Date.valueOf(_endDate):null;
 
 			GatheringExt project = new GatheringExt(0, writer, null, title, null, content, 0, 0, topic, local, people, null, startDate, endDate);
-
-			//1.2 dept 저장
-
-//			GatheringExt projectDep = new GatheringExt(
-//					0, writer, null, title, null, content, 0, 0, topic, local, people, null, startDate, endDate,
-//					planning, design, frontend, backend, planning_cnt, design_cnt, frontend_cnt, backend_cnt);
-//			if(planning != "" && design != "" && frontend != "" && backend != "") {
-//				projectDep.setPlanning(planning);
-//				projectDep.setPlanning_cnt(planning_cnt);
-//				projectDep.setDesign(design);
-//				projectDep.setDesign_cnt(design_cnt);
-//				projectDep.setFrontend(frontend);
-//				projectDep.setFrontend_cnt(frontend_cnt);
-//				projectDep.setBackend(backend);
-//				projectDep.setBackend_cnt(backend_cnt);
-//			}
 			
 			
 			Map<Object,Object> parameter = new HashMap<>();
