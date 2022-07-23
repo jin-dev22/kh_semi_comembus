@@ -358,6 +358,10 @@
              };
     
             $('#summernote').summernote(setting);
+            $('#summernote').summernote({
+            	  codeviewFilter: true,
+            	  codeviewIframeFilter: true
+            	});
             });
     // function saveContent(){
     //     var summernoteContent = $('#summernote').summernote('code');        //썸머노트(설명)
