@@ -58,32 +58,29 @@ function apldResult(apldResult){
 	const psNo = frm.psNum.value;
 	const psType = frm.psType.value;
 	const apldMemberId = frm.apldMemberId.value;
-	const apldMemberJobCode = frm.apldMemberJobCode.value;
-	console.log(psNo);
-	
+	const jobCode = frm.apldMemberJobCode.value;
 	$.ajax({
 		type : 'POST',
 		url : '<%= request.getContextPath()%>/gathering/showApplicants',
-		data : {'psNo' : psNo, 'apldMemberId' : apldMemberId, 'jobCode': apldMemberJobCode,'apldResult' : apldResult, 'psType' : psType},
-		success(acceptResults){
-			console.log(acceptResults);
-			const {jobCode, psType, result, capa, memCnt} = acceptResults;	
-			console.log(capa, memCnt);
-			if(result){
-				alert("지원결과 전송 완료");
-				const btns = frm.querySelectorAll(".applview-btn");
-				const btnArr = [...btns];
-				btnArr.forEach((e)=>{
-					e.disabled = true;
-				});				
-			}else if(capa == 0 || capa == memCnt){
-				alert("해당 직무의 인원수는 더이상 변경 할 수 없습니다.");
+		data : {'psNo' : psNo, 'apldMemberId' : apldMemberId, 'jobCode': jobCode,'apldResult' : apldResult, 'psType' : psType},
+		success(result){
+			const reqResult = JSON.parse(result);
+			if(psType == 'P'){
+				if(reqResult){
+					alert("지원결과 전송 완료");				
+				}else{
+					alert("직무별 인원 초과입니다.");
+				}				
 			}else{
-				alert("지원결과 처리에 오류가 발생했습니다.");
+				alert(reqResult? "지원결과 전송 완료" : "인원이 초과되었습니다.");
 			}
 		},
 		error: console.log
 	});
+	const btn1 = frm.querySelector(".applview-btn accept");
+	const btn2 = frm.querySelector(".applview-btn reject");
+	btn1.disabled = true;
+	btn2.disabled = true;
 };
 
 </script>

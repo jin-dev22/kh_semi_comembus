@@ -76,7 +76,7 @@ public class GatheringApplcntStatueViewServlet extends HttpServlet {
 	}
 
 	/**
-	 * 모임게시글상세>>지원자현황 페이지에서 비동기요청
+	 * 모임게시글상세>>지원자현황 페이지 신청결과 전송 후 페이지 리다이렉트
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		//모임게시글번호, 지원자 아이디, 지원자 직무코드, 지원결과, 게시물타입을 받아옴
@@ -85,11 +85,6 @@ public class GatheringApplcntStatueViewServlet extends HttpServlet {
 		String jobCode = request.getParameter("jobCode");
 		String apldResult = request.getParameter("apldResult");
 		GatheringType psType = GatheringType.valueOf(request.getParameter("psType"));
-
-		//Gson전달용 맵
-		Map<String, Object> acceptResults = new HashMap<>();
-		acceptResults.put("jobCode", jobCode);
-		acceptResults.put("psType", psType);
 
 		//jsp ajax에서 결과 확인용 
 		boolean result = false;
@@ -107,14 +102,14 @@ public class GatheringApplcntStatueViewServlet extends HttpServlet {
 			case BE: memCnt = project.getBackend_cnt(); break;
 			case FE: memCnt = project.getFrontend_cnt(); break;
 			}
-			acceptResults.put("capa", capa);//프로젝트 게시물일경우 직무별 정원, 인원수현황 추가
-			acceptResults.put("memCnt", memCnt);
+			
 			if(capa == memCnt || capa == 0) {
-				acceptResults.put("result", result);
-				//응답
+				//응답 result = false
 				response.setContentType("application/json; charset=utf-8");
-				String jsonStr  = new Gson().toJson(acceptResults);
+				System.out.println("[@지원자현황서블릿] 직무별정원초과시result>>"+result);
+				String jsonStr  = new Gson().toJson(result);
 				response.getWriter().print(jsonStr);
+				return;
 			}
 			else {
 				//모임글 직무별 모집인원현황 테이블에 모집된 인원수 update
@@ -122,8 +117,10 @@ public class GatheringApplcntStatueViewServlet extends HttpServlet {
 				param.put("psNo",psNo);
 				param.put("jobCode", jobCode);
 				int _result = gatheringService.addPSMemNumByDept(param);
-				result = _result > 0;
+				System.out.println("[@지원자현황서블릿] 1명추가result>>"+_result);
+			
 			}
+			System.out.println("[@지원자현황서블릿] 직무별테이블변경result>>"+result);
 			
 		}
 		
@@ -133,7 +130,7 @@ public class GatheringApplcntStatueViewServlet extends HttpServlet {
 		param.put("apldMemberId", apldMemberId);
 		param.put("apldResult", apldResult);
 		int _result = gatheringService.updateApldResult(param);
-		result = _result > 0;
+		
 			
 		//알림테이블 insert
 		String nickName = request.getParameter("nickName");
@@ -145,11 +142,11 @@ public class GatheringApplcntStatueViewServlet extends HttpServlet {
 		
 		Alert alert = new Alert(0, apldMemberId, psNo, 0, MessageType.APPLY_RESULT, alertContent, IsRead.N);
 		_result = alertService.notifyAplcntResult(alert);
-		
-		//응답(JobCode, psType, result:boolean
-		acceptResults.put("result", result);
+		result = _result > 0;
+		System.out.println("[@지원자현황서블릿] 마지막result>>"+result);
+		//응답result:boolean-> string으로 변환
 		response.setContentType("application/json; charset=utf-8");
-		String jsonStr  = new Gson().toJson(acceptResults);
+		String jsonStr  = new Gson().toJson(String.valueOf(result));
 		response.getWriter().print(jsonStr);
 	}
 
