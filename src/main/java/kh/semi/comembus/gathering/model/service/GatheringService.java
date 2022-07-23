@@ -46,13 +46,6 @@ public class GatheringService {
 		close(conn);
 		return totalContent;
 	}
-	
-//	public List<Gathering> findMemberBookmarkList(String memberId) {
-//		Connection conn = getConnection();
-//		List<Gathering> bookmarkList = gatheringDao.findMemberBookmarkList(conn, memberId);
-//		close(conn);
-//		return bookmarkList;
-//	}
 
 	public List<Gathering> findProBookmarkFilter(Map<String, Object> param) {
 		Connection conn = getConnection();
@@ -73,6 +66,13 @@ public class GatheringService {
 		List<Gathering> proBookmarkList = gatheringDao.findAllProBookmarked(conn, bmParam);
 		close(conn);
 		return proBookmarkList;
+	}
+	
+	public List<Gathering> findAllStdBookmarked(Map<String, Object> bmParam) {
+		Connection conn = getConnection();
+		List<Gathering> stdBookmarkList = gatheringDao.findAllStdBookmarked(conn, bmParam);
+		close(conn);
+		return stdBookmarkList;
 	}
 	
 	// 선아 끝
@@ -138,10 +138,59 @@ public class GatheringService {
 		return gather;
 	}
 	
+	/**
+	 * 모임게시글상세>지원자현황페이지: 직무별 모집정원 조회 
+	 */
+	public Map<String, Integer> getCapacitiesByDept(int psNo) {
+		Connection conn = getConnection();
+		Map<String, Integer> capacitiesByDept = gatheringDao.getCapacitiesByDept(conn, psNo);
+		close(conn);
+		return capacitiesByDept;
+	}
+	
+	/**
+	 * 모임게시글상세>지원자현황페이지: 직무별 모집인원 테이블 업데이트, ajax 처리를 위해 boolean값 반환
+	 */
+	public int addPSMemNumByDept(Map<String, Object> param) {
+		int result = 0;
+		Connection conn = getConnection();
+		try {
+			result = gatheringDao.addPSMemNumByDept(conn, param);
+			commit(conn);
+		} catch (Exception e) {
+			rollback(conn);
+			throw e;
+		}
+		finally {
+			close(conn);
+		}
+		return result;
+	}
+	
+	/**
+	 * 멤버별 모임지원현황 결과 컬럼 업데이트
+	 */
+	public int updateApldResult(Map<String, Object> param) {
+		int result = 0;
+		Connection conn = getConnection();
+		try {
+			result = gatheringDao.updateApldResult(conn, param);
+			commit(conn);
+		} catch (Exception e) {
+			rollback(conn);
+			throw e;
+		}
+		finally {
+			close(conn);
+		}
+		
+		return result;
+	}
+	
 	//수진코드 끝
 	
 	//유경 추가
-	public static int enrollProject(Gathering project) {
+	public int enrollProject(Gathering project) {
 		Connection conn=getConnection();
 		int result = 0;
 		try {
@@ -162,7 +211,7 @@ public class GatheringService {
 	}
 
 
-	public static Gathering findByNo(int psNo, boolean hasRead) {
+	public Gathering findByNo(int psNo, boolean hasRead) {
 		Connection conn = getConnection();
 		Gathering project = null;
 		try {
@@ -181,16 +230,16 @@ public class GatheringService {
 		return project;
 	}
 
-	public static int enrollGathering(Gathering study) {
+	public int enrollStudy(Gathering study) {
 		Connection conn=getConnection();
 		int result = 0;
 		try {
 			//gathering table에 insert
 			result = gatheringDao.enrollStudy(conn,study);
+			
 			//방금 등록된 Gathering.no조회
 			int psNo = gatheringDao.getLastStudyNo(conn);
-			System.out.println("projectNo = "+psNo);
-			
+			System.out.println("studyNo = "+psNo);
 			commit(conn);
 		}catch(Exception e) {
 			rollback(conn);
@@ -200,9 +249,6 @@ public class GatheringService {
 		}
 		return result;
 	}
-	
-	
-	
 	
 	//유경 끝
 

@@ -20,7 +20,7 @@ import kh.semi.comembus.gathering.model.service.GatheringService;
 @WebServlet("/gathering/studyEnrollView")
 public class studyEnrollViewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private GatheringService studyService = new GatheringService();
+	private GatheringService gatheringService = new GatheringService();
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
@@ -41,35 +41,35 @@ public class studyEnrollViewServlet extends HttpServlet {
 			
 			//1. 사용자 입력값 처리
 			String writer = request.getParameter("writer");
-			String _psType=request.getParameter("psType");
+//			String _psType=request.getParameter("psType");
 			String title = request.getParameter("title");
-			String _regDate = request.getParameter("regDate");
-			String content = request.getParameter("content");
+//			String _regDate = request.getParameter("regDate");
+			String content = request.getParameter("editordata");
 //			int viewcount = Integer.parseInt(request.getParameter("viewcount"));
 //			int bookmark=Integer.parseInt(request.getParameter("bookmark"));
 			String topic = request.getParameter("topic");
 			String local = request.getParameter("local");
 			int people = Integer.parseInt(request.getParameter("people"));
-			String _status = request.getParameter("status");
-			String _startDate = request.getParameter("startDate");
-			String _endDate = request.getParameter("endDate");
+//			String _status = request.getParameter("status");
+			String _startDate = request.getParameter("date_start");
+			String _endDate = request.getParameter("date_end");
 			
-			GatheringType psType = _psType != null ? GatheringType.valueOf(_psType) : null;
-			Date regDate = (_regDate != null && !"".equals(_regDate))?Date.valueOf(_regDate):null;
-			Status status = _status != null ? Status.valueOf(_status):null;
+//			GatheringType psType = _psType != null ? GatheringType.valueOf(_psType) : null;
+//			Date regDate = (_regDate != null && !"".equals(_regDate))?Date.valueOf(_regDate):null;
+//			Status status = _status != null ? Status.valueOf(_status):null;
 			Date startDate = (_startDate != null && !"".equals(_startDate))?Date.valueOf(_startDate):null;
 			Date endDate = (_endDate != null && !"".equals(_endDate))?Date.valueOf(_endDate):null;
 			
-			Gathering study = new Gathering(0,writer,psType,title,regDate,content,0,0,topic,local,people,status,startDate,endDate);
+			Gathering study = new Gathering(0,writer,null,title,null,content,0,0,topic,local,people,null,startDate,endDate);
 			
-			System.out.println("project = "+study);
+			System.out.println("study = "+study);
 			
 			//2. 업무로직
-			int result = GatheringService.enrollGathering(study);
+			int result = gatheringService.enrollStudy(study);
 			
 			//3. redirect
-			request.getSession().setAttribute("msg", "프로젝트를 성공적으로 등록했습니다.");
-			response.sendRedirect(request.getContentLength()+"/gathering/projectList");
+			request.getSession().setAttribute("msg", "스터디를 성공적으로 등록했습니다.");
+			response.sendRedirect(request.getContextPath()+"/gathering/projectList");
 		}catch(Exception e) {
 			e.printStackTrace();
 			throw e;

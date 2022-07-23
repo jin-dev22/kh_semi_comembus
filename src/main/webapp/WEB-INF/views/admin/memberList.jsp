@@ -8,7 +8,6 @@
 	String type = request.getParameter("searchType");
 	String kw = request.getParameter("searchKeyword");
 %>
-<!-- 관리자용 admin.css link -->
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/admin.css" />
 <style>
 
@@ -40,24 +39,24 @@ window.addEventListener('load', (e) => {
 	<h2>회원관리</h2>
 	
     <div id="search-container">
-        <select id="searchType">
+        <select id="searchType" class="search-option">
             <option value="member_id" <%= "member_id".equals(type) ? "selected" : "" %>>아이디</option>        
             <option value="member_nickname" <%= "member_nickname".equals(type) ? "selected" : "" %>>닉네임</option>
         </select>
         <div id="search-memberId" class="search-type">
             <form action="<%=request.getContextPath()%>/admin/memberFinder">
                 <input type="hidden" name="searchType" value="member_id"/>
-                <input type="text" name="searchKeyword" size="25" placeholder="검색할 아이디를 입력하세요." 
+                <input type="text" class="search-input" name="searchKeyword" size="25" placeholder="검색할 아이디를 입력하세요." 
                 	value="<%= "member_id".equals(type) ? kw : "" %>"/>
-                <button type="submit">검색</button>            
+                <button type="submit" id="memberFinderBtn">검색</button>            
             </form>    
         </div>
         <div id="search-memberNickname" class="search-type">
             <form action="<%=request.getContextPath()%>/admin/memberFinder">
                 <input type="hidden" name="searchType" value="member_nickname"/>
-                <input type="text" name="searchKeyword" size="25" placeholder="검색할 닉네임을 입력하세요."
+                <input type="text" class="search-input" name="searchKeyword" size="25" placeholder="검색할 닉네임을 입력하세요."
                 	value="<%= "member_nickname".equals(type) ? kw : "" %>"/>
-                <button type="submit">검색</button>            
+                <button type="submit" id="memberFinderBtn">검색</button>            
             </form>    
         </div>
     </div>
@@ -90,7 +89,7 @@ window.addEventListener('load', (e) => {
 				<td><%= m.getNickName() %></td>
 				<td><%= m.getMemberName() %></td>
 				<td><%= m.getPhone() %></td>
-				<td><%= new SimpleDateFormat("yyyy-MM-dd").format(m.getEnrollDate()) %></td>
+				<td><%= new SimpleDateFormat("yyyy-MM-dd HH:mm").format(m.getEnrollDate()) %></td>
 				<td>
 					<select class="member-role" data-member-id="<%= m.getMemberId() %>">
 						<option value="A" <%= MemberRole.A == m.getMemberRole() ? "selected" : "" %>>관리자</option>
@@ -124,6 +123,7 @@ window.addEventListener('load', (e) => {
 </form>
 
 <script>
+
 // 회원 강퇴처리
 document.querySelectorAll("#quitMember").forEach((btn, index) => {
 	btn.onclick = (e) => {

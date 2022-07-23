@@ -24,7 +24,7 @@ import kh.semi.comembus.gathering.model.service.GatheringService;
 @WebServlet("/gathering/projectEnrollView")
 public class projectEnrollViewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private GatheringService GatheringService = new GatheringService();
+	private GatheringService gatheringService = new GatheringService();
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
@@ -119,7 +119,7 @@ public class projectEnrollViewServlet extends HttpServlet {
 
 			
 			//2. 업무로직
-			int result = GatheringService.enrollProject(project);
+			int result = gatheringService.enrollProject(project);
 			
 			//3. redirect
 			request.getSession().setAttribute("msg", "프로젝트를 성공적으로 등록했습니다.");

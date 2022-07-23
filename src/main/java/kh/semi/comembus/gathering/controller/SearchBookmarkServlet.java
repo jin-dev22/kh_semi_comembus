@@ -43,32 +43,32 @@ public class SearchBookmarkServlet extends HttpServlet {
 			String memberId = request.getParameter("memberId");
 			
 			System.out.println(">>> 확인용 bookmarkYN = " + bookmarkYN);
-			System.out.println(">>>확인용 memberId = " + memberId);
+			System.out.println(">>> 확인용 memberId = " + memberId);
 			
 			Map<String, Object> param = new HashMap<>();
 			param.put("memberId", memberId);
 			param.put("bookmarkYN", bookmarkYN);
 			param.put("start", (cPage - 1) * numPerPage + 1);
 			param.put("end", cPage * numPerPage);
-			System.out.println(">>> 확인용 param = " + param);
+			System.out.println(">>> 확인용 param = " + param); // 여기까지 확인완료
 			
 			// 2. 업무로직
 			// bookmark 영역
 			List<Gathering> bookmarkList = new ArrayList<>();
-			if(memberId != null && bookmarkYN == "Y") { // 로그인멤버가 있고, 찜한거 체크 시
+			if(memberId != null && "Y".equals(bookmarkYN)) { // 로그인멤버가 있고, 찜한거 체크 시
 				bookmarkList = gatheringService.findProBookmarkFilter(param);
 			}
-			
+			System.out.println("> 3 <");
 			List<Gathering> projectList = new ArrayList<>();
 			Map<String, Object> bmParam = new HashMap<>();
-			if(memberId != null && bookmarkYN == "All") {
+			if(memberId != null && "All".equals(bookmarkYN)) {
 				projectList = gatheringService.findGatheringAll(param);	
 				bmParam.put("loginMemberId", memberId);
 				bookmarkList = gatheringService.findAllProBookmarked(bmParam);
 				System.out.println(">>> memberId " + memberId);
 				System.out.println(">>> bmParam = " + bmParam);
 			};
-			
+			System.out.println("> 4 <");
 			// pagebar 영역
 			int totalContent = gatheringService.getTotalBookmarkFilter(param);
 			
@@ -78,13 +78,13 @@ public class SearchBookmarkServlet extends HttpServlet {
 			System.out.println(">>> cPage = " + cPage);
 			
 			response.setContentType("application/json; charset=utf-8");
-			Map<String, Object> bookmarkFilterList = new HashMap<>();
-			bookmarkFilterList.put("bookmarkList", bookmarkList);
-			bookmarkFilterList.put("projectList", projectList);			
-			bookmarkFilterList.put("totalContent", totalContent);
-			bookmarkFilterList.put("cPage", cPage);
+			Map<String, Object> bookmarkFilterLists = new HashMap<>();
+			bookmarkFilterLists.put("bookmarkList", bookmarkList);
+			bookmarkFilterLists.put("projectList", projectList);			
+			bookmarkFilterLists.put("totalContent", totalContent);
+			bookmarkFilterLists.put("cPage", cPage);
 			
-			String jsonStr = new Gson().toJson(bookmarkFilterList);
+			String jsonStr = new Gson().toJson(bookmarkFilterLists);
 			response.getWriter().print(jsonStr);
 			
 		} catch(Exception e) {

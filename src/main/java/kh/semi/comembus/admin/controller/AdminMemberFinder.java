@@ -1,4 +1,4 @@
-package kh.semi.comembus.member.controller;
+package kh.semi.comembus.admin.controller;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -15,46 +15,57 @@ import kh.semi.comembus.common.ComembusUtils;
 import kh.semi.comembus.member.model.dto.Member;
 import kh.semi.comembus.member.model.service.MemberService;
 
+
 /**
- * Servlet implementation class MemberListServlet
+ * Servlet implementation class AdminMemberFinder
  */
-@WebServlet("/membus/list")
-public class MemberListServlet extends HttpServlet {
+@WebServlet("/admin/memberFinder")
+public class AdminMemberFinder extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private MemberService memberService = new MemberService();
+
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
-			// 사용자 입력 페이지 정보
 			int cPage = 1;
-			int numPerPage = 16;
+			int numPerPage = 10;
+			
 			try {
 				cPage = Integer.parseInt(request.getParameter("cPage"));
 			} catch (NumberFormatException e) {}
 			
-			int start = (cPage - 1) * numPerPage + 1;
-			int end = cPage * numPerPage;
+			String searchType = request.getParameter("searchType");
+			String searchKeyword = request.getParameter("searchKeyword");
+			
 			Map<String, Object> param = new HashMap<>();
-			param.put("start", start);
-			param.put("end", end);
+			param.put("searchType", searchType);
+			param.put("searchKeyword", searchKeyword);
+			param.put("start", (cPage - 1) * numPerPage + 1);
+			param.put("end", cPage * numPerPage);
+	
+			List<Member> memberList = memberService.adminFindMemberLike(param);
+			System.out.println("memberList = " + memberList);
 			
-			List<Member> memberList = memberService.findAll(param);
-//			System.out.println("memberList="+memberList);
+	
+			int totalContent = memberService.adminGetTotalMemberNumLike(param); 
+			System.out.println("totalContent = " + totalContent);
 			
-			int totalMembusNum = memberService.getTotalMembusNum();
-			String url = request.getRequestURI();
-			String pagebar = ComembusUtils.getPagebar(cPage, numPerPage, totalMembusNum, url);
+			String url = request.getRequestURI() + "?searchType=" + searchType + "&searchKeyword=" + searchKeyword; 
 			
+			String pagebar = ComembusUtils.getPagebar(cPage, numPerPage, totalContent, url);
+		
 			request.setAttribute("memberList", memberList);
 			request.setAttribute("pagebar", pagebar);
-			request.getRequestDispatcher("/WEB-INF/views/member/memberList.jsp").forward(request, response);
+			
+			request.getRequestDispatcher("/WEB-INF/views/admin/memberList.jsp")
+					.forward(request, response);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw e;
 		}
-		
 	}
 
 }

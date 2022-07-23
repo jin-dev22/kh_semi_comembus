@@ -9,49 +9,37 @@
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <%
 /* Gathering gathering = (Gathering) request.getAttribute("project"); */
-   GatheringExt gathering = (GatheringExt) request.getAttribute("project");
+   GatheringExt gathering = (GatheringExt) request.getAttribute("study");
 
 %>
 <link rel="stylesheet" href="<%=request.getContextPath() %>/css/gathering/ProjectView.css" />
-<p class="pjname"><%= gathering.getTitle() %></p><!-- 프로젝트명 -->
-<p class="pjwriter"><img src="/멤버 이미지.png" alt="멤버아이디"><%= gathering.getWriter() %></p>
+<p class="stname"><%= gathering.getTitle() %></p><!-- 프로젝트명 -->
+<p class="stwriter"><img src="/멤버 이미지.png" alt="멤버아이디"><%= gathering.getWriter() %></p>
 <!--지원자 현황은 글쓴이=로그인한 사용자 일치할 때만 보이게 하기-->
-<button id="pjdetail"><a href="<%=request.getContextPath() %>/projectDetailView?psNo=<%= gathering.getPsNo()%>">프로젝트 상세</a></button><button id="pjstatue"><a href="<%=request.getContextPath() %>/gathering/showApplicants?psNo=<%= gathering.getPsNo()%>">지원자 현황</a></button>
+<button id="stdetail"><a href="/studyDetailView.jsp">프로젝트 상세</a></button><button id="ststatue"><a href="/gathering/showApplicants?psNo=<%= gathering.getPsNo()%>">지원자 현황</a></button>
 <br>
 <hr>
 <h3>모집 현황</h3>
 <table>
     <tr>
-        <td>기획</td>
-        <td><span id="statue">1</span>/<span id="total"><%= gathering.getPlanning_cnt() %></span></td>
-    </tr>
-    <tr>
-        <td>디자인</td>
-        <td><span id="statue">1</span>/<span id="total"><%= gathering.getDesign_cnt() %></span></td>
-    </tr>
-    <tr>
-        <td>프론트엔드</td>
-        <td><span id="statue">1</span>/<span id="total"><%= gathering.getFrontend_cnt() %></span></td>
-    </tr>
-    <tr>
-        <td>백엔드</td>
-        <td><span id="statue">1</span>/<span id="total"><%= gathering.getBackend_cnt() %></span></td>
+        <td>총 인원</td>
+        <td><span id="statue">1</span>/<span id="total"><%= gathering.getPeople() %></span></td>
     </tr>
     <tr>
         <td><input type="button" id="apply" value="지원하기" onclick="applyStatus()"></td>
     </tr>
 </table>
-<h3>프로젝트 주제</h3>
+<h3>스터디 주제</h3>
 <h5><%= gathering.getTopic() %></h5>
 
-<h3>프로젝트 진행지역</h3>
+<h3>스터디 진행지역</h3>
 <h5><%= gathering.getLocal() %></h5>
 
-<h3>프로젝트 설명</h3>
+<h3>스터디 설명</h3>
 <p><%= gathering.getContent() %></p>
 <br><br><br>
 <hr>
-<h3>이 프로젝트를 찜한 사람<span id="bookmarkCount">7</span>명</h3>
+<h3>이 스터디를 찜한 사람<span id="bookmarkCount">7</span>명</h3>
 <div id="list">
     <table id="listBm">
         <tbody>

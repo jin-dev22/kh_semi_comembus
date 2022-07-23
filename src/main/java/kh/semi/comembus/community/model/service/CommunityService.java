@@ -275,7 +275,29 @@ public class CommunityService {
 	public int getTotalMemberCommunityNum(String memberId) {
 		Connection conn = getConnection();
 		int totalCommunityNum = communityDao.getTotalMemberCommunityNum(conn, memberId);
+		close(conn);
 		return totalCommunityNum;
+	}
+
+	/**
+	 * 커뮤니티 댓글알림: 게시물별 회원의 가장 최신 댓글찾기
+	 * @param param 
+	 */
+	public int getLastReplNoByMemIdCoNo(Map<String, Object> param) {
+		Connection conn = getConnection();
+		int lastRepleNoByMemCo = communityDao.getLastReplNoByMemIdCoNo(conn, param);
+		close(conn);
+		return lastRepleNoByMemCo;
+	}
+
+	/**
+	 * 알림목록페이지: 댓글알림 해당 커뮤니티 게시글번호 조회
+	 */
+	public Community getCoNoByReplNo(int replNo) {
+		Connection conn = getConnection();
+		Community comm = communityDao.getCoNoByReplNo(conn, replNo);
+		close(conn);
+		return comm;
 	}
 
 
