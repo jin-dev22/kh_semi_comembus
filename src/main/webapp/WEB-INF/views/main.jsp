@@ -50,53 +50,61 @@
 		<p class="move-page"><a href="<%= request.getContextPath()%>/gathering/projectList">전체보기</a></p>
 	</div>
 	<div class="ps-lists">
-<%
-if(projectList != null && !projectList.isEmpty()){
-	for(Gathering _project : projectList){
-		GatheringExt project = (GatheringExt) _project;
-		int projectNo = project.getPsNo();
-%>
-	<div class="ps-pre">
-		<a href="<%= request.getContextPath()%>/gathering/projectView?psNo=<%= projectNo %>">
-			<img src="<%= request.getContextPath() %>/images/<%= project.getTopic() %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
-		</a>
-		<p class="bold"><%= "social".equals(project.getTopic()) ? "소셜네트워크" : ("game".equals(project.getTopic()) ? "게임" : ("travel".equals(project.getTopic()) ? "여행" : ("finance".equals(project.getTopic()) ? "금융" : "이커머스"))) %></p>
-		<a href="<%= request.getContextPath()%>/gathering/projectView?psNo=<%= projectNo %>">
-			<p class="bold ps-title"><%= project.getTitle() %></p>
-		</a>
-		<ul class="ps-pre__etc">
-			<li> 
-				<span class="heart-emoji">&#9829;</span><%= project.getBookmark() %></li>
-			<li>
-				<span>&#128064;</span><%= project.getViewcount() %></li>
-			<li>모집인원 <%= project.getRecruited_cnt() %> / <%= project.getPeople() %></li>
-		</ul>
-		<div class="ps__bookmark">
-			<% if(loginMember == null){ %>
-				<button <%=loginMember == null?"disabled":""%> class="bookmark-front">♡</button>
-			<%
-				}
-
-				if(loginMember != null){
+	<%
+	if(projectList != null && !projectList.isEmpty()){
+		for(Gathering _project : projectList){
+			GatheringExt project = (GatheringExt) _project;
+			int projectNo = project.getPsNo();
+	%>
+		<div class="ps-pre">
+			<a href="<%= request.getContextPath()%>/gathering/projectView?psNo=<%= projectNo %>">
+				<img src="<%= request.getContextPath() %>/images/<%= project.getTopic() %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
+			</a>
+			<p class="bold"><%= "social".equals(project.getTopic()) ? "소셜네트워크" : ("game".equals(project.getTopic()) ? "게임" : ("travel".equals(project.getTopic()) ? "여행" : ("finance".equals(project.getTopic()) ? "금융" : "이커머스"))) %></p>
+			<a href="<%= request.getContextPath()%>/gathering/projectView?psNo=<%= projectNo %>">
+				<p class="bold ps-title"><%= project.getTitle() %></p>
+			</a>
+			<ul class="ps-pre__etc">
+				<li> 
+					<span class="heart-emoji">&#9829;</span><%= project.getBookmark() %></li>
+				<li>
+					<span>&#128064;</span><%= project.getViewcount() %></li>
+				<li>모집인원 <%= project.getRecruited_cnt() %> / <%= project.getPeople() %></li>
+			</ul>
+				<div class="ps__bookmark">
+				<% if(loginMember == null) { %>
+					<button "disabled" class="bookmark-front">♡</button>
+				<%
+				} else {
+					String tagBack = "<button style='display:none' class='bookmark-back' value='" + projectNo + "'>♥</button>";
+					String tagFront = "<button class='bookmark-front' value='" + projectNo + "'>♡</button>";
+					
 					if(proBookmarkList != null && !proBookmarkList.isEmpty()){
-						int finish = 0;
-						for(Gathering bookmark : proBookmarkList){
-							int bookPsNo = bookmark.getPsNo();
+						outer:
+						for(int i = 0; i < proBookmarkList.size(); i++){
+							int bookPsNo = proBookmarkList.get(i).getPsNo();
 							if(projectNo == bookPsNo){
-								System.out.println("일치한다 = 프로젝트" + projectNo + " 북마크 " + bookPsNo);
-			%>
-								<button class="bookmark-back" value="<%= projectNo %>">♥</button>
-								<button style="display:none" class="bookmark-front" value="<%= projectNo %>">♡</button>
-			<%
+								tagBack = "";
+								tagFront = "";
+								tagBack = "<button class='bookmark-back' value='" + projectNo + "'>♥</button>";
+								tagFront = "<button style='display:none' class='bookmark-front' value='" + projectNo + "'>♡</button>";
+								break outer;
+							} else {
+								tagBack = "";
+								tagFront = "";
+								tagBack = "<button style='display:none' class='bookmark-back' value='" + projectNo + "'>♥</button>";
+								tagFront = "<button class='bookmark-front' value='" + projectNo + "'>♡</button>";
 							}
-							
 						}
 					}
-					
+				%>
+					<%= tagBack %>
+					<%= tagFront %>
+				<%
 				}
-			%>
+				%>
+				</div>
 		</div>
-	</div>
 <%
 	}
 }
@@ -116,9 +124,105 @@ if(projectList != null && !projectList.isEmpty()){
 <%
 }
 %>
-			
-			
+	</div>
+</div>
+
+<div class="preview-container">
+	<div class="preview-text">
+		<h3 class="container-title">스터디 미리보기</h3>
+		<p class="move-page"><a href="<%= request.getContextPath()%>/gathering/studyList">전체보기</a></p>
+	</div>
+	
+	<div class="ps-lists">
+	<%
+	if(studyList != null && !studyList.isEmpty()){
+		for(Gathering _study : studyList){
+			GatheringExt study = (GatheringExt) _study;
+			int studyNo = study.getPsNo();
+	%>
+		<div class="ps-pre">
+			<a href="<%= request.getContextPath()%>/gathering/studyView?psNo=<%= studyNo %>">
+				<img src="<%= request.getContextPath() %>/images/<%= study.getTopic() %>.jpg" class="ps-pre__img" alt="해당 스터디 주제 이미지">
+			</a>
+			<p class="bold">
+				<%= "Planning".equals(study.getTopic()) ? "기획" : ("Design".equals(study.getTopic()) ? "디자인" : ("Frontend".equals(study.getTopic()) ? "프론트엔드" : ("Backend".equals(study.getTopic()) ? "백엔드" : ("Interview".equals(study.getTopic()) ? "면접" : "코딩테스트")))) %>
+			</p>
+			<a href="<%= request.getContextPath()%>/gathering/studyView?psNo=<%= studyNo %>">
+				<p class="bold"><%= study.getTitle() %></p>
+			</a>
+			<ul class="ps-pre__etc">
+				<li> 
+					<span class="heart-emoji">&#9829;</span><%= study.getBookmark() %></li>
+				<li>
+					<span>&#128064;</span><%= study.getViewcount() %></li>
+				<li>모집인원 <%= study.getRecruited_cnt() %> / <%= study.getPeople() %></li>
+			</ul>
+				<div class="ps__bookmark">
+				<% if(loginMember == null) { %>
+					<button "disabled" class="bookmark-front">♡</button>
+				<%
+				} else {
+					String tagBack = "<button style='display:none' class='bookmark-back' value='" + studyNo + "'>♥</button>";
+					String tagFront = "<button class='bookmark-front' value='" + studyNo + "'>♡</button>";
+					
+					if(stdBookmarkList != null && !stdBookmarkList.isEmpty()){
+						outer:
+						for(int i = 0; i < stdBookmarkList.size(); i++){
+							int bookPsNo = stdBookmarkList.get(i).getPsNo();
+							if(studyNo == bookPsNo){
+								tagBack = "";
+								tagFront = "";
+								tagBack = "<button class='bookmark-back' value='" + studyNo + "'>♥</button>";
+								tagFront = "<button style='display:none' class='bookmark-front' value='" + studyNo + "'>♡</button>";
+								break outer;
+							} else {
+								tagBack = "";
+								tagFront = "";
+								tagBack = "<button style='display:none' class='bookmark-back' value='" + studyNo + "'>♥</button>";
+								tagFront = "<button class='bookmark-front' value='" + studyNo + "'>♡</button>";
+							}
+						}
+					}
+				%>
+					<%= tagBack %>
+					<%= tagFront %>
+				<%
+				}
+				%>
+				</div>
+		</div>
+	<%
+		}
+	}
+	%>
+	</div>	
+</div>
+
 <script>
+<% if(loginMember != null){ %>
+$(document).on('click', '.bookmark-front', function(e){
+	let mark = e.target;
+	const frmAdd = document.addBookmarkFrm;
+	let psnum = mark.value;
+	mark.style.display = 'none';
+	mark.previousElementSibling.style.display = 'block';
+	const addBookPs = document.querySelector("#addBookPs");
+	addBookPs.value = psnum;
+	frmAdd.submit();
+});
+$(document).on('click', '.bookmark-back', function(e){
+	let mark = e.target;
+	const frmDel = document.delBookmarkFrm;
+	let psnum = mark.value;
+	mark.style.display = 'none';
+	mark.nextElementSibling.style.display = 'block';
+	const delBookPs = document.querySelector("#delBookPs");
+	delBookPs.value = psnum;
+	frmDel.submit();
+});
+<% } %>
+
+
 document.querySelectorAll(".ps__bookmark").forEach((bookmark) => {
 	bookmark.addEventListener('click', (e) => {
 		let mark = e.target;
@@ -145,76 +249,8 @@ document.querySelectorAll(".ps__bookmark").forEach((bookmark) => {
 	})
 });
 
-</script>	
-	
-	</div>
-</div>
-<div class="preview-container">
-	<div class="preview-text">
-		<h3 class="container-title">스터디 미리보기</h3>
-		<p class="move-page"><a href="<%= request.getContextPath()%>/gathering/studyList">전체보기</a></p>
-	</div>
-	
-		<div class="ps-lists">
-		<%
-		if(studyList != null && !studyList.isEmpty()){
-			for(Gathering _study : studyList){
-				GatheringExt study = (GatheringExt) _study;
-				int studyNo = study.getPsNo();
-		%>
-			<div class="ps-pre">
-				<a href="<%= request.getContextPath()%>/gathering/studyView?psNo=<%= studyNo %>">
-					<img src="<%= request.getContextPath() %>/images/<%= study.getTopic() %>.jpg" class="ps-pre__img" alt="해당 스터디 주제 이미지">
-				</a>
-				<p class="bold">
-					<%= "Planning".equals(study.getTopic()) ? "기획" : ("Design".equals(study.getTopic()) ? "디자인" : ("Frontend".equals(study.getTopic()) ? "프론트엔드" : ("Backend".equals(study.getTopic()) ? "백엔드" : ("Interview".equals(study.getTopic()) ? "면접" : "코딩테스트")))) %>
-				</p>
-				<a href="<%= request.getContextPath()%>/gathering/studyView?psNo=<%= studyNo %>">
-					<p class="bold"><%= study.getTitle() %></p>
-				</a>
-				<ul class="ps-pre__etc">
-					<li> 
-						<span class="heart-emoji">&#9829;</span><%= study.getBookmark() %></li>
-					<li>
-						<span>&#128064;</span><%= study.getViewcount() %></li>
-					<li>모집인원 <%= study.getRecruited_cnt() %> / <%= study.getPeople() %></li>
-				</ul>
-				<div class="ps__bookmark">
-					<% if(loginMember == null){ %>
-						<button <%=loginMember == null?"disabled":""%> class="bookmark-front">♡</button>
-					<%
-						}
-					%>		
-						<button class="bookmark-front" value="<%= studyNo %>">♡</button>
-						<button style="display:none" class="bookmark-back" value="<%= studyNo %>">♥</button>					
-					<%
-						if(loginMember != null){
-							if(stdBookmarkList != null && !stdBookmarkList.isEmpty()){
-								for(Gathering bookmark : stdBookmarkList){
-									int bookPsNo = bookmark.getPsNo();
-									if(studyNo == bookPsNo){
-										System.out.println("일치한다 = 스터디" + studyNo + " 북마크 " + bookPsNo);
-					%>
-										<button class="bookmark-back" value="<%= studyNo %>"></button>
-										<button style="display:none" class="bookmark-front" value="<%= studyNo %>">♡</button>
-					<%
-									}
-									
-								}
-							}
-							
-						}
-					%>
-				</div>
-			</div>
-		<%
-			}
-		}
-		%>
-		</div>
-			
-</div>
-	
+</script>
+
 	
 <div class="preview-container">
 	<div class="preview-text">

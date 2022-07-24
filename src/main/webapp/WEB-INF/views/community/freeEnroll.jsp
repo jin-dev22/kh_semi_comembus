@@ -4,7 +4,7 @@
 
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/community.css" />
-
+<section id="commu-container">
 <h2>글작성</h2>
 <hr style="margin-top:30px;"  /> 
 <div id="tbl-board-view" >
@@ -67,5 +67,5 @@
 	};
   
 </script>
-
+</section>
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>

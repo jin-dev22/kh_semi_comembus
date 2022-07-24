@@ -14,6 +14,7 @@ import java.util.Map;
 import kh.semi.comembus.gathering.model.dao.GatheringDao;
 import kh.semi.comembus.gathering.model.dto.Gathering;
 import kh.semi.comembus.gathering.model.dto.GatheringExt;
+import kh.semi.comembus.member.model.dto.MemberApplicationStatus;
 
 public class GatheringService {
 	static GatheringDao gatheringDao = new GatheringDao();
@@ -104,6 +105,14 @@ public class GatheringService {
 		close(conn);
 		return stdBookmarkList;
 	}
+	
+
+//	public List<Gathering> psDepList(List<Gathering> projectList) {
+//		Connection conn = getConnection();
+//		List<Gathering> depList = gatheringDao.psDepList(conn, projectList);
+//		close(conn);
+//		return depList;
+//	}
 	
 	// 선아 끝
 
@@ -388,7 +397,6 @@ public class GatheringService {
 		Connection conn = getConnection();
 		int result = 0;
 		try {
-			// 1. 게시글 수정
 			result = gatheringDao.updateStudy(conn, study);
 			commit(conn);
 		} 
@@ -401,6 +409,24 @@ public class GatheringService {
 		}
 		return result;
 	}
+	
+	public int insertMemberApply(MemberApplicationStatus applyInfo) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			result = gatheringDao.insertMemberApply(conn, applyInfo);
+			commit(conn);
+		} 
+		catch (Exception e) {
+			rollback(conn);
+			throw e;
+		}
+		finally {
+			close(conn);
+		}
+		return result;
+	}
 	// 미송 끝
+
 
 }

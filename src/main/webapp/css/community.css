@@ -5,6 +5,13 @@
 	/*height: 350px;*/
 	margin: 0;
 }
+
+#commu-container { 
+    width: 1200px;
+    left: 0;
+    right: 0;
+    margin: auto;
+}
 h2{
 	font-family: var(--elice-font);
 	margin-top:70px;
@@ -17,7 +24,7 @@ h4{
 	margin-left:150px;
 }
 #btn-add{
-	margin-left:1150px;
+	margin-left:1000px;
     margin-top:5px;
 	width: 100px;
     height: 40px;
@@ -31,7 +38,7 @@ h4{
     clear: both;
     border-collapse: collapse;
     width: 980px;
-    margin-left: 250px;
+    margin-left: 125px;
 	
 }
 
@@ -160,7 +167,7 @@ border: 2px solid lightgray;
 }
 
 #btn3{
-	margin-left:1250px;
+	margin-left:980px;
 	border-radius: 10%;
 	background-color:#92B4EC;
 	border: none;
@@ -328,7 +335,7 @@ td [name=boardCommentFrm]{
 	
 }
 #search-container{
-	margin-left:825px;
+	margin-left:750px;
 }
 #search-container [name=searchKeyword]{
 	width:200px;
