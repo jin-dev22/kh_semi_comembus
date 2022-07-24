@@ -44,9 +44,6 @@ public class SearchStdBookmarkServlet extends HttpServlet {
 			String type = "S";
 			int totalContent = 0;
 			
-			System.out.println(">>> 23일 스터디 확인용 bookmarkYN = " + bookmarkYN);
-			System.out.println(">>> 23일 스터디 확인용 memberId = " + memberId);
-			
 			Map<String, Object> param = new HashMap<>();
 			param.put("memberId", memberId);
 			param.put("bookmarkYN", bookmarkYN);
@@ -68,8 +65,6 @@ public class SearchStdBookmarkServlet extends HttpServlet {
 				totalContent = gatheringService.getStdTotalContent();
 				bmParam.put("loginMemberId", memberId);
 				bookmarkList = gatheringService.findAllStdBookmarked(bmParam);
-				System.out.println(">>> memberId " + memberId);
-				System.out.println(">>> bmParam = " + bmParam);
 			};
 			
 			response.setContentType("application/json; charset=utf-8");

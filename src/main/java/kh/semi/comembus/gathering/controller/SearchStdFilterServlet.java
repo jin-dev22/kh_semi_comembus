@@ -53,7 +53,6 @@ public class SearchStdFilterServlet extends HttpServlet {
 			param.put("statusYN", statusYN);
 			param.put("start", (cPage - 1) * numPerPage + 1);
 			param.put("end", cPage * numPerPage);
-			System.out.println(">>> 필터링 param = " + param);
 			
 			// 2. 업무로직
 			// content 영역
@@ -62,14 +61,8 @@ public class SearchStdFilterServlet extends HttpServlet {
 			Map<String, Object> bmParam = new HashMap<>();
 			if(memberId != null) {
 				bmParam.put("loginMemberId", memberId);
-				System.out.println(">>> 필터링 memberId " + memberId);
-				System.out.println(">>> 필터링 bmParam = " + bmParam);
 			}
 			List<Gathering> bookmarkList = gatheringService.findAllStdBookmarked(bmParam);
-			
-			System.out.println(">>> 필터링 loginMemberId " + memberId);
-			System.out.println(">>> 필터링 studyList " + studyList);
-			System.out.println(">>> 필터링 bookmarkList " + bookmarkList);
 			
 			// pagebar 영역
 			int totalContent = gatheringService.getStdTotalContentLike(param);
