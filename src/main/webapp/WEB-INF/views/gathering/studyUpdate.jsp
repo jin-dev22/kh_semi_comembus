@@ -3,7 +3,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
-
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/css/gathering/gatheringEnroll.css">
 <%
 	Gathering gathering = (Gathering) request.getAttribute("study");
 
@@ -11,8 +12,6 @@
 	String startDate = sdf.format(gathering.getStartDate());
 	String endDate = sdf.format(gathering.getEndDate());
 %>
-
-<h1>스터디 수정하기</h1>
 	<form name="studyEnrollFrm"
 		action="<%=request.getContextPath()%>/gathering/studyUpdateView"
 		method="post">
@@ -113,7 +112,7 @@
         		<tr><th><input type="hidden" name="writer" value="<%= loginMember.getMemberId() %>"/></th></tr>
                 <tr>
                     <th colspan="2">
-                        <br><input type="submit" value="수정하기">
+                        <br><input type="submit" id="submitS" value="수정하기">
                     </th>
                 </tr>
 			</tbody>
