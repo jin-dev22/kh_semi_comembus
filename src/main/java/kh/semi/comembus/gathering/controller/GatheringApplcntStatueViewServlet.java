@@ -162,6 +162,7 @@ public class GatheringApplcntStatueViewServlet extends HttpServlet {
 			String pagebar = ComembusUtils.getPagebar(cPage, numPerPage, totalApldMemberNum, url);
 			
 			//알림테이블 insert
+			//수신자 닉네임 찾기
 			String nickName = request.getParameter("nickName");
 			
 			//알림내용 글자 수 줄이기

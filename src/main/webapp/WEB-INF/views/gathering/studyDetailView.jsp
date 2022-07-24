@@ -98,10 +98,6 @@ function applyStatus(isPrev) {
 <br>
 <hr>
 
-<input type="button" id="bookmark" onclick="bookmark()"
-	value="이 프로젝트 찜하기"></input>
-<input type="button" id="bookmarkCancel" onclick="bookmarkCancel()"
-	value="프로젝트 찜하기 취소"></input>
 <br>
 <br>
 <br>
@@ -120,43 +116,6 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 %>
 </body>
 <script>
-	bmCancelBtn.style.display = 'none';
-
-	const bmBtn = document.querySelector('#bookmark');
-	const bmCancelBtn = document.querySelector('#bookmarkCancel');
-	bmCancelBtn.style.display = 'none';
-
-	function bookmark() {
-		if (bmCount == 0) {
-			let count = Number(bookmarkNum.textContent)
-			count = count + 1;
-			bookmarkNum.textContent = count;
-			bmCount += 1;
-		}
-		if (bmBtn.style.display !== 'none') {
-			bmBtn.style.display = 'none';
-			bmCancelBtn.style.display = 'block';
-		}
-		for (let i = 0; i < table.rows.length; i++) {
-			const newCell = table.rows[i].insertCell(-1);
-			newCell.innerHTML = '<td><img src="/멤버 이미지.png" alt="멤버아이디"></td>'
-		}
-	}
-	function bookmarkCancel() {
-		if (bmCount == 1) {
-			let count = Number(bookmarkNum.textContent)
-			count -= 1;
-			bookmarkNum.textContent = count;
-			bmCount -= 1;
-		}
-		if (bmCancelBtn.style.display !== 'none') {
-			bmCancelBtn.style.display = 'none';
-			bmBtn.style.display = 'block';
-		}
-		for (let i = 0; i < table.rows.length; i++) {
-			const newCell = table.rows[i].deleteCell(-1);
-		}
-	}
 
 	const applyStatue = document.querySelector('#statue');
 	const applyTotal = document.querySelector('#total');

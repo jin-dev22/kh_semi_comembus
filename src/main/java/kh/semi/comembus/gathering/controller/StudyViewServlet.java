@@ -60,7 +60,8 @@ public class StudyViewServlet extends HttpServlet {
 			
 			// 2. 업무로직
 			// 게시글조회 및 조회수 증가처리
-			Gathering study = hasRead ? gatheringService.findByNo(psNo) : gatheringService.findByNo(psNo, hasRead);								
+//			Gathering study = hasRead ? gatheringService.findByNo(psNo) : gatheringService.findByNo(psNo, hasRead);								
+			Gathering study = gatheringService.findByNo(psNo);
 			System.out.println("study = " + study);
 			
 			// XSS공격대비 (Cross-site Scripting)

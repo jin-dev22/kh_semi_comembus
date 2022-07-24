@@ -814,6 +814,34 @@ public class GatheringDao {
 		return capacitiesByDept;
 	}
 	
+	public Map<String, Integer> getCntsByDept(Connection conn, int psNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		Map<String, Integer> cntsByDept = new HashMap<>();
+		String sql = prop.getProperty("getCntsByDept");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, psNo);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				JobCode jobCode = JobCode.valueOf(rset.getString("job_code"));
+				int capa = rset.getInt("recruited_number");
+				switch(jobCode) {
+				case PL: cntsByDept.put("PL", capa); break;
+				case DG: cntsByDept.put("DG", capa); break;
+				case BE: cntsByDept.put("BE", capa); break;
+				case FE: cntsByDept.put("FE", capa); break;
+				}
+			}
+		} catch (SQLException e) {
+			throw new GatheringException("프로젝트 직무별 모집인원 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}	
+		return cntsByDept;
+	}
+	
 	/**
 	 * 모임게시글상세>지원자현황페이지: 직무별 모집인원 테이블 업데이트
 	 */
