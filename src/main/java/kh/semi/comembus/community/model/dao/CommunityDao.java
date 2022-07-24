@@ -475,6 +475,7 @@ public class CommunityDao {
 				
 				while(rset.next()) {
 					Community c = new Community();
+					c.setCoNo(rset.getInt("co_no"));
 					c.setCoTitle(rset.getString("co_title"));
 					c.setCoWriter(rset.getString("co_writer"));
 					c.setCoLike(rset.getInt("co_like"));
