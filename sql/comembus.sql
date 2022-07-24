@@ -223,31 +223,7 @@ COMMENT ON COLUMN project_member_dept.ps_no IS '프로젝트/스터디 게시글
 COMMENT ON COLUMN project_member_dept.job_code IS '프로젝트게시물인 경우 직무분야 코드로 직무별 인원구분';
 COMMENT ON COLUMN project_member_dept.capacity_number IS '모집정원(프로젝트인 경우 직무분야별)';
 COMMENT ON COLUMN project_member_dept.recruited_number IS '모집된 인원';
-select * from project_member_dept;
--- 선아 페이징 및 필터 쿼리문 작성부분
-select * from member;
-select * from bookmarked_prj_std;
--- 북마크 count까지 가져오는 쿼리 - 확인예정
-select
-        *
-from (
-        select
-                row_number() over(order by reg_date desc) rnum, 
-                ps.*
-                ,(select nvl(sum(recruited_number), 0) from project_member_dept where ps_no = ps.ps_no) recruited_cnt
-        from 
-                project_study ps 
-        where gathering_type ='P' and end_date > sysdate)p
-where
-        rnum between 1 and 40
-        and exists (select count(*) bookmark, ps_no from bookmarked_prj_std bmk where ps_no = (select ps_no from project_study where ps_no = bmk.ps_no) group by ps_no);
 
-(select count(*) bookmark, ps_no from bookmarked_prj_std bmk where ps_no = (select ps_no from project_study where ps_no = bmk.ps_no) group by ps_no);
--- 북마크 시 gathering에도 count + 1처리
-
-select * from project_study;
--- 북마크여부 확인
-select * from project_study where ps_no in(select ps_no from BOOKMARKED_PRJ_STD where member_id = 'igoigo1');
 
 --선아님 코드 끝
 
