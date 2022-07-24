@@ -90,10 +90,10 @@ public class GatheringApplcntStatueViewServlet extends HttpServlet {
 
 			GatheringExt gathering = (GatheringExt) gatheringService.findByNo(psNo);
 			String msg = "";
-			
-			//프로젝트 게시물인경우 직무별 모집정원, 모집된 인원 비교 
+			//수락할경우 직무별정원테이블, 지원현황 테이블 모두 업데이트
 			if("O".equals(apldResult)) {
 				switch(psType) {
+				//프로젝트 게시물인경우 직무별 모집정원, 모집된 인원 비교 
 				case P:
 					Map<String, Integer> capacitiesByDept = new HashMap<>();
 					

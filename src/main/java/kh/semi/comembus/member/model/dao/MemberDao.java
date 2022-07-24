@@ -519,7 +519,7 @@ public class MemberDao {
 			rset = pstmt.executeQuery();
 			if(rset.next()) {
 				jobName = rset.getString(1);
-				System.out.println("@MemDao: jobName>>"+jobName);
+				//System.out.println("@MemDao: jobName>>"+jobName);
 			}
 		} catch (SQLException e) {
 			throw new MemberException("직무명 조회 오류", e);

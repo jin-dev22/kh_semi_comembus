@@ -12,19 +12,25 @@
 GatheringExt gathering = (GatheringExt) request.getAttribute("project");
 %>
 <link rel="stylesheet"
-	href="<%=request.getContextPath()%>/css/gathering/ProjectView.css" />
-<p class="pjname"><%=gathering.getTitle()%></p>
+	href="<%=request.getContextPath()%>/css/gathering/GatheringView.css" />
+<div id="container">
+<p class="name"><%=gathering.getTitle()%></p>
 <!-- 프로젝트명 -->
-<p class="pjwriter">
-	<img src="/멤버 이미지.png" alt="멤버아이디"><%=gathering.getWriter()%></p>
+<p class="writer">
+		<span class="h__profile-badge">
+	  		<b><%= gathering.getWriter().charAt(0) %></b>
+	  	</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	  	<%= gathering.getWriter() %>
+	</p>
+<br />
 <!--지원자 현황은 글쓴이=로그인한 사용자 일치할 때만 보이게 하기-->
-<button id="pjdetail">
+<button id="detail">
 	<a href="#">프로젝트 상세</a>
 </button>
 <%
 if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId())) {
 %>
-<button id="pjstatue">
+<button id="statue">
 	<a
 		href="<%=request.getContextPath()%>/gathering/showApplicants?psNo=<%=gathering.getPsNo()%>">지원자
 		현황</a>
@@ -53,7 +59,7 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 		<td><span id="statue">1</span>/<span id="total"><%=gathering.getBackend_cnt()%></span></td>
 	</tr>
 	<tr>
-		<td><input type="button" id="apply" value="지원하기"
+		<td colspan="2"><input type="button" id="apply" value="지원하기"
 			onclick="applyStatus()"></td>
 	</tr>
 	<script>
@@ -105,8 +111,10 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 <%
 if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId())) {
 %>
-<input type="button" value="수정" onclick="updateProject()">
-<input type="button" value="삭제" onclick="deleteProject()">
+<div id="editDel">
+<input type="button" class="submitEdit" value="수정" onclick="updateProject()">
+<input type="button" class="submitDel" value="삭제" onclick="deleteProject()">
+</div>
 <%
 }
 %>
@@ -163,6 +171,7 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 		method="post" name="projectDelFrm">
 		<input type="hidden" name="psNo" value="<%= gathering.getPsNo() %>" />
 </form>
+</div>
 <script>
 const updateProject=()=>{
 	location.href="<%=request.getContextPath()%>/gathering/gatheringUpdate?psNo=<%=gathering.getPsNo()%>";
