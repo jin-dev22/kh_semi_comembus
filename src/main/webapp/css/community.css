@@ -341,17 +341,25 @@ td [name=boardCommentFrm]{
 	width:200px;
 	height: 10px;
 }
-
 .community-s-container{
 	margin-bottom: 20px;	
+}
+.community-qf-wrapper{
+	display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 40px;
+}
+.community-qf-container{
+	width: 520px;
+    display: inline-block;
 }
 
 .co-share-lists{
 	display: flex;
-	flex-wrap: wrap;
-	flex-direction: row;
-	justify-content: space-evenly;
-	
+    flex-wrap: wrap;
+    justify-content: space-between;
+    flex-direction: row;
 }
 
 .co-share{
@@ -365,12 +373,25 @@ td [name=boardCommentFrm]{
     padding: 10px;
     text-align: center;
     font-size: 20px;
+    overflow: hidden;
 }
 
 .co-share-title a{
     display: flex;
     height: 130px;
     text-decoration: none;
+}
+
+
+.share-best{
+    width: 100px;
+    background-color: #FF6962;
+    border-radius: 30px;
+    padding: 2px;
+    font-size: 14px;
+    color: white;
+    text-align: center;
+    margin-top: 7px;
 }
 
 
@@ -386,10 +407,20 @@ td [name=boardCommentFrm]{
 .co-share-info span{
     margin: 0 0 5px 20px;
 }
-.heart-emoji {
-	color: var(--accent-color);
+
+.co-qf-title{
+	padding: 5px 8px;	
+	height: 32px;
+	overflow: hidden;
 }
 
+.co-qf-title:nth-child(2n-1){
+	background-color: var(--yellow-color);
+}
+
+.co-qf-title:nth-child(2n){
+	background-color: var(--jjin-yellow-color);
+}
 <!-- -->
 
 
