@@ -93,8 +93,8 @@ public class MainServlet extends HttpServlet {
 			// QnA 미리보기(최신 4개)
 			List<Community> qlist = communityService.findQna(param);
 				
-			// 정보공유 미리보기
-			List<Community> slist = communityService.findShare(param);
+			// 정보공유 미리보기(조회수 TOP4)
+			List<Community> sBest = communityService.findShareBest();
 			
 			// 자유주제 미리보기(최신 4개)
 			List<Community> flist = communityService.findFree(param);
@@ -110,7 +110,7 @@ public class MainServlet extends HttpServlet {
 			request.setAttribute("memberList", memberList);
 			request.setAttribute("qlist", qlist);
 			request.setAttribute("flist", flist);
-			request.setAttribute("slist", slist);
+			request.setAttribute("sBest", sBest);
 
 			request.getRequestDispatcher("/WEB-INF/views/main.jsp").forward(request, response);
 		} catch(Exception e) {

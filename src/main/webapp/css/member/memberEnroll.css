@@ -128,3 +128,8 @@
 .hide {
   display: none;
 }
+
+.duplicate-check-loading{
+	font-size: 13px;
+	margin: 2px 0 0 2px;
+}
