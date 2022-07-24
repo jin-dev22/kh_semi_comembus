@@ -3,7 +3,8 @@
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 
 <link rel="stylesheet"
-	href="<%=request.getContextPath()%>/css/gathering/Enroll.css">
+	href="<%=request.getContextPath()%>/css/gathering/gatheringEnroll.css">
+<div id="enroll">
 <form
 	name="projectEnrollFrm"
 	action="<%=request.getContextPath() %>/gathering/projectEnrollView" 
@@ -92,7 +93,7 @@
 		<th><input type="hidden" name="writer" value="<%= loginMember.getMemberId() %>"/></th>
 	</tr>
 	<tr>
-		<th colspan="2"><input type="submit" value="등록하기"></th>
+		<th colspan="2"><input type="submit" id="submitP" value="등록하기"></th>
 	</tr>
 </tbody>
 <tfoot>
@@ -112,6 +113,7 @@
 
 </table>
 </form>
+</div>
 </body>
 <script>
     var now_date = Date.now()

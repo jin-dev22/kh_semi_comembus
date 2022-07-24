@@ -60,7 +60,7 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 	</script>
 </table>
 <form name="applFrm"
-	action="<%=request.getContextPath()%>/gathering/apply" method="POST">
+	action="<%=request.getContextPath()%>/gathering/studyApply" method="POST">
 	<input type="hidden" name="psNo" value="게더링.겟" /> <input type="hidden"
 		name="aplcntId" value="<%=loginMember.getMemberId()%>" /> <input
 		type="hidden" name="aplcntJobCode"
@@ -95,8 +95,8 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId())) {
 %>
 <div id="editDel">
-<input type="button" value="수정" onclick="updateStudy()">
-<input type="button" value="삭제" onclick="deleteStudy()">
+<input type="button" value="수정" class="submitEdit" onclick="updateStudy()">
+<input type="button" value="삭제" class="submitDel" onclick="deleteStudy()">
 </div>
 <%
 }

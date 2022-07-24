@@ -28,7 +28,7 @@
 <script
 	src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 <link rel="stylesheet"
-	href="<%=request.getContextPath()%>/css/gathering/Enroll.css">
+	href="<%=request.getContextPath()%>/css/gathering/gatheringEnroll.css">
 </head>
 <body>
 	<form name="studyEnrollFrm"
@@ -138,7 +138,7 @@
         		<tr><th><input type="hidden" name="writer" value="<%= loginMember.getMemberId() %>"/></th></tr>
                 <tr>
                     <th colspan="2">
-                        <br><input type="submit" value="등록하기">
+                        <br><input type="submit" id="submitS" value="등록하기">
                     </th>
                 </tr>
 			</tbody>
