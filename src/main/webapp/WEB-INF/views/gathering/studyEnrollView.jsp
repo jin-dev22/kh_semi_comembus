@@ -11,6 +11,7 @@
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/gathering/gatheringEnroll.css">
 </head>
+<div id="container">
 <body>
 	<form name="studyEnrollFrm"
 		action="<%=request.getContextPath()%>/gathering/studyEnrollView"
@@ -132,6 +133,7 @@
 			</tfoot>
 		</table>
 	</form>
+</div>
 </body>
 <script>
 
@@ -167,48 +169,18 @@
 		document.getElementById("people").value=count;
 		console.log(document.getElementById("people").value)
 	});
+	document.getElementById("people").value=number.textContent;
 	
-	$(document)
-			.ready(
-					function() {
-						var toolbar = [
-								// 글꼴 설정
-								[ 'fontname', [ 'fontname' ] ],
-								// 글자 크기 설정
-								[ 'fontsize', [ 'fontsize' ] ],
-								// 굵기, 기울임꼴, 밑줄,취소 선, 서식지우기
-								[
-										'style',
-										[ 'bold', 'italic', 'underline',
-												'strikethrough', 'clear' ] ],
-								// 글자색
-								[ 'color', [ 'forecolor', 'color' ] ],
-								// 표만들기
-								[ 'table', [ 'table' ] ],
-								// 글머리 기호, 번호매기기, 문단정렬
-								[ 'para', [ 'ul', 'ol', 'paragraph' ] ],
-								// 줄간격
-								[ 'height', [ 'height' ] ] ];
+    $("#summernote").summernote({
+        height: 500,
+        width: 900,
+	    focus: true,
+	    disableResizeEditor: true,
+	    codeviewFilter: false,
+	    codeviewIframeFilter: true
+	   });
+    $('#summernote').summernote('pasteHTML', data);
 
-						var setting = {
-							placeholder : '<strong>1. 스터디 목표와 진행방식</strong> <br> - 목표를 적어주세요<br> (ex. 하반기 공채/수시 합격을 목표로 합니다.) <br> - 진행 방식을 적어주세요 <br> (ex - 강남역 ㅇㅇ스터디 주 1회 (요일 협의)) <br>(ex - 매주 기업 선정, 질문리스트와 면접 연습 및 복기. 벌금제도 보증금10000원, 지각 -1000원, 결석 -3000원)<br><br> <strong> 2. 참여 조건</strong> <br> - 참여 조건을 자세히 적어주세요. <br>(ex - 현재 하반기 공채 지원 예정인 분들만 모집합니다.) <br>(ex - 백엔드 SPRING을 집중적으로 공부할 사람을 모집합니다.)<br><br> <strong>3. 그외 자유 기재</strong> <br>(ex - 참여를 원하시는 분은 신청하시면 오픈카톡 링크를 드립니다.)<br>',
-							height : 500,
-							focus : true,
-							lang : 'ko-KR',
-							toolbar : toolbar,
-							callbacks : { //여기 부분이 이미지를 첨부하는 부분
-								onImageUpload : function(files, editor,
-										welEditable) {
-									for (var i = files.length - 1; i >= 0; i--) {
-										uploadSummernoteImageFile(files[i],
-												this);
-									}
-								}
-							}
-						};
-
-						$('#summernote').summernote(setting);
-					});
     document.studyEnrollFrm.onsubmit = (e) => {
     	const frm = e.target;
     	//제목을 작성하지 않은 경우 폼제출할 수 없음.
