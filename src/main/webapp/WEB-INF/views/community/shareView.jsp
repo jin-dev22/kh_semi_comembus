@@ -12,6 +12,7 @@
 	List<CommunityRepl> replList = (List<CommunityRepl>) request.getAttribute("replList");
 %>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/community.css" /> 
+<section id="commu-container">
 <h2>자유 게시판</h2>
 <br />
 <hr style="margin-top:20px;"  />  
@@ -228,4 +229,5 @@ const loginAlert = () => {
 	
 	</script>
 	<% } %>
+	</section>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>

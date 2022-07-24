@@ -19,6 +19,7 @@ div#search-coWriter{
 	display: <%= "co_writer".equals(type) ? "inline-block" : "none" %>;
 }
 </style>
+<section id="commu-container">
 	<h2>Q&A 게시판💁‍♀️</h2>
 	<h4>질문과 답변을 주고받을 수 있는 게시판 입니다.</h4><br /><br />
 <!-- 검색 -->
@@ -110,5 +111,5 @@ $(document).ready(function(){
 });
 </script>
 
-
+</section>
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>
