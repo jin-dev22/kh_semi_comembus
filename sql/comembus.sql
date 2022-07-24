@@ -224,21 +224,6 @@ COMMENT ON COLUMN project_member_dept.job_code IS '프로젝트게시물인 경�
 COMMENT ON COLUMN project_member_dept.capacity_number IS '모집정원(프로젝트인 경우 직무분야별)';
 COMMENT ON COLUMN project_member_dept.recruited_number IS '모집된 인원';
 
--- 선아 페이징 및 필터 쿼리문 작성부분
-select * from member;
-select * from bookmarked_prj_std;
-select * from project_member_dept;
-
--- select ps.ps_no, pmd.job_code, pmd.capacity_number, pmd.recruited_number from project_study ps join project_member_dept pmd on ps.ps_no = pmd.ps_no where gathering_type = '?' and ps.ps_no = ?
-select
-        ps.ps_no 게시물번호
-        , pmd.job_code 직무
-        , pmd.capacity_number 모집정원
-        , pmd.recruited_number 모집인원
-from project_study ps join project_member_dept pmd on ps.ps_no = pmd.ps_no 
-where gathering_type = 'P' and ps.ps_no = 108;
-
--- select * from (select row_number() over(order by reg_date desc) rnum, pmd.*, (select nvl(sum(recruited_number), 0) from project_member_dept where ps_no = ps.ps_no) recruited_cnt from project_study ps full outer join project_member_dept pmd on ps.ps_no = pmd.ps_no where gathering_type ='?' and end_date > sysdate)p where rnum between ? and ?
 
 --선아님 코드 끝
 

@@ -227,9 +227,9 @@
     text-decoration: none;
 }
 
-/*
-.admin-choice{
-    width: 90px;
+
+.share-best{
+    width: 100px;
     background-color: #FF6962;
     border-radius: 30px;
     padding: 2px;
@@ -238,7 +238,7 @@
     text-align: center;
     margin-top: 7px;
 }
-*/
+
 
 .co-share-info{
 	margin-top: 5px;

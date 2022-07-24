@@ -51,26 +51,18 @@ public class ProjectListServlet extends HttpServlet {
 			MemberExt loginMember = (MemberExt) session.getAttribute("loginMember");
 			String loginMemberId = null;
 			
-			// content 영역 
+			// content 영영
 			List<Gathering> projectList = gatheringService.findGatheringAll(param);
-			System.out.println(">>> param = " + param);
-			System.out.println(">>> projectList = " + projectList);
+			// 슬라이드 영역
+			List<Gathering> projectSlideList = gatheringService.findProjectSlide();
 			
 			// 북마크
 			Map<String, Object> bmParam = new HashMap<>();
 			if(loginMember != null) {
 				loginMemberId = loginMember.getMemberId();
 				bmParam.put("loginMemberId", loginMemberId);
-				System.out.println(">>> bmParam loginMemberId " + loginMemberId);
-				System.out.println(">>> bmParam = " + bmParam);
 			}
 			List<Gathering> bookmarkList = gatheringService.findAllProBookmarked(bmParam);
-			
-			System.out.println(">>> loginMemberId " + loginMemberId);
-			System.out.println(">>> bookmarkList " + bookmarkList);
-			
-			
-			// List<Gathering> psDepList = gatheringService.psDepList(projectList);
 						
 			// pagebar 영역
 			int totalContent = gatheringService.getProTotalContent();
@@ -79,6 +71,7 @@ public class ProjectListServlet extends HttpServlet {
 			
 			// view단처리
 			request.setAttribute("projectList", projectList);
+			request.setAttribute("projectSlideList", projectSlideList);
 			request.setAttribute("pagebar", pagebar);
 			request.setAttribute("bookmarkList", bookmarkList);
 			

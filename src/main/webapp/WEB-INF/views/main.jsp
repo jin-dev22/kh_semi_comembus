@@ -19,8 +19,8 @@
 	List<Gathering> studyList = (List<Gathering>) request.getAttribute("studyList");
 	List<Gathering> stdBookmarkList = (List<Gathering>) request.getAttribute("stdBookmarkList");
 	List<Member> memberList = (List<Member>) request.getAttribute("memberList");
+	List<Community> sBest = (List<Community>) request.getAttribute("sBest"); 
 	List<Community> flist = (List<Community>) request.getAttribute("flist"); 
-	List<Community> slist = (List<Community>) request.getAttribute("slist"); 
 	List<Community> qlist = (List<Community>) request.getAttribute("qlist"); 
 %>
 
@@ -67,8 +67,6 @@
 			<ul class="ps-pre__etc">
 				<li> 
 					<span class="heart-emoji">&#9829;</span><%= project.getBookmark() %></li>
-				<li>
-					<span>&#128064;</span><%= project.getViewcount() %></li>
 				<li>모집인원 <%= project.getRecruited_cnt() %> / <%= project.getPeople() %></li>
 			</ul>
 				<div class="ps__bookmark">
@@ -153,8 +151,6 @@
 			<ul class="ps-pre__etc">
 				<li> 
 					<span class="heart-emoji">&#9829;</span><%= study.getBookmark() %></li>
-				<li>
-					<span>&#128064;</span><%= study.getViewcount() %></li>
 				<li>모집인원 <%= study.getRecruited_cnt() %> / <%= study.getPeople() %></li>
 			</ul>
 				<div class="ps__bookmark">
@@ -293,19 +289,18 @@ document.querySelectorAll(".ps__bookmark").forEach((bookmark) => {
 			<p class="move-page"><a href="<%= request.getContextPath()%>/community/communityList?co_type=S">전체보기</a></p>
 		</div>
 		<div class="co-share-lists">
-			<% if(slist == null || slist.isEmpty()){ %>
+			<% if(sBest == null || sBest.isEmpty()){ %>
 			<div>조회된 게시글이 없습니다.</div>
 			<% }else{ 
-				for(Community c:slist){
+				for(Community c:sBest){
 			%>
 				<div class="co-share">
 					<div class="co-share-title">
 						<a href="<%= request.getContextPath() %>/community/communityView?co_type=S&no=<%= c.getCoNo() %>"><%= ComembusUtils.escapeXml(c.getCoTitle()) %></a>
 					</div>
-					<!-- <div class="admin-choice">운영자선정</div>  -->
+					<div class="share-best">조회수 TOP 4</div>
 					<div class="co-share-info">
 						<span class="co-share-writer"><%= c.getCoWriter() %></span>
-						<span class="heart-emoji">&#9829;</span><%= c.getCoLike() %></span>
 						<span>&#128064;</span><%= c.getCoReadcount() %></span>
 					</div>
 				</div>

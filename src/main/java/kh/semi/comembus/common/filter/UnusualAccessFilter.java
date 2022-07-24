@@ -34,10 +34,10 @@ public class UnusualAccessFilter implements Filter {
 		HttpServletResponse httpRes = (HttpServletResponse) response;
 		HttpSession session = httpReq.getSession();
 		
-		String memberName = request.getParameter("name");
-		System.out.println("[UnusualAccessFilter@memberName] = " + memberName);
+		String location = httpReq.getHeader("Referer");
+		System.out.println("[UnusualAccessFilter@location] = " + location);
 		
-		if(memberName == null) {
+		if(location == null) {
 			session.setAttribute("msg", "비정상적인 접근입니다.");
 			httpRes.sendRedirect(httpReq.getContextPath() + "/main");
 			return;

@@ -52,13 +52,18 @@ public class StudyListServlet extends HttpServlet {
 			// content 영역 
 			List<Gathering> studyList = gatheringService.findGatheringAll(param);
 			
+			
 			// 북마크
 			Map<String, Object> bmParam = new HashMap<>();
 			if(loginMember != null) {
 				loginMemberId = loginMember.getMemberId();
 				bmParam.put("loginMemberId", loginMemberId);
 			}
+			
+			// content 영영
 			List<Gathering> bookmarkList = gatheringService.findAllStdBookmarked(bmParam);
+			// 슬라이드 영역
+			List<Gathering> studySlideList = gatheringService.findStudySlide();
 						
 			// pagebar 영역
 			int totalContent = gatheringService.getStdTotalContent();
@@ -67,6 +72,7 @@ public class StudyListServlet extends HttpServlet {
 			
 			// view단처리
 			request.setAttribute("studyList", studyList);
+			request.setAttribute("studySlideList", studySlideList);
 			request.setAttribute("pagebar", pagebar);
 			request.setAttribute("bookmarkList", bookmarkList);
 			request.getRequestDispatcher("/WEB-INF/views/gathering/studyList.jsp").forward(request, response);
