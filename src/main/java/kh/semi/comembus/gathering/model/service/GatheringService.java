@@ -27,6 +27,20 @@ public class GatheringService {
 		close(conn);
 		return projectList;
 	}
+	
+	public List<Gathering> findProjectSlide() {
+		Connection conn = getConnection();
+		List<Gathering> projectSlideList = gatheringDao.findProjectSlide(conn);
+		close(conn);
+		return projectSlideList;
+	}
+	
+	public List<Gathering> findStudySlide() {
+		Connection conn = getConnection();
+		List<Gathering> studySlideList = gatheringDao.findStudySlide(conn);
+		close(conn);
+		return studySlideList;
+	}
 
 	public int getProTotalContent() {
 		Connection conn = getConnection();
@@ -105,14 +119,6 @@ public class GatheringService {
 		close(conn);
 		return stdBookmarkList;
 	}
-	
-
-//	public List<Gathering> psDepList(List<Gathering> projectList) {
-//		Connection conn = getConnection();
-//		List<Gathering> depList = gatheringDao.psDepList(conn, projectList);
-//		close(conn);
-//		return depList;
-//	}
 	
 	// 선아 끝
 
@@ -427,6 +433,7 @@ public class GatheringService {
 		return result;
 	}
 	// 미송 끝
+
 
 
 }
