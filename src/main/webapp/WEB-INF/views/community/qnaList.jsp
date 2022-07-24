@@ -57,7 +57,6 @@ div#search-coWriter{
 			<th>제목</th>
 			<th>글쓴이</th>
 			<th>작성일</th>
-			<th>추천</th>
 			<th>조회수</th>
 		</tr>
 		
@@ -72,7 +71,6 @@ div#search-coWriter{
 			<td><a href="<%= request.getContextPath() %>/community/communityView?co_type=Q&no=<%= c.getCoNo()%>"><%= ComembusUtils.escapeXml(c.getCoTitle()) %></a></td>
 			<td><%= c.getCoWriter() %></td>
 			<td><%= new SimpleDateFormat("yyyy-MM-dd HH:mm").format(c.getCoRegdate()) %></td>
-			<td><%= c.getCoLike() %></td>
 			<td><%= c.getCoReadcount() %></td>
 			
 		</tr>
