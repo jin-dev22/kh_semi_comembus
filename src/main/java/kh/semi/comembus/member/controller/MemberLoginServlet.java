@@ -1,6 +1,7 @@
 package kh.semi.comembus.member.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -60,10 +61,15 @@ public class MemberLoginServlet extends HttpServlet {
 			Member member = memberService.findById(memberId);
 			// System.out.println("member@MemberLoginServlet = " + member); 
 			
+			
 			HttpSession session = request.getSession(true);
 			
 			// 로그인 성공
 			if(member != null && password.equals(member.getPassword())) {
+				//회원이 지원한 모임게시글 번호 목록 가져오기
+				List<Integer> apldPsNoList = memberService.findAllApldPsNoByMemberId(memberId);
+				
+				session.setAttribute("apldPsNoList", apldPsNoList);
 				session.setAttribute("loginMember", member);
 				response.sendRedirect(location);
 			}
