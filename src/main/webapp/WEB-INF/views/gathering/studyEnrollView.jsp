@@ -169,6 +169,7 @@
 		document.getElementById("people").value=count;
 		console.log(document.getElementById("people").value)
 	});
+	document.getElementById("people").value=number.textContent;
 	
     $("#summernote").summernote({
         height: 500,

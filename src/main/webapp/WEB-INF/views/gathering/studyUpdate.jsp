@@ -65,7 +65,7 @@
 					<td width="200px" colspan="3">
 						<div id="container">
 							<input type="button" class="count" id="plus" value="+">
-							<input name = people" id="people" value="<%= gathering.getPeople() %>">
+							<span id="count"><%= gathering.getPeople() %></span>
 							<!-- <span id="people"></span> -->
 							<input type="button" class="count" id="minus" value="-">
 
@@ -120,7 +120,7 @@
 			<tfoot>
 				<tr>
 					<th colspan="2">
-<!-- 						<input type="hidden" name="people" id="people" /> -->
+ 						<input type="hidden" name="people" id="people" />
 					</th>
 				</tr>
 			</tfoot>
@@ -159,7 +159,8 @@
 		document.getElementById("people").value=count;
 		console.log(document.getElementById("people").value)
 	});
-	
+	document.getElementById("people").value=number.textContent;
+
 	
     $("#summernote").summernote({
         height: 500,
