@@ -124,7 +124,7 @@
         <label for="enrollNickname">닉네임<span> *</span></label>
       </div>
       <div class="enroll-input">
-        <input type="text" id="enrollNickname" name="enrollNickname" placeholder="한글(필수), 숫자(선택) 조합 (3~10자)." maxlength="15" />
+        <input type="text" id="enrollNickname" name="enrollNickname" placeholder="한글(필수), 숫자(선택) 조합 (3~10자)" maxlength="15" />
         <div id="nicknameGuideArea">
           <div id="nicknameGuideLine">
             <span></span>
