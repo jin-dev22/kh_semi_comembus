@@ -106,6 +106,14 @@ public class GatheringService {
 		return stdBookmarkList;
 	}
 	
+
+//	public List<Gathering> psDepList(List<Gathering> projectList) {
+//		Connection conn = getConnection();
+//		List<Gathering> depList = gatheringDao.psDepList(conn, projectList);
+//		close(conn);
+//		return depList;
+//	}
+	
 	// 선아 끝
 
 	//수진코드 시작
@@ -420,6 +428,5 @@ public class GatheringService {
 	}
 	// 미송 끝
 
-	
 
 }

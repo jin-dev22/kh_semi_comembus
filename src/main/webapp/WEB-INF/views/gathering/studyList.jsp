@@ -310,8 +310,7 @@ $(document).on('click', '.bookmark-back', function(e){
 		</section>
 		<section class="ps__header">
 			<div class="ps__header__text">
-				<p>신규 스터디</p>
-				<i class="fa-solid fa-laptop-code"></i>
+				<p>신규 스터디 📚</p>
 			</div>
 			<hr>
 			<div class="ps__header__content swiper">
@@ -471,6 +470,14 @@ $(document).on('click', '.bookmark-back', function(e){
 		</section>
 	</section>
 <script>
+$(".ps-pre__etc").mouseover(function (e) {
+	const psNo = e.target.value;
+	console.log("11", e.target);
+	console.log("22", psNo);
+	psDepHover(psNo);
+});
+const psDepHover(psNo)
+
 <% if(loginMember != null){ %>
 document.querySelectorAll(".ps__bookmark").forEach((bookmark) => {
 	bookmark.addEventListener('click', (e) => {
