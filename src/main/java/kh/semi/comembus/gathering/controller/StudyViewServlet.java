@@ -1,6 +1,7 @@
 package kh.semi.comembus.gathering.controller;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -9,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import kh.semi.comembus.common.ComembusUtils;
-import kh.semi.comembus.gathering.model.dto.Gathering;
+import kh.semi.comembus.gathering.model.dto.GatheringExt;
 import kh.semi.comembus.gathering.model.service.GatheringService;
 
 /**
@@ -60,7 +61,8 @@ public class StudyViewServlet extends HttpServlet {
 			
 			// 2. 업무로직
 			// 게시글조회 및 조회수 증가처리
-			Gathering study = hasRead ? gatheringService.findByNo(psNo) : gatheringService.findByNo(psNo, hasRead);								
+//			Gathering study = hasRead ? gatheringService.findByNo(psNo) : gatheringService.findByNo(psNo, hasRead);								
+			GatheringExt study = (GatheringExt) gatheringService.findByNo(psNo);
 			System.out.println("study = " + study);
 			
 			// XSS공격대비 (Cross-site Scripting)
@@ -70,6 +72,9 @@ public class StudyViewServlet extends HttpServlet {
 			// 개행문자 변환처리
 			study.setContent(ComembusUtils.convertLineFeedToBr(study.getContent()));
 //			
+			//모집인원 조회해오기
+			study.setRecruited_cnt(gatheringService.getRcrtdForStd(psNo));
+			
 			
 			// 3. view단 처리
 			request.setAttribute("study", study);

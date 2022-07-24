@@ -194,6 +194,17 @@ public class GatheringService {
 	}
 	
 	/**
+	 * 프로젝트 게시물상세 조회시 직무별 모집된 인원 조회
+	 */
+	public Map<String, Integer> getCntsByDept(int psNo) {
+		Connection conn = getConnection();
+		Map<String, Integer> cntsByDept = gatheringDao.getCntsByDept(conn, psNo);
+		close(conn);
+		return cntsByDept;
+	}
+	
+	
+	/**
 	 * 모임게시글상세>지원자현황페이지: 직무별 모집인원 테이블 업데이트, ajax 처리를 위해 boolean값 반환
 	 */
 	public int addPSMemNumByDept(Map<String, Object> param) {

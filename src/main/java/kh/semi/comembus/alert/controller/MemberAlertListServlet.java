@@ -63,8 +63,20 @@ public class MemberAlertListServlet extends HttpServlet {
 						alerts.get(i).setCoNo(comm.getCoNo());
 						alerts.get(i).setCoType(comm.getCoType());						
 					}
+					
+					//모임관련 알림일경우 타입추가
+					String pstype = alertService.getPsTypeOfAlert(alerts.get(i).getAlertNo()); 
+					switch(pstype) {
+					case "P": 
+					case "S": alerts.get(i).setPsType(pstype); break;
+					default:
+					}
 				}
 			}
+			
+			
+			
+			
 			
 			//페이징용 총 알림수
 			int totalAlertNum = alertService.getTotalAlertNum(memberId);
@@ -89,10 +101,21 @@ public class MemberAlertListServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			int alertNo = Integer.parseInt(request.getParameter("alertNo"));
-			String url = request.getParameter("originUrl");
-			//db에 update
-			int result = alertService.alertHasRead(alertNo); 
 			
+//			
+//			String pstype = alertService.getPsTypeOfAlert(alertNo); 
+//			String urlHead = "";
+//			switch(pstype) {
+//			case "P": urlHead = "<%= request.getContextPath()%>/gathering/projectView"; break;
+//			case "S": urlHead = "<%= request.getContextPath()%>/gathering/studyView"; break;
+//			default: urlHead = "<%= request.getContextPath()%>/community/communityView";
+//			}
+			
+			String url = request.getParameter("originUrl");
+//			//db에 update
+			int result = alertService.alertHasRead(alertNo); 
+//			String compUrl = urlHead + url;
+			System.out.println("[알림정보 url확인]>>>>>>"+url);
 			response.sendRedirect(url);
 		} catch (Exception e) {
 			e.printStackTrace();

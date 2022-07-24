@@ -152,4 +152,26 @@ public class AlertDao {
 		return totalAlertNum;
 	}
 
+
+	public String getPsTypeOfAlert(Connection conn, int alertNo) {
+		String type = "";
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("getPsTypeOfAlert");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, alertNo);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				type = rset.getString(1);
+			}
+		} catch (SQLException e) {
+			throw new AlertException("회원 알림정보 연결 오류",e);
+		}finally {
+			close(rset);
+			close(pstmt);
+		}
+		return type;
+	}
+
 }

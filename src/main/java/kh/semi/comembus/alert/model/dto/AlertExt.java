@@ -7,7 +7,17 @@ package kh.semi.comembus.alert.model.dto;
 public class AlertExt extends Alert{
 	private int coNo;
 	private String coType;
+	private String psType;
+		
 	
+	public String getPsType() {
+		return psType;
+	}
+
+	public void setPsType(String psType) {
+		this.psType = psType;
+	}
+
 	public AlertExt() {
 		super();
 		// TODO Auto-generated constructor stub
