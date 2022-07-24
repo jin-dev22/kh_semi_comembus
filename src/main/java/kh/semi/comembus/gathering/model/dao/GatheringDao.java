@@ -1148,7 +1148,6 @@ public class GatheringDao {
 	}
 	// 미송 코드 끝
 
-<<<<<<< HEAD
 //	public List<Gathering> psDepList(Connection conn, List<Gathering> projectList) {
 //		PreparedStatement pstmt = null;
 //		ResultSet rset = null;
@@ -1167,10 +1166,6 @@ public class GatheringDao {
 //		
 //		return psDepList;
 //	}
-=======
-	
->>>>>>> branch 'master' of https://github.com/jin-dev22/kh_semi_comembus.git
-
 
 
 }
