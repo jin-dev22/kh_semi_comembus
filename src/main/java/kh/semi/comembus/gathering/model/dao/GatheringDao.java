@@ -1148,29 +1148,4 @@ public class GatheringDao {
 	}
 	// 미송 코드 끝
 
-<<<<<<< HEAD
-//	public List<Gathering> psDepList(Connection conn, List<Gathering> projectList) {
-//		PreparedStatement pstmt = null;
-//		ResultSet rset = null;
-//		List<Gathering> psDepList = new ArrayList<>();
-//		String sql = prop.getProperty("findPsDepList");
-//		// select ps.ps_no, pmd.job_code, pmd.capacity_number, pmd.recruited_number from project_study ps join project_member_dept pmd on ps.ps_no = pmd.ps_no where gathering_type = '?' and ps.ps_no = ?
-//		
-//		try {
-//			pstmt = conn.prepareStatement(sql);
-//			pstmt.setString(1, );
-//			
-//		} catch (SQLException e) {
-//			throw new GatheringException("게시물별 모집인원 조회 오류", e);
-//		} 
-//		
-//		
-//		return psDepList;
-//	}
-=======
-	
->>>>>>> branch 'master' of https://github.com/jin-dev22/kh_semi_comembus.git
-
-
-
 }
