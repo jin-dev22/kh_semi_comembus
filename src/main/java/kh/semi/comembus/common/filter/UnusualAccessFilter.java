@@ -22,7 +22,17 @@ import kh.semi.comembus.member.model.dto.MemberRole;
 	"/membus/showMemberId",
 	"/membus/resetMemberPassword",
 	"/membus/checkNicknameDuplicate",
-	"/membus/checkMemberPassword"
+	"/membus/checkMemberPassword",
+	"/membus/mypage/update",
+	"/membus/bookmarkAdd",
+	"/membus/bookmarkDel",
+	"/membus/quit",
+	"/gathering/apply/cancel",
+	"/gathering/studyDelete",
+	"/gathering/projectDelete",
+	"/community/communityDelete",
+	"/community/communityCommentEnroll",
+	"/community/communityCommentDelete"
 	})
 public class UnusualAccessFilter implements Filter {
 
