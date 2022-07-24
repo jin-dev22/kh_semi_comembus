@@ -915,7 +915,7 @@ public class GatheringDao {
 				capa = rset.getInt(1);
 			}
 		} catch (SQLException e) {
-			throw new GatheringException("스터디 정원 조회 오류", e);
+			throw new GatheringException("스터디 모집된인원 조회 오류", e);
 		} finally {
 			close(rset);
 			close(pstmt);
