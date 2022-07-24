@@ -21,12 +21,20 @@
 				<div class="coBoard">
 					<%if(al.getReplNo() != 0) {%><%-- /comembus/community/communityView?co_type=Q&no=203  --%>
 						<span class="link-to-origin" 
-							onclick="moveToOrigin('<%= request.getContextPath()%>/community/communityView?co_type=<%=al.getCoType()%>&no=<%=al.getCoNo()%>', '<%=al.getAlertNo()%>')">
+							<%-- onclick="moveToOrigin('?co_type=<%=al.getCoType()%>&no=<%=al.getCoNo()%>', '<%=al.getAlertNo()%>')"> --%>
+ 							onclick="moveToOrigin('<%= request.getContextPath()%>/community/communityView?co_type=<%=al.getCoType()%>&no=<%=al.getCoNo()%>', '<%=al.getAlertNo()%>')">
 								<%= al.getContent() %>
 						</span>
-					<%} else{%><%-- /comembus/gathering/projectView?psNo=74  --%>
+					<%}
+					else if ("P".equals(al.getPsType()))					
+					{%><%-- /comembus/gathering/projectView?psNo=74  --%>
 						<span class="link-to-origin" 
 						onclick="moveToOrigin('<%= request.getContextPath()%>/gathering/projectView?psNo=<%=al.getPsNo()%>', '<%=al.getAlertNo()%>')">
+							<%= al.getContent() %>
+						</span>
+					<%} else{%>
+						<span class="link-to-origin" 
+						onclick="moveToOrigin('<%= request.getContextPath()%>/gathering/studyView?psNo=<%=al.getPsNo()%>', '<%=al.getAlertNo()%>')">
 							<%= al.getContent() %>
 						</span>
 					<%} %>

@@ -12,8 +12,6 @@
 	String startDate = sdf.format(gathering.getStartDate());
 	String endDate = sdf.format(gathering.getEndDate());
 %>
-
-<h1>프로젝트 수정하기</h1>
 <form
 	name="projectUpdateFrm"
 	action="<%=request.getContextPath() %>/gathering/projectUpdateView" 
@@ -99,7 +97,7 @@
         <tr><th><input type="hidden" name="writer" value="<%= loginMember.getMemberId() %>"/></th></tr>
         <tr><th><input type="hidden" name="psNo" value="<%= gathering.getPsNo() %>" /></th></tr>
 		<th colspan="2">
-			<br><input type="submit" value="수정하기">
+			<br><input type="submit" id="submitP" value="수정하기">
 		</th>
 	</tr>
 </tbody>

@@ -1,7 +1,7 @@
 package kh.semi.comembus.gathering.controller;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -10,10 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import kh.semi.comembus.gathering.model.dto.Gathering;
+import kh.semi.comembus.gathering.model.dto.GatheringExt;
 import kh.semi.comembus.gathering.model.service.GatheringService;
-import kh.semi.comembus.*;
-import kh.semi.comembus.common.ComembusUtils;
 
 /**
  * Servlet implementation class ProjectViewServlet
@@ -59,26 +57,27 @@ public class ProjectViewServlet extends HttpServlet {
 				System.out.println("[projectCookie 새로 발급되었음 : " + cookie.getValue() + "]");
 			}
 			
-			
-			
 			// 2. 업무로직
 			// 게시글조회 및 조회수 증가처리
-			Gathering project = hasRead ? gatheringService.findByNo(psNo) : gatheringService.findByNo(psNo, hasRead);								
+			GatheringExt project = hasRead ? (GatheringExt)gatheringService.findByNo(psNo) : (GatheringExt)gatheringService.findByNo(psNo, hasRead);
+			
+			//set직무별 모집정원설정
+			Map<String, Integer> capasByDept = gatheringService.getCapacitiesByDept(psNo);
+			System.out.println("[플젝상세보기 직무별 모집인원은?]>>>>>>"+capasByDept);
+			
+			project.setBackend_cnt(capasByDept.containsKey("BE")? capasByDept.get("BE") : 0);
+			project.setFrontend_cnt(capasByDept.containsKey("FE")? capasByDept.get("FE") : 0);
+			project.setDesign_cnt(capasByDept.containsKey("DG")? capasByDept.get("DG") : 0);
+			project.setPlanning_cnt(capasByDept.containsKey("PL")? capasByDept.get("PL") : 0);
+			
+			
+			//직무별 모집된 인원 조회
+			Map<String, Integer> cntsByDept = gatheringService.getCntsByDept(psNo);
+			
 			System.out.println("project = " + project);
-			
-			// XSS공격대비 
-			String content = project.getContent();
-			if(content != null) {
-				project.setContent(ComembusUtils.escapeXml(content));				
-				project.setContent(ComembusUtils.convertLineFeedToBr(project.getContent()));				
-			}
-			
-			
-			// 개행문자 변환처리
-			project.setContent(ComembusUtils.convertLineFeedToBr(project.getContent()));
-//			
-			
+
 			// 3. view단 처리
+			request.setAttribute("cntsByDept", cntsByDept);
 			request.setAttribute("project", project);
 			request.getRequestDispatcher("/WEB-INF/views/gathering/projectDetailView.jsp")
 				.forward(request, response);
