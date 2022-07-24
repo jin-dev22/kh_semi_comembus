@@ -8,25 +8,6 @@
 <meta charset="UTF-8">
 <title>스터디 등록하기</title>
 
-<!-- include libraries(jQuery, bootstrap) -->
-<link
-	href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css"
-	rel="stylesheet">
-<script
-	src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
-<script
-	src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script>
-<!-- summer note -->
-<script src="src/main/webapp/js/summernote/summernote-lite.js"></script>
-<script src="src/main/webapp/js/summernote/lang/summernote-ko-KR.js"></script>
-<link rel="stylesheet"
-	href="src/main/webapp/css/summernote/summernote-lite.css">
-
-<link
-	href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.css"
-	rel="stylesheet">
-<script
-	src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-bs4.min.js"></script>
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/gathering/gatheringEnroll.css">
 </head>
