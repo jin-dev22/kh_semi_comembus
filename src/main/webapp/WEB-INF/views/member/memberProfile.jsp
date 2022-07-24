@@ -125,8 +125,6 @@
 									<span>&#128064;</span><%= gather.getViewcount() %></li>
 								<li>모집인원 <%= gather.getRecruited_cnt() %> / <%= gather.getPeople() %></li>
 							</ul>
-							<span class="bookmark bookmark-front">♡</span>
-							<span class="bookmark bookmark-back">♥</span>
 						</div>				
 				<% 
 						}

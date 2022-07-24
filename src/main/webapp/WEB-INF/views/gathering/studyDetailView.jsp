@@ -63,7 +63,6 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 	<input type="hidden" name="psNo" value="<%= gathering.getPsNo() %>" /> 
 	<input type="hidden" name="aplcntId" value="<%=loginMember.getMemberId()%>" />
 	<input type="hidden" name="psType" value="<%=gathering.getPsType()%>" />
-	
 </form>
 
 
@@ -94,8 +93,8 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId())) {
 %>
 <div id="editDel">
-<input type="button" value="수정" onclick="updateStudy()">
-<input type="button" value="삭제" onclick="deleteStudy()">
+<input type="button" value="수정" class="submitEdit" onclick="updateStudy()">
+<input type="button" value="삭제" class="submitDel" onclick="deleteStudy()">
 </div>
 <%
 }
