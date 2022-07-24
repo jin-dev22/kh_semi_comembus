@@ -20,6 +20,7 @@
             <span></span>
           </div>
         </div>
+        <div id="idLoading" class="duplicate-check-loading"></div>
         <div id="idCheckArea">
           <div id="idCheck">
             <span></span>
@@ -41,7 +42,13 @@
 			$.ajax({
 				url: '<%= request.getContextPath() %>/membus/checkIdDuplicate',
 				data: {enrollId},
+				beforeSend : function(){
+					// console.log("아이디 로딩중");
+					idCheckArea.className = "hide";
+					idLoading.innerHTML = "닉네임 중복검사 중입니다. 잠시만 기다려주세요.";
+				},
 				success(available){
+					idLoading.innerHTML = "";
 					if(available){
 						// console.log("not중복아이디");
 						idCheckArea.className = "";
@@ -124,6 +131,7 @@
             <span></span>
           </div>
         </div>
+        <div id="nicknameLoading"  class="duplicate-check-loading"></div>
         <div id="nicknameCheckArea">
           <div id="nicknameCheck">
             <span></span>
@@ -141,10 +149,17 @@
 			nicknameGuideArea.className = "hide"; // 유효성검사 가이드 숨기기
 			const nickname = e.target.value;
 
+			const idGuideArea = document.querySelector("#nicknameLoading");
 			$.ajax({
 				url: '<%= request.getContextPath() %>/membus/checkNicknameDuplicate',
 				data: {nickname},
+				beforeSend : function(){
+					// console.log("닉네임 로딩중");
+					nicknameCheck.className = "hide";
+					nicknameLoading.innerHTML = "닉네임 중복검사 중입니다. 잠시만 기다려주세요.";
+				},
 				success(available){
+					nicknameLoading.innerHTML = "";
 					if(available){
 						// console.log("not중복닉네임");
 						nicknameCheckArea.className = "";
@@ -162,6 +177,8 @@
 			});
 		}	
 	});
+
+		
     </script>
     
     <div class="enroll-input-container">
