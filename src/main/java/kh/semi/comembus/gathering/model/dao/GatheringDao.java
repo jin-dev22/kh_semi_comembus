@@ -53,6 +53,7 @@ public class GatheringDao {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, (int)param.get("start"));
 			pstmt.setInt(2, (int)param.get("end"));
+			System.out.println(">23일 sql = " + sql);
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
 				GatheringExt gathering = handleGatheringResultSet(rset);
@@ -1146,9 +1147,5 @@ public class GatheringDao {
 		return result;
 	}
 	// 미송 코드 끝
-
-	
-
-
 
 }

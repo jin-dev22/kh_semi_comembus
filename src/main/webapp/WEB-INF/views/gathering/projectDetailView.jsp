@@ -34,8 +34,7 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 %>
 <button id="statue">
 	<a
-		href="<%=request.getContextPath()%>/gathering/showApplicants?psNo=<%=gathering.getPsNo()%>">지원자
-		현황</a>
+		href="<%=request.getContextPath()%>/gathering/showApplicants?psNo=<%=gathering.getPsNo()%>">지원자 현황</a>
 </button>
 <%
 }
@@ -189,7 +188,6 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 			//처음부터 지원이 불가능한 경우 작성하기
 		};
 
-	
 </script>
 <%if(loginMember != null && gathering.getWriter().equals(loginMember.getMemberId())){ %>
 <form action="<%= request.getContextPath()%>/gathering/projectDelete"
@@ -199,7 +197,7 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 </div>
 <script>
 const updateProject=()=>{
-	location.href="<%=request.getContextPath()%>/gathering/gatheringUpdate?psNo=<%=gathering.getPsNo()%>";
+	location.href="<%=request.getContextPath()%>/gathering/projectUpdateView?psNo=<%=gathering.getPsNo()%>";
 };
 const deleteProject=()=>{
 	if(confirm("정말 프로젝트를 삭제하시겠습니까?")){
