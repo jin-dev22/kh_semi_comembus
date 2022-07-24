@@ -58,7 +58,7 @@ const bookmarkFilter = (num) => {
 						bookmarkList.reduce((html, bookmarkStd, index) => {
 							const {psNo, title, viewcount, bookmark, topic, recruited_cnt, people} = bookmarkStd;
 							const bookmarkCnt = bookmark < 0 ? 0 : bookmark;
-							
+
 							return `\${html}
 							<div class="ps-pre">
 								<a href="<%= request.getContextPath()%>/gathering/studyView?psNo=\${psNo}">
@@ -70,7 +70,9 @@ const bookmarkFilter = (num) => {
 									<li>
 										<span class="heart-emoji">&#9829;</span>\${bookmarkCnt}
 									</li>
-									<li>모집인원 \${recruited_cnt} / \${people}</li>
+									<li>
+										<span>모집인원 \${recruited_cnt} / \${people}</span>
+									</li>
 								</ul>
 								<div class="ps__bookmark">
 									<button class='bookmark-back' value='\${psNo}'>♥</button>
@@ -112,7 +114,9 @@ const bookmarkFilter = (num) => {
 									<li>
 										<span class="heart-emoji">&#9829;</span>\${bookmarkCnt}
 									</li>
-									<li>모집인원 \${recruited_cnt} / \${people}</li>
+									<li>
+										<span>모집인원 \${recruited_cnt} / \${people}<span>
+									</li>
 								</ul>
 								<div class="ps__bookmark">
 									\${tagBack}
@@ -203,7 +207,9 @@ const gatheringFilter = (num) => {
 							<li>
 								<span class="heart-emoji">&#9829;</span>\${bookmarkCnt}
 							</li>
-							<li>모집인원 \${recruited_cnt} / \${people}</li>
+							<li>
+								<span>모집인원 \${recruited_cnt} / \${people}<span>
+							</li>
 						</ul>
 						<div class="ps__bookmark">
 						<% if(loginMember == null){ %>
@@ -398,7 +404,7 @@ $(document).on('click', '.bookmark-back', function(e){
 						<li> 
 							<span class="heart-emoji">&#9829;</span><%= study.getBookmark() < 0 ? 0 : study.getBookmark() %>
 						</li>
-						<li class="hoverList">
+						<li>
 							<span> 모집인원 <%= study.getRecruited_cnt() %> / <%= study.getPeople() %></span>
 						</li>
 					</ul>
