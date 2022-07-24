@@ -29,7 +29,6 @@
 					</div>
 					<div class="co-share-info">
 						<span class="co-share-writer"><%= c.getCoWriter() %></span>
-						<span class="heart-emoji">&#9829;</span><%= c.getCoLike() %></span>
 						<span>&#128064;</span><%= c.getCoReadcount() %></span>
 					</div>
 				</div>
@@ -45,7 +44,6 @@
 			<th>제목</th>
 			<th>글쓴이</th>
 			<th>작성일</th>
-			<th>추천</th>
 			<th>조회수</th>
 		</tr>
 		
@@ -60,7 +58,6 @@
 			<td><a href="<%= request.getContextPath() %>/community/communityView?co_type=S&no=<%= c.getCoNo()%>"><%= ComembusUtils.escapeXml(c.getCoTitle()) %></a></td>
 			<td><%= c.getCoWriter() %></td>
 			<td><%= new SimpleDateFormat("yyyy-MM-dd HH:mm").format(c.getCoRegdate()) %></td>
-			<td><%= c.getCoLike() %></td>
 			<td><%= c.getCoReadcount() %></td>
 			
 		</tr>
