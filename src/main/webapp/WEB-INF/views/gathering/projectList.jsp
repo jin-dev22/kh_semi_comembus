@@ -154,7 +154,10 @@ const gatheringFilter = (num) => {
 	const numPerPage = 12;
 	let totalPages = 0;
 	
+	console.log(">> localAll ", localAll);
+	console.log(">> jobAll ", jobAll);
 	console.log(">> statusYN ", statusYN);
+	
 	let searchLocal = 'local';
 	let searchJobcode = 'jobcode';
 	let selectLocalKeyword = localAll;

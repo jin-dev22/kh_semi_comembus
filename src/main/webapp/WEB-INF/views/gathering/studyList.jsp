@@ -161,7 +161,7 @@ const gatheringFilter = (num) => {
 	let searchTopic = 'topic';
 	let selectLocalKeyword = localAll;
 	let selectTopicKeyword = topicAll;
-
+	
 	$.ajax({
 		url: '<%= request.getContextPath() %>/gathering/searchStdFilter',
 		data: {

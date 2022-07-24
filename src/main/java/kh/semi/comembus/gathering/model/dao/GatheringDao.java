@@ -1003,6 +1003,65 @@ public class GatheringDao {
 		return result;
 	}
 
+	public int updateNumByDept(Connection conn, Map<String, Object> param) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("updateNumByDept");
+		try {//update project_member_dept set capacity_number = ? where ps_no = ? and job_code = ?
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, (int)param.get("num"));
+			pstmt.setInt(2, (int) param.get("psNo"));
+			pstmt.setString(3, (String) param.get("jobCode"));
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new GatheringException("직무별 정원 변경 오류", e);
+		} finally {
+			close(pstmt);
+		}			
+		
+		return result;
+	}
+	
+
+	public int isExistRow(Connection conn, Map<String, Object> param) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int isExist = 0;
+		String sql = prop.getProperty("isExistRow");
+		try {//select count(*)s from project_member_dept where ps_no = ? and job_code = ?
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, (int)param.get("psNo"));
+			pstmt.setString(2, (String) param.get("jobCode"));
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				isExist = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			throw new GatheringException("직무별 정원수 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}	
+		return isExist;
+	}
+	
+	public int insertZeroToDept(Connection conn, Map<String, Object> param) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("insertZeroToDept");
+		try {//insert into project_member_dept values (seq_p_m_dept_no.nextval, psNo?, jobCode?, 0, default)
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, (int)param.get("psNo"));
+			pstmt.setString(2, (String)param.get("jobCode"));
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new GatheringException("직무별 정원수 초기화 오류", e);
+		} finally {
+			close(pstmt);
+		}	
+		
+		return result;
+	}
 	
 	//수진코드 끝
 	

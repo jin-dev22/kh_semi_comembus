@@ -282,6 +282,54 @@ public class GatheringService {
 		return rctdCnt;
 	}
 	
+	/**
+	 * 프로젝트 게시글 직무별 모집인원 변경시 사용
+	 */
+	public int updateNumByDept(Map<String, Object> param) {
+		int result = 0;
+		Connection conn = getConnection();
+		try {
+			result = gatheringDao.updateNumByDept(conn, param);
+			commit(conn);
+		} catch (Exception e) {
+			rollback(conn);
+			throw e;
+		}
+		finally {
+			close(conn);
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * 프로젝트 게시물 직무별 정원 수정 전 존재하지 않는 행 확인
+	 */
+	public int isExistRow(Map<String, Object> param) {
+		Connection conn = getConnection();
+		int isExist = gatheringDao.isExistRow(conn, param);
+		close(conn);
+		return isExist;
+	}
+	
+	/**
+	 * update처리전 직무별 인원 행이 존재하지 않을 경우 0으로 먼저 insert
+	 */
+	public int insertZeroToDept(Map<String, Object> param) {
+		Connection conn = getConnection();
+		int result = 0;
+		try {
+			result = gatheringDao.insertZeroToDept(conn, param);
+			commit(conn);
+		} catch (Exception e) {
+			rollback(conn);
+			throw e;
+		}
+		finally {
+			close(conn);
+		}
+		return result;
+	}
 	
 	//수진코드 끝
 	
@@ -444,6 +492,8 @@ public class GatheringService {
 		return result;
 	}
 	// 미송 끝
+
+	
 
 
 

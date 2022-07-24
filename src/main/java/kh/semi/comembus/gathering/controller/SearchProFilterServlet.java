@@ -72,20 +72,11 @@ public class SearchProFilterServlet extends HttpServlet {
 			Map<String, Object> bmParam = new HashMap<>();
 			if(memberId != null) {
 				bmParam.put("loginMemberId", memberId);
-				System.out.println(">>> memberId " + memberId);
-				System.out.println(">>> bmParam = " + bmParam);
 			}
 			List<Gathering> bookmarkList = gatheringService.findAllProBookmarked(bmParam);
-			
-			System.out.println(">>> 필터링 확인 loginMemberId " + memberId);
-			System.out.println(">>> 필터링 확인 projectList " + projectList);
-			System.out.println(">>> 필터링 확인 bookmarkList " + bookmarkList);
-
-			
+						
 			// pagebar 영역
 			int totalContent = gatheringService.getProTotalContentLike(param);
-			System.out.println("필터링 totalContent = " + totalContent); // 확인용
-			System.out.println("cPage = " + cPage);
 			
 			response.setContentType("application/json; charset=utf-8");
 			Map<String, Object> searchList = new HashMap<>();
