@@ -59,25 +59,11 @@ public class ProjectViewServlet extends HttpServlet {
 				System.out.println("[projectCookie 새로 발급되었음 : " + cookie.getValue() + "]");
 			}
 			
-			
-			
 			// 2. 업무로직
 			// 게시글조회 및 조회수 증가처리
 			Gathering project = hasRead ? gatheringService.findByNo(psNo) : gatheringService.findByNo(psNo, hasRead);								
 			System.out.println("project = " + project);
-			
-			// XSS공격대비 
-			String content = project.getContent();
-			if(content != null) {
-				project.setContent(ComembusUtils.escapeXml(content));				
-				project.setContent(ComembusUtils.convertLineFeedToBr(project.getContent()));				
-			}
-			
-			
-			// 개행문자 변환처리
-			project.setContent(ComembusUtils.convertLineFeedToBr(project.getContent()));
-//			
-			
+	
 			// 3. view단 처리
 			request.setAttribute("project", project);
 			request.getRequestDispatcher("/WEB-INF/views/gathering/projectDetailView.jsp")
