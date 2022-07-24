@@ -7,7 +7,7 @@
 %>
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/community.css" />
-
+<section id="commu-container">
 <div id="commuHeader">
 	<p>글작성<p>
 </div>
@@ -84,5 +84,5 @@
       });
   
 </script>
-
+</section>
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>
