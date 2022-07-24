@@ -66,8 +66,6 @@ public class SearchStdFilterServlet extends HttpServlet {
 			
 			// pagebar 영역
 			int totalContent = gatheringService.getStdTotalContentLike(param);
-			System.out.println(">>> 필터링 totalContent = " + totalContent);
-			System.out.println(">>> 필터링 cPage = " + cPage);
 			
 			response.setContentType("application/json; charset=utf-8");
 			Map<String, Object> searchList = new HashMap<>();
