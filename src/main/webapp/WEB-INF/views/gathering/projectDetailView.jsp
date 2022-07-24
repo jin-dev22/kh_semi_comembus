@@ -68,15 +68,15 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 				const frm = document.applFrm;
 				frm.submit();
 			}
+		}
 	</script>
 </table>
 <%--지원하기 속성 제출 --%>
 <form name="applFrm"
 	action="<%=request.getContextPath()%>/gathering/apply" method="POST">
-	<input type="hidden" name="psNo" value="게더링.겟" /> <input type="hidden"
-		name="aplcntId" value="<%=loginMember.getMemberId()%>" /> <input
-		type="hidden" name="aplcntJobCode"
-		value="<%=loginMember.getJobCode()%>" />
+	<input type="hidden" name="psNo" value="<%= gathering.getPsNo() %>" /> 
+	<input type="hidden" name="aplcntId" value="<%=loginMember.getMemberId()%>" />
+	<input type="hidden" name="psType" value="<%=gathering.getPsType()%>" />
 </form>
 
 
@@ -158,13 +158,13 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 
 		const applyStatue = document.querySelector('#statue');
 		const applyTotal = document.querySelector('#total');
-		if (cntStatue == cntTotal) {
+		if (applyStatue == applyTotal) {
 			const target = document.getElementById('apply');
 			target.disabled = true;
 			//처음부터 지원이 불가능한 경우 작성하기
 		}
 
-	}
+	
 </script>
 <%if(loginMember != null && gathering.getWriter().equals(loginMember.getMemberId())){ %>
 <form action="<%= request.getContextPath()%>/gathering/projectDelete"
