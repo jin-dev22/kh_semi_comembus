@@ -1,11 +1,15 @@
 package kh.semi.comembus.member.model.service;
 
-import static kh.semi.comembus.common.JdbcTemplate.*;
+import static kh.semi.comembus.common.JdbcTemplate.close;
+import static kh.semi.comembus.common.JdbcTemplate.commit;
+import static kh.semi.comembus.common.JdbcTemplate.getConnection;
+import static kh.semi.comembus.common.JdbcTemplate.rollback;
 
 import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
 
+import kh.semi.comembus.gathering.model.dao.GatheringDao;
 import kh.semi.comembus.member.model.dao.MemberDao;
 import kh.semi.comembus.member.model.dto.JobCode;
 import kh.semi.comembus.member.model.dto.Member;
@@ -14,6 +18,7 @@ import kh.semi.comembus.member.model.dto.MemberExt;
 public class MemberService {
 
 	private MemberDao memberDao = new MemberDao();
+	private GatheringDao gatheringDao = new GatheringDao();
 	
 	// 미송 코드 시작
 	public Member findById(String memberId) {
@@ -262,6 +267,10 @@ public class MemberService {
 		int result = 0;
 		try {
 			result = memberDao.insertBookmark(conn, param);
+			System.out.println(">> 북마크 등록 result = " + result);
+			if(result > 0) {
+				result = gatheringDao.addBookmark(conn, param);
+			}
 			commit(conn);
 		} catch (Exception e) {
 			rollback(conn);
@@ -278,6 +287,10 @@ public class MemberService {
 		int result = 0;
 		try {
 			result = memberDao.deleteBookmark(conn, param);
+			System.out.println(">> 북마크 삭제 result = " + result);
+			if(result > 0) {
+				result = gatheringDao.delBookmark(conn, param);
+			}
 			commit(conn);
 		} catch (Exception e) {
 			rollback(conn);

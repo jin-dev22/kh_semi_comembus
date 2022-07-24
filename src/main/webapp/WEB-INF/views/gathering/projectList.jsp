@@ -57,6 +57,7 @@ const bookmarkFilter = (num) => {
 					document.querySelector(".ps-lists").innerHTML =
 						bookmarkList.reduce((html, bookmarkPro, index) => {
 							const {psNo, title, viewcount, bookmark, topic, recruited_cnt, people} = bookmarkPro;
+							const bookmarkCnt = bookmark < 0 ? 0 : bookmark;
 							
 							return `\${html}
 							<div class="ps-pre">
@@ -67,7 +68,7 @@ const bookmarkFilter = (num) => {
 								<p class="bold ps-title">\${title}</p>
 								<ul class="ps-pre__etc">
 									<li>
-										<span class="heart-emoji">&#9829;</span>\${bookmark}
+										<span class="heart-emoji">&#9829;</span>\${bookmarkCnt}
 									</li>
 									<li>
 										<span>&#128064;</span>\${viewcount}
@@ -86,6 +87,8 @@ const bookmarkFilter = (num) => {
 					document.querySelector(".ps-lists").innerHTML =
 						projectList.reduce((html, projectListAll, index) => {
 							const {psNo, title, viewcount, bookmark, topic, recruited_cnt, people} = projectListAll;
+							const bookmarkCnt = bookmark < 0 ? 0 : bookmark;
+							
 							
 							let tagFront = "";
 							let tagBack = "";
@@ -110,7 +113,7 @@ const bookmarkFilter = (num) => {
 								<p class="bold ps-title">\${title}</p>
 								<ul class="ps-pre__etc">
 									<li>
-										<span class="heart-emoji">&#9829;</span>\${bookmark}
+										<span class="heart-emoji">&#9829;</span>\${bookmarkCnt}
 									</li>
 									<li>
 										<span>&#128064;</span>\${viewcount}
@@ -179,6 +182,7 @@ const gatheringFilter = (num) => {
 				// 프로젝트 필터링
 				projectList.reduce((html, selectList, index) => {
 					const {psNo, title, viewcount, bookmark, topic, recruited_cnt, people} = selectList;
+					const bookmarkCnt = bookmark < 0 ? 0 : bookmark;
 					let tagFront = "";
 					let tagBack = "";
 					
@@ -202,7 +206,7 @@ const gatheringFilter = (num) => {
 						<p class="bold ps-title">\${title}</p>
 						<ul class="ps-pre__etc">
 							<li>
-								<span class="heart-emoji">&#9829;</span>\${bookmark}
+								<span class="heart-emoji">&#9829;</span>\${bookmarkCnt}
 							</li>
 							<li>
 								<span>&#128064;</span>\${viewcount}
@@ -280,17 +284,17 @@ $(document).on('click', '.bookmark-front', function(e){
 	let psnum = mark.value;
 	mark.style.display = 'none';
 	mark.previousElementSibling.style.display = 'block';
-	const addBookPs = document.querySelector("#addBookStd");
+	const addBookPs = document.querySelector("#addBookPs");
 	addBookPs.value = psnum;
 	frmAdd.submit();
 });
 $(document).on('click', '.bookmark-back', function(e){
 	let mark = e.target;
 	const frmDel = document.delBookmarkFrm;
-	let psnum = mark.value;	
+	let psnum = mark.value;
 	mark.style.display = 'none';
 	mark.nextElementSibling.style.display = 'block';
-	const delBookPs = document.querySelector("#delBookStd");
+	const delBookPs = document.querySelector("#delBookPs");
 	delBookPs.value = psnum;
 	frmDel.submit();
 });
@@ -328,7 +332,7 @@ $(document).on('click', '.bookmark-back', function(e){
 						<li><p class="bold"><%= project.getTitle() %></p></li>
 						<li class="ps__header__content-content"><p><%= project.getContent() %></p></li>
 						<li class="bold">
-							<span class="heart-emoji">&#9829; <%= project.getBookmark() %></span>
+							<span class="heart-emoji">&#9829; <%= project.getBookmark() < 0 ? 0 : project.getBookmark() %></span>
 							<span>&#128064; <%= project.getViewcount() %></span>
 							<span>모집인원 <%= project.getRecruited_cnt() %> / <%= project.getPeople() %></span>
 						</li>
@@ -398,7 +402,7 @@ $(document).on('click', '.bookmark-back', function(e){
 					</a>
 					<ul class="ps-pre__etc">
 						<li> 
-							<span class="heart-emoji">&#9829;</span><%= project.getBookmark() %></li>
+							<span class="heart-emoji">&#9829;</span><%= project.getBookmark() < 0 ? 0 : project.getBookmark() %></li>
 						<li>
 							<span>&#128064;</span><%= project.getViewcount() %></li>
 						<li>모집인원 <%= project.getRecruited_cnt() %> / <%= project.getPeople() %></li>

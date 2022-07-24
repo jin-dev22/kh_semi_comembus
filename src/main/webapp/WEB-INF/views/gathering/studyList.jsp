@@ -56,6 +56,7 @@ const bookmarkFilter = (num) => {
 					document.querySelector(".ps-lists").innerHTML =
 						bookmarkList.reduce((html, bookmarkStd, index) => {
 							const {psNo, title, viewcount, bookmark, topic, recruited_cnt, people} = bookmarkStd;
+							const bookmarkCnt = bookmark < 0 ? 0 : bookmark;
 							
 							return `\${html}
 							<div class="ps-pre">
@@ -66,7 +67,7 @@ const bookmarkFilter = (num) => {
 								<p class="bold ps-title">\${title}</p>
 								<ul class="ps-pre__etc">
 									<li>
-										<span class="heart-emoji">&#9829;</span>\${bookmark}
+										<span class="heart-emoji">&#9829;</span>\${bookmarkCnt}
 									</li>
 									<li>
 										<span>&#128064;</span>\${viewcount}
@@ -85,6 +86,7 @@ const bookmarkFilter = (num) => {
 					document.querySelector(".ps-lists").innerHTML =
 						studyList.reduce((html, studyListAll, index) => {
 							const {psNo, title, viewcount, bookmark, topic, recruited_cnt, people} = studyListAll;
+							const bookmarkCnt = bookmark < 0 ? 0 : bookmark;
 							
 							let tagFront = "";
 							let tagBack = "";
@@ -110,7 +112,7 @@ const bookmarkFilter = (num) => {
 								<p class="bold ps-title">\${title}</p>
 								<ul class="ps-pre__etc">
 									<li>
-										<span class="heart-emoji">&#9829;</span>\${bookmark}
+										<span class="heart-emoji">&#9829;</span>\${bookmarkCnt}
 									</li>
 									<li>
 										<span>&#128064;</span>\${viewcount}
@@ -179,6 +181,8 @@ const gatheringFilter = (num) => {
 				// 스터디 필터링
 				studyList.reduce((html, selectList, index) => {
 					const {psNo, title, viewcount, bookmark, topic, recruited_cnt, people} = selectList;
+					const bookmarkCnt = bookmark < 0 ? 0 : bookmark;
+					
 					let tagFront = "";
 					let tagBack = "";
 					
@@ -202,7 +206,7 @@ const gatheringFilter = (num) => {
 						<p class="bold ps-title">\${title}</p>
 						<ul class="ps-pre__etc">
 							<li>
-								<span class="heart-emoji">&#9829;</span>\${bookmark}
+								<span class="heart-emoji">&#9829;</span>\${bookmarkCnt}
 							</li>
 							<li>
 								<span>&#128064;</span>\${viewcount}
@@ -328,7 +332,7 @@ $(document).on('click', '.bookmark-back', function(e){
 						<li><p class="bold"><%= study.getTitle() %></p></li>
 						<li class="ps__header__content-content"><p><%= study.getContent() %></p></li>
 						<li class="bold">
-							<span class="heart-emoji">&#9829; <%= study.getBookmark() %></span>
+							<span class="heart-emoji">&#9829; <%= study.getBookmark() < 0 ? 0 : study.getBookmark() %></span>
 							<span>&#128064; <%= study.getViewcount() %></span>
 							<span>모집인원 <%= study.getRecruited_cnt() %> / <%= study.getPeople() %></span>
 						</li>
@@ -403,7 +407,7 @@ $(document).on('click', '.bookmark-back', function(e){
 					</a>
 					<ul class="ps-pre__etc">
 						<li> 
-							<span class="heart-emoji">&#9829;</span><%= study.getBookmark() %></li>
+							<span class="heart-emoji">&#9829;</span><%= study.getBookmark() < 0 ? 0 : study.getBookmark() %></li>
 						<li>
 							<span>&#128064;</span><%= study.getViewcount() %></li>
 						<li>모집인원 <%= study.getRecruited_cnt() %> / <%= study.getPeople() %></li>

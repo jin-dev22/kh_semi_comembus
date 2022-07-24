@@ -606,6 +606,44 @@ public class GatheringDao {
 		}	
 		return gatheringBookmarkList;
 	}
+	
+	// 북마크 추가 시 project_study 테이블 update
+	public int addBookmark(Connection conn, Map<String, Object> param) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("updateBmk");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, (int) param.get("psNo"));
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new GatheringException("bookmark 증가 오류", e);
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
+	// 북마크 삭제 시 project_study 테이블 update	
+	public int delBookmark(Connection conn, Map<String, Object> param) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("deleteBmk");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, (int) param.get("psNo"));
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new GatheringException("bookmark 감소 오류", e);
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	
 	// 선아 코드 끝
 	
 	//수진코드 시작
