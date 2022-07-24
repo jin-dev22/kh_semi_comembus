@@ -91,16 +91,52 @@ public class ProjectUpdateServlet extends HttpServlet {
 			Date startDate = (_startDate != null && !"".equals(_startDate))?Date.valueOf(_startDate):null;
 			Date endDate = (_endDate != null && !"".equals(_endDate))?Date.valueOf(_endDate):null;
 			
+			//입력정보로 project_study테이블 먼저 수정
 			Gathering project = new Gathering(psNo, null, null, title, null, content, 0, 0, null, local, people, null, startDate, endDate);
+			int result = gatheringService.updateProject(project);
+			
+			//수정한 프로젝트 조회해오기(확인용)
+			GatheringExt newPro = (GatheringExt)gatheringService.findByNo(psNo);
+			
+			//직무별 모집인원테이블 변경. 하 드 코 딩
+			Map<String, Object> param = new HashMap<>();
+			param.put("psNo", psNo);
+			
+			param.put("jobCode", "PL");
+			param.put("num", planning_cnt);
+			int isExist = gatheringService.isExistRow(param); 
+			if(isExist == 0) {
+				int insertZero = gatheringService.insertZeroToDept(param);
+			}
+			result = gatheringService.updateNumByDept(param); 
+			
+			param.put("jobCode","DG");
+			param.put("num", design_cnt);
+			isExist = gatheringService.isExistRow(param); 
+			if(isExist == 0) {
+				int insertZero = gatheringService.insertZeroToDept(param);
+			}
+			result = gatheringService.updateNumByDept(param); 
+			
+			param.put("jobCode","BE");
+			param.put("num", backend_cnt);
+			isExist = gatheringService.isExistRow(param); 
+			if(isExist == 0) {
+				int insertZero = gatheringService.insertZeroToDept(param);
+			}
+			result = gatheringService.updateNumByDept(param); 
+						
+			param.put("jobCode","FE");
+			param.put("num", frontend_cnt);
+			isExist = gatheringService.isExistRow(param); 
+			if(isExist == 0) {
+				int insertZero = gatheringService.insertZeroToDept(param);
+			}
+			result = gatheringService.updateNumByDept(param); 
+			
 
 			System.out.println("project = "+project);
-
-			//1.2 dept 저장
-			//GatheringExt projectExt = new GatheringExt(0,null,null,title,null,content,0,0,topic,local,people,null,startDate,endDate,planning,design,frontend,backend,planning_cnt,design_cnt,frontend_cnt,backend_cnt);
-			//System.out.println("projectExt = "+projectExt);
 			
-			//2. 업무로직
-			int result = gatheringService.updateProject(project);
 			
 			//3. redirect
 			request.getSession().setAttribute("msg", "프로젝트를 성공적으로 수정했습니다.");
