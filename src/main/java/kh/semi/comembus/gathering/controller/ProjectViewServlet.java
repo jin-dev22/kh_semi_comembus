@@ -1,7 +1,6 @@
 package kh.semi.comembus.gathering.controller;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -11,11 +10,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import kh.semi.comembus.gathering.model.dto.Gathering;
 import kh.semi.comembus.gathering.model.dto.GatheringExt;
 import kh.semi.comembus.gathering.model.service.GatheringService;
-import kh.semi.comembus.*;
-import kh.semi.comembus.common.ComembusUtils;
 
 /**
  * Servlet implementation class ProjectViewServlet
@@ -61,8 +57,6 @@ public class ProjectViewServlet extends HttpServlet {
 				System.out.println("[projectCookie 새로 발급되었음 : " + cookie.getValue() + "]");
 			}
 			
-			
-			
 			// 2. 업무로직
 			// 게시글조회 및 조회수 증가처리
 			GatheringExt project = hasRead ? (GatheringExt)gatheringService.findByNo(psNo) : (GatheringExt)gatheringService.findByNo(psNo, hasRead);
@@ -81,20 +75,7 @@ public class ProjectViewServlet extends HttpServlet {
 			Map<String, Integer> cntsByDept = gatheringService.getCntsByDept(psNo);
 			
 			System.out.println("project = " + project);
-			System.out.println("[플젝 뷰 서블릿] 프로젝트는="+project);
-			
-			// XSS공격대비 
-			String content = project.getContent();
-			if(content != null) {
-				project.setContent(ComembusUtils.escapeXml(content));				
-				project.setContent(ComembusUtils.convertLineFeedToBr(project.getContent()));				
-			}
-			
-			
-			// 개행문자 변환처리
-			project.setContent(ComembusUtils.convertLineFeedToBr(project.getContent()));
-//			
-			
+
 			// 3. view단 처리
 			request.setAttribute("cntsByDept", cntsByDept);
 			request.setAttribute("project", project);
