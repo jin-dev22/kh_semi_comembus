@@ -59,12 +59,11 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 		}
 	</script>
 </table>
-<form name="applFrm"
-	action="<%=request.getContextPath()%>/gathering/apply" method="POST">
-	<input type="hidden" name="psNo" value="게더링.겟" /> <input type="hidden"
-		name="aplcntId" value="<%=loginMember.getMemberId()%>" /> <input
-		type="hidden" name="aplcntJobCode"
-		value="<%=loginMember.getJobCode()%>" />
+<form name="applFrm" action="<%=request.getContextPath()%>/gathering/apply" method="POST">
+	<input type="hidden" name="psNo" value="<%= gathering.getPsNo() %>" /> 
+	<input type="hidden" name="aplcntId" value="<%=loginMember.getMemberId()%>" />
+	<input type="hidden" name="psType" value="<%=gathering.getPsType()%>" />
+	
 </form>
 
 
