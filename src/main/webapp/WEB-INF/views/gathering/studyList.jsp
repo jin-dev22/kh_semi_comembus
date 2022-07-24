@@ -17,9 +17,8 @@
 %>
 <script>
 const bookmarkFilter = (num) => {
-	// 체크 시 다른 필터 체크 해제처리해야함
-	$("#s__local").prop('checked', false);
-	$("#s__topic").prop('checked', false);
+	$("#s__local").val("All").prop("selected", true);
+	$("#s__topic").val("All").prop("selected", true);
 	$("#s__status").prop('checked', false);
 	
 	const bookmarkYN = $("#s__bookmark").is(':checked') ? "Y" : "All";
@@ -47,9 +46,6 @@ const bookmarkFilter = (num) => {
 			},
 		success(bookmarkFilterLists){
 			const {bookmarkList, studyList, totalContent, cPage} = bookmarkFilterLists;
- 				console.log(">> bookmarkList = ", bookmarkList);
- 				console.log(">> studyList = ", studyList);
- 				console.log(">> totalContent = ", totalContent);
  				
 				if(bookmarkList == null){
 					alert("찜한 스터디가 존재하지 않습니다.");
@@ -60,20 +56,18 @@ const bookmarkFilter = (num) => {
 					document.querySelector(".ps-lists").innerHTML =
 						bookmarkList.reduce((html, bookmarkStd, index) => {
 							const {psNo, title, viewcount, bookmark, topic, recruited_cnt, people} = bookmarkStd;
-							console.log("@@@bookmarkStd ", bookmarkStd);
-							// console.log("html ", html);
-							console.log(">>@@ 확인용", psNo, title, viewcount, bookmark, topic, recruited_cnt, people); // 확인용
+							const bookmarkCnt = bookmark < 0 ? 0 : bookmark;
 							
 							return `\${html}
 							<div class="ps-pre">
-								<a href="">
+								<a href="<%= request.getContextPath()%>/gathering/studyView?psNo=\${psNo}">
 									<img src="<%= request.getContextPath() %>/images/\${topic}.jpg" class="ps-pre__img" alt="해당 스터디 주제 이미지">
 								</a>
 								<p class="bold">\${topic === 'Planning' ? '기획' : (topic === 'Design' ? '디자인' : (topic === 'Frontend' ? '프론트엔드' : (topic === 'Backend' ? '백엔드' : (topic === 'Interview' ? '면접' : '코딩테스트'))))}</p>
 								<p class="bold ps-title">\${title}</p>
 								<ul class="ps-pre__etc">
 									<li>
-										<span class="heart-emoji">&#9829;</span>\${bookmark}
+										<span class="heart-emoji">&#9829;</span>\${bookmarkCnt}
 									</li>
 									<li>
 										<span>&#128064;</span>\${viewcount}
@@ -92,33 +86,33 @@ const bookmarkFilter = (num) => {
 					document.querySelector(".ps-lists").innerHTML =
 						studyList.reduce((html, studyListAll, index) => {
 							const {psNo, title, viewcount, bookmark, topic, recruited_cnt, people} = studyListAll;
-							console.log("@@@bookmarkStd ", studyListAll);
-							console.log(">>@@ 확인용", psNo, title, viewcount, bookmark, topic, recruited_cnt, people); // 확인용
+							const bookmarkCnt = bookmark < 0 ? 0 : bookmark;
 							
 							let tagFront = "";
 							let tagBack = "";
 							outer:
 							for(let i = 0; i < bookmarkList.length; i++){
 								if(psNo == bookmarkList[i].psNo){
-									tagBack = "<button class='bookmark-back' value='\${psNo}'>♥</button>";
-									tagFront = "<button style='display:none' class='bookmark-front' value='\${psNo}'>♡</button>";
+									tagBack = `<button class='bookmark-back' value='\${psNo}'>♥</button>`;
+									tagFront = `<button style='display:none' class='bookmark-front' value='\${psNo}'>♡</button>`;
 									break outer;
 								} else {
-									tagBack = "<button style='display:none' class='bookmark-back' value='\${psNo}'>♥</button>";
-									tagFront = "<button class='bookmark-front' value='\${psNo}'>♡</button>";
+									tagBack = `<button style='display:none' class='bookmark-back' value='\${psNo}'>♥</button>`;
+									tagFront = `<button class='bookmark-front' value='\${psNo}'>♡</button>`;
+
 								}
 							};
 							
 							return `\${html}
 							<div class="ps-pre">
-								<a href="">
+								<a href="<%= request.getContextPath()%>/gathering/studyView?psNo=\${psNo}">
 									<img src="<%= request.getContextPath() %>/images/\${topic}.jpg" class="ps-pre__img" alt="해당 스터디 주제 이미지">
 								</a>
 								<p class="bold">\${topic === 'Planning' ? '기획' : (topic === 'Design' ? '디자인' : (topic === 'Frontend' ? '프론트엔드' : (topic === 'Backend' ? '백엔드' : (topic === 'Interview' ? '면접' : '코딩테스트'))))}</p>
 								<p class="bold ps-title">\${title}</p>
 								<ul class="ps-pre__etc">
 									<li>
-										<span class="heart-emoji">&#9829;</span>\${bookmark}
+										<span class="heart-emoji">&#9829;</span>\${bookmarkCnt}
 									</li>
 									<li>
 										<span>&#128064;</span>\${viewcount}
@@ -168,10 +162,7 @@ const gatheringFilter = (num) => {
 	let searchTopic = 'topic';
 	let selectLocalKeyword = localAll;
 	let selectTopicKeyword = topicAll;
-	
-	console.log("topicAll = ", topicAll)
-	console.log("statusYN = ", statusYN); // 확인용
-	console.log("memberId = ", memberId) // 확인용
+
 	$.ajax({
 		url: '<%= request.getContextPath() %>/gathering/searchStdFilter',
 		data: {
@@ -184,42 +175,38 @@ const gatheringFilter = (num) => {
 			memberId: memberId
 			},
 		success(studySelectLists){
-			console.log(">>> studySelectLists", studySelectLists); // 확인용
 			const {studyList, totalContent, cPage, bookmarkList} = studySelectLists;
 			
 			document.querySelector(".ps-lists").innerHTML =
 				// 스터디 필터링
 				studyList.reduce((html, selectList, index) => {
 					const {psNo, title, viewcount, bookmark, topic, recruited_cnt, people} = selectList;
-					// bookmark 개수 쿼리문 다시 작성해야함
-					console.log(">>> 확인용 ", psNo, title, viewcount, bookmark, topic, recruited_cnt, people); // 확인용
-					console.log(">>> #bookmarkList", bookmarkList);
+					const bookmarkCnt = bookmark < 0 ? 0 : bookmark;
+					
 					let tagFront = "";
 					let tagBack = "";
 					
 					outer:
 	 				for(let i = 0; i < bookmarkList.length; i++){
-	 					console.log(bookmarkList[i].psNo);
-	 					console.log(psNo);
 	 					if(psNo == bookmarkList[i].psNo){
-	 						tagBack = "<button class='bookmark-back' value='\${psNo}'>♥</button>";
-	 						tagFront = "<button style='display:none' class='bookmark-front' value='\${psNo}'>♡</button>";
+	 						tagBack = `<button class='bookmark-back' value='\${psNo}'>♥</button>`;
+	 						tagFront = `<button style='display:none' class='bookmark-front' value='\${psNo}'>♡</button>`;
 	 						break outer;
 	 					} else {
-	 						tagBack = "<button style='display:none' class='bookmark-back' value='\${psNo}'>♥</button>";
-	 						tagFront = "<button class='bookmark-front' value='\${psNo}'>♡</button>";
+	 						tagBack = `<button style='display:none' class='bookmark-back' value='\${psNo}'>♥</button>`;
+	 						tagFront = `<button class='bookmark-front' value='\${psNo}'>♡</button>`;
 	 					}
 					};
 					return `\${html}
 					<div class="ps-pre">
-						<a href="">
+						<a href="<%= request.getContextPath()%>/gathering/studyView?psNo=\${psNo}">
 							<img src="<%= request.getContextPath() %>/images/\${topic}.jpg" class="ps-pre__img" alt="해당 스터디 주제 이미지">
 						</a>
 						<p class="bold">\${topic === 'Planning' ? '기획' : (topic === 'Design' ? '디자인' : (topic === 'Frontend' ? '프론트엔드' : (topic === 'Backend' ? '백엔드' : (topic === 'Interview' ? '면접' : '코딩테스트'))))}</p>
 						<p class="bold ps-title">\${title}</p>
 						<ul class="ps-pre__etc">
 							<li>
-								<span class="heart-emoji">&#9829;</span>\${bookmark}
+								<span class="heart-emoji">&#9829;</span>\${bookmarkCnt}
 							</li>
 							<li>
 								<span>&#128064;</span>\${viewcount}
@@ -228,7 +215,7 @@ const gatheringFilter = (num) => {
 						</ul>
 						<div class="ps__bookmark">
 						<% if(loginMember == null){ %>
-							<button class="bookmark-front" value="\${psNo}">♡</button>
+							<button class="bookmark-front" value='\${psNo}'>♡</button>
 						<% } %>
 						<% if(loginMember != null){ %>
 							\${tagBack}
@@ -263,8 +250,6 @@ function pageLink(cPage, totalPages, funName){
 	let pagebarStart = (Math.floor((cPage - 1) / pagebarSize) * pagebarSize) + 1;
 	let pagebarEnd = pagebarStart + pagebarSize - 1;
 	let pageNo = pagebarStart;
-	console.log("cPage, totalPages, funName = ", cPage, totalPages, funName); // 확인용
-	console.log("pagebarStart, pagebarEnd, pageNo = ", pagebarStart, pagebarEnd, pageNo); // 확인용
 	
 	// 이전영역
 	if(pageNo == 1) {
@@ -290,10 +275,30 @@ function pageLink(cPage, totalPages, funName){
 	else {
 		pagebarTag += "<a href='javascript:" + funName + "(" + pageNo + ")'>다음</a>\n";
 	}
-	console.log(pagebarTag);
 	return pagebarTag;
 };
-
+<% if(loginMember != null){ %>
+$(document).on('click', '.bookmark-front', function(e){
+	let mark = e.target;
+	const frmAdd = document.addBookmarkFrm;
+	let psnum = mark.value;
+	mark.style.display = 'none';
+	mark.previousElementSibling.style.display = 'block';
+	const addBookPs = document.querySelector("#addBookStd");
+	addBookPs.value = psnum;
+	frmAdd.submit();
+});
+$(document).on('click', '.bookmark-back', function(e){
+	let mark = e.target;
+	const frmDel = document.delBookmarkFrm;
+	let psnum = mark.value;	
+	mark.style.display = 'none';
+	mark.nextElementSibling.style.display = 'block';
+	const delBookPs = document.querySelector("#delBookStd");
+	delBookPs.value = psnum;
+	frmDel.submit();
+});
+<% } %>
 </script>
 
 	<section class="gathering">
@@ -327,7 +332,7 @@ function pageLink(cPage, totalPages, funName){
 						<li><p class="bold"><%= study.getTitle() %></p></li>
 						<li class="ps__header__content-content"><p><%= study.getContent() %></p></li>
 						<li class="bold">
-							<span class="heart-emoji">&#9829; <%= study.getBookmark() %></span>
+							<span class="heart-emoji">&#9829; <%= study.getBookmark() < 0 ? 0 : study.getBookmark() %></span>
 							<span>&#128064; <%= study.getViewcount() %></span>
 							<span>모집인원 <%= study.getRecruited_cnt() %> / <%= study.getPeople() %></span>
 						</li>
@@ -402,39 +407,43 @@ function pageLink(cPage, totalPages, funName){
 					</a>
 					<ul class="ps-pre__etc">
 						<li> 
-							<span class="heart-emoji">&#9829;</span><%= study.getBookmark() %></li>
+							<span class="heart-emoji">&#9829;</span><%= study.getBookmark() < 0 ? 0 : study.getBookmark() %></li>
 						<li>
 							<span>&#128064;</span><%= study.getViewcount() %></li>
 						<li>모집인원 <%= study.getRecruited_cnt() %> / <%= study.getPeople() %></li>
 					</ul>
 					<div class="ps__bookmark">
-						<% if(loginMember == null){ %>
-							<button <%=loginMember == null?"disabled":""%> class="bookmark-front">♡</button>
-						<%
-							}
-						%>
-							
-						<%
-							if(loginMember != null){
-								if(bookmarkList != null && !bookmarkList.isEmpty()){
-									for(Gathering bookmark : bookmarkList){
-										int bookPsNo = bookmark.getPsNo();
-										if(studyNo == bookPsNo){
-											System.out.println("일치한다 = 스터디" + studyNo + " 북마크 " + bookPsNo);
-						%>
-											<button class="bookmark-back" value="<%= studyNo %>">♥</button>
-											<button style="display:none" class="bookmark-front" value="<%= studyNo %>">♡</button>
-						<%
-										} else {
-						%>
-											<button class="bookmark-front" value="<%= studyNo %>">♡</button>
-											<button style="display:none" class="bookmark-back" value="<%= studyNo %>">♥</button>
-						<%
-										}
-									}
+					<% if(loginMember == null) { %>
+						<button "disabled" class="bookmark-front">♡</button>
+					<%
+					} else {
+						String tagBack = "<button style='display:none' class='bookmark-back' value='" + studyNo + "'>♥</button>";
+						String tagFront = "<button class='bookmark-front' value='" + studyNo + "'>♡</button>";
+						
+						if(bookmarkList != null && !bookmarkList.isEmpty()){
+							outer:
+							for(int i = 0; i < bookmarkList.size(); i++){
+								int bookPsNo = bookmarkList.get(i).getPsNo();
+								if(studyNo == bookPsNo){
+									tagBack = "";
+									tagFront = "";
+									tagBack = "<button class='bookmark-back' value='" + studyNo + "'>♥</button>";
+									tagFront = "<button style='display:none' class='bookmark-front' value='" + studyNo + "'>♡</button>";
+									break outer;
+								} else {
+									tagBack = "";
+									tagFront = "";
+									tagBack = "<button style='display:none' class='bookmark-back' value='" + studyNo + "'>♥</button>";
+									tagFront = "<button class='bookmark-front' value='" + studyNo + "'>♡</button>";
 								}
 							}
-						%>
+						}
+					%>
+						<%= tagBack %>
+						<%= tagFront %>
+					<%
+					}
+					%>
 					</div>
 				</div>
 			<%
@@ -462,7 +471,7 @@ function pageLink(cPage, totalPages, funName){
 		</section>
 	</section>
 <script>
-
+<% if(loginMember != null){ %>
 document.querySelectorAll(".ps__bookmark").forEach((bookmark) => {
 	bookmark.addEventListener('click', (e) => {
 		let mark = e.target;
@@ -472,9 +481,7 @@ document.querySelectorAll(".ps__bookmark").forEach((bookmark) => {
 
 		if(mark.classList.contains("bookmark-front")) {
 			mark.style.display = 'none';
-			console.log("mark.nextElementSibling > ", mark.nextElementSibling);
-			mark.nextElementSibling.style.display = 'block';
-			
+			mark.previousElementSibling.style.display = 'block';
 			const addBookPs = document.querySelector("#addBookStd");
 			addBookPs.value = psnum;
 			frmAdd.submit();			
@@ -487,7 +494,7 @@ document.querySelectorAll(".ps__bookmark").forEach((bookmark) => {
 		}
 	})
 });
-
+<% }%>
 </script>
 	
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>

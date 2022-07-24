@@ -37,9 +37,9 @@ public class SearchStdBookmarkServlet extends HttpServlet {
 				cPage = Integer.parseInt(request.getParameter("cPage"));
 			} catch(NumberFormatException e) {}
 			
-			// 체크 시 Y = 찜, 체크해제 시 All
+			// 체크 시 Y = 찜, 체크해제 시 = All
 			String bookmarkYN = request.getParameter("bookmarkYN");
-			// 로그인을 했다면 memberId가, 안했다면 "" 공백문자가
+			// 로그인을 했다면 memberId가, 안했다면 ""
 			String memberId = request.getParameter("memberId");
 			String type = "S";
 			int totalContent = 0;
@@ -54,19 +54,16 @@ public class SearchStdBookmarkServlet extends HttpServlet {
 			param.put("end", cPage * numPerPage);
 			param.put("type", type);
 			
-			System.out.println(">>> 23일 스터디 확인용 param = " + param);
-			
 			// 2. 업무로직
-			// bookmark 영역
 			List<Gathering> bookmarkList = new ArrayList<>();
-			if(memberId != null && "Y".equals(bookmarkYN)) { // 로그인멤버가 있고, 찜한거 체크 시
+			if(memberId != null && "Y".equals(bookmarkYN)) { // 로그인멤버가 있고, 찜 체크 시
 				bookmarkList = gatheringService.findStdBookmarkFilter(param);
 				totalContent = gatheringService.getTotalBookmarkFilter(param);
 			}
 			
 			List<Gathering> studyList = new ArrayList<>();
 			Map<String, Object> bmParam = new HashMap<>();
-			if(memberId != null && "All".equals(bookmarkYN)) {
+			if(memberId != null && "All".equals(bookmarkYN)) { // 로그인멤버가 있고, 찜 체크 해제 시
 				studyList = gatheringService.findGatheringAll(param);
 				totalContent = gatheringService.getStdTotalContent();
 				bmParam.put("loginMemberId", memberId);
@@ -74,12 +71,6 @@ public class SearchStdBookmarkServlet extends HttpServlet {
 				System.out.println(">>> memberId " + memberId);
 				System.out.println(">>> bmParam = " + bmParam);
 			};
-			// pagebar 영역
-			
-			System.out.println(">>> 필터링확인용 bookmarkList: " + bookmarkList); // 확인용
-			System.out.println(">>> 필터링확인용 studyList = " + studyList); // 확인용
-			System.out.println(">>> 필터링 totalContent = " + totalContent); // 확인용
-			System.out.println(">>> cPage = " + cPage);
 			
 			response.setContentType("application/json; charset=utf-8");
 			Map<String, Object> bookmarkFilterLists = new HashMap<>();

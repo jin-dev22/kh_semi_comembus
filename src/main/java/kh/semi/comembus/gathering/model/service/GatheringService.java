@@ -260,39 +260,6 @@ public class GatheringService {
 	//수진코드 끝
 	
 	//유경 추가
-//	public int enrollProject(Gathering project) {
-//		Connection conn = getConnection();
-//		int result = 0;
-//		
-//		try {
-//			// project_study table에 insert
-//			result = gatheringDao.enrollProject(conn, project);
-//			
-//			// 방금 등록된 프로젝트 no조회
-//			int psNo = gatheringDao.getLastProjectNo(conn);
-//			System.out.println(">> projectNo = " + psNo);
-//			
-//			List<ProjectMemberDept> projectDeps = ((GatheringExt) project).getProjectDeps();
-//			if(projectDeps != null && !projectDeps.isEmpty()) {
-//				for(ProjectMemberDept projectDep : projectDeps) {
-//					projectDep.setPsNo(psNo);
-//					System.out.println(">> psNo" + psNo);
-//					System.out.println(">> 11projectDeps" + projectDeps);
-//					System.out.println(">> 11projectDep" + projectDep);
-//					result = gatheringDao.enrollProjectDep(conn, projectDep);
-//					
-//				}
-//			}
-//			
-//			commit(conn);
-//		}catch(Exception e) {
-//			rollback(conn);
-//			throw e;
-//		}finally {
-//			close(conn);
-//		}
-//		return result;
-//	}
 	
 
 	public int enrollProject(GatheringExt project) {
@@ -413,10 +380,6 @@ public class GatheringService {
 		return result;
 	}
 
-
-
-
-	
 	//유경 끝
 	
 	
@@ -434,12 +397,10 @@ public class GatheringService {
 			throw e;
 		}
 		finally {
-			close(conn);			
+			close(conn);
 		}
 		return result;
 	}
 	// 미송 끝
-
-
 
 }

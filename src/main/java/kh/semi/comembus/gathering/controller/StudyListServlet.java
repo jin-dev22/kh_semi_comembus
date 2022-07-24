@@ -57,17 +57,13 @@ public class StudyListServlet extends HttpServlet {
 			if(loginMember != null) {
 				loginMemberId = loginMember.getMemberId();
 				bmParam.put("loginMemberId", loginMemberId);
-				System.out.println(">>> loginMemberId " + loginMemberId);
-				System.out.println(">>> bmParam = " + bmParam);
 			}
 			List<Gathering> bookmarkList = gatheringService.findAllStdBookmarked(bmParam);
 						
 			// pagebar 영역
 			int totalContent = gatheringService.getStdTotalContent();
-			System.out.println(">>> totalContent = " + totalContent);
 			String url = request.getRequestURI();
 			String pagebar = ComembusUtils.getPagebar(cPage, numPerPage, totalContent, url);
-			System.out.println(">>> page바 = " + pagebar);
 			
 			// view단처리
 			request.setAttribute("studyList", studyList);
