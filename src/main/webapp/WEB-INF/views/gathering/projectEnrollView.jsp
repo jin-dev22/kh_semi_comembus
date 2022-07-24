@@ -89,10 +89,9 @@
     <tr>
     	<td colspan="3" id="summernoteWidth">
     		❗ 프로젝트에 대한 자세한 설명을 적어주세요. 자세할수록 지원률이 올라갑니다. <br>
-    		<textarea id="summernote" name="editordata"></textarea>
-    		<!-- <div>
-    			
-    		</div> -->
+    		<div>
+    			<textarea id="summernote" name="editordata"></textarea>	
+    		</div>
     	</td>
     </tr>
 	<tr>
