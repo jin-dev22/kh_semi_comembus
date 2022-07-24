@@ -57,7 +57,7 @@ public class GatheringApplicationStatusServlet extends HttpServlet {
 		String alertContent = "["+substrTitle +"]에  ["+substrNick+"]님이 지원하셨습니다.";
 		
 		Alert alert = new Alert(0, gather.getWriter(), psNo, 0, MessageType.NEW_APPLICANT, alertContent, IsRead.N);
-		result = alertService.notifyCancelApld(alert);		
+		result = alertService.notifyNewAplcnt(alert);		
 		
 		HttpSession session = request.getSession();
 		session.setAttribute("msg", "지원이 완료되었습니다. 추후 지원 신청 결과는 알림페이지에서 확인 가능합니다.");
