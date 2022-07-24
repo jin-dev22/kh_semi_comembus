@@ -66,18 +66,14 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 
 	if(loginMember == null){
 		isPrevented = "guest";
-		System.out.println("1중복방지?"+isPrevented+"/////////"+loginMember);
 	}
 	else if(!apldPsNoList.isEmpty() && apldPsNoList.indexOf(gathering.getPsNo()) > 0){
 		isPrevented = "true";
-		System.out.println("2중복방지?"+isPrevented+"/////////"+loginMember);
 	}
 	else if(apldPsNoList.isEmpty() || apldPsNoList.indexOf(gathering.getPsNo()) < 0){
 		isPrevented = "false";
-		System.out.println("3중복방지?"+isPrevented+"/////////"+loginMember);
 	}
  
-	System.out.println("4중복방지?"+isPrevented+"/////////"+loginMember);
 %>
 		<td colspan="2"><input type="button" id="apply" value="지원하기"
 			onclick="applyStatus('<%=isPrevented%>')"></td>

@@ -41,7 +41,7 @@ public class GatheringApplicationStatusServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		session.setAttribute("msg", "지원이 완료되었습니다. 추후 지원 신청 결과는 알림페이지에서 확인 가능합니다.");
 		
-		//지원신청결과 리스트 업데이트
+		//회원 지원신청목록 리스트 업데이트
 		List<Integer> apldPsNoList = memberService.findAllApldPsNoByMemberId(aplcntId);
 		session.setAttribute("apldPsNoList", apldPsNoList);
 	
