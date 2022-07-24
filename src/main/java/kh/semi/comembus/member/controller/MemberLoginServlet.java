@@ -58,8 +58,8 @@ public class MemberLoginServlet extends HttpServlet {
 			}
 			
 			
-			Member member = memberService.findById(memberId);
-			// System.out.println("member@MemberLoginServlet = " + member); 
+			Member member = memberService.findNotQuitMember(memberId);
+			System.out.println("member@MemberLoginServlet = " + member); 
 			
 			
 			HttpSession session = request.getSession(true);
