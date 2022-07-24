@@ -27,6 +27,20 @@ public class GatheringService {
 		close(conn);
 		return projectList;
 	}
+	
+	public List<Gathering> findProjectSlide() {
+		Connection conn = getConnection();
+		List<Gathering> projectSlideList = gatheringDao.findProjectSlide(conn);
+		close(conn);
+		return projectSlideList;
+	}
+	
+	public List<Gathering> findStudySlide() {
+		Connection conn = getConnection();
+		List<Gathering> studySlideList = gatheringDao.findStudySlide(conn);
+		close(conn);
+		return studySlideList;
+	}
 
 	public int getProTotalContent() {
 		Connection conn = getConnection();
@@ -106,14 +120,6 @@ public class GatheringService {
 		return stdBookmarkList;
 	}
 	
-
-//	public List<Gathering> psDepList(List<Gathering> projectList) {
-//		Connection conn = getConnection();
-//		List<Gathering> depList = gatheringDao.psDepList(conn, projectList);
-//		close(conn);
-//		return depList;
-//	}
-	
 	// 선아 끝
 
 	//수진코드 시작
@@ -186,6 +192,17 @@ public class GatheringService {
 		close(conn);
 		return capacitiesByDept;
 	}
+	
+	/**
+	 * 프로젝트 게시물상세 조회시 직무별 모집된 인원 조회
+	 */
+	public Map<String, Integer> getCntsByDept(int psNo) {
+		Connection conn = getConnection();
+		Map<String, Integer> cntsByDept = gatheringDao.getCntsByDept(conn, psNo);
+		close(conn);
+		return cntsByDept;
+	}
+	
 	
 	/**
 	 * 모임게시글상세>지원자현황페이지: 직무별 모집인원 테이블 업데이트, ajax 처리를 위해 boolean값 반환
@@ -427,6 +444,7 @@ public class GatheringService {
 		return result;
 	}
 	// 미송 끝
+
 
 
 }

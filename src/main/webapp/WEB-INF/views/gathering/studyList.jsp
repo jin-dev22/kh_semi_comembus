@@ -12,6 +12,7 @@
 <%
 	List<Gathering> studyList = (List<Gathering>) request.getAttribute("studyList");
 	List<Gathering> bookmarkList = (List<Gathering>) request.getAttribute("bookmarkList");
+	List<Gathering> studySlideList = (List<Gathering>) request.getAttribute("studySlideList");
 	String type = request.getParameter("searchType");
 	String keyword = request.getParameter("searchKeyword");
 %>
@@ -69,9 +70,6 @@ const bookmarkFilter = (num) => {
 									<li>
 										<span class="heart-emoji">&#9829;</span>\${bookmarkCnt}
 									</li>
-									<li>
-										<span>&#128064;</span>\${viewcount}
-									</li>
 									<li>모집인원 \${recruited_cnt} / \${people}</li>
 								</ul>
 								<div class="ps__bookmark">
@@ -113,9 +111,6 @@ const bookmarkFilter = (num) => {
 								<ul class="ps-pre__etc">
 									<li>
 										<span class="heart-emoji">&#9829;</span>\${bookmarkCnt}
-									</li>
-									<li>
-										<span>&#128064;</span>\${viewcount}
 									</li>
 									<li>모집인원 \${recruited_cnt} / \${people}</li>
 								</ul>
@@ -207,9 +202,6 @@ const gatheringFilter = (num) => {
 						<ul class="ps-pre__etc">
 							<li>
 								<span class="heart-emoji">&#9829;</span>\${bookmarkCnt}
-							</li>
-							<li>
-								<span>&#128064;</span>\${viewcount}
 							</li>
 							<li>모집인원 \${recruited_cnt} / \${people}</li>
 						</ul>
@@ -316,24 +308,22 @@ $(document).on('click', '.bookmark-back', function(e){
 			<div class="ps__header__content swiper">
 				<div class="swiper-wrapper">
 				<%
-				if(studyList != null && !studyList.isEmpty()){
-					for(int i = 0; i < 3; i++){
-						Gathering _study = studyList.get(i);
-						GatheringExt study = (GatheringExt) _study;
-						String topic = study.getTopic();
+				if(studySlideList != null && !studySlideList.isEmpty()){
+					for(Gathering _studyslide : studySlideList){
+						GatheringExt slide = (GatheringExt) _studyslide;
+						String topic = slide.getTopic();
 				%>
 				<div class="swiper-slide">
-					<a href="<%= request.getContextPath()%>/gathering/studyView?psNo=<%= study.getPsNo()%>">
+					<a href="<%= request.getContextPath()%>/gathering/studyView?psNo=<%= slide.getPsNo()%>">
 						<img src="<%= request.getContextPath() %>/images/<%= topic %>.jpg" class="ps__header__content__img" alt="해당 스터디 주제 이미지">
 					</a>
 					<ul class="ps__header__content-info">
 						<li><p class="bold"><%= "Planning".equals(topic) ? "기획" : ("Design".equals(topic) ? "디자인" : ("Frontend".equals(topic) ? "프론트엔드" : ("Backend".equals(topic) ? "백엔드" : ("Interview".equals(topic) ? "면접" : "코딩테스트")))) %></p></li>
-						<li><p class="bold"><%= study.getTitle() %></p></li>
-						<li class="ps__header__content-content"><p><%= study.getContent() %></p></li>
+						<li><p class="bold"><%= slide.getTitle() %></p></li>
+						<li class="ps__header__content-content"><p><%= slide.getContent() %></p></li>
 						<li class="bold">
-							<span class="heart-emoji">&#9829; <%= study.getBookmark() < 0 ? 0 : study.getBookmark() %></span>
-							<span>&#128064; <%= study.getViewcount() %></span>
-							<span>모집인원 <%= study.getRecruited_cnt() %> / <%= study.getPeople() %></span>
+							<span class="heart-emoji">&#9829; <%= slide.getBookmark() < 0 ? 0 : slide.getBookmark() %></span>
+							<span>모집인원 <%= slide.getRecruited_cnt() %> / <%= slide.getPeople() %></span>
 						</li>
 					</ul>
 				</div>
@@ -406,10 +396,11 @@ $(document).on('click', '.bookmark-back', function(e){
 					</a>
 					<ul class="ps-pre__etc">
 						<li> 
-							<span class="heart-emoji">&#9829;</span><%= study.getBookmark() < 0 ? 0 : study.getBookmark() %></li>
-						<li>
-							<span>&#128064;</span><%= study.getViewcount() %></li>
-						<li>모집인원 <%= study.getRecruited_cnt() %> / <%= study.getPeople() %></li>
+							<span class="heart-emoji">&#9829;</span><%= study.getBookmark() < 0 ? 0 : study.getBookmark() %>
+						</li>
+						<li class="hoverList">
+							<span> 모집인원 <%= study.getRecruited_cnt() %> / <%= study.getPeople() %></span>
+						</li>
 					</ul>
 					<div class="ps__bookmark">
 					<% if(loginMember == null) { %>
@@ -470,13 +461,6 @@ $(document).on('click', '.bookmark-back', function(e){
 		</section>
 	</section>
 <script>
-$(".ps-pre__etc").mouseover(function (e) {
-	const psNo = e.target.value;
-	console.log("11", e.target);
-	console.log("22", psNo);
-	psDepHover(psNo);
-});
-const psDepHover(psNo)
 
 <% if(loginMember != null){ %>
 document.querySelectorAll(".ps__bookmark").forEach((bookmark) => {

@@ -17,7 +17,6 @@ import java.util.Properties;
 import kh.semi.comembus.gathering.model.dto.Gathering;
 import kh.semi.comembus.gathering.model.dto.GatheringExt;
 import kh.semi.comembus.gathering.model.dto.GatheringType;
-import kh.semi.comembus.gathering.model.dto.ProjectMemberDept;
 import kh.semi.comembus.gathering.model.dto.Status;
 import kh.semi.comembus.gathering.model.exception.GatheringException;
 import kh.semi.comembus.member.model.dto.JobCode;
@@ -46,14 +45,11 @@ public class GatheringDao {
 		} else {
 			sql = prop.getProperty("findStudyAll");
 		}
-		System.out.println(">23일 type = " + type);
-		System.out.println(">23일 sql = " + sql);
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, (int)param.get("start"));
 			pstmt.setInt(2, (int)param.get("end"));
-			System.out.println(">23일 sql = " + sql);
 			rset = pstmt.executeQuery();
 			while(rset.next()) {
 				GatheringExt gathering = handleGatheringResultSet(rset);
@@ -69,6 +65,52 @@ public class GatheringDao {
 		return projectList;
 	}
 	
+
+	public List<Gathering> findProjectSlide(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<Gathering> projectSlideList = new ArrayList<>();
+		String sql = sql = prop.getProperty("findProjectSlide");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				GatheringExt gathering = handleGatheringResultSet(rset);
+				gathering.setRecruited_cnt(rset.getInt("recruited_cnt"));
+				projectSlideList.add(gathering);
+			}
+		} catch (SQLException e) {
+			throw new GatheringException("슬라이드용 목록 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return projectSlideList;
+	}
+	
+	public List<Gathering> findStudySlide(Connection conn) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		List<Gathering> studySlideList = new ArrayList<>();
+		String sql = sql = prop.getProperty("findStudySlide");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				GatheringExt gathering = handleGatheringResultSet(rset);
+				gathering.setRecruited_cnt(rset.getInt("recruited_cnt"));
+				studySlideList.add(gathering);
+			}
+		} catch (SQLException e) {
+			throw new GatheringException("슬라이드용 목록 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return studySlideList;
+	}
 	private GatheringExt handleGatheringResultSet(ResultSet rset) throws SQLException {
 		int psNo = rset.getInt("ps_no");
 		String writer = rset.getString("writer");
@@ -463,7 +505,6 @@ public class GatheringDao {
 		} else {
 			sql = sql.replace("[str1]", " ");
 		}
-		System.out.println(sql);
 		
 		try {
 			pstmt = conn.prepareStatement(sql);
@@ -493,8 +534,6 @@ public class GatheringDao {
 		String type = (String) param.get("type");
 		String sql = "";
 		
-		System.out.println("DAO의 bookmarkYN" + bookmarkYN);
-		
 		if(type == "P") {
 			sql = prop.getProperty("getTotalProBookmarkFilter");
 		} else {
@@ -512,7 +551,6 @@ public class GatheringDao {
 			rset = pstmt.executeQuery();
 			if(rset.next()) {
 				totalbookmarkFilterContent = rset.getInt(1);
-				System.out.println("totalbookmarkFilterContent");
 			}
 		} catch (SQLException e) {
 			throw new GatheringException("스터디 찜 필터 조회 오류", e);
@@ -644,7 +682,6 @@ public class GatheringDao {
 		}
 		return result;
 	}
-
 	
 	// 선아 코드 끝
 	
@@ -814,6 +851,34 @@ public class GatheringDao {
 		return capacitiesByDept;
 	}
 	
+	public Map<String, Integer> getCntsByDept(Connection conn, int psNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		Map<String, Integer> cntsByDept = new HashMap<>();
+		String sql = prop.getProperty("getCntsByDept");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, psNo);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				JobCode jobCode = JobCode.valueOf(rset.getString("job_code"));
+				int capa = rset.getInt("recruited_number");
+				switch(jobCode) {
+				case PL: cntsByDept.put("PL", capa); break;
+				case DG: cntsByDept.put("DG", capa); break;
+				case BE: cntsByDept.put("BE", capa); break;
+				case FE: cntsByDept.put("FE", capa); break;
+				}
+			}
+		} catch (SQLException e) {
+			throw new GatheringException("프로젝트 직무별 모집인원 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}	
+		return cntsByDept;
+	}
+	
 	/**
 	 * 모임게시글상세>지원자현황페이지: 직무별 모집인원 테이블 업데이트
 	 */
@@ -887,7 +952,7 @@ public class GatheringDao {
 				capa = rset.getInt(1);
 			}
 		} catch (SQLException e) {
-			throw new GatheringException("스터디 정원 조회 오류", e);
+			throw new GatheringException("스터디 모집된인원 조회 오류", e);
 		} finally {
 			close(rset);
 			close(pstmt);
@@ -1147,5 +1212,6 @@ public class GatheringDao {
 		return result;
 	}
 	// 미송 코드 끝
+
 
 }

@@ -159,4 +159,14 @@ public class AlertService {
 		close(conn);
 		return totalAlertNum; 
 	}
+
+	/**
+	 * 알림목록링크 걸기용 ps타입조회 
+	 */
+	public String getPsTypeOfAlert(int alertNo) {
+		Connection conn = getConnection();
+		String type = alertDao.getPsTypeOfAlert(conn, alertNo);
+		close(conn);
+		return type;
+	}
 }

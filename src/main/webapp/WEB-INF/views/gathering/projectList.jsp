@@ -12,6 +12,7 @@
 <%
 	List<Gathering> projectList = (List<Gathering>) request.getAttribute("projectList");
 	List<Gathering> bookmarkList = (List<Gathering>) request.getAttribute("bookmarkList");
+	List<Gathering> projectSlideList = (List<Gathering>) request.getAttribute("projectSlideList");
 	String type = request.getParameter("searchType");
 	String keyword = request.getParameter("searchKeyword");
 %>
@@ -20,7 +21,7 @@
 const bookmarkFilter = (num) => {
 	$("#p__local").val("All").prop("selected", true);
 	$("#p__job_code").val("All").prop("selected", true);
-	$("#p__status").prop('checked', false);
+	$("#p__status").prop("checked", false);
 	
 	const bookmarkYN = $("#p__bookmark").is(':checked') ? "Y" : "All";
 	let memberId = "";
@@ -70,9 +71,6 @@ const bookmarkFilter = (num) => {
 									<li>
 										<span class="heart-emoji">&#9829;</span>\${bookmarkCnt}
 									</li>
-									<li>
-										<span>&#128064;</span>\${viewcount}
-									</li>
 									<li>모집인원 \${recruited_cnt} / \${people}</li>
 								</ul>
 								<div class="ps__bookmark">
@@ -115,9 +113,6 @@ const bookmarkFilter = (num) => {
 									<li>
 										<span class="heart-emoji">&#9829;</span>\${bookmarkCnt}
 									</li>
-									<li>
-										<span>&#128064;</span>\${viewcount}
-									</li>
 									<li>모집인원 \${recruited_cnt} / \${people}</li>
 								</ul>
 								<div class="ps__bookmark">
@@ -159,6 +154,7 @@ const gatheringFilter = (num) => {
 	const numPerPage = 12;
 	let totalPages = 0;
 	
+	console.log(">> statusYN ", statusYN);
 	let searchLocal = 'local';
 	let searchJobcode = 'jobcode';
 	let selectLocalKeyword = localAll;
@@ -207,9 +203,6 @@ const gatheringFilter = (num) => {
 						<ul class="ps-pre__etc">
 							<li>
 								<span class="heart-emoji">&#9829;</span>\${bookmarkCnt}
-							</li>
-							<li>
-								<span>&#128064;</span>\${viewcount}
 							</li>
 							<li>모집인원 \${recruited_cnt} / \${people}</li>
 						</ul>
@@ -316,24 +309,22 @@ $(document).on('click', '.bookmark-back', function(e){
 			<div class="ps__header__content swiper">
 				<div class="swiper-wrapper">
 				<%
-				if(projectList != null && !projectList.isEmpty()){
-					for(int i = 0; i < 3; i++){
-						Gathering _project = projectList.get(i);
-						GatheringExt project = (GatheringExt) _project;
-						String topic = project.getTopic();
+				if(projectSlideList != null && !projectSlideList.isEmpty()){
+					for(Gathering _proslide : projectSlideList){
+						GatheringExt proslide = (GatheringExt) _proslide;
+						String topic = proslide.getTopic();
 				%>
 				<div class="swiper-slide">
-					<a href="<%= request.getContextPath()%>/gathering/projectView?psNo=<%= project.getPsNo()%>">
+					<a href="<%= request.getContextPath()%>/gathering/projectView?psNo=<%= proslide.getPsNo()%>">
 						<img src="<%= request.getContextPath() %>/images/<%= topic %>.jpg" class="ps__header__content__img" alt="해당 프로젝트 주제 이미지">
 					</a>
 					<ul class="ps__header__content-info">
 						<li><p class="bold"><%= "social".equals(topic) ? "소셜네트워크" : ("game".equals(topic) ? "게임" : ("travel".equals(topic) ? "여행" : ("finance".equals(topic) ? "금융" : "이커머스"))) %></p></li>
-						<li><p class="bold"><%= project.getTitle() %></p></li>
-						<li class="ps__header__content-content"><p><%= project.getContent() %></p></li>
+						<li><p class="bold"><%= proslide.getTitle() %></p></li>
+						<li class="ps__header__content-content"><p><%= proslide.getContent() %></p></li>
 						<li class="bold">
-							<span class="heart-emoji">&#9829; <%= project.getBookmark() < 0 ? 0 : project.getBookmark() %></span>
-							<span>&#128064; <%= project.getViewcount() %></span>
-							<span>모집인원 <%= project.getRecruited_cnt() %> / <%= project.getPeople() %></span>
+							<span class="heart-emoji">&#9829; <%= proslide.getBookmark() < 0 ? 0 : proslide.getBookmark() %></span>
+							<span>모집인원 <%= proslide.getRecruited_cnt() %> / <%= proslide.getPeople() %></span>
 						</li>
 					</ul>
 				</div>
@@ -401,16 +392,11 @@ $(document).on('click', '.bookmark-back', function(e){
 					</a>
 					<ul class="ps-pre__etc">
 						<li> 
-							<span class="heart-emoji">&#9829;</span><%= project.getBookmark() < 0 ? 0 : project.getBookmark() %></li>
-						<li>
-							<span>&#128064;</span><%= project.getViewcount() %></li>
-						<li>모집인원 <%= project.getRecruited_cnt() %> / <%= project.getPeople() %></li>
-						<table>
-							<tr><td>직무 1 | 0 명</td></tr>
-							<tr><td>직무 2 | 0 명</td></tr>
-							<tr><td>직무 3 | 0 명</td></tr>
-							<tr><td>직무 4 | 0 명</td></tr>
-						</table>
+							<span class="heart-emoji">&#9829;</span><%= project.getBookmark() < 0 ? 0 : project.getBookmark() %>
+						</li>
+						<li class="hoverList">
+							<span>모집인원 <%= project.getRecruited_cnt() %> / <%= project.getPeople() %></span>
+						</li>
 					</ul>
 					<div class="ps__bookmark">
 					<% if(loginMember == null) { %>
@@ -471,6 +457,7 @@ $(document).on('click', '.bookmark-back', function(e){
 		</section>
 	</section>
 <script>
+
 <% if(loginMember != null){ %>
 document.querySelectorAll(".ps__bookmark").forEach((bookmark) => {
 	bookmark.addEventListener('click', (e) => {

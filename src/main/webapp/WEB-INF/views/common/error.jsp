@@ -11,16 +11,37 @@
 <meta charset="UTF-8">
 <title>오류</title>
 <style>
-body {text-align:center;}
-h1 {font-size : 500px; margin : 0;}
+body {text-align:center; }
+h2 {margin : 0;}
 .err-msg {color : red;}
-
+.error_img{
+    width: 300px;
+    position: absolute;
+    top: 250;
+}
+#error-background{
+    width: 400px;
+    height: 400px;
+    background-color: #FFE69A;
+    border-radius: 30%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 100px auto 10px;
+}
+h1{
+    margin: 0;
+    width: 400px;
+    margin: auto;
+}
 </style>
 </head>
 <body>
-	<h1>헉</h1>
-	<p class="err-msg"><%= msg %></p>
-	<hr />
-	<a href="<%= request.getContextPath() %>">홈으로</a>
+    <div id="error-background">
+		<img src="<%= request.getContextPath() %>/images/errorImage.png" class="ps-pre__img" alt="에러페이지 이미지">
+    </div>
+         <h1>앗 잠시만요!</h1>
+        <p class="err-msg"><%= msg %></p>
+        <a href="<%= request.getContextPath() %>">메인화면으로 이동하기</a>
 </body>
 </html>

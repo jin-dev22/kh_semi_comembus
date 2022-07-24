@@ -1,3 +1,4 @@
+<%@page import="java.util.Map"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="java.util.List"%>
 <%@page import="kh.semi.comembus.gathering.model.dto.Gathering"%>
@@ -11,6 +12,7 @@
 /* Gathering gathering = (Gathering) request.getAttribute("project"); */
 GatheringExt gathering = (GatheringExt) request.getAttribute("project");
 List<Integer> apldPsNoList = loginMember != null? (List<Integer>) session.getAttribute("apldPsNoList") : null;
+Map<String, Integer> cntsByDept = (Map<String, Integer>) request.getAttribute("cntsByDept");
 
 %>
 <link rel="stylesheet"
@@ -45,19 +47,19 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 <table>
 	<tr>
 		<td>기획</td>
-		<td><span id="statue">1</span>/<span id="total"><%=gathering.getPlanning_cnt()%></span></td>
+		<td><span id="statue"><%=cntsByDept.containsKey("PL")? cntsByDept.get("PL") : "-" %></span>/<span id="total"><%=gathering.getPlanning_cnt()%></span></td>
 	</tr>
 	<tr>
 		<td>디자인</td>
-		<td><span id="statue">1</span>/<span id="total"><%=gathering.getDesign_cnt()%></span></td>
+		<td><span id="statue"><%=cntsByDept.containsKey("DG")? cntsByDept.get("DG") : "-"%></span>/<span id="total"><%=gathering.getDesign_cnt()%></span></td>
 	</tr>
 	<tr>
 		<td>프론트엔드</td>
-		<td><span id="statue">1</span>/<span id="total"><%=gathering.getFrontend_cnt()%></span></td>
+		<td><span id="statue"><%=cntsByDept.containsKey("FE")? cntsByDept.get("FE") : "-"%></span>/<span id="total"><%=gathering.getFrontend_cnt()%></span></td>
 	</tr>
 	<tr>
 		<td>백엔드</td>
-		<td><span id="statue">1</span>/<span id="total"><%=gathering.getBackend_cnt()%></span></td>
+		<td><span id="statue"><%=cntsByDept.containsKey("BE")? cntsByDept.get("BE") : "-"%></span>/<span id="total"><%=gathering.getBackend_cnt()%></span></td>
 	</tr>
 	<tr>
 	
@@ -113,21 +115,11 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 <br>
 <hr>
 
-<input type="button" id="bookmark" onclick="bookmark()"
-	value="이 프로젝트 찜하기"></input>
-<input type="button" id="bookmarkCancel" onclick="bookmarkCancel()"
-	value="프로젝트 찜하기 취소"></input>
 <br>
 <br>
 <br>
 <br>
-<%--찜하기 속성 제출 --%>
-<form name="bmFrm"
-	action="<%=request.getContextPath()%>/membus/bookmarkAdd"
-	method="POST">
-	<input type="hidden" name="BmId" /> <input type="hidden" name="psNo"
-		value="<%=gathering.getPsNo()%>" />
-</form>
+
 <%
 if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId())) {
 %>
@@ -141,41 +133,6 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 
 </body>
 <script>
-	const bmCancelBtn = document.querySelector('#bookmarkCancel');
-	bmCancelBtn.style.display = 'none';
-
-		function bookmark() {
-			if (bmCount == 0) {
-				let count = Number(bookmarkNum.textContent)
-				count = count + 1;
-				bookmarkNum.textContent = count;
-				bmCount += 1;
-			}
-			if (bmBtn.style.display !== 'none') {
-				bmBtn.style.display = 'none';
-				bmCancelBtn.style.display = 'block';
-			}
-			for (let i = 0; i < table.rows.length; i++) {
-				const newCell = table.rows[i].insertCell(-1);
-				newCell.innerHTML = '<td><img src="/멤버 이미지.png" alt="멤버아이디"></td>'
-			}
-		}
-		function bookmarkCancel() {
-			if (bmCount == 1) {
-				let count = Number(bookmarkNum.textContent)
-				count -= 1;
-				bookmarkNum.textContent = count;
-				bmCount -= 1;
-			}
-			if (bmCancelBtn.style.display !== 'none') {
-				bmCancelBtn.style.display = 'none';
-				bmBtn.style.display = 'block';
-			}
-			for (let i = 0; i < table.rows.length; i++) {
-				const newCell = table.rows[i].deleteCell(-1);
-			}
-		}
-
 		const applyStatue = document.querySelector('#statue');
 		const applyTotal = document.querySelector('#total');
 		if (applyStatue == applyTotal) {
