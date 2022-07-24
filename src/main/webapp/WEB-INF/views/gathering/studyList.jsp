@@ -381,7 +381,18 @@ $(document).on('click', '.bookmark-back', function(e){
 					<label for="s__bookmark">찜한 스터디</label>
 				</div>
 				
-				<input type="button" class="ps__enroll btn" onclick="location.href='<%= request.getContextPath()%>/gathering/studyEnrollView'" value="스터디 생성">
+		        <input type="button" class="ps__enroll btn" onclick="studyEnroll();" value="스터디 생성">
+	            <script>
+	            const studyEnroll = () => {
+	               if(<%= loginMember == null %>){
+	                  alert('스터디 생성은 로그인 후 이용 가능합니다.');   
+	               }
+	               else{
+	                  location.href='<%= request.getContextPath()%>/gathering/studyEnrollView';                  
+	               }
+	            }
+	            </script>
+            
 			</div>
 			<div class="ps-lists">
 			<%

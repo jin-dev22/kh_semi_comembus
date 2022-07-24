@@ -373,7 +373,18 @@ $(document).on('click', '.bookmark-back', function(e){
 					<input type="checkbox" id="p__bookmark" name="searchType" onchange="bookmarkFilter()">
 					<label for="p__bookmark">찜한 프로젝트</label>
 				</div>
-				<input type="button" class="ps__enroll btn" onclick="location.href='<%= request.getContextPath()%>/gathering/projectEnrollView'" value="프로젝트 생성">
+				
+				<input type="button" class="ps__enroll btn" onclick="projectEnroll();" value="프로젝트 생성">
+				<script>
+				const projectEnroll = () => {
+					if(<%= loginMember == null %>){
+						alert('프로젝트 생성은 로그인 후 이용 가능합니다.');	
+					}
+					else{
+						location.href='<%= request.getContextPath()%>/gathering/projectEnrollView';						
+					}
+				}
+				</script>
 			</div>
 			<div class="ps-lists">
 			<%
