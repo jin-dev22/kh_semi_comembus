@@ -21,6 +21,13 @@ public class MemberService {
 	private GatheringDao gatheringDao = new GatheringDao();
 	
 	// 미송 코드 시작
+	public Member findNotQuitMember(String memberId) {
+		Connection conn = getConnection();
+		Member member = memberDao.findNotQuitMember(conn, memberId);
+		close(conn);
+		return member;
+	}
+	
 	public Member findById(String memberId) {
 		Connection conn = getConnection();
 		Member member = memberDao.findById(conn, memberId);

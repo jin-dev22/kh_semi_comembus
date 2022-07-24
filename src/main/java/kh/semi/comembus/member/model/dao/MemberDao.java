@@ -36,6 +36,34 @@ public class MemberDao {
 		}
 	}
 
+	
+	public Member findNotQuitMember(Connection conn, String memberId) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		Member member = null;
+		String sql = prop.getProperty("findNotQuitMember");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, memberId);
+			
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				member = handleMemberResultSet(rset);
+				
+			}
+			
+		} catch (SQLException e) {
+			throw new MemberException("탈퇴 안 한 회원 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return member;
+	}
+
 	public Member findById(Connection conn, String memberId) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
