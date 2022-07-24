@@ -96,3 +96,41 @@ button#statue{
 	margin-left:30%;
 	margin-right:30%;
 }
+
+/* -------지원자목록페이지(projectApplicantStatue.jsp)-------- */
+/* 지원자목록 테이블 */
+#aplcntList{
+    text-align: center;
+}
+#aplcntList tr:first-of-type{
+    font-weight: bold;
+    border-bottom: 1px solid black;
+    background-color: none;
+}
+#aplcntList tr:not(:first){
+    background-color: var(--yellow-color);
+    margin: 10px;    
+}
+#aplcntList th{
+    text-align: center;
+    height: 40px;
+}
+#aplcntList td{
+ min-width: 200px;
+ height: 45px;
+ vertical-align: middle;
+}
+.applview-btn{
+    border:0px;
+    border-radius: 5%;
+	width: 100px;
+    height: 30px;
+}
+.btn-accept{
+	background-color:var(--btn-color);
+}
+.btn-reject{
+    background-color: #7F7F7F;
+	color:white;
+}
+/* ----------------------------------------------------- */
