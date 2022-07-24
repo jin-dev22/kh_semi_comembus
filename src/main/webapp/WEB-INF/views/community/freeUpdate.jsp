@@ -8,9 +8,8 @@
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/community.css" />
 <section id="commu-container">
-<div id="commuHeader">
-	<p>글작성<p>
-</div>
+<h2>글수정</h2>
+<hr />
 <form action="<%=request.getContextPath()%>/community/communityUpdate?co_type=F"
 	method="post" id="communityEnrollFrm">
 <input type="hidden" name="no" value="<%= fview.getCoNo()%>" />
@@ -41,8 +40,9 @@
 
 	<tr>
 		<th colspan="2">
-			<input type="submit" value="수정하기"/>
-			<input type="button" value="취소" onclick="history.go(-1);"/>
+		<br />
+			<input id="btn1" type="submit" value="수정하기"/>&nbsp;&nbsp;&nbsp;
+			<input id="btn2" type="button" value="취소" onclick="history.go(-1);"/>
 		</th>
 	</tr>
 	

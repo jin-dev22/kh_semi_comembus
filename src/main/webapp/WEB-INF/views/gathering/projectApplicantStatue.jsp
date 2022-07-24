@@ -19,7 +19,12 @@
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/gathering/GatheringView.css" />
 <div id="container">
 <p class="name"><%= gathering.getTitle() %></p><!-- 프로젝트명 -->
-<p class="writer"><span class="profile-badge"><b><%=gathering.getWriter().charAt(0) %></b></span><%= gathering.getWriter() %></p>
+<p class="writer">
+	<span class="h__profile-badge">
+	  		<b><%= gathering.getWriter().charAt(0) %></b>
+	 </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+	<%= gathering.getWriter() %>
+</p>
 <!--지원자 현황은 글쓴이=로그인한 사용자 일치할 때만 보이게 하기-->
 <%String putUrl = gathering.getPsType() == GatheringType.P ? "/gathering/projectView?psNo=" : "/gathering/studyView?psNo="; %>
 <button id="statue"><a href="<%= request.getContextPath()%><%=putUrl %><%= psNo%>">모임 상세</a></button>

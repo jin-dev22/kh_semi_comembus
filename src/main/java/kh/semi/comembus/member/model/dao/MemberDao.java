@@ -636,6 +636,27 @@ public class MemberDao {
 		return result;
 	}
 	
+	public List<Integer> findAllApldPsNoByMemberId(Connection conn, String memberId) {
+		List<Integer> apldList = new ArrayList<>();	
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String sql = prop.getProperty("findAllApldPsNoByMemberId");
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, memberId);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				apldList.add(rset.getInt("ps_no"));
+			}
+		} catch (SQLException e) {
+			throw new MemberException("회원 모임 지원목록 조회 오류", e);
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		return apldList;
+	}
+	
 	// 수진 코드 끝
 	
 	// 선아 코드 시작

@@ -224,6 +224,7 @@ COMMENT ON COLUMN project_member_dept.job_code IS '프로젝트게시물인 경�
 COMMENT ON COLUMN project_member_dept.capacity_number IS '모집정원(프로젝트인 경우 직무분야별)';
 COMMENT ON COLUMN project_member_dept.recruited_number IS '모집된 인원';
 
+
 --선아님 코드 끝
 
 --태연님 코드 시작

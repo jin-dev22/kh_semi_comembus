@@ -10,6 +10,8 @@
 <%
 /* Gathering gathering = (Gathering) request.getAttribute("project"); */
 GatheringExt gathering = (GatheringExt) request.getAttribute("project");
+List<Integer> apldPsNoList = loginMember != null? (List<Integer>) session.getAttribute("apldPsNoList") : null;
+
 %>
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/gathering/GatheringView.css" />
@@ -58,25 +60,44 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 		<td><span id="statue">1</span>/<span id="total"><%=gathering.getBackend_cnt()%></span></td>
 	</tr>
 	<tr>
+	
+<%
+ 	String isPrevented = "default";
+
+	if(loginMember == null){
+		isPrevented = "guest";
+	}
+	else if(!apldPsNoList.isEmpty() && apldPsNoList.indexOf(gathering.getPsNo()) > 0){
+		isPrevented = "true";
+	}
+	else if(apldPsNoList.isEmpty() || apldPsNoList.indexOf(gathering.getPsNo()) < 0){
+		isPrevented = "false";
+	}
+ 
+%>
 		<td colspan="2"><input type="button" id="apply" value="지원하기"
-			onclick="applyStatus()"></td>
+			onclick="applyStatus('<%=isPrevented%>')"></td>
 	</tr>
-	<script>
-		function applyStatus(psNo, aplcntId) {
-			if (confirm("지원 하시겠습니까?")) {
-				const frm = document.applFrm;
-				frm.submit();
-			}
-		}
-	</script>
 </table>
 <%--지원하기 속성 제출 --%>
 <form name="applFrm"
 	action="<%=request.getContextPath()%>/gathering/apply" method="POST">
+	<%-- <input type="hidden" id="prevented" name="prevented" value="<%= isPrevented%>" /> --%>
 	<input type="hidden" name="psNo" value="<%= gathering.getPsNo() %>" /> 
-	<input type="hidden" name="aplcntId" value="<%=loginMember.getMemberId()%>" />
+	<input type="hidden" name="aplcntId" value="<%=loginMember != null ? loginMember.getMemberId() : ""%>" />
 	<input type="hidden" name="psType" value="<%=gathering.getPsType()%>" />
 </form>
+<script>
+	function applyStatus(isPrev) {
+		const frm = document.applFrm;
+		console.log("isPrev=",isPrev);
+		switch(isPrev){
+		case "true": alert("이미 지원신청한 모임입니다."); break;
+		case "false": if (confirm("지원 하시겠습니까?")) {frm.submit();} break; 
+		default: alert("로그인이 필요한 기능입니다.");
+		} 
+	}
+</script>
 
 
 <h3>프로젝트 주제</h3>
@@ -161,7 +182,7 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 			const target = document.getElementById('apply');
 			target.disabled = true;
 			//처음부터 지원이 불가능한 경우 작성하기
-		}
+		};
 
 </script>
 <%if(loginMember != null && gathering.getWriter().equals(loginMember.getMemberId())){ %>

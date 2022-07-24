@@ -1186,6 +1186,4 @@ public class GatheringDao {
 	// 미송 코드 끝
 
 
-
-
 }
