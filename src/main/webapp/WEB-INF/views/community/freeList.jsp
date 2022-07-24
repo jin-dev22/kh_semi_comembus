@@ -19,6 +19,7 @@ div#search-coWriter{
 	display: <%= "co_writer".equals(type) ? "inline-block" : "none" %>;
 }
 </style>
+<section id="commu-container">
 	<h2>자유 게시판‍📝</h2>
 	<h4>자유롭게 글을 작성할 수 있는 게시판 입니다.</h4><br /><br />
 <!-- 검색 -->
@@ -109,6 +110,6 @@ $(document).ready(function(){
 	});
 });
 </script>
-
+</section>
 
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>

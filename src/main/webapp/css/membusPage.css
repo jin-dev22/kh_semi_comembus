@@ -102,8 +102,8 @@ section#membus-profile{
 .gathering-align{
 	display: flex;
 	align-items: top;
-	overflow-x: scroll hidden;
-	
+	overflow-x: scroll;
+	overflow-y: hidden;
 	width: 800px
 }
 .ps-pre{

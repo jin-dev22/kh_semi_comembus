@@ -1,0 +1,93 @@
+@charset "UTF-8";
+@import url("https://font.elice.io/EliceDigitalBaeum.css");
+
+form{
+    align-items: center;
+    font-size:16px;
+    font-family: "Elice Digital Baeum", sans-serif;
+	width: 1200px;	
+	left:0;
+	right:0;
+	margin:auto;
+	padding:100px;
+}
+tr{
+    height: 28px;
+}
+th{
+    font-size: 20px;
+}
+input#projectName{
+    text-align: left;
+}
+button.count{
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+}
+#summernoteWidth{
+    width: 950px;
+}
+input#name{
+    width:500px;
+}
+#plus,#minus,#plus1,#plus2,#plus3,#plus4,#minus1,#minus2,#minus3,#minus4{
+	background-color:white;
+	border:0px;
+	font-size:30px;
+}
+#count,#count1,#count2,#count3,#count4{
+	font-size:24px;
+	padding-left:20px;
+	padding-right:20px
+}
+#delete{
+	font-size:20px;
+	background-color:#7F7F7F;
+	color:white;
+	border:0px;
+	border-radius:10%;
+	margin-left:10px;
+	padding-left:10px;
+	padding-right:10px;
+}
+#add{
+	font-size:20px;
+	background-color:#C3DBFC;
+	border:0px;
+	border-radius:10%;
+	margin-left:10px;
+	padding-left:10px;
+	padding-right:10px;	
+}
+#clear{
+	font-size:20px;
+	background-color:#FF6962;
+	color:white;
+	border:0px;
+	border-radius:10%;
+	margin-left:10px;
+	padding-left:10px;
+	padding-right:10px;
+}
+#submitP{
+	font-size:20px;
+	background-color:#C3DBFC;
+	border:0px;
+	border-radius:10%;
+	width:150px;
+	align-items:center;		
+	margin-left:56%;
+}
+#submitS{
+	font-size:20px;
+	background-color:#C3DBFC;
+	border:0px;
+	border-radius:10%;
+	width:150px;
+	align-items:center;		
+	margin-left:42%;
+}
+#Design,#Frontend,#Backend,#Interview,#Codingtest,#game,#travel,#finance,#ecommerce{
+	margin-left:8%;
+}

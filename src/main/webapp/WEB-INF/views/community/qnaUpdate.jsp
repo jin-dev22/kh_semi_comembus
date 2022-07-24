@@ -7,7 +7,7 @@
 %>
 <link rel="stylesheet"
 	href="<%=request.getContextPath()%>/css/community.css" />
-
+<section id="commu-container">
 <h2>글수정</h2>
 <hr />
 <form action="<%=request.getContextPath()%>/community/communityUpdate?co_type=Q"
@@ -84,5 +84,5 @@
       });
   
 </script>
-
+</section>
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>

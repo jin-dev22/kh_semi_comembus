@@ -21,6 +21,7 @@ import kh.semi.comembus.gathering.model.dto.ProjectMemberDept;
 import kh.semi.comembus.gathering.model.dto.Status;
 import kh.semi.comembus.gathering.model.exception.GatheringException;
 import kh.semi.comembus.member.model.dto.JobCode;
+import kh.semi.comembus.member.model.dto.MemberApplicationStatus;
 
 public class GatheringDao {
 	private Properties prop = new Properties();
@@ -1128,8 +1129,26 @@ public class GatheringDao {
 		}
 		return result;
 	}
+	
+	public int insertMemberApply(Connection conn, MemberApplicationStatus applyInfo) {
+		PreparedStatement pstmt=null; 
+		int result = 0;
+		String sql=prop.getProperty("insertMemberApply");
+		try {
+			pstmt=conn.prepareStatement(sql);
+			pstmt.setString(1, applyInfo.getMemberId());
+			pstmt.setInt(2, applyInfo.getPsNo());
+			result=pstmt.executeUpdate();
+		}catch(SQLException e) {
+			throw new GatheringException("모임 지원하기 오류",e);
+		}finally {
+			close(pstmt);
+		}
+		return result;
+	}
 	// 미송 코드 끝
 
+<<<<<<< HEAD
 //	public List<Gathering> psDepList(Connection conn, List<Gathering> projectList) {
 //		PreparedStatement pstmt = null;
 //		ResultSet rset = null;
@@ -1148,6 +1167,9 @@ public class GatheringDao {
 //		
 //		return psDepList;
 //	}
+=======
+	
+>>>>>>> branch 'master' of https://github.com/jin-dev22/kh_semi_comembus.git
 
 
 
