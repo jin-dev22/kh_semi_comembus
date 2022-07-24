@@ -61,13 +61,16 @@ public class ProjectListServlet extends HttpServlet {
 			if(loginMember != null) {
 				loginMemberId = loginMember.getMemberId();
 				bmParam.put("loginMemberId", loginMemberId);
-				System.out.println(">>> loginMemberId " + loginMemberId);
+				System.out.println(">>> bmParam loginMemberId " + loginMemberId);
 				System.out.println(">>> bmParam = " + bmParam);
 			}
 			List<Gathering> bookmarkList = gatheringService.findAllProBookmarked(bmParam);
 			
-			System.out.println(">>> 2loginMemberId " + loginMemberId);
+			System.out.println(">>> loginMemberId " + loginMemberId);
 			System.out.println(">>> bookmarkList " + bookmarkList);
+			
+			
+			// List<Gathering> psDepList = gatheringService.psDepList(projectList);
 						
 			// pagebar 영역
 			int totalContent = gatheringService.getProTotalContent();
@@ -78,6 +81,7 @@ public class ProjectListServlet extends HttpServlet {
 			request.setAttribute("projectList", projectList);
 			request.setAttribute("pagebar", pagebar);
 			request.setAttribute("bookmarkList", bookmarkList);
+			
 			request.getRequestDispatcher("/WEB-INF/views/gathering/projectList.jsp").forward(request, response);
 			
 		} catch(Exception e) {

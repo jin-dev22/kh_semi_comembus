@@ -82,6 +82,11 @@ hr {
 }
 .ps__header__content-info .ps__header__content-content {
   height: 120px;
+  overflow: hidden;
+}
+.ps__header__content-info .ps__header__content-content  > p{
+	margin-bottom: 5px;
+	height: auto;
 }
 .ps__header__content-info li:last-of-type {
   border: none;

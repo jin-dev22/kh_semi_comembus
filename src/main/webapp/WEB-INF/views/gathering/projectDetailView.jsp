@@ -163,7 +163,6 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 			//처음부터 지원이 불가능한 경우 작성하기
 		}
 
-	
 </script>
 <%if(loginMember != null && gathering.getWriter().equals(loginMember.getMemberId())){ %>
 <form action="<%= request.getContextPath()%>/gathering/projectDelete"

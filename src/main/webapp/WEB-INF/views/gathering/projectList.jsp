@@ -310,8 +310,7 @@ $(document).on('click', '.bookmark-back', function(e){
 		</section>
 		<section class="ps__header">
 			<div class="ps__header__text">
-				<p>신규 프로젝트</p>
-				<i class="fa-solid fa-laptop-code"></i>
+				<p> 신규 프로젝트 👨‍💻</p>
 			</div>
 			<hr>
 			<div class="ps__header__content swiper">
@@ -406,6 +405,12 @@ $(document).on('click', '.bookmark-back', function(e){
 						<li>
 							<span>&#128064;</span><%= project.getViewcount() %></li>
 						<li>모집인원 <%= project.getRecruited_cnt() %> / <%= project.getPeople() %></li>
+						<table>
+							<tr><td>직무 1 | 0 명</td></tr>
+							<tr><td>직무 2 | 0 명</td></tr>
+							<tr><td>직무 3 | 0 명</td></tr>
+							<tr><td>직무 4 | 0 명</td></tr>
+						</table>
 					</ul>
 					<div class="ps__bookmark">
 					<% if(loginMember == null) { %>
