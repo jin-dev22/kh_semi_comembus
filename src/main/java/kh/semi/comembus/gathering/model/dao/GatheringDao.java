@@ -300,7 +300,7 @@ public class GatheringDao {
 		int end = (int) param.get("end");
 
 		// [str1] = "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))"
-        // [str2] = "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectJobKeyword + "') and capacity_number > recruited_number)"
+        // [str2] = "and ps_no in (select ps_no from project_study ps2 where ps2.ps_no = ps.ps_no and  topic in '" + selectTopicKeyword + "' and ps2.ps_no in(select ps_no from project_member_dept where ps_no = ps2.ps_no and capacity_number > recruited_number))"
 		// [str3] = "and status = '" + statusYN + "'"
 
 		// 랜딩페이지(필터 미지정시)
@@ -318,11 +318,11 @@ public class GatheringDao {
 			} else {
 				if("All".equals(statusYN)) {
 					sql = sql.replace("[str1]", " ");
-					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectTopicKeyword + "') and capacity_number > recruited_number)");
+					sql = sql.replace("[str2]", "and ps_no in (select ps_no from project_study ps2 where ps2.ps_no = ps.ps_no and topic in ('" + selectTopicKeyword + "') and ps2.ps_no in(select ps_no from project_member_dept where ps_no = ps2.ps_no and capacity_number > recruited_number))");
 					sql = sql.replace("[str3]", " ");
 				} else {
 					sql = sql.replace("[str1]", " ");
-					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectTopicKeyword + "') and capacity_number > recruited_number)");
+					sql = sql.replace("[str2]", "and ps_no in (select ps_no from project_study ps2 where ps2.ps_no = ps.ps_no and topic in ('" + selectTopicKeyword + "') and ps2.ps_no in(select ps_no from project_member_dept where ps_no = ps2.ps_no and capacity_number > recruited_number))");
 					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
 				}
 			}
@@ -341,11 +341,11 @@ public class GatheringDao {
 			} else {
 				if("All".equals(statusYN)) {
 					sql = sql.replace("[str1]", "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
-					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectTopicKeyword + "') and capacity_number > recruited_number)");
+					sql = sql.replace("[str2]", "and ps_no in (select ps_no from project_study ps2 where ps2.ps_no = ps.ps_no and topic in ('" + selectTopicKeyword + "') and ps2.ps_no in(select ps_no from project_member_dept where ps_no = ps2.ps_no and capacity_number > recruited_number))");
 					sql = sql.replace("[str3]", " ");
 				} else {
 					sql = sql.replace("[str1]", "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
-					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectTopicKeyword + "') and capacity_number > recruited_number)");
+					sql = sql.replace("[str2]", "and ps_no in (select ps_no from project_study ps2 where ps2.ps_no = ps.ps_no and topic in ('" + selectTopicKeyword + "') and ps2.ps_no in(select ps_no from project_member_dept where ps_no = ps2.ps_no and capacity_number > recruited_number))");
 					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
 				}
 			}
@@ -397,11 +397,11 @@ public class GatheringDao {
 			} else {
 				if("All".equals(statusYN)) {
 					sql = sql.replace("[str1]", " ");
-					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectTopicKeyword + "') and capacity_number > recruited_number)");
+					sql = sql.replace("[str2]", "and ps_no in (select ps_no from project_study ps2 where ps2.ps_no = ps.ps_no and topic in ('" + selectTopicKeyword + "') and ps2.ps_no in(select ps_no from project_member_dept where ps_no = ps2.ps_no and capacity_number > recruited_number))");
 					sql = sql.replace("[str3]", " ");
 				} else {
 					sql = sql.replace("[str1]", " ");
-					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectTopicKeyword + "') and capacity_number > recruited_number)");
+					sql = sql.replace("[str2]", "and ps_no in (select ps_no from project_study ps2 where ps2.ps_no = ps.ps_no and topic in ('" + selectTopicKeyword + "') and ps2.ps_no in(select ps_no from project_member_dept where ps_no = ps2.ps_no and capacity_number > recruited_number))");
 					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
 				}
 			}
@@ -420,11 +420,11 @@ public class GatheringDao {
 			} else {
 				if("All".equals(statusYN)) {
 					sql = sql.replace("[str1]", "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
-					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectTopicKeyword + "') and capacity_number > recruited_number)");
+					sql = sql.replace("[str2]", "and ps_no in (select ps_no from project_study ps2 where ps2.ps_no = ps.ps_no and topic in ('" + selectTopicKeyword + "') and ps2.ps_no in(select ps_no from project_member_dept where ps_no = ps2.ps_no and capacity_number > recruited_number))");
 					sql = sql.replace("[str3]", " ");
 				} else {
 					sql = sql.replace("[str1]", "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
-					sql = sql.replace("[str2]", "and ps_no in(select ps_no from project_member_dept where ps_no = ps.ps_no and job_code in('" + selectTopicKeyword + "') and capacity_number > recruited_number)");
+					sql = sql.replace("[str2]", "and ps_no in (select ps_no from project_study ps2 where ps2.ps_no = ps.ps_no and topic in ('" + selectTopicKeyword + "') and ps2.ps_no in(select ps_no from project_member_dept where ps_no = ps2.ps_no and capacity_number > recruited_number))");
 					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
 				}
 			}
@@ -496,15 +496,12 @@ public class GatheringDao {
 		if(type == "P") {
 			sql = prop.getProperty("getTotalProBookmarkFilter");
 		} else {
-			System.out.println("22");
 			sql = prop.getProperty("getTotalStdBookmarkFilter");
 		}
 
 		if("Y".equals(bookmarkYN)) {
-			System.out.println("33");
 			sql = sql.replace("[str1]", "and exists (select 1 from bookmarked_prj_std where ps_no = ps.ps_no and member_id = '" + memberId + "')");			
 		} else {
-			System.out.println("44");
 			sql = sql.replace("[str1]", " ");
 		}
 		
@@ -609,6 +606,44 @@ public class GatheringDao {
 		}	
 		return gatheringBookmarkList;
 	}
+	
+	// 북마크 추가 시 project_study 테이블 update
+	public int addBookmark(Connection conn, Map<String, Object> param) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("updateBmk");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, (int) param.get("psNo"));
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new GatheringException("bookmark 증가 오류", e);
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
+	// 북마크 삭제 시 project_study 테이블 update	
+	public int delBookmark(Connection conn, Map<String, Object> param) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String sql = prop.getProperty("deleteBmk");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, (int) param.get("psNo"));
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new GatheringException("bookmark 감소 오류", e);
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	
 	// 선아 코드 끝
 	
 	//수진코드 시작
@@ -880,6 +915,28 @@ public class GatheringDao {
 		return rctdCnt;
 	}
 	
+	public int enrollDeptCnt(Connection conn, Map<String, Object> param) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("enrollProjectDept");
+		String jobCode = (String)param.get("jobCode");
+		int cnt = (int)param.get("cnt");
+		try {//psNo jobCode cnt
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, (int)param.get("psNo"));
+			pstmt.setString(2, jobCode);
+			pstmt.setInt(3, cnt);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new GatheringException("직무별 정원 등록 오류", e);
+		} finally {
+			close(pstmt);
+		}			
+		
+		return result;
+	}
+
+	
 	//수진코드 끝
 	
 	// 유경 코드 시작
@@ -898,7 +955,7 @@ public class GatheringDao {
 //			pstmt.setInt(7, project.getBookmark());
 			pstmt.setString(4, project.getTopic());
 			pstmt.setString(5, project.getLocal());
-			pstmt.setInt(6, project.getPeople());
+			pstmt.setInt(6, project.getPeople());//people추후 설정하기
 //			pstmt.setString(8, project.getStatus().name());
 			pstmt.setDate(7, project.getStartDate());
 			pstmt.setDate(8, project.getEndDate());
@@ -988,63 +1045,11 @@ public class GatheringDao {
 		return studyNo;
 	}
 
-//	public int enrollProjectDep(Connection conn, ProjectMemberDept projectDep) {
-//		PreparedStatement pstmt = null;
-//		int result = 0;
-//		String sql = prop.getProperty("enrollProjectDep");
-//		
-//		
-//		try {
-//			pstmt = conn.prepareStatement(sql);
-//			pstmt.setInt(1, projectDep.getPsNo());
-//			pstmt.setString(2, projectDep.getPlanning());
-//			pstmt.setInt(3, projectDep.getPlanning_cnt());
-//			result = pstmt.executeUpdate();
-//			
-//		} catch (SQLException e) {
-//			throw new GatheringException("직무 등록 오류!", e);
-//		} finally {
-//			close(pstmt);
-//		}	
-//		return result;
-//	}
-
 	public int enrollProjectDep(Connection conn, GatheringExt projectDep) {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		String sql = prop.getProperty("enrollProjectDep");
-		
-		String planning = projectDep.getPlanning();
-		String design = projectDep.getDesign();
-		String frontend = projectDep.getFrontend();
-		String backend = projectDep.getBackend();
-		int planningCnt = projectDep.getPlanning_cnt();
-		int designCnt = projectDep.getDesign_cnt();
-		int frontendCnt = projectDep.getFrontend_cnt();
-		int backendCnt = projectDep.getBackend_cnt();
-		String fetch = "";
-		int psNo = (int)projectDep.getPsNo();
-		if(planning != "") {
-			sql = sql.replace("[str1]", "insert into project_member_dept values(seq_p_m_dept_no.nextval, "+psNo+", 'PL', " + planningCnt + ", default)");
-		}else {
-			sql = sql.replace("[str1]", fetch);
-		}
-		if(design!= "") {
-			sql = sql.replace("[str2]", "insert into project_member_dept values(seq_p_m_dept_no.nextval, "+psNo+", 'DG', " + designCnt + ", default);");
-		}else {
-			sql = sql.replace("[str2]", fetch);
-		}
-		if(frontend!= "") {
-			sql = sql.replace("[str3]", "insert into project_member_dept values(seq_p_m_dept_no.nextval,"+psNo+", 'FE', " + frontendCnt + ", default);");
-		}else {
-			sql = sql.replace("[str3]", fetch);
-		}
-		if(backend != "") {
-			sql = sql.replace("[str4]", "insert into project_member_dept values(seq_p_m_dept_no.nextval,"+psNo+", 'BE', " + backendCnt + ", default);");
-		}else {
-			sql = sql.replace("[str4]", fetch);
-		}
-		
+		//psNo dept cnt		
 		try {
 			pstmt = conn.prepareStatement(sql);
 			result = pstmt.executeUpdate();

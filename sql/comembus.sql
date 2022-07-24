@@ -215,6 +215,7 @@ CREATE TABLE project_member_dept (
         constraint fk_project_member_dept_job_code foreign key(job_code) references department(job_code) on delete cascade
 );
 --drop table project_member_dept;
+
 create sequence seq_p_m_dept_no;
 comment on table project_member_dept is '모임 게시물별 모집인원현황';
 comment on column project_member_dept.p_m_dept_no is '모임게시물별 모집인원현황 테이블의 고유번호';
@@ -224,7 +225,29 @@ COMMENT ON COLUMN project_member_dept.capacity_number IS '모집정원(프로젝
 COMMENT ON COLUMN project_member_dept.recruited_number IS '모집된 인원';
 
 -- 선아 페이징 및 필터 쿼리문 작성부분
+select * from member;
+select * from bookmarked_prj_std;
+-- 북마크 count까지 가져오는 쿼리 - 확인예정
+select
+        *
+from (
+        select
+                row_number() over(order by reg_date desc) rnum, 
+                ps.*
+                ,(select nvl(sum(recruited_number), 0) from project_member_dept where ps_no = ps.ps_no) recruited_cnt
+        from 
+                project_study ps 
+        where gathering_type ='P' and end_date > sysdate)p
+where
+        rnum between 1 and 40
+        and exists (select count(*) bookmark, ps_no from bookmarked_prj_std bmk where ps_no = (select ps_no from project_study where ps_no = bmk.ps_no) group by ps_no);
 
+(select count(*) bookmark, ps_no from bookmarked_prj_std bmk where ps_no = (select ps_no from project_study where ps_no = bmk.ps_no) group by ps_no);
+-- 북마크 시 gathering에도 count + 1처리
+
+select * from project_study;
+-- 북마크여부 확인
+select * from project_study where ps_no in(select ps_no from BOOKMARKED_PRJ_STD where member_id = 'igoigo1');
 
 --선아님 코드 끝
 
@@ -292,12 +315,6 @@ commit;
 --drop table community_board;
 create sequence seq_co_no;
 
-
-select co_title, co_writer, co_like, co_read_count from (select co_title, co_writer, co_like, co_read_count, co_reg_date from community_board where co_type='S' order by co_read_count desc) where co_reg_date between sysdate-30 and sysdate and rownum <=4 ;
-
-
-
-
 COMMENT ON COLUMN community_board.co_no IS '커뮤니티게시판 글번호';
 COMMENT ON COLUMN community_board.co_writer IS '커뮤니티게시판 글 작성자';
 COMMENT ON COLUMN community_board.co_title IS '커뮤니티게시판 글 제목';
@@ -339,5 +356,4 @@ COMMENT ON COLUMN community_repl.reg_date IS '커뮤니티게시판 작성일(�
 COMMENT ON COLUMN community_repl.content IS '커뮤니티게시판 댓글 내용';
 COMMENT ON COLUMN community_repl.repl_level IS '댓글레벨 2까지만';
 COMMENT ON COLUMN community_repl.ref_repl_no IS '대댓글인경우 원댓글번호값. 원댓글 on delete cascade';
-
 --태연님 코드 끝
