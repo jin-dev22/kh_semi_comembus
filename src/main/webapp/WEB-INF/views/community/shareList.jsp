@@ -15,8 +15,8 @@
 	<h2>정보공유 게시판‍💻</h2>
 	<h4>다양한 정보를 공유하는 게시판 입니다.</h4><br /><br />
 	
-<div class="community-s-container">
-	
+	<div class="community-s-container">
+		
 		<div class="co-share-lists">
 			<% if(best == null || best.isEmpty()){ %>
 			<div>조회된 게시글이 없습니다.</div>
@@ -24,9 +24,10 @@
 				for(Community c:best){
 			%>
 				<div class="co-share">
-				<div class="co-share-title">
+					<div class="co-share-title">
 						<a href="<%= request.getContextPath() %>/community/communityView?co_type=S&no=<%= c.getCoNo() %>"><%= ComembusUtils.escapeXml(c.getCoTitle()) %></a>
 					</div>
+					<div class="share-best">조회수 TOP 4</div>
 					<div class="co-share-info">
 						<span class="co-share-writer"><%= c.getCoWriter() %></span>
 						<span>&#128064;</span><%= c.getCoReadcount() %></span>
