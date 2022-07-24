@@ -102,7 +102,13 @@ function applyStatus(isPrev) {
 <br>
 <br>
 <br>
-
+<%--찜하기 속성 제출 --%>
+<form name="bmFrm"
+	action="<%=request.getContextPath()%>/membus/bookmarkAdd"
+	method="POST">
+	<input type="hidden" name="BmId" /> <input type="hidden" name="psNo"
+		value="<%=gathering.getPsNo()%>" />
+</form>
 <!--로그인 했을 경우+작성자일 경우에만 되도록 설정하기-->
 <%
 if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId())) {
