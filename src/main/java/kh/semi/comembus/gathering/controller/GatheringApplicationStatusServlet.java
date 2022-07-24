@@ -17,6 +17,7 @@ import kh.semi.comembus.alert.model.service.AlertService;
 import kh.semi.comembus.gathering.model.dto.Gathering;
 import kh.semi.comembus.gathering.model.dto.GatheringType;
 import kh.semi.comembus.gathering.model.service.GatheringService;
+import kh.semi.comembus.member.model.dto.Member;
 import kh.semi.comembus.member.model.dto.MemberApplicationStatus;
 import kh.semi.comembus.member.model.service.MemberService;
 
@@ -45,7 +46,9 @@ public class GatheringApplicationStatusServlet extends HttpServlet {
 		int result = gatheringService.insertMemberApply(applyInfo);
 		
 		//모임장에게 지원신청 알림
-		String nickName = request.getParameter("nickName");
+		//지원자 닉네임찾기
+		Member aplcnt = memberService.findById(aplcntId);
+		String nickName = aplcnt.getNickName();
 		Gathering gather = gatheringService.findByNo(psNo);
 		//알림내용 글자 수 줄이기
 		String title = gather.getTitle();

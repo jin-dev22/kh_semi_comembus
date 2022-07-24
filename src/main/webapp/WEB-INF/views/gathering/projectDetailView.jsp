@@ -88,7 +88,6 @@ if (loginMember != null && gathering.getWriter().equals(loginMember.getMemberId(
 	<input type="hidden" name="psNo" value="<%= gathering.getPsNo() %>" /> 
 	<input type="hidden" name="aplcntId" value="<%=loginMember != null ? loginMember.getMemberId() : ""%>" />
 	<input type="hidden" name="psType" value="<%=gathering.getPsType()%>" />
-	
 </form>
 <script>
 	function applyStatus(isPrev) {
