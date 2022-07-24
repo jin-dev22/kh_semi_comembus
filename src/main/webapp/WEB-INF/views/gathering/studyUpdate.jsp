@@ -1,3 +1,4 @@
+<%@page import="java.text.SimpleDateFormat"%>
 <%@page import="kh.semi.comembus.gathering.model.dto.Gathering"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
@@ -5,7 +6,13 @@
 
 <%
 	Gathering gathering = (Gathering) request.getAttribute("study");
+
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	String startDate = sdf.format(gathering.getStartDate());
+	String endDate = sdf.format(gathering.getEndDate());
 %>
+
+<h1>스터디 수정하기</h1>
 	<form name="studyEnrollFrm"
 		action="<%=request.getContextPath()%>/gathering/studyUpdateView"
 		method="post">
@@ -77,7 +84,7 @@
 		               시작일 
 		            </td>
 		            <td colspan="2">
-		                <p><input type="date" name="date_start" id="date_start" value="<%= gathering.getStartDate() %>"></p>
+		                <p><input type="date" name="date_start" id="date_start" value="<%= startDate %>"></p>
 		            </td>
 		        </tr>
 		        <tr>
@@ -85,7 +92,7 @@
 		                종료일
 		            </td>
 		            <td colspan="2">
-		                <p><input type="date" name="date_end" id="date_end" value="<%= gathering.getEndDate() %>"></p>
+		                <p><input type="date" name="date_end" id="date_end" value="<%= endDate %>"></p>
 		            </td>
 		        </tr>
 				<tr></tr>

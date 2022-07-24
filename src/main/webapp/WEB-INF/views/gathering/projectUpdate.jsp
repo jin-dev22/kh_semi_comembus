@@ -1,3 +1,4 @@
+<%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
@@ -6,35 +7,34 @@
 	href="<%=request.getContextPath()%>/css/gathering/Enroll.css">
 <%
 	Gathering gathering = (Gathering) request.getAttribute("project");
+
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	String startDate = sdf.format(gathering.getStartDate());
+	String endDate = sdf.format(gathering.getEndDate());
 %>
+
+<h1>프로젝트 수정하기</h1>
 <form
 	name="projectUpdateFrm"
 	action="<%=request.getContextPath() %>/gathering/projectUpdateView" 
 	method="post">
-	<!-- enctype="multipart/form-data" -->
 	<table id="tbl-project-updateview">
         <tbody>
 		<tr><th>*프로젝트명</th></tr>
 		<tr><td colspan="3">❗ 프로젝트 제목을 적어주세요</td></tr>
-		<tr><td><input type="text" name="title" id="name" placeholder="3~20자로 적어주세요" value="" required></td></tr>
+		<tr><td><input type="text" name="title" id="name" value="<%= gathering.getTitle() %>" value="" required></td></tr>
         <tr></tr>
 		<tr><th>*프로젝트 주제</th></tr>
 		<tr><td colspan="3">❗ 프로젝트 주제는 변경 불가능합니다</td></tr>
 		<tr>
-            <td colspan="3">
-                <input type="radio" name="topic" id="social" value="social"  onclick="return(false);">소셜네트워크
-                <input type="radio" name="topic" id="game" value="game"  onclick="return(false);">게임
-                <input type="radio" name="topic" id="travel" value="travel"  onclick="return(false);">여행
-                <input type="radio" name="topic" id="finance" value="finance"  onclick="return(false);">금융
-                <input type="radio" name="topic" id="ecommerce" value="ecommerce"  onclick="return(false);">이커머스
-            </td>
+			<td><%= gathering.getTopic() %></td>
         </tr>
         <tr></tr>
     	<tr><th>*지역</th></tr>
         <tr><td colspan="3">❗ 지역을 선택해 주세요</td></tr>
 		<tr>
             <td>			
-                <select name="local" id="local">
+                <select name="local" id="local" value="<%= gathering.getLocal() %>">
                     <option value="Online">온라인</option>
                     <option value="Capital">수도권</option>
                     <option value="Gangwon">강원도</option>
@@ -75,7 +75,7 @@
                시작일 
             </td>
             <td colspan="2">
-                <p><input type="date" name="date_start" id="date_start"></p>
+                <p><input type="date" name="date_start" id="date_start" value="<%= startDate %>"></p>
             </td>
         </tr>
         <tr>
@@ -83,17 +83,23 @@
                 종료일
             </td>
             <td colspan="2">
-                <p><input type="date" name="date_end" id="date_end"></p>
+                <p><input type="date" name="date_end" id="date_end" value="<%= endDate %>"></p>
             </td>
         </tr>
         <tr></tr>
 	<tr><th>*프로젝트 설명</th></tr>
-    <tr><td colspan="3" id="summernoteWidth">❗ 프로젝트에 대한 자세한 설명을 적어주세요. 자세할수록 지원률이 올라갑니다. <br><div><textarea id="summernote" name="editordata"></textarea></div></td></tr>
+    <tr>
+    	<td colspan="3" id="summernoteWidth">❗ 프로젝트에 대한 자세한 설명을 적어주세요. 자세할수록 지원률이 올라갑니다. <br>
+		    <div>
+		    	<textarea id="summernote" name="editordata"><%= gathering.getContent()%></textarea>
+		    </div>
+	    </td>
+    </tr>
         <tr><th><input type="hidden" name="psType" value="P"></th></tr>
         <tr><th><input type="hidden" name="writer" value="<%= loginMember.getMemberId() %>"/></th></tr>
         <tr><th><input type="hidden" name="psNo" value="<%= gathering.getPsNo() %>" /></th></tr>
 		<th colspan="2">
-			<br><input type="submit" value="등록하기">
+			<br><input type="submit" value="수정하기">
 		</th>
 	</tr>
 </tbody>
