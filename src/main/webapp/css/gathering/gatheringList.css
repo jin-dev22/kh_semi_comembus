@@ -6,6 +6,7 @@ hr {
   font-weight: 700;
 }
 .gathering {
+  font-family: var(--elice-font);
   width: 1200px;
   left: 0;
   right: 0;
@@ -31,7 +32,8 @@ hr {
   font-size: 20px;
 }
 .gathering-bar p a:hover {
-  color: var(--text-color);
+  color: var(--btn-color);
+  text-decoration: none;
 }
 /* 프로젝트,스터디 슬라이드영역 */
 .ps__header__text {
@@ -76,8 +78,8 @@ hr {
   box-sizing: border-box;
 }
 .ps__header__content-info li {
-  margin: 12px 0 7px 0;
-  height: 20px;
+  margin: 10px 0 3px 0;
+  height: 30px;
   border-bottom: 1px solid #333;
 }
 .ps__header__content-info .ps__header__content-content {
@@ -99,10 +101,17 @@ hr {
   left: 0;
 }
 .ps__header__content-info li:last-of-type span:nth-child(2) {
-  left: 100px;
+  left: 300px;
 }
 .ps__header__content-info li:last-of-type span:nth-child(3) {
   right: 0;
+}
+.ps__header__content-info li.bold {
+	margin-bottom: 7px;
+	display: flex;
+}
+.ps__header__content-info li a:hover {
+	text-decoration: none;
 }
 .swiper-button-next,
 .swiper-button-prev {
@@ -115,7 +124,6 @@ hr {
 .swiper-button-prev {
 	right: 30px;
 }
-
 
 /* list부분 */
 /* 필터부분 */
@@ -132,7 +140,12 @@ hr {
 .ps-filter-container .ps-filter {
 	margin-right: 15px;
 }
-
+.swiper-button-next:after, .swiper-button-prev:after {
+	color: var(--text-color);
+}
+.swiper-horizontal>.swiper-pagination-bullets .swiper-pagination-bullet, .swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet {
+	background: var(--btn-color);
+}
 
 
 .ps__enroll {
@@ -155,6 +168,9 @@ hr {
 	width: 250px;
 	margin: 10px 0;
 }
+.ps-pre a:hover {
+	text-decoration: none;
+} 
 .ps-pre__img {
 	width: 250px;
 	border-radius: 10%;

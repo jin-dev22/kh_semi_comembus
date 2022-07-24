@@ -323,7 +323,7 @@ $(document).on('click', '.bookmark-back', function(e){
 					</a>
 					<ul class="ps__header__content-info">
 						<li><p class="bold"><%= "social".equals(topic) ? "소셜네트워크" : ("game".equals(topic) ? "게임" : ("travel".equals(topic) ? "여행" : ("finance".equals(topic) ? "금융" : "이커머스"))) %></p></li>
-						<li><p class="bold"><%= proslide.getTitle() %></p></li>
+						<li><a href="<%= request.getContextPath()%>/gathering/projectView?psNo=<%= proslide.getPsNo()%>" class="bold"><%= proslide.getTitle() %></a></li>
 						<li class="ps__header__content-content"><p><%= proslide.getContent() %></p></li>
 						<li class="bold">
 							<span class="heart-emoji">&#9829; <%= proslide.getBookmark() < 0 ? 0 : proslide.getBookmark() %></span>

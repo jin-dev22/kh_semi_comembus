@@ -4,10 +4,19 @@ h2{
 }
 
 /* 필터링 폼 양옆 띄우기 */
-#search-container{
-	margin:0 5vw;
+h2 {
+	width: 1200px;
+	margin: 10px auto;
+	padding: 0 50px;	
 }
-
+#search-container{
+	width: 1200px;
+	margin: 20px auto;
+	padding: 0 50px;
+}
+#search-container form > select {
+	margin-right: 20px;
+}
 #membusProfile-container{
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
