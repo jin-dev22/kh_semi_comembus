@@ -29,7 +29,6 @@
 					</div>
 					<div class="co-share-info">
 						<span class="co-share-writer"><%= c.getCoWriter() %></span>
-						<span class="heart-emoji">&#9829;</span><%= c.getCoLike() %></span>
 						<span>&#128064;</span><%= c.getCoReadcount() %></span>
 					</div>
 				</div>
