@@ -259,6 +259,15 @@ public class MemberService {
 		return apldMemupdateResult;
 	}
 	
+	/**
+	 * 회원 로그인시 지원한 모임게시글 번호를 목록으로 반환
+	 */
+	public List<Integer> findAllApldPsNoByMemberId(String memberId) {
+		Connection conn = getConnection();
+		List<Integer> apldGatheringList = memberDao.findAllApldPsNoByMemberId(conn, memberId);
+		close(conn);
+		return apldGatheringList;
+	}
 	// 수진 코드 끝
 	
 	// 선아 코드 시작
