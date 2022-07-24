@@ -73,7 +73,7 @@
                시작일 
             </td>
             <td colspan="2">
-                <p><input type="date" name="date_start" id="date_start" value="<%= startDate %>"></p>
+                <p><input type="date" name="date_start" id="date_start"  value="<%= startDate %>"></p>
             </td>
         </tr>
         <tr>
@@ -125,9 +125,7 @@
     var today=new Date(now_date-timeoff).toISOString().split("T")[0];
 
     document.getElementById("date_start").setAttribute("min",today);
-    document.getElementById("date_start").setAttribute("value",today);
     document.getElementById("date_end").setAttribute("min",today);
-    document.getElementById("date_end").setAttribute("value",today);
 
     let container = document.querySelector('#memberAdd');
     const plusBtn = container.querySelector('#plus1');

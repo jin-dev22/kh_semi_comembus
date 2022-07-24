@@ -133,9 +133,7 @@
 	var today=new Date(now_date-timeoff).toISOString().split("T")[0];
 	
 	document.getElementById("date_start").setAttribute("min",today);
-	document.getElementById("date_start").setAttribute("value",today);
 	document.getElementById("date_end").setAttribute("min",today);
-	document.getElementById("date_end").setAttribute("value",today);
 		
 	let container = document.querySelector('#container');
 	const plusBtn = container.querySelector('#plus');
