@@ -38,7 +38,7 @@
   height: 350px;
   box-sizing: border-box;
   padding: 25px 60px;
-  background-color: #FFE69A;
+  /* background-color: #FFE69A; */
 }
 .swiper-wrapper {
   display: flex;
@@ -64,7 +64,12 @@
 .swiper-button-prev {
 	right: 30px;
 }
-
+.swiper-button-next:after, .swiper-button-prev:after {
+	color: #FFE69A;
+}
+.swiper-horizontal>.swiper-pagination-bullets .swiper-pagination-bullet, .swiper-pagination-horizontal.swiper-pagination-bullets .swiper-pagination-bullet {
+	background: #FFE69A;
+}
 
 /* ----------- 프로젝트 미리보기 ------------ */
 .ps-lists {
@@ -219,6 +224,7 @@
     text-align: center;
     font-size: 20px;
     overflow: hidden;
+    border-radius: 5%;
 }
 
 .co-share-title a{

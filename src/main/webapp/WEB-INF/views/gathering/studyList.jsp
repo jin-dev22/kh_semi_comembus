@@ -175,6 +175,7 @@ const gatheringFilter = (num) => {
 			},
 		success(studySelectLists){
 			const {studyList, totalContent, cPage, bookmarkList} = studySelectLists;
+			console.log(">! studySelectLists", studySelectLists);
 			
 			document.querySelector(".ps-lists").innerHTML =
 				// 스터디 필터링
@@ -325,7 +326,7 @@ $(document).on('click', '.bookmark-back', function(e){
 					</a>
 					<ul class="ps__header__content-info">
 						<li><p class="bold"><%= "Planning".equals(topic) ? "기획" : ("Design".equals(topic) ? "디자인" : ("Frontend".equals(topic) ? "프론트엔드" : ("Backend".equals(topic) ? "백엔드" : ("Interview".equals(topic) ? "면접" : "코딩테스트")))) %></p></li>
-						<li><p class="bold"><%= slide.getTitle() %></p></li>
+						<li><a href="<%= request.getContextPath()%>/gathering/studyView?psNo=<%= slide.getPsNo()%>" class="bold"><%= slide.getTitle() %></a></li>
 						<li class="ps__header__content-content"><p><%= slide.getContent() %></p></li>
 						<li class="bold">
 							<span class="heart-emoji">&#9829; <%= slide.getBookmark() < 0 ? 0 : slide.getBookmark() %></span>

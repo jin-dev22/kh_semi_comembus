@@ -223,7 +223,7 @@ COMMENT ON COLUMN project_member_dept.ps_no IS '프로젝트/스터디 게시글
 COMMENT ON COLUMN project_member_dept.job_code IS '프로젝트게시물인 경우 직무분야 코드로 직무별 인원구분';
 COMMENT ON COLUMN project_member_dept.capacity_number IS '모집정원(프로젝트인 경우 직무분야별)';
 COMMENT ON COLUMN project_member_dept.recruited_number IS '모집된 인원';
-
+select * from project_study;
 
 --선아님 코드 끝
 

@@ -344,7 +344,7 @@ public class GatheringDao {
 		int end = (int) param.get("end");
 
 		// [str1] = "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))"
-        // [str2] = "and ps_no in (select ps_no from project_study ps2 where ps2.ps_no = ps.ps_no and  topic in '" + selectTopicKeyword + "' and ps2.ps_no in(select ps_no from project_member_dept where ps_no = ps2.ps_no and capacity_number > recruited_number))"
+        // [str2] = "and topic in ('" + selectTopicKeyword + "')"
 		// [str3] = "and status = '" + statusYN + "'"
 
 		// 랜딩페이지(필터 미지정시)
@@ -362,11 +362,11 @@ public class GatheringDao {
 			} else {
 				if("All".equals(statusYN)) {
 					sql = sql.replace("[str1]", " ");
-					sql = sql.replace("[str2]", "and ps_no in (select ps_no from project_study ps2 where ps2.ps_no = ps.ps_no and topic in ('" + selectTopicKeyword + "') and ps2.ps_no in(select ps_no from project_member_dept where ps_no = ps2.ps_no and capacity_number > recruited_number))");
+					sql = sql.replace("[str2]", "and topic in ('" + selectTopicKeyword + "')");
 					sql = sql.replace("[str3]", " ");
 				} else {
 					sql = sql.replace("[str1]", " ");
-					sql = sql.replace("[str2]", "and ps_no in (select ps_no from project_study ps2 where ps2.ps_no = ps.ps_no and topic in ('" + selectTopicKeyword + "') and ps2.ps_no in(select ps_no from project_member_dept where ps_no = ps2.ps_no and capacity_number > recruited_number))");
+					sql = sql.replace("[str2]", "and topic in ('" + selectTopicKeyword + "')");
 					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
 				}
 			}
@@ -385,11 +385,11 @@ public class GatheringDao {
 			} else {
 				if("All".equals(statusYN)) {
 					sql = sql.replace("[str1]", "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
-					sql = sql.replace("[str2]", "and ps_no in (select ps_no from project_study ps2 where ps2.ps_no = ps.ps_no and topic in ('" + selectTopicKeyword + "') and ps2.ps_no in(select ps_no from project_member_dept where ps_no = ps2.ps_no and capacity_number > recruited_number))");
+					sql = sql.replace("[str2]", "and topic in ('" + selectTopicKeyword + "')");
 					sql = sql.replace("[str3]", " ");
 				} else {
 					sql = sql.replace("[str1]", "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
-					sql = sql.replace("[str2]", "and ps_no in (select ps_no from project_study ps2 where ps2.ps_no = ps.ps_no and topic in ('" + selectTopicKeyword + "') and ps2.ps_no in(select ps_no from project_member_dept where ps_no = ps2.ps_no and capacity_number > recruited_number))");
+					sql = sql.replace("[str2]", "and topic in ('" + selectTopicKeyword + "')");
 					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
 				}
 			}
@@ -441,11 +441,11 @@ public class GatheringDao {
 			} else {
 				if("All".equals(statusYN)) {
 					sql = sql.replace("[str1]", " ");
-					sql = sql.replace("[str2]", "and ps_no in (select ps_no from project_study ps2 where ps2.ps_no = ps.ps_no and topic in ('" + selectTopicKeyword + "') and ps2.ps_no in(select ps_no from project_member_dept where ps_no = ps2.ps_no and capacity_number > recruited_number))");
+					sql = sql.replace("[str2]", "and topic in ('" + selectTopicKeyword + "')");
 					sql = sql.replace("[str3]", " ");
 				} else {
 					sql = sql.replace("[str1]", " ");
-					sql = sql.replace("[str2]", "and ps_no in (select ps_no from project_study ps2 where ps2.ps_no = ps.ps_no and topic in ('" + selectTopicKeyword + "') and ps2.ps_no in(select ps_no from project_member_dept where ps_no = ps2.ps_no and capacity_number > recruited_number))");
+					sql = sql.replace("[str2]", "and topic in ('" + selectTopicKeyword + "')");
 					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
 				}
 			}
@@ -464,11 +464,11 @@ public class GatheringDao {
 			} else {
 				if("All".equals(statusYN)) {
 					sql = sql.replace("[str1]", "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
-					sql = sql.replace("[str2]", "and ps_no in (select ps_no from project_study ps2 where ps2.ps_no = ps.ps_no and topic in ('" + selectTopicKeyword + "') and ps2.ps_no in(select ps_no from project_member_dept where ps_no = ps2.ps_no and capacity_number > recruited_number))");
+					sql = sql.replace("[str2]", "and topic in ('" + selectTopicKeyword + "')");
 					sql = sql.replace("[str3]", " ");
 				} else {
 					sql = sql.replace("[str1]", "and ps_no in(select ps_no from project_study where ps_no = ps.ps_no and upper(local) = upper('" + selectLocalKeyword + "'))");
-					sql = sql.replace("[str2]", "and ps_no in (select ps_no from project_study ps2 where ps2.ps_no = ps.ps_no and topic in ('" + selectTopicKeyword + "') and ps2.ps_no in(select ps_no from project_member_dept where ps_no = ps2.ps_no and capacity_number > recruited_number))");
+					sql = sql.replace("[str2]", "and topic in ('" + selectTopicKeyword + "')");
 					sql = sql.replace("[str3]", "and status = '" + statusYN + "'");
 				}
 			}
