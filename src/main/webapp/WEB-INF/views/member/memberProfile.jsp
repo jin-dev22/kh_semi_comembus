@@ -39,7 +39,6 @@
 					<a href="<%= request.getContextPath()%>/community/communityView?co_type=<%=co.getCoType()%>&no=<%=co.getCoNo()%>">
 						<span class="coTitle"><%= co.getCoTitle() %></span>
 						<span class="coRegDate"><%= new SimpleDateFormat("yyyy-MM-dd").format(co.getCoRegdate()) %></span>
-						<span class="coNums coLike"><%= co.getCoLike() %></span>
 						<span class="coNums coReadCnt"><%= co.getCoReadcount() %></span>
 					</a>
 				</div>
@@ -82,9 +81,8 @@
 						<p class="bold"><%= gather.getTitle() %></p>
 						<ul class="ps-pre__etc">
 							<li> 
-								<span class="heart-emoji">&#9829;</span><%= gather.getBookmark() %></li>
-							<li>
-								<span>&#128064;</span><%= gather.getViewcount() %></li>
+								<span class="heart-emoji">&#9829;</span><%= gather.getBookmark() %>
+							</li>
 							<li>모집인원 <%= gather.getRecruited_cnt() %> / <%= gather.getPeople() %></li>
 						</ul>
 					</div>
@@ -120,9 +118,8 @@
 							<p class="bold"><%= gather.getTitle() %></p>
 							<ul class="ps-pre__etc">
 								<li> 
-									<span class="heart-emoji">&#9829;</span><%= gather.getBookmark() %></li>
-								<li>
-									<span>&#128064;</span><%= gather.getViewcount() %></li>
+									<span class="heart-emoji">&#9829;</span><%= gather.getBookmark() %>
+								</li>
 								<li>모집인원 <%= gather.getRecruited_cnt() %> / <%= gather.getPeople() %></li>
 							</ul>
 						</div>				
@@ -158,9 +155,8 @@
 							<p class="bold"><%= gather.getTitle() %></p>
 							<ul class="ps-pre__etc">
 								<li> 
-									<span class="heart-emoji">&#9829;</span><%= gather.getBookmark() %></li>
-								<li>
-									<span>&#128064;</span><%= gather.getViewcount() %></li>
+									<span class="heart-emoji">&#9829;</span><%= gather.getBookmark() %>
+								</li>
 								<li>모집인원 <%= gather.getRecruited_cnt() %> / <%= gather.getPeople() %></li>
 							</ul>							
 						</div>				
