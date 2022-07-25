@@ -205,3 +205,9 @@ section#membus-profile{
 	max-width: 100%;
 	font-weight: bold;
 }
+/* 알림목록 정렬*/
+#alertList-container{
+	width: 800px;
+	padding: 0 auto;
+	margin: auto;
+}
