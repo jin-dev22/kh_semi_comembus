@@ -177,6 +177,7 @@ hr {
 	margin-bottom: 10px;
 }
 .ps-pre .ps-title {
+	text-align: left;
 	height: 48px;	
 }
 .ps-pre > p {

@@ -214,7 +214,7 @@ const gatheringFilter = (num) => {
 						</ul>
 						<div class="ps__bookmark">
 						<% if(loginMember == null){ %>
-							<button class="bookmark-front" value='\${psNo}'>♡</button>
+							<button class="bookmark-front" onclick="alert('로그인 후 이용해주세요');" value='\${psNo}'>♡</button>
 						<% } %>
 						<% if(loginMember != null){ %>
 							\${tagBack}
@@ -423,7 +423,7 @@ $(document).on('click', '.bookmark-back', function(e){
 					</ul>
 					<div class="ps__bookmark">
 					<% if(loginMember == null) { %>
-						<button "disabled" class="bookmark-front">♡</button>
+						<button "disabled" class="bookmark-front" onclick="alert('로그인 후 이용해주세요');">♡</button>
 					<%
 					} else {
 						String tagBack = "<button style='display:none' class='bookmark-back' value='" + studyNo + "'>♥</button>";

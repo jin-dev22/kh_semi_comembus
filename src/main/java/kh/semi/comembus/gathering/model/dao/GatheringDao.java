@@ -176,8 +176,6 @@ public class GatheringDao {
 		List<Gathering> list = new ArrayList<>();
 		String sql = prop.getProperty("findProjectLike");
 		
-		String searchLocal = (String) param.get("searchLocal");
-		String searchJobcode = (String) param.get("searchJobcode");
 		String selectLocalKeyword = (String) param.get("selectLocalKeyword");
 		String selectJobKeyword = (String) param.get("selectJobKeyword");
 		String statusYN = (String) param.get("statusYN");
@@ -261,8 +259,6 @@ public class GatheringDao {
 		int totalContent = 0;		
 		String sql = prop.getProperty("getProTotalContentLike");
 		
-		String searchLocal = (String) param.get("searchLocal");
-		String searchJobcode = (String) param.get("searchJobcode");
 		String selectLocalKeyword = (String) param.get("selectLocalKeyword");
 		String selectJobKeyword = (String) param.get("selectJobKeyword");
 		String statusYN = (String) param.get("statusYN");
@@ -335,8 +331,6 @@ public class GatheringDao {
 		List<Gathering> list = new ArrayList<>();
 		String sql = prop.getProperty("findStudyLike");
 		
-		String searchLocal = (String) param.get("searchLocal");
-		String searchTopic = (String) param.get("searchTopic");
 		String selectLocalKeyword = (String) param.get("selectLocalKeyword");
 		String selectTopicKeyword = (String) param.get("selectTopicKeyword");
 		String statusYN = (String) param.get("statusYN");
@@ -420,8 +414,6 @@ public class GatheringDao {
 		int totalContent = 0;		
 		String sql = prop.getProperty("getStdTotalContentLike");
 		
-		String searchLocal = (String) param.get("searchLocal");
-		String searchTopic = (String) param.get("searchTopic");
 		String selectLocalKeyword = (String) param.get("selectLocalKeyword");
 		String selectTopicKeyword = (String) param.get("selectTopicKeyword");
 		String statusYN = (String) param.get("statusYN");

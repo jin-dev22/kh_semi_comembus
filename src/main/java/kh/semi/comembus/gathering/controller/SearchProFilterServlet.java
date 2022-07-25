@@ -39,31 +39,20 @@ public class SearchProFilterServlet extends HttpServlet {
 				cPage = Integer.parseInt(request.getParameter("cPage"));
 			} catch(NumberFormatException e) {}
 			
-			String searchLocal = request.getParameter("searchLocal");
-			String searchJobcode = request.getParameter("searchJobcode");
 			String selectLocalKeyword = request.getParameter("selectLocalKeyword");
 			String selectJobKeyword = request.getParameter("selectJobKeyword");
 			String statusYN = request.getParameter("statusYN");
 			// 체크 시 N=모집중, 체크해제 시 All
 			String memberId = request.getParameter("memberId");
-			// 로그인을 했다면 memberId가, 안했다면 "" 공백문자가
+			// 로그인을 했다면 memberId가, 안했다면 "" 공백문자가 전송됨
 			
-			System.out.println("확인용 searchLocal = " + searchLocal);
-			System.out.println("확인용 searchJobcode = " + searchJobcode);
-			System.out.println("확인용 selectLocalKeyword = " + selectLocalKeyword);
-			System.out.println("확인용 selectJobKeyword = " + selectJobKeyword);
-			System.out.println("확인용 statusYN = " + statusYN);
-			System.out.println("확인용 memberId = " + memberId);
 			
 			Map<String, Object> param = new HashMap<>();
-			param.put("searchLocal", searchLocal);
-			param.put("searchJobcode", searchJobcode);
 			param.put("selectLocalKeyword", selectLocalKeyword);
 			param.put("selectJobKeyword", selectJobKeyword);
 			param.put("statusYN", statusYN);
 			param.put("start", (cPage - 1) * numPerPage + 1);
 			param.put("end", cPage * numPerPage);
-			System.out.println("확인용 param = " + param);
 			
 			// 2. 업무로직
 			// content 영역
