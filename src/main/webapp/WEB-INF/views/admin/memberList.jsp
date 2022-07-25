@@ -36,7 +36,7 @@ window.addEventListener('load', (e) => {
 });
 </script>
 <section id="memberList-container">
-	<h2>회원관리</h2>
+	<h2 class="admin-member-list-title">회원관리</h2>
 	
     <div id="search-container">
         <select id="searchType" class="search-option">
@@ -77,7 +77,7 @@ window.addEventListener('load', (e) => {
 			if(memberList == null || memberList.isEmpty()){
 		%>
 			<tr>
-				<td colspan="10" align="center"> 검색 결과가 없습니다. </td>
+				<td colspan="7" align="center"> 검색 결과가 없습니다. </td>
 			</tr>
 		<%
 			} 

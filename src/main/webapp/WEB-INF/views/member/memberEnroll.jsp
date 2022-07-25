@@ -214,7 +214,7 @@
     </div>
 
     <div class="enroll-agreement-container">
-      <textarea class="enroll-agreement-content" cols="68" rows="5">서비스 이용 표준약관
+      <textarea class="enroll-agreement-content" cols="73" rows="5">서비스 이용 표준약관
 
 [시행 2008. 7. 30.] [문화체육관광부훈령 제2008-0호, 2008. 7. 30., 제정]
 과학기술정보통신부(디지털콘텐츠과), 044-202-6352
@@ -267,7 +267,7 @@
     </div>
 
     <div class="enroll-agreement-container">
-      <textarea class="enroll-agreement-content" cols="68" rows="5">CO;MEMBUS 개인정보처리방침
+      <textarea class="enroll-agreement-content" cols="73" rows="5">CO;MEMBUS 개인정보처리방침
 
 <CO;MEMBUS>('CO;MEMBUS.com', 이하 코멤버스)이(가) 취급하는 모든 개인정보는 개인정보보호법 등 관련 법령상의 개인정보보호 규정을 준수하여 이용자의 개인정보 보호 및 권익을 보호하고 개인정보와 관련한 이용자의 고충을 원활하게 처리할 수 있도록 다음과 같은 처리방침을 두고 있습니다.
 

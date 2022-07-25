@@ -153,6 +153,8 @@ enrollPwd1.addEventListener("input", (e) => {
   if (enrollPwd2.value !== "") {
     isPwdEqual();
   }
+	
+  e.target.style.fontFamily = "auto";
 });
 
 enrollPwd1.addEventListener("blur", (e) => {
@@ -162,6 +164,7 @@ enrollPwd1.addEventListener("blur", (e) => {
 
 enrollPwd2.addEventListener("input", (e) => {
   isPwdEqual();
+  e.target.style.fontFamily = "auto";
 });
 
 enrollPwd2.addEventListener("blur", (e) => {
