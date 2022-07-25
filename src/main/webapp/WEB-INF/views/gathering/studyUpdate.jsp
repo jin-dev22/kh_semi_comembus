@@ -31,7 +31,7 @@
 					<th>*스터디 분야</th>
 				</tr>
 				<tr>
-					<td colspan="3">스터디분야는 변경 불가능합니다.</td>
+					<td colspan="3">스터디분야는 변경 불가능합니다</td>
 				</tr>
 				<tr>
 					<td><%= gathering.getTopic() %></td>
