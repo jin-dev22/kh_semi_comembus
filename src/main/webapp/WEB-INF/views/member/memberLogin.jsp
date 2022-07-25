@@ -5,7 +5,7 @@
 
 <section id=login-container>
 
-	<h1>회원가입/로그인</h1>
+	<h1 class="login-title">로그인</h1>
 	<form id="loginFrm" name="loginFrm" action="<%= request.getContextPath() %>/membus/login" method="POST">
 	<input type="hidden" id="location" value="<%= location %>" name="location"/>
 	<table id="loginTable" class="login-table">
@@ -17,6 +17,7 @@
 			<tr>
 				<th><label for="loginPwd" class="login-label">비밀번호</label></th>
            		<td><input type="password" id="password" name="password" class="login-input"/></td>
+           		<td><i class="fa-solid fa-eye-slash pwd-show-hide" title="문자 보이기"></i></td>
 			</tr>
 			</tbody>
      </table>
@@ -35,4 +36,23 @@
    	</div>
 
 </section>
+
+<script>
+//비밀번호 보기/숨기기 아이콘
+const pwdShowHide = document.querySelector(".pwd-show-hide");
+pwdShowHide.addEventListener("click", (e) => {
+    const pwdInputType = document.querySelector("#password");
+    if (pwdInputType.type === "password") {
+      pwdInputType.type = "text";
+      e.target.classList.remove("fa-eye-slash");
+      e.target.classList.add("fa-eye");
+      e.target.title="문자 숨기기";
+    } else {
+      pwdInputType.type = "password";
+      e.target.classList.remove("fa-eye");
+      e.target.classList.add("fa-eye-slash");
+      e.target.title="문자 보이기";
+    }
+ });
+</script>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>

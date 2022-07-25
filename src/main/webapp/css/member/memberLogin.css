@@ -1,10 +1,22 @@
 /* 로그인 */
+.login-title{	
+    padding-left: 20px;
+}
 .login-table{
 	margin:40px auto 20px auto;
 }
 
 #loginBtn{
-	width: 300px;
+	width: 330px;
+	cursor: pointer;
+	background-color: var(--btn-color);
+	color: white;
+}
+
+#loginBtn:hover {
+	cursor: pointer;
+	background-color: #77a0e2;
+	color: black;
 }
 
 .login-sub:nth-of-type(1){
@@ -48,7 +60,7 @@
 
 .login-input, .find-input{
 	padding: 5px;
-	margin: 5px 0;
+	margin: 5px 8px 0 5px;
 	width: 220px;
 	font-family: auto;
 }
