@@ -31,7 +31,7 @@ public class MemberSearchServlet extends HttpServlet {
 			//1.사용자입력값처리
 			//페이지설정
 			int cPage = 1;
-			int numPerPage = 10;
+			int numPerPage = 16;
 			try {
 				cPage = Integer.parseInt(request.getParameter("cPage"));
 			} catch (NumberFormatException e) {}
