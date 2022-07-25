@@ -146,7 +146,7 @@
 				%>	
 				<div class="ps-pre"><!-- /studyView?psNo=107 -->
 					<a href="<%= request.getContextPath()%><%=putUrl %><%= psNo%>">
-						<img src="<%= request.getContextPath() %>/images/<%= topic %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
+						<img src="<%= request.getContextPath() %>/images/<%= gather.getTopic() %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
 					</a>
 					<p class="bold"><%= topic%>
 					</p>
@@ -158,6 +158,7 @@
 							<span>&#128064;</span><%= gather.getViewcount() %></li>
 						<li>모집인원 <%= gather.getRecruited_cnt() %> / <%= gather.getPeople() %></li>
 					</ul>
+					<input type="button" value="지원취소하기" class="cancelApld" onclick="cancelApld(<%= gather.getPsNo()%>);"/>
 				</div>			
 				<% 
 					}
