@@ -101,7 +101,7 @@
 				%>	
 				<div class="ps-pre"><!-- /studyView?psNo=107 -->
 					<a href="<%= request.getContextPath()%><%=putUrl %><%= psNo%>">
-						<img src="<%= request.getContextPath() %>/images/<%= topic %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
+						<img src="<%= request.getContextPath() %>/images/<%= gather.getTopic() %>.jpg" class="ps-pre__img" alt="해당 프로젝트 주제 이미지">
 					</a>
 					<p class="bold"><%= topic%>
 					</p>
