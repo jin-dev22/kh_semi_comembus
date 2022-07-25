@@ -6,6 +6,11 @@
 	margin: auto;
 	text-align:center;
 }
+
+.admin-member-list-title{
+	margin: 10px 0 30px 0;
+	font-family: var(--elice-font);
+}
 	
 #tbl-member {
 	width:100%; 
@@ -21,7 +26,7 @@
 	font-weight: bold;
 }
 
-#tbl-member td {
+#tbl-member td{
 	border:1px solid gray; 
 	padding:10px; 
 	text-align:center;

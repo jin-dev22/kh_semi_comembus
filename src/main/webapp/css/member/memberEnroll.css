@@ -11,6 +11,8 @@
 
 .enroll-input-container{
   height:90px;
+  
+  font-family: var(--elice-font);
 }
 
 .enroll-input-container:first-child{
@@ -40,7 +42,7 @@
   border: 1px solid black;
   padding: 7px;
   transition: all 0.3s ease-in-out;
-  font-family: auto;
+  
 }
 
 .enroll-input input:focus, .select-options:focus{
@@ -56,7 +58,6 @@
   border-radius: 3px;
   border: 1px solid black;
   padding: 7px;
-  font-family: auto;
 }
 
 .select-options:hover{
@@ -66,6 +67,7 @@
 /* 약관 동의 */
 .enroll-agreement-container{
   margin: 20px 0;
+  font-family: auto;
 }
 
 .enroll-agreement-content{
@@ -86,7 +88,10 @@
 
 .agree-sentence label{
   font-weight: initial;
+  margin-right: 25px;
 }
+
+
 
 /* 가입 버튼 */
 .enrollBtn {
@@ -105,6 +110,7 @@
   height: 50px;
   color: white;
   transition: all 0.3s ease-in-out;
+  margin-right: 30px;
 }
 
 .enrollBtn .enrollBtnClick:hover {
