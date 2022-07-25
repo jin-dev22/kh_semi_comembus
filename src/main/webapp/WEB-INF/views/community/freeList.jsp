@@ -20,6 +20,11 @@ div#search-coWriter{
 }
 </style>
 <section id="commu-container">
+		<section class="commu-bar">
+			<p><a href="<%= request.getContextPath()%>/community/communityList?co_type=Q">Q&A</a></p>
+			<p><a href="<%= request.getContextPath()%>/community/communityList?co_type=F">자유주제</a></p>
+			<p><a href="<%= request.getContextPath()%>/community/communityList?co_type=S">정보공유</a></p>
+		</section>
 	<h2>자유 게시판‍📝</h2>
 	<h4>자유롭게 글을 작성할 수 있는 게시판 입니다.</h4><br /><br />
 <!-- 검색 -->
