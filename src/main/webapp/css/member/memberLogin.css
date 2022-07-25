@@ -84,6 +84,19 @@
 
 
 /* 비밀번호 재설정 */
+#reset-container{
+	width: 550px;
+	text-align: center;
+	margin: 130px auto 180px auto;
+	border: 3px solid var(--btn-color);
+	padding: 50px 0 70px 0;
+	font-family: var(--elice-font);
+}
+
+.reset-title{
+	margin: 20px 0 40px 0;
+}
+
 .reset-password-input-container{
   height:90px;
 }

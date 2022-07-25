@@ -33,30 +33,29 @@
     <script>
     // 아이디 중복검사
 	document.querySelector("#enrollId").addEventListener('blur', (e) => {
-		// 아이디 유효성검사가 완료된 후, 아이디 중복 여부 확인
+		// 아이디 유효성검사에 통과한 경우만 아이디 중복검사 진행
 		if (idGuideLine.className === "success") {
 			idGuideArea.className = "hide"; // 유효성검사 가이드 숨기기
+			
 			const enrollId = e.target.value;
-			// console.log(enrollId);
-
 			$.ajax({
 				url: '<%= request.getContextPath() %>/membus/checkIdDuplicate',
 				data: {enrollId},
+				// 검사가 진행되는 동안 안내 문구 입력창 아래에 나타냄
 				beforeSend : function(){
-					// console.log("아이디 로딩중");
 					idCheckArea.className = "hide";
-					idLoading.innerHTML = "닉네임 중복검사 중입니다. 잠시만 기다려주세요.";
+					idLoading.innerHTML = "아이디 중복검사 중입니다. 잠시만 기다려주세요.";
 				},
 				success(available){
 					idLoading.innerHTML = "";
 					if(available){
-						// console.log("not중복아이디");
+						// 사용 가능한 아이디인 경우
 						idCheckArea.className = "";
 						showValidationResult(idCheck, "success", "사용 가능한 아이디입니다.");
 						inputStyle(e.target, "blue");
 					}
 					else{
-						// console.log("중복아이디");
+						// 이미 사용 중인 아이디이거나 탈퇴한 아이디인 경우
 						idCheckArea.className = "";
 						showValidationResult(idCheck, "fail", "이미 존재하는 아이디입니다.");
 						inputStyle(e.target, "red");
@@ -145,11 +144,14 @@
 	// 닉네임 중복검사
 	document.querySelector("#enrollNickname").addEventListener('blur', (e) => {
 		// 닉네임 유효성검사가 완료된 후, 닉네임 중복 여부 확인
+		const nicknameLoading= document.querySelector("#nicknameLoading");
+		const nicknameGuideArea= document.querySelector("#nicknameGuideArea");
+		const nicknameGuideLine= document.querySelector("#nicknameGuideLine");
+		
 		if (nicknameGuideLine.className === "success") {
 			nicknameGuideArea.className = "hide"; // 유효성검사 가이드 숨기기
 			const nickname = e.target.value;
 
-			const idGuideArea = document.querySelector("#nicknameLoading");
 			$.ajax({
 				url: '<%= request.getContextPath() %>/membus/checkNicknameDuplicate',
 				data: {nickname},
@@ -177,8 +179,6 @@
 			});
 		}	
 	});
-
-		
     </script>
     
     <div class="enroll-input-container">
@@ -366,4 +366,5 @@
   </form>
 </section>
 <script src="<%= request.getContextPath() %>/js/member/memberEnroll.js"></script>
+
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
