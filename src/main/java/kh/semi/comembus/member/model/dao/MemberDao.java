@@ -439,43 +439,41 @@ public class MemberDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		String sql = prop.getProperty("findMemberLike");
-		
+		//페이징처리를 위한 start/end번호, 직무코드, 모임진행여부, 닉네임 값을 해시맵으로 전달받음
 		String jobCode = (String) param.get("searchJobCode");
 		String keyword = (String) param.get("searchKeyword");
 		String gatheringYN = (String) param.get("searchGatheringYN");
 		/**
-		 * 	sql문 조건추가
+		 * 	사용자가 입력한 조건의 여부에 따라 작성해준 쿼리문을 String#replace로 변경.
 		 * 	[str1] = "and job_code = " + param.get("searchJobCode");
 		 *	[str2] = "and upper(member_nickname) like upper('%"+"param.get("searchKeyword")"+"%')";
 		 *	[str3] = "gathering_cnt >"+param.get("searchGatheringYN"); 
 		 */
-		if(!"ALL".equals(jobCode)) {
+		if(!"ALL".equals(jobCode)) {//직무 선택시
 			sql = sql.replace("[str1]", "and job_code = '" + jobCode +"'");
-		}else {
+		}else {//사용자가 해당 조건을 선택하지 않았을 경우 쿼리문의 [str]부분을 공백으로 변경
 			sql = sql.replace("[str1]", " ");
 		}
 		
-		if(!keyword.isEmpty()) {
+		if(!keyword.isEmpty()) {//닉네임 검색시
 			sql = sql.replace("[str2]", "and upper(member_nickname) like upper('%"+keyword+"%')");			
 		}else {
 			sql = sql.replace("[str2]", " ");
 		}
 		
-		if("Y".equals(gatheringYN)) {
+		if("Y".equals(gatheringYN)) {//모임진행여부 선택시
 			sql = sql.replace("[str3]", "gathering_cnt > 0 and");
 		}else if("N".equals(gatheringYN)) {
 			sql = sql.replace("[str3]", "gathering_cnt = 0 and");
 		}else {
 			sql = sql.replace("[str3]", " ");
 		}
-		
-		//System.out.println("@Dao:Sql>>"+sql);
 		try {
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, (int) param.get("start"));
 			pstmt.setInt(2, (int) param.get("end"));
 			rset = pstmt.executeQuery();
-			while(rset.next()) {
+			while(rset.next()) {//참여중 모임 개수를 각 member객체에 저장
 				MemberExt member = handleMemberResultSet(rset);
 				member.setGetheringCnt(rset.getInt("gathering_cnt"));
 				member.setJobName(getJobName(conn, member.getJobCode()));
