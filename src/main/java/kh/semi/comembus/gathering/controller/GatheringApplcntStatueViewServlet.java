@@ -167,7 +167,7 @@ public class GatheringApplcntStatueViewServlet extends HttpServlet {
 			//알림내용 글자 수 줄이기
 			String title = gathering.getTitle();
 			String substrTitle = title.length() > 8? title.substring(0, 7)+"...": title;
-			String alertContent = "모임 ["+substrTitle +"]의 지원신청이 "+ ("O".equals(apldResult) ? "수락" : "거절"+"되었습니다.");
+			String alertContent = "모임 ["+substrTitle +"]의 지원신청이 "+ ("O".equals(apldResult) ? "수락" : "거절")+"되었습니다.";
 			
 			Alert alert = new Alert(0, apldMemberId, psNo, 0, MessageType.APPLY_RESULT, alertContent, IsRead.N);
 			int result = alertService.notifyAplcntResult(alert);
