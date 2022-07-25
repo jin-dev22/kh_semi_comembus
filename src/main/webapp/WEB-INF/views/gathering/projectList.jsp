@@ -154,12 +154,6 @@ const gatheringFilter = (num) => {
 	const numPerPage = 12;
 	let totalPages = 0;
 	
-	console.log(">> localAll ", localAll);
-	console.log(">> jobAll ", jobAll);
-	console.log(">> statusYN ", statusYN);
-	
-	let searchLocal = 'local';
-	let searchJobcode = 'jobcode';
 	let selectLocalKeyword = localAll;
 	let selectJobKeyword = jobAll;
 
@@ -167,8 +161,6 @@ const gatheringFilter = (num) => {
 		url: '<%= request.getContextPath() %>/gathering/searchProFilter',
 		data: {
 			cPage: cPage,
-			searchLocal: searchLocal,
-			searchJobcode: searchJobcode,
 			selectLocalKeyword: selectLocalKeyword,
 			selectJobKeyword: selectJobKeyword,
 			statusYN : statusYN,
@@ -211,7 +203,7 @@ const gatheringFilter = (num) => {
 						</ul>
 						<div class="ps__bookmark">
 						<% if(loginMember == null){ %>
-							<button class="bookmark-front" value="\${psNo}">♡</button>
+							<button class="bookmark-front" onclick="alert('로그인 후 이용해주세요');" value="\${psNo}">♡</button>
 						<% } %>
 						<% if(loginMember != null){ %>
 							\${tagBack}
@@ -231,6 +223,7 @@ const gatheringFilter = (num) => {
 				$("#pagebar").html("");
 				$("#pagebar").html(htmlStr);
 			} else {
+				$("#pagebar").html("해당되는 프로젝트를 만들어주세요!");
 				alert("해당 프로젝트가 존재하지 않습니다.");
 			}
 		},
@@ -414,7 +407,7 @@ $(document).on('click', '.bookmark-back', function(e){
 					</ul>
 					<div class="ps__bookmark">
 					<% if(loginMember == null) { %>
-						<button "disabled" class="bookmark-front">♡</button>
+						<button "disabled" class="bookmark-front" onclick="alert('로그인 후 이용해주세요');">♡</button>
 					<%
 					} else {
 						String tagBack = "<button style='display:none' class='bookmark-back' value='" + projectNo + "'>♥</button>";

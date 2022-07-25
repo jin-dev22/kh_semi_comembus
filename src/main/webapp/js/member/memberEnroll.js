@@ -46,7 +46,7 @@ const checkArr = [
 
 
 /**
- * 유효성 검사 결과 출력하는 함수
+ * 유효성 검사 결과를 입력창 아래에 출력하는 함수
  */
 const showValidationResult = (input, result, msg) => {
   if (result === "fail") {
@@ -60,7 +60,7 @@ const showValidationResult = (input, result, msg) => {
 };
 
 /**
- * 유효성 검사 통과 여부에 따라 input태그 색상 변경하는 함수
+ * 유효성 검사 통과 여부에 따라 입력창 하단 색상 변경하는 함수
  */
 const inputStyle = (input, color) => {
   input.style.borderBottom = `2px solid ${color}`;  
@@ -72,8 +72,9 @@ const inputStyle = (input, color) => {
  * 비번에 아이디가 포함되어있는지 확인하는 함수
  */
  const isPwdContainsId = () => {
+  // 비밀번호에 아이디가 포함되어있는 경우
   if (enrollPwd1.value.indexOf(enrollId.value) !== -1) {
-    if (enrollId.value == "")
+    if (enrollId.value == "") // 아이디가 아직 입력되어있지 않은 경우
       showValidationResult(pwd1GuideLine2, "success", "아이디 사용 제외");
     else 
       showValidationResult(pwd1GuideLine2, "fail", "아이디 사용 제외");
@@ -99,7 +100,7 @@ enrollId.addEventListener("input", (e) => {
     showValidationResult(idGuideLine, "success", "영어(소문자), 숫자 조합 6~12자  (특수문자 사용 불가)");
     inputStyle(enrollId, "blue");
   }
-
+ㅁ
   // 비번 입력 후 아이디 변경 시, 비번에 아이디 포함되어있는지 재확인
   isPwdContainsId();
 });
@@ -107,7 +108,7 @@ enrollId.addEventListener("input", (e) => {
 
 // ----------------------------- 비밀번호 ---------------------------------------
 /**
- * 비번 입력값 2개가 서로 일치하는지 확인하는 함수
+ * 비밀번호 입력값 2개가 서로 일치하는지 확인하는 함수
  */
 const isPwdEqual = () => {
   const pwd1 = enrollPwd1.value.trim();
@@ -123,8 +124,9 @@ const isPwdEqual = () => {
   }
 };
 
+// 비밀번호에 값이 입력될 때
 enrollPwd1.addEventListener("input", (e) => {	
-  // 비번 재입력 시, 앞서 유효성검사 통과해서 숨김처리 해놓은 가이드라인 다시 드러내기
+  // 비밀번호 재입력 시, 앞서 유효성검사 통과해서 숨김처리 해놓은 입력 가이드라인 다시 드러내기
   pwd1GuideArea.className = "";
 
   const val = e.target.value.trim();
@@ -139,17 +141,17 @@ enrollPwd1.addEventListener("input", (e) => {
     showValidationResult(pwd1GuideLine1, "success", "영문, 숫자, 특수문자(!&/\\*@) 조합 (8~16자)");
   }
 
-  // 비번에 아이디 포함되어있는지 확인
+  // 입력한 비밀번호에 아이디가 포함되어있는지 확인
   isPwdContainsId();
 
-  // 비번 유효성검사1&2 모두 통과 시, input태그 색상 결정
+  // 비밀번호 유효성 검사1&2 모두 통과 시, 비밀번호 입력창 하단 색상 결정
   if (pwd1GuideLine1.className === "success" && pwd1GuideLine2.className === "success")
     inputStyle(enrollPwd1, "blue");
   else {
     inputStyle(enrollPwd1, "red");
   }
 
-  // 비번 확인 입력창이 비어있지 않으면, 비번 일치 여부 재확인
+  // 비밀번호 확인 입력창이 비어있지 않으면, 비밀번호 일치 여부 재확인
   if (enrollPwd2.value !== "") {
     isPwdEqual();
   }
@@ -157,17 +159,20 @@ enrollPwd1.addEventListener("input", (e) => {
   e.target.style.fontFamily = "auto";
 });
 
+// 비밀번호 입력완료 시
 enrollPwd1.addEventListener("blur", (e) => {
+  // 비밀번호의 유효성검사를 통과한 경우, 비밀번호 입력 가이드라인 숨김처리
   if (pwd1GuideLine1.className === "success" && pwd1GuideLine2.className === "success")
     pwd1GuideArea.className = "hide";
 });
 
 enrollPwd2.addEventListener("input", (e) => {
-  isPwdEqual();
+  isPwdEqual(); // 비밀번호 입력값과 비밀번호 확인 입력값이 일치하는지 확인
   e.target.style.fontFamily = "auto";
 });
 
 enrollPwd2.addEventListener("blur", (e) => {
+  // 비밀번호 확인 검사(비밀번호 입력값 2개의 동일 여부)를 통과한 경우, 비밀번호 입력 가이드라인 숨김처리
   if (pwd2GuideLine.className === "success") 
     pwd2GuideArea.className = "hide";
 });

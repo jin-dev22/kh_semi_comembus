@@ -36,8 +36,6 @@ public class SearchStdFilterServlet extends HttpServlet {
 				cPage = Integer.parseInt(request.getParameter("cPage"));
 			} catch(NumberFormatException e) {}
 			
-			String searchLocal = request.getParameter("searchLocal");
-			String searchTopic = request.getParameter("searchTopic");
 			String selectLocalKeyword = request.getParameter("selectLocalKeyword");
 			String selectTopicKeyword = request.getParameter("selectTopicKeyword");
 			String statusYN = request.getParameter("statusYN");
@@ -46,8 +44,6 @@ public class SearchStdFilterServlet extends HttpServlet {
 			// 로그인을 했다면 memberId가, 안했다면 ""
 			
 			Map<String, Object> param = new HashMap<>();
-			param.put("searchLocal", searchLocal);
-			param.put("searchTopic", searchTopic);
 			param.put("selectLocalKeyword", selectLocalKeyword);
 			param.put("selectTopicKeyword", selectTopicKeyword);
 			param.put("statusYN", statusYN);

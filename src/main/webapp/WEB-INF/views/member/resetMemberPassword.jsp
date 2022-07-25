@@ -5,15 +5,11 @@
 <link rel="stylesheet" href="<%= request.getContextPath() %>/css/member/memberLogin.css" />
 
 <%
-	String memberId = (String) session.getAttribute("memberId");
+	String memberId = (String) request.getAttribute("memberId");
 %>
 
-<section id=find-container>
-	<h2>비밀번호 재설정</h2>
-	<div class="find-content">
-		<p>비밀번호는 암호화 저장되므로 분실 시 찾아드릴 수 없는 정보입니다.</p>
-		<p>본인 확인을 통해 비밀번호를 재설정 하실 수 있습니다.</p>
-	</div>
+<section id="reset-container">
+	<h2 class="reset-title">비밀번호 재설정</h2>
 	
 	<form id="resetPasswordFrm" name="resetPasswordFrm" method="POST" action="<%= request.getContextPath() %>/membus/resetMemberPassword">
      <input type="hidden" id="memberId" name="memberId" value="<%= memberId %>" />
@@ -56,6 +52,19 @@
      </form>
 
 </section>
+<script>
+const resetPwd1 = document.getElementById("resetPwd1");
+/**
+ * 비번에 아이디가 포함되어있는지 확인하는 함수
+ */
+const isPwdContainsId = () => {
+ if (resetPwd1.value.indexOf("<%= memberId %>") !== -1) {
+   showValidationResult(pwd1GuideLine2, "fail", "아이디 사용 제외");
+ } else {
+   showValidationResult(pwd1GuideLine2, "success", "아이디 사용 제외");
+ }
+};
+</script>
 <script src="<%= request.getContextPath() %>/js/member/resetMemberPassword.js"></script>
   
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>

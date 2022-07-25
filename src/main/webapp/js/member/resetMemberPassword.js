@@ -1,5 +1,4 @@
 // --------------------- 비밀번호 찾기(비밀번호 재설정)--------------------------
-const resetPwd1 = document.getElementById("resetPwd1");
 const resetPwd2 = document.getElementById("resetPwd2");
 
 const pwd1GuideArea = document.getElementById("pwd1GuideArea");
@@ -33,20 +32,6 @@ const checkArr = [
  const inputStyle = (input, color) => {
    input.style.borderBottom = `2px solid ${color}`;
  };
- 
- /**
-  * 비번에 아이디가 포함되어있는지 확인하는 함수
-  */
- const isPwdContainsId = () => {
-  if (resetPwd1.value.indexOf(memberId.value) !== -1) {
-    if (memberId.value == "")
-      showValidationResult(pwd1GuideLine2, "success", "아이디 사용 제외");
-    else 
-      showValidationResult(pwd1GuideLine2, "fail", "아이디 사용 제외");
-  } else {
-    showValidationResult(pwd1GuideLine2, "success", "아이디 사용 제외");
-  }
-};
  
  /**
   * 비번 입력값 2개가 서로 일치하는지 확인하는 함수

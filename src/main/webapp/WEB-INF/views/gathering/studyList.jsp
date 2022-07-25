@@ -214,7 +214,7 @@ const gatheringFilter = (num) => {
 						</ul>
 						<div class="ps__bookmark">
 						<% if(loginMember == null){ %>
-							<button class="bookmark-front" value='\${psNo}'>♡</button>
+							<button class="bookmark-front" onclick="alert('로그인 후 이용해주세요');" value='\${psNo}'>♡</button>
 						<% } %>
 						<% if(loginMember != null){ %>
 							\${tagBack}
@@ -234,6 +234,7 @@ const gatheringFilter = (num) => {
 				$("#pagebar").html("");
 				$("#pagebar").html(htmlStr);
 			} else {
+				$("#pagebar").html("해당되는 스터디를 만들어주세요!");
 				alert("해당 스터디가 존재하지 않습니다.");
 			}
 		},
@@ -410,7 +411,7 @@ $(document).on('click', '.bookmark-back', function(e){
 						<%= "Planning".equals(study.getTopic()) ? "기획" : ("Design".equals(study.getTopic()) ? "디자인" : ("Frontend".equals(study.getTopic()) ? "프론트엔드" : ("Backend".equals(study.getTopic()) ? "백엔드" : ("Interview".equals(study.getTopic()) ? "면접" : "코딩테스트")))) %>
 					</p>
 					<a href="<%= request.getContextPath()%>/gathering/studyView?psNo=<%= studyNo %>">
-						<p class="bold"><%= study.getTitle() %></p>
+						<p class="bold ps-title"><%= study.getTitle() %></p>
 					</a>
 					<ul class="ps-pre__etc">
 						<li> 
@@ -422,7 +423,7 @@ $(document).on('click', '.bookmark-back', function(e){
 					</ul>
 					<div class="ps__bookmark">
 					<% if(loginMember == null) { %>
-						<button "disabled" class="bookmark-front">♡</button>
+						<button "disabled" class="bookmark-front" onclick="alert('로그인 후 이용해주세요');">♡</button>
 					<%
 					} else {
 						String tagBack = "<button style='display:none' class='bookmark-back' value='" + studyNo + "'>♥</button>";

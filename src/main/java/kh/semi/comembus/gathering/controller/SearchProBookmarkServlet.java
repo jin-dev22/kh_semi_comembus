@@ -44,16 +44,12 @@ public class SearchProBookmarkServlet extends HttpServlet {
 			String type = "P";
 			int totalContent = 0;
 			
-			System.out.println(">>> 확인용 bookmarkYN = " + bookmarkYN);
-			System.out.println(">>> 확인용 memberId = " + memberId);
-			
 			Map<String, Object> param = new HashMap<>();
 			param.put("memberId", memberId);
 			param.put("bookmarkYN", bookmarkYN);
 			param.put("start", (cPage - 1) * numPerPage + 1);
 			param.put("end", cPage * numPerPage);
 			param.put("type", type);
-			System.out.println(">>> 확인용 param = " + param); // 여기까지 확인완료
 			
 			// 2. 업무로직
 			// bookmark 영역
@@ -70,14 +66,8 @@ public class SearchProBookmarkServlet extends HttpServlet {
 				totalContent = gatheringService.getProTotalContent();
 				bmParam.put("loginMemberId", memberId);
 				bookmarkList = gatheringService.findAllProBookmarked(bmParam);
-				System.out.println(">>> memberId " + memberId);
-				System.out.println(">>> bmParam = " + bmParam);
 			};
 			
-			System.out.println(">>> 필터링확인용 bookmarkList: " + bookmarkList); // 확인용
-			System.out.println(">>> 필터링확인용 projectList: " + projectList); // 확인용
-			System.out.println(">>> 필터링 totalContent = " + totalContent); // 확인용
-			System.out.println(">>> cPage = " + cPage);
 			
 			response.setContentType("application/json; charset=utf-8");
 			Map<String, Object> bookmarkFilterLists = new HashMap<>();
