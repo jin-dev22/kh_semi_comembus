@@ -411,7 +411,7 @@ $(document).on('click', '.bookmark-back', function(e){
 						<%= "Planning".equals(study.getTopic()) ? "기획" : ("Design".equals(study.getTopic()) ? "디자인" : ("Frontend".equals(study.getTopic()) ? "프론트엔드" : ("Backend".equals(study.getTopic()) ? "백엔드" : ("Interview".equals(study.getTopic()) ? "면접" : "코딩테스트")))) %>
 					</p>
 					<a href="<%= request.getContextPath()%>/gathering/studyView?psNo=<%= studyNo %>">
-						<p class="bold"><%= study.getTitle() %></p>
+						<p class="bold ps-title"><%= study.getTitle() %></p>
 					</a>
 					<ul class="ps-pre__etc">
 						<li> 
