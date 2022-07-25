@@ -180,6 +180,9 @@ header {
     border-top-left-radius: 10%;
     border-bottom-left-radius: 10%;
     margin-left: 10px;
+	/* 수진 - 알림로고 위치 수정 */
+	display: flex;
+	align-items: center;
 }
   
 .h__loginMember a:hover {
@@ -265,4 +268,8 @@ footer .terms ul li:last-child::after,
     background-color: white;
     text-decoration: none;
     color: black;
+}
+/* 알림로고 관련 */
+#notification{
+	margin-left: 10px;
 }
