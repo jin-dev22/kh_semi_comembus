@@ -22,7 +22,7 @@
 			</tr>	
         </tbody>
      </table>
-			<button type="button" id="findIdBtn" class="find-btn">아이디 찾기</button>
+			<button type="button" id="findIdBtn" class="find-btn">본인 확인</button>
      </form>
      
      <script>
@@ -51,7 +51,7 @@
    		const frm = document.findIdFrm;
    		frm.target = title;
    		frm.submit();
-     })
+     });
      </script>
 
 </section>

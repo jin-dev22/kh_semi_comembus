@@ -75,7 +75,7 @@ public class MemberLoginServlet extends HttpServlet {
 			}
 			// 로그인 실패
 			else {
-				session.setAttribute("msg", "아이디 또는 비밀번호가 일치하지 않습니다.");
+				session.setAttribute("msg", "아이디 또는 비밀번호가 틀렸습니다.");
 				response.sendRedirect(request.getContextPath() + "/membus/login");	
 			}
 			
