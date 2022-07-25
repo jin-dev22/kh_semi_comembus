@@ -231,6 +231,7 @@ const gatheringFilter = (num) => {
 				$("#pagebar").html("");
 				$("#pagebar").html(htmlStr);
 			} else {
+				$("#pagebar").html("");
 				alert("해당 프로젝트가 존재하지 않습니다.");
 			}
 		},
