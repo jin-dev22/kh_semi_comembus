@@ -4,12 +4,13 @@
 <link rel="stylesheet" href="<%= request.getContextPath() %>/css/member/memberLogin.css" />
 
 <section id=find-container>
-	<h2>비밀번호 찾기</h2>
+	<h2>비밀번호 재설정</h2>
 	<div class="find-content">
 		<p>비밀번호는 암호화 저장되므로 분실 시 찾아드릴 수 없는 정보입니다.</p>
 		<p>본인 확인을 통해 비밀번호를 재설정 하실 수 있습니다.</p>
 	</div>
 	
+	<!-- 본인확인 입력값 전송 -->
 	<form id="findPasswordFrm" name="findPasswordFrm" action="<%= request.getContextPath() %>/membus/resetMemberPassword">
 	<table id="findPasswordTable" class="find-table">
 		<tbody>
@@ -42,7 +43,7 @@
     	const regExp3 = /^[a-z\d]{6,12}$/;
     	
     	if(nameVal === "" || phoneVal === "" || idVal === ""){
-    		alert("3가지 항목을 모두 입력하셔야 아이디 찾기가 가능합니다.");
+    		alert("3가지 항목을 모두 입력하셔야 비밀번호 재설정이 가능합니다.");
     		return false;
     	}
     	else if(!regExp1.test(nameVal) || !regExp2.test(phoneVal) || !regExp3.test(idVal)){
