@@ -234,7 +234,7 @@ const gatheringFilter = (num) => {
 				$("#pagebar").html("");
 				$("#pagebar").html(htmlStr);
 			} else {
-				$("#pagebar").html("");
+				$("#pagebar").html("해당되는 스터디를 만들어주세요!");
 				alert("해당 스터디가 존재하지 않습니다.");
 			}
 		},
