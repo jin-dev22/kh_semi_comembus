@@ -364,7 +364,7 @@ $(document).on('click', '.bookmark-back', function(e){
 				</form>
 				<form name="searchFrm">
 					<select name="searchType" value="topic" id="s__topic" class="ps-filter" onchange="gatheringFilter()">
-						<option value="All">직무 미지정</option>
+						<option value="All">주제 미지정</option>
 						<option value="Planning">기획</option>
 						<option value="Design">디자인</option>
 						<option value="Frontend">프론트</option>
