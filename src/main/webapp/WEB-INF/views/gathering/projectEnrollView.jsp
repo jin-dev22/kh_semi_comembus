@@ -17,7 +17,7 @@
 		<tr><td><input type="text" name="title" id="name" placeholder="3~20자로 적어주세요" required></td></tr>
         <tr></tr>
 		<tr><th>*프로젝트 주제</th></tr>
-		<tr><td colspan="3">❗ 프로젝트 주제를 골라주세요</td></tr>
+		<tr><td colspan="3">❗ 프로젝트 주제는 변경 불가능합니다.</td></tr>
 		<tr>
             <td colspan="3">
                 <input type="radio" name="topic" id="social" value="social">소셜네트워크
