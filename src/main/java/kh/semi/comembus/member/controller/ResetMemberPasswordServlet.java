@@ -39,6 +39,7 @@ public class ResetMemberPasswordServlet extends HttpServlet {
 			param.put("memberPhone", memberPhone);
 			param.put("memberId", memberId);
 			
+			// select count(*) from member where member_name = ? and phone = ? and member_id = ? and quit_yn = 'N'
 			int checkMember = memberService.checkMember(param);
 			// System.out.println("checkMember = " + checkMember);
 			
@@ -65,20 +66,27 @@ public class ResetMemberPasswordServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String memberId = request.getParameter("memberId");
-		System.out.println("member@ResetMemberPasswordServlet#memberId = " + memberId);
+		try {
+			String memberId = request.getParameter("memberId");
+			// System.out.println("ResetMemberPasswordServlet#memberId = " + memberId);
+			
+			String newPassword = ComembusUtils.getEncryptedPassword(request.getParameter("resetPwd"), memberId);
+			// System.out.println("ResetMemberPasswordServlet#newPassword = " + newPassword);
+			
+			Map<String, Object> param = new HashMap<>();
+			param.put("memberId", memberId);
+			param.put("newPassword", newPassword);
+			
+			int result = memberService.updatePassword(param);
+			request.getSession().setAttribute("msg", "비밀번호를 성공적으로 변경했습니다.");
+			
+			response.sendRedirect(request.getContextPath() + "/membus/login");
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 		
-		String newPassword = ComembusUtils.getEncryptedPassword(request.getParameter("resetPwd"), memberId);
-		System.out.println("member@ResetMemberPasswordServlet#newPassword = " + newPassword);
-		
-		Map<String, Object> param = new HashMap<>();
-		param.put("memberId", memberId);
-		param.put("newPassword", newPassword);
-		
-		int result = memberService.updatePassword(param);
-		request.getSession().setAttribute("msg", "비밀번호를 성공적으로 변경했습니다.");
-		
-		response.sendRedirect(request.getContextPath() + "/membus/login");
 	}
 
 }

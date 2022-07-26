@@ -71,7 +71,7 @@
 			</ul>
 				<div class="ps__bookmark">
 				<% if(loginMember == null) { %>
-					<button "disabled" class="bookmark-front">♡</button>
+					<button "disabled" class="bookmark-front" onclick="alert('로그인 후 이용해주세요');">♡</button>
 				<%
 				} else {
 					String tagBack = "<button style='display:none' class='bookmark-back' value='" + projectNo + "'>♥</button>";
@@ -155,7 +155,7 @@
 			</ul>
 				<div class="ps__bookmark">
 				<% if(loginMember == null) { %>
-					<button "disabled" class="bookmark-front">♡</button>
+					<button "disabled" class="bookmark-front" onclick="alert('로그인 후 이용해주세요');">♡</button>
 				<%
 				} else {
 					String tagBack = "<button style='display:none' class='bookmark-back' value='" + studyNo + "'>♥</button>";
@@ -219,19 +219,17 @@ $(document).on('click', '.bookmark-back', function(e){
 <% } %>
 
 
+<% if(loginMember != null){ %>
 document.querySelectorAll(".ps__bookmark").forEach((bookmark) => {
 	bookmark.addEventListener('click', (e) => {
 		let mark = e.target;
 		const frmAdd = document.addBookmarkFrm;
 		const frmDel = document.delBookmarkFrm;
 		let psnum = mark.value;
-		// console.log(psnum); // 확인용
 
 		if(mark.classList.contains("bookmark-front")) {
 			mark.style.display = 'none';
-			console.log(mark.nextElementSibling);
-			mark.nextElementSibling.style.display = 'block';
-			
+			mark.previousElementSibling.style.display = 'block';
 			const addBookPs = document.querySelector("#addBookPs");
 			addBookPs.value = psnum;
 			frmAdd.submit();			
@@ -244,6 +242,7 @@ document.querySelectorAll(".ps__bookmark").forEach((bookmark) => {
 		}
 	})
 });
+<% } %>
 
 </script>
 

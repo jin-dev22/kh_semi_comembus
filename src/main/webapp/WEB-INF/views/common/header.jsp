@@ -15,9 +15,9 @@
 	if(location == null){
 		location = request.getContextPath() + "/main";
 	}
-	System.out.println(location);
-	String[] specialLocation = {"/membus/login", "/membus/enroll", "/membus/findMemberId", "/membus/showMemberId", "/membus/findMemberPassword", "/membus/resetMemberPassword"};
+	// System.out.println(location);
 	boolean contain = false;
+	String[] specialLocation = {"/membus/login", "/membus/enroll", "/membus/findMemberId", "/membus/showMemberId", "/membus/findMemberPassword", "/membus/resetMemberPassword"};
 	for(int i = 0; i < specialLocation.length; i++) {
 		if(location.contains(specialLocation[i])) {
 			contain = true;
@@ -26,7 +26,6 @@
 	}
 	
 	Cookie[] cookies = request.getCookies();
-	boolean toMain = false;
 
 	if(!contain) {
 		Cookie cookie = new Cookie("locationCookie", location);
@@ -35,7 +34,6 @@
 		response.addCookie(cookie);
 		System.out.println("[locationCookie 발급: " + cookie.getValue() + "]");
 	}
-	
 	
 %>
 <!-- 미송 코드 끝 -->
