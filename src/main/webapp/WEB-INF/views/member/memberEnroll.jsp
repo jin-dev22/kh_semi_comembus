@@ -33,9 +33,11 @@
     <script>
     // 아이디 중복검사
 	document.querySelector("#enrollId").addEventListener('blur', (e) => {
+		const idGuideArea = document.getElementById("idGuideArea");
+		const idGuideLine = document.getElementById("idGuideLine");
 		const idLoading = document.querySelector("#idLoading");
-		const nameGuideArea = document.getElementById("nameGuideArea");
-		const nameGuideLine = document.getElementById("nameGuideLine");
+		const idCheckArea = document.querySelector("#idCheckArea");
+		const idCheck = document.querySelector("#idCheck");
 		
 		// 아이디 유효성검사에 통과한 경우만 아이디 중복검사 진행
 		if (idGuideLine.className === "success") {
@@ -76,7 +78,7 @@
         <label for="enrollPwd1">비밀번호<span> *</span></label>
       </div>
       <div class="enroll-input">
-        <input type="password" id="enrollPwd1" name="enrollPwd" placeholder="영문, 숫자, 특수문자 조합 (8~16자)" maxlength="25" />
+        <input type="password" id="enrollPwd1" name="enrollPwd" placeholder="영문, 숫자, 특수문자 조합 (8~16자)" maxlength="20" />
         <div id="pwd1GuideArea">
           <div id="pwd1GuideLine1">
             <span></span>
@@ -96,7 +98,7 @@
         <label for="enrollPwd2">비밀번호 확인<span> *</span></label>
       </div>
       <div class="enroll-input">
-        <input type="password" id="enrollPwd2" placeholder="영문, 숫자, 특수문자 조합 (8~16자)" maxlength="25" />
+        <input type="password" id="enrollPwd2" placeholder="영문, 숫자, 특수문자 조합 (8~16자)" maxlength="20" />
         <div id="pwd2GuideArea">
           <div id="pwd2GuideLine">
             <span></span>
@@ -112,7 +114,7 @@
         <label for="enrollName">이름<span> *</span></label>
       </div>
       <div class="enroll-input">
-        <input type="text" id="enrollName" name="enrollName" placeholder="한글 2자 이상" maxlength="11" />
+        <input type="text" id="enrollName" name="enrollName" placeholder="한글 2자 이상" maxlength="16" />
         <div id="nameGuideArea">
           <div id="nameGuideLine">
             <span></span>
@@ -148,9 +150,11 @@
 	// 닉네임 중복검사
 	document.querySelector("#enrollNickname").addEventListener('blur', (e) => {
 		// 닉네임 유효성검사가 완료된 후, 닉네임 중복 여부 확인
-		const nicknameLoading= document.querySelector("#nicknameLoading");
-		const nicknameGuideArea= document.querySelector("#nicknameGuideArea");
-		const nicknameGuideLine= document.querySelector("#nicknameGuideLine");
+		const nicknameGuideArea = document.querySelector("#nicknameGuideArea");
+		const nicknameGuideLine = document.querySelector("#nicknameGuideLine");
+		const nicknameLoading = document.querySelector("#nicknameLoading");
+		const nicknameCheckArea = document.querySelector("#nicknameCheckArea");
+		const nicknameCheck = document.querySelector("#nicknameCheck");
 		
 		if (nicknameGuideLine.className === "success") {
 			nicknameGuideArea.className = "hide"; // 유효성검사 가이드 숨기기

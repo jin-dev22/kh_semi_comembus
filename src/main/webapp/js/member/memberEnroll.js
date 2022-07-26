@@ -6,17 +6,14 @@ const enrollNickname = document.getElementById("enrollNickname");
 const enrollPhone = document.getElementById("enrollPhone");
 const jobName = document.getElementById("jobName");
 
-const idGuideArea = document.getElementById("idGuideArea");
-const idGuideLine = document.getElementById("idGuideLine");
-
+const nameGuideArea = document.getElementById("nameGuideArea");
+const nameGuideLine = document.getElementById("nameGuideLine");
 const pwd1GuideArea = document.getElementById("pwd1GuideArea");
 const pwd1GuideLine1 = document.getElementById("pwd1GuideLine1");
 const pwd1GuideLine2 = document.getElementById("pwd1GuideLine2");
 const pwd2GuideArea = document.getElementById("pwd2GuideArea");
 const pwd2GuideLine = document.getElementById("pwd2GuideLine");
 const phoneGuideLine = document.getElementById("phoneGuideLine");
-
-const nicknameGuideLine = document.getElementById("nicknameGuideLine");
 
 const privacyAgree1Cbx = document.getElementById("privacyAgree1Cbx");
 const privacyAgree2Cbx = document.getElementById("privacyAgree2Cbx");
