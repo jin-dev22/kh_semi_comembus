@@ -23,16 +23,22 @@ public class CheckNicknameDuplicateServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		try {
+			String nickName = request.getParameter("nickname");
+			
+			int checkNickname = memberService.checkNickname(nickName);
+			
+			boolean available = checkNickname == 0;
+			
+			response.setContentType("application/json; charset=utf-8");
+			String jsonStr = new Gson().toJson(available);
+			response.getWriter().print(jsonStr);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 		
-		String nickName = request.getParameter("nickname");
-		
-		int checkNickname = memberService.checkNickname(nickName);
-		
-		boolean available = checkNickname == 0;
-		
-		response.setContentType("application/json; charset=utf-8");
-		String jsonStr = new Gson().toJson(available);
-		response.getWriter().print(jsonStr);
 	}
 
 }

@@ -25,17 +25,21 @@ public class CheckIdDuplicateServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		String memberId = request.getParameter("enrollId");
-		System.out.println("memberId = " + memberId);
-		
-		Member member = memberService.findById(memberId);
-		boolean available = member == null;
-		System.out.println("available = " + available);
-		
-		response.setContentType("application/json; charset=utf-8");
-		String jsonStr = new Gson().toJson(available);
-		response.getWriter().print(jsonStr);
+		try {
+			String memberId = request.getParameter("enrollId");
+			System.out.println("memberId = " + memberId);
+			
+			Member member = memberService.findById(memberId);
+			boolean available = member == null;
+			System.out.println("available = " + available);
+			
+			response.setContentType("application/json; charset=utf-8");
+			String jsonStr = new Gson().toJson(available);
+			response.getWriter().print(jsonStr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
 	}
 
 }
