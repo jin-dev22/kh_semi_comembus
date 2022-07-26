@@ -44,10 +44,10 @@ public class MemberEnrollServlet extends HttpServlet {
 			JobCode jobCode = JobCode.valueOf(_jobCode);
 			
 			Member member = new Member(memberId, jobCode, nickName, memberName, password, phone, null, null, null, null, null);
-			System.out.println("member@MemberEnrollServlet = " + member);
+			System.out.println("MemberEnrollServlet#member = " + member);
 			
 			int result = memberService.insertMember(member);
-			System.out.println("result@MemberEnrollServlet = " + result);
+			System.out.println("MemberEnrollServlet#result = " + result);
 			
 			HttpSession session = request.getSession();
 			session.setAttribute("msg", "회원가입이 완료되었습니다. 로그인 후 이용 가능합니다.");
