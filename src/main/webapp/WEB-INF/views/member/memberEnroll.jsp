@@ -33,6 +33,10 @@
     <script>
     // 아이디 중복검사
 	document.querySelector("#enrollId").addEventListener('blur', (e) => {
+		const idLoading = document.querySelector("#idLoading");
+		const nameGuideArea = document.getElementById("nameGuideArea");
+		const nameGuideLine = document.getElementById("nameGuideLine");
+		
 		// 아이디 유효성검사에 통과한 경우만 아이디 중복검사 진행
 		if (idGuideLine.className === "success") {
 			idGuideArea.className = "hide"; // 유효성검사 가이드 숨기기

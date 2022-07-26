@@ -14,9 +14,7 @@ const pwd1GuideLine1 = document.getElementById("pwd1GuideLine1");
 const pwd1GuideLine2 = document.getElementById("pwd1GuideLine2");
 const pwd2GuideArea = document.getElementById("pwd2GuideArea");
 const pwd2GuideLine = document.getElementById("pwd2GuideLine");
-
-const nameGuideArea = document.getElementById("nameGuideArea");
-const nameGuideLine = document.getElementById("nameGuideLine");
+const phoneGuideLine = document.getElementById("phoneGuideLine");
 
 const nicknameGuideLine = document.getElementById("nicknameGuideLine");
 
@@ -41,7 +39,8 @@ const checkArr = [
   pwd1GuideLine1,
   pwd1GuideLine2,
   pwd2GuideLine,
-  nicknameGuideLine
+  nicknameGuideLine,
+  phoneGuideLine
 ];
 
 
@@ -100,7 +99,7 @@ enrollId.addEventListener("input", (e) => {
     showValidationResult(idGuideLine, "success", "영어(소문자), 숫자 조합 6~12자  (특수문자 사용 불가)");
     inputStyle(enrollId, "blue");
   }
-ㅁ
+
   // 비번 입력 후 아이디 변경 시, 비번에 아이디 포함되어있는지 재확인
   isPwdContainsId();
 });
@@ -285,6 +284,16 @@ enrollPhone.addEventListener("blur", (e) => {
     phoneGuideArea.className = "hide";
 });
 
+// ----------------------------- 직무 분야 ---------------------------------------
+jobName.addEventListener("blur", (e) => {
+    const val = e.target.value;
+
+    if (val === "") {
+      e.target.style.borderBottom = "2px solid red";
+    } else {
+      e.target.style.borderBottom = "2px solid blue";
+    }
+});
 
 // ----------------------------- 약관 동의 ---------------------------------------
 privacyAgree1.addEventListener("click", (e) => {
@@ -306,17 +315,15 @@ document.enrollFrm.onsubmit = (e) => {
 
   let msg;
   checkArr.forEach(function (el) {
-    if (el.className !== "success") {
+    if (el.className !== "success" || jobName.value === "") {
       e.preventDefault();
-      msg = "필수정보를 모두 올바르게 입력해주세요.";
+      msg = "필수 입력 항목을 모두 올바르게 입력해주세요.";
     }
   });
 
-  if (msg !== undefined) 
-    alert(msg);
-
-  if (jobName.value === "")
-    e.preventDefault();
+  if (msg !== undefined){
+	alert(msg);
+  }
 
   if (privacyAgree1Cbx.checked !== true || privacyAgree2Cbx.checked !== true) {
     e.preventDefault();

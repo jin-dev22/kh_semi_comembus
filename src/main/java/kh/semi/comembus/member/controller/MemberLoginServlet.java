@@ -40,7 +40,6 @@ public class MemberLoginServlet extends HttpServlet {
 			// System.out.println("memberId = " + memberId);
 			// System.out.println("password = " + password);
 			
-			// 로그인 성공 시 리다이렉트 할 경로 가져오기
 			Cookie[] cookies = request.getCookies();
 
 			String location = "";
@@ -48,6 +47,7 @@ public class MemberLoginServlet extends HttpServlet {
 				for(Cookie c : cookies) {
 					String name = c.getName();
 					String value = c.getValue();
+					// 로그인 성공 시 리다이렉트 할 경로 가져오기
 					if("locationCookie".equals(name)) {
 						location = value;
 						// System.out.println("location = " + location);
