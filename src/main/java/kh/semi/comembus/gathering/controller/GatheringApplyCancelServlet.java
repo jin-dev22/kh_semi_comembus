@@ -36,22 +36,21 @@ public class GatheringApplyCancelServlet extends HttpServlet {
 			Map<String, Object> param = new HashMap<>();
 			param.put("memberId", memberId);
 			param.put("psNo", psNo);
-			
-//			System.out.println("@ApldCcServ: memId, psNo>>"+memberId + ", "+ psNo);
-			
+						
 			//지원현황 테이블에서 지원결과 'X'로 변경
 			int result = gatheringService.cancelApld(param);
-//			System.out.println("@ApldCcServ: result>>"+result);
 			
 			//모임장에게 지원신청 취소 알림
 			String nickName = request.getParameter("nickName");
 			Gathering gather = gatheringService.findByNo(psNo);
+			
 			//알림내용 글자 수 줄이기
 			String title = gather.getTitle();
 			String substrTitle = title.length() > 8? title.substring(0, 7)+"...": title;
 			String substrNick = nickName.length() > 5? nickName.substring(0, 4)+"..." : nickName;
 			String alertContent = "["+substrTitle +"] 지원자 ["+substrNick+"]님이 지원을 취소했습니다.";
 			
+			//알림테이블에 정보 저장
 			Alert alert = new Alert(0, gather.getWriter(), psNo, 0, MessageType.APPLY_CANCELED, alertContent, IsRead.N);
 			result = alertService.notifyCancelApld(alert);
 			
